@@ -1,0 +1,136 @@
+syntax = "proto3";
+
+package products_proto;
+
+option go_package = "./generated_protos/products_proto";
+
+service ProductsService {
+  rpc Create(CreateRequest) returns (CreateResponse);
+  rpc Get(GetRequest) returns (GetResponse);
+  rpc Update(UpdateRequest) returns (UpdateResponse);
+  rpc Delete(DeleteRequest) returns (DeleteResponse);
+  rpc List(ListRequest) returns (ListResponse);
+}
+
+message Products {
+  uint32 id = 1;
+  string created_at = 2;
+  string updated_at = 3;
+  optional string deleted_at = 4;
+  uint32 created_by = 5;
+  uint32 updated_by = 6;
+  optional uint32 deleted_by = 7;
+  optional uint32 category_id = 8;
+  optional uint32 brand_id = 9;
+  optional uint32 variant_type_id = 10;
+  optional uint32 product_references_id = 11;
+  optional uint32 image_id = 12;
+  string name = 13;
+  uint32 stock = 14;
+}
+
+message CreateRequest {
+  uint32 requester_id = 1;
+  optional uint32 category_id = 2;
+  optional uint32 brand_id = 3;
+  optional uint32 variant_type_id = 4;
+  optional uint32 product_references_id = 5;
+  optional uint32 image_id = 6;
+  string name = 7;
+  uint32 stock = 8;
+  
+}
+
+message CreateResponse {
+  uint32 requester_id = 1;
+  uint32 category_id = 2;
+  uint32 brand_id = 3;
+  uint32 variant_type_id = 4;
+  uint32 product_references_id = 5;
+  uint32 image_id = 6;
+  string name = 7;
+  uint32 stock = 8;
+  string created_at = 9;
+  string updated_at = 10;
+  string deleted_at = 11;
+  uint32 created_by = 12;
+  uint32 updated_by = 13;
+  uint32 deleted_by = 14;
+}
+
+message GetRequest {
+  uint32 id = 1;
+}
+
+message GetResponse {
+  uint32 requester_id = 1;
+  uint32 category_id = 2;
+  uint32 brand_id = 3;
+  uint32 variant_type_id = 4;
+  uint32 product_references_id = 5;
+  uint32 image_id = 6;
+  string name = 7;
+  uint32 stock = 8;
+  string created_at = 9;
+  string updated_at = 10;
+  string deleted_at = 11;
+  uint32 created_by = 12;
+  uint32 updated_by = 13;
+  uint32 deleted_by = 14;
+}
+
+message UpdateRequest {
+  uint32 id = 1;
+  uint32 requester_id = 2;
+  optional uint32 category_id = 3;
+  optional uint32 brand_id = 4;
+  optional uint32 variant_type_id = 5;
+  optional uint32 product_references_id = 6;
+  optional uint32 image_id = 7;
+  optional string name = 8;
+  optional uint32 stock = 9;
+}
+
+message UpdateResponse {
+  uint32 requester_id = 1;
+  uint32 category_id = 2;
+  uint32 brand_id = 3;
+  uint32 variant_type_id = 4;
+  uint32 product_references_id = 5;
+  uint32 image_id = 6;
+  string name = 7;
+  uint32 stock = 8;
+}
+
+message DeleteRequest {
+  uint32 id = 1;
+  uint32 requester_id = 2;
+}
+
+message DeleteResponse {
+  string message = 1;
+}
+
+message ListRequest {
+  optional uint32 limit = 1;
+  optional uint32 offset = 2;
+  optional uint32 category_id = 3;
+  optional uint32 brand_id = 4;
+  optional uint32 variant_type_id = 5;
+  optional uint32 product_references_id = 6;
+  optional uint32 image_id = 7;
+  optional string name = 8;
+  optional uint32 stock = 9;
+  optional bool include_deleted = 10;
+  optional OrderBy orderby = 11;
+}
+
+message OrderBy {
+  optional string id = 1;
+  optional string created_at = 2;
+}
+
+message ListResponse {
+  repeated Products rows = 1;
+  uint32 count = 2;
+}

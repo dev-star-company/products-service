@@ -1,0 +1,121 @@
+syntax = "proto3";
+
+package product_prices_proto;
+
+option go_package = "./generated_protos/product_prices_proto";
+
+service ProductPricesService {
+  rpc Create(CreateRequest) returns (CreateResponse);
+  rpc Get(GetRequest) returns (GetResponse);
+  rpc Update(UpdateRequest) returns (UpdateResponse);
+  rpc Delete(DeleteRequest) returns (DeleteResponse);
+  rpc List(ListRequest) returns (ListResponse);
+}
+
+message ProductPrices {
+  uint32 id = 1;
+  string created_at = 2;
+  string updated_at = 3;
+  optional string deleted_at = 4;
+  uint32 created_by = 5;
+  uint32 updated_by = 6;
+  optional uint32 deleted_by = 7;
+  uint32 price_type_id = 8;
+  uint32 products_id = 9;
+  double default_value = 10;
+  optional double min_value = 11;
+
+}
+
+message CreateRequest {
+  uint32 requester_id = 1;
+  uint32 price_type_id = 2;
+  uint32 products_id = 3;
+  double default_value = 4;
+  optional double min_value = 5;
+}
+
+message CreateResponse {
+  uint32 requester_id = 1;
+  uint32 price_type_id = 2;
+  uint32 products_id = 3;
+  double default_value = 4;
+  double min_value = 5;
+  string created_at = 6;
+  string updated_at = 7;
+  string deleted_at = 8;
+  uint32 created_by = 9;
+  uint32 updated_by = 10;
+  uint32 deleted_by = 11;
+}
+
+message GetRequest {
+  uint32 id = 1;
+}
+
+message GetResponse {
+  uint32 requester_id = 1;
+  uint32 price_type_id = 2;
+  uint32 products_id = 3;
+  double default_value = 4;
+  double min_value = 5;
+  string created_at = 6;
+  string updated_at = 7;
+  string deleted_at = 8;
+  uint32 created_by = 9;
+  uint32 updated_by = 10;
+  uint32 deleted_by = 11;
+}
+
+message UpdateRequest {
+  uint32 id = 1;
+  uint32 requester_id = 2;
+  optional uint32 price_type_id = 3;
+  optional uint32 products_id = 4;
+  optional double default_value = 5;
+  optional double min_value = 6;
+}
+
+message UpdateResponse {
+  uint32 requester_id = 1;
+  uint32 price_type_id = 2;
+  uint32 products_id = 3;
+  double default_value = 4;
+  double min_value = 5;
+  string created_at = 6;
+  string updated_at = 7;
+  string deleted_at = 8;
+  uint32 created_by = 9;
+  uint32 updated_by = 10;
+  uint32 deleted_by = 11;
+}
+
+message DeleteRequest {
+  uint32 id = 1;
+  uint32 requester_id = 2;
+}
+
+message DeleteResponse {
+  string message = 1;
+}
+
+message ListRequest {
+  optional uint32 limit = 1;
+  optional uint32 offset = 2;
+  optional uint32 products_id = 3;
+  optional uint32 price_type_id = 4;
+  optional double default_value = 5;
+  optional double min_value = 6;
+  optional bool include_deleted = 7;
+  optional OrderBy orderby = 8;
+}
+
+message OrderBy {
+  optional string id = 1;
+  optional string created_at = 2;
+}
+
+message ListResponse {
+  repeated ProductPrices rows = 1;
+  uint32 count = 2;
+}

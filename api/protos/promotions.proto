@@ -1,0 +1,114 @@
+syntax = "proto3";
+
+package promotions_proto;
+
+option go_package = "./generated_protos/promotions_proto";
+
+service PromotionsService {
+  rpc Create(CreateRequest) returns (CreateResponse);
+  rpc Get(GetRequest) returns (GetResponse);
+  rpc Update(UpdateRequest) returns (UpdateResponse);
+  rpc Delete(DeleteRequest) returns (DeleteResponse);
+  rpc List(ListRequest) returns (ListResponse);
+}
+
+message Promotions {
+  uint32 id = 1;
+  string created_at = 2;
+  string updated_at = 3;
+  optional string deleted_at = 4;
+  uint32 created_by = 5;
+  uint32 updated_by = 6;
+  optional uint32 deleted_by = 7;
+  string name = 8;
+  string starting_datetime = 9;
+  string ending_datetime = 10;
+
+}
+
+message CreateRequest {
+  uint32 requester_id = 1;
+  string name = 2;
+  string starting_datetime = 3;
+  string ending_datetime = 4;
+}
+
+message CreateResponse {
+  uint32 requester_id = 1;
+  string name = 2;
+  string starting_datetime = 3;
+  string ending_datetime = 4;
+  string created_at = 5;
+  string updated_at = 6;
+  string deleted_at = 7;
+  uint32 created_by = 8;
+  uint32 updated_by = 9;
+  uint32 deleted_by = 10;
+}
+
+message GetRequest {
+  uint32 id = 1;
+}
+
+message GetResponse {
+  uint32 requester_id = 1;
+  string name = 2;
+  string starting_datetime = 3;
+  string ending_datetime = 4;
+  string created_at = 5;
+  string updated_at = 6;
+  string deleted_at = 7;
+  uint32 created_by = 8;
+  uint32 updated_by = 9;
+  uint32 deleted_by = 10;
+}
+
+message UpdateRequest {
+  uint32 id = 1;
+  uint32 requester_id = 2;
+  optional string name = 3;
+  optional string starting_datetime = 4;
+  optional string ending_datetime = 5;
+}
+
+message UpdateResponse {
+  uint32 requester_id = 1;
+  string name = 2;
+  string starting_datetime = 3;
+  string ending_datetime = 4;
+  string created_at = 5;
+  string updated_at = 6;
+  string deleted_at = 7;
+  uint32 created_by = 8;
+  uint32 updated_by = 9;
+  uint32 deleted_by = 10;
+}
+
+message DeleteRequest {
+  uint32 id = 1;
+  uint32 requester_id = 2;
+}
+
+message DeleteResponse {
+  string message = 1;
+}
+
+message ListRequest {
+  optional uint32 limit = 1;
+  optional uint32 offset = 2;
+  optional string starting_datetime = 3;
+  optional string name = 4;
+  optional string ending_datetime = 5;
+  optional bool include_deleted = 6;
+  optional OrderBy orderby = 7;
+}
+
+message OrderBy {
+  optional string id = 1;
+  optional string created_at = 2;
+}
+
+message ListResponse {
+  repeated Promotions rows = 1;
+  uint32 count = 2;
+}
