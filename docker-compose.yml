@@ -1,11 +1,11 @@
 services:
-  permissions_service:
+  products_service:
     build:
       context: .
       dockerfile: ./Dockerfile
-    container_name: permissions_service
+    container_name: products_service
     ports:
-      - '0.0.0.0:5002:5002'
+      - '0.0.0.0:5001:5001'
     networks:
       whatsapp_bot:
         ipv4_address: 172.18.0.5
