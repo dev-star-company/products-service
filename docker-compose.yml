@@ -1,0 +1,19 @@
+services:
+  permissions_service:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    container_name: permissions_service
+    ports:
+      - '0.0.0.0:5002:5002'
+    networks:
+      whatsapp_bot:
+        ipv4_address: 172.18.0.5
+
+networks:
+  whatsapp_bot:
+    name: whatsapp_bot
+    external: true
+    ipam:
+      config:
+        - subnet: 172.18.0.0/16
