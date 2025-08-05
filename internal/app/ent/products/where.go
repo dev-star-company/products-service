@@ -60,29 +60,9 @@ func CreatedAt(v time.Time) predicate.Products {
 	return predicate.Products(sql.FieldEQ(FieldCreatedAt, v))
 }
 
-// UpdatedAt applies equality check predicate on the "updated_at" field. It's identical to UpdatedAtEQ.
-func UpdatedAt(v time.Time) predicate.Products {
-	return predicate.Products(sql.FieldEQ(FieldUpdatedAt, v))
-}
-
 // DeletedAt applies equality check predicate on the "deleted_at" field. It's identical to DeletedAtEQ.
 func DeletedAt(v time.Time) predicate.Products {
 	return predicate.Products(sql.FieldEQ(FieldDeletedAt, v))
-}
-
-// CreatedBy applies equality check predicate on the "created_by" field. It's identical to CreatedByEQ.
-func CreatedBy(v int) predicate.Products {
-	return predicate.Products(sql.FieldEQ(FieldCreatedBy, v))
-}
-
-// UpdatedBy applies equality check predicate on the "updated_by" field. It's identical to UpdatedByEQ.
-func UpdatedBy(v int) predicate.Products {
-	return predicate.Products(sql.FieldEQ(FieldUpdatedBy, v))
-}
-
-// DeletedBy applies equality check predicate on the "deleted_by" field. It's identical to DeletedByEQ.
-func DeletedBy(v int) predicate.Products {
-	return predicate.Products(sql.FieldEQ(FieldDeletedBy, v))
 }
 
 // CategoryID applies equality check predicate on the "category_id" field. It's identical to CategoryIDEQ.
@@ -105,9 +85,9 @@ func ProductReferencesID(v int) predicate.Products {
 	return predicate.Products(sql.FieldEQ(FieldProductReferencesID, v))
 }
 
-// ImageID applies equality check predicate on the "image_id" field. It's identical to ImageIDEQ.
-func ImageID(v int) predicate.Products {
-	return predicate.Products(sql.FieldEQ(FieldImageID, v))
+// ImagesID applies equality check predicate on the "images_id" field. It's identical to ImagesIDEQ.
+func ImagesID(v int) predicate.Products {
+	return predicate.Products(sql.FieldEQ(FieldImagesID, v))
 }
 
 // Name applies equality check predicate on the "name" field. It's identical to NameEQ.
@@ -160,46 +140,6 @@ func CreatedAtLTE(v time.Time) predicate.Products {
 	return predicate.Products(sql.FieldLTE(FieldCreatedAt, v))
 }
 
-// UpdatedAtEQ applies the EQ predicate on the "updated_at" field.
-func UpdatedAtEQ(v time.Time) predicate.Products {
-	return predicate.Products(sql.FieldEQ(FieldUpdatedAt, v))
-}
-
-// UpdatedAtNEQ applies the NEQ predicate on the "updated_at" field.
-func UpdatedAtNEQ(v time.Time) predicate.Products {
-	return predicate.Products(sql.FieldNEQ(FieldUpdatedAt, v))
-}
-
-// UpdatedAtIn applies the In predicate on the "updated_at" field.
-func UpdatedAtIn(vs ...time.Time) predicate.Products {
-	return predicate.Products(sql.FieldIn(FieldUpdatedAt, vs...))
-}
-
-// UpdatedAtNotIn applies the NotIn predicate on the "updated_at" field.
-func UpdatedAtNotIn(vs ...time.Time) predicate.Products {
-	return predicate.Products(sql.FieldNotIn(FieldUpdatedAt, vs...))
-}
-
-// UpdatedAtGT applies the GT predicate on the "updated_at" field.
-func UpdatedAtGT(v time.Time) predicate.Products {
-	return predicate.Products(sql.FieldGT(FieldUpdatedAt, v))
-}
-
-// UpdatedAtGTE applies the GTE predicate on the "updated_at" field.
-func UpdatedAtGTE(v time.Time) predicate.Products {
-	return predicate.Products(sql.FieldGTE(FieldUpdatedAt, v))
-}
-
-// UpdatedAtLT applies the LT predicate on the "updated_at" field.
-func UpdatedAtLT(v time.Time) predicate.Products {
-	return predicate.Products(sql.FieldLT(FieldUpdatedAt, v))
-}
-
-// UpdatedAtLTE applies the LTE predicate on the "updated_at" field.
-func UpdatedAtLTE(v time.Time) predicate.Products {
-	return predicate.Products(sql.FieldLTE(FieldUpdatedAt, v))
-}
-
 // DeletedAtEQ applies the EQ predicate on the "deleted_at" field.
 func DeletedAtEQ(v time.Time) predicate.Products {
 	return predicate.Products(sql.FieldEQ(FieldDeletedAt, v))
@@ -250,136 +190,6 @@ func DeletedAtNotNil() predicate.Products {
 	return predicate.Products(sql.FieldNotNull(FieldDeletedAt))
 }
 
-// CreatedByEQ applies the EQ predicate on the "created_by" field.
-func CreatedByEQ(v int) predicate.Products {
-	return predicate.Products(sql.FieldEQ(FieldCreatedBy, v))
-}
-
-// CreatedByNEQ applies the NEQ predicate on the "created_by" field.
-func CreatedByNEQ(v int) predicate.Products {
-	return predicate.Products(sql.FieldNEQ(FieldCreatedBy, v))
-}
-
-// CreatedByIn applies the In predicate on the "created_by" field.
-func CreatedByIn(vs ...int) predicate.Products {
-	return predicate.Products(sql.FieldIn(FieldCreatedBy, vs...))
-}
-
-// CreatedByNotIn applies the NotIn predicate on the "created_by" field.
-func CreatedByNotIn(vs ...int) predicate.Products {
-	return predicate.Products(sql.FieldNotIn(FieldCreatedBy, vs...))
-}
-
-// CreatedByGT applies the GT predicate on the "created_by" field.
-func CreatedByGT(v int) predicate.Products {
-	return predicate.Products(sql.FieldGT(FieldCreatedBy, v))
-}
-
-// CreatedByGTE applies the GTE predicate on the "created_by" field.
-func CreatedByGTE(v int) predicate.Products {
-	return predicate.Products(sql.FieldGTE(FieldCreatedBy, v))
-}
-
-// CreatedByLT applies the LT predicate on the "created_by" field.
-func CreatedByLT(v int) predicate.Products {
-	return predicate.Products(sql.FieldLT(FieldCreatedBy, v))
-}
-
-// CreatedByLTE applies the LTE predicate on the "created_by" field.
-func CreatedByLTE(v int) predicate.Products {
-	return predicate.Products(sql.FieldLTE(FieldCreatedBy, v))
-}
-
-// UpdatedByEQ applies the EQ predicate on the "updated_by" field.
-func UpdatedByEQ(v int) predicate.Products {
-	return predicate.Products(sql.FieldEQ(FieldUpdatedBy, v))
-}
-
-// UpdatedByNEQ applies the NEQ predicate on the "updated_by" field.
-func UpdatedByNEQ(v int) predicate.Products {
-	return predicate.Products(sql.FieldNEQ(FieldUpdatedBy, v))
-}
-
-// UpdatedByIn applies the In predicate on the "updated_by" field.
-func UpdatedByIn(vs ...int) predicate.Products {
-	return predicate.Products(sql.FieldIn(FieldUpdatedBy, vs...))
-}
-
-// UpdatedByNotIn applies the NotIn predicate on the "updated_by" field.
-func UpdatedByNotIn(vs ...int) predicate.Products {
-	return predicate.Products(sql.FieldNotIn(FieldUpdatedBy, vs...))
-}
-
-// UpdatedByGT applies the GT predicate on the "updated_by" field.
-func UpdatedByGT(v int) predicate.Products {
-	return predicate.Products(sql.FieldGT(FieldUpdatedBy, v))
-}
-
-// UpdatedByGTE applies the GTE predicate on the "updated_by" field.
-func UpdatedByGTE(v int) predicate.Products {
-	return predicate.Products(sql.FieldGTE(FieldUpdatedBy, v))
-}
-
-// UpdatedByLT applies the LT predicate on the "updated_by" field.
-func UpdatedByLT(v int) predicate.Products {
-	return predicate.Products(sql.FieldLT(FieldUpdatedBy, v))
-}
-
-// UpdatedByLTE applies the LTE predicate on the "updated_by" field.
-func UpdatedByLTE(v int) predicate.Products {
-	return predicate.Products(sql.FieldLTE(FieldUpdatedBy, v))
-}
-
-// DeletedByEQ applies the EQ predicate on the "deleted_by" field.
-func DeletedByEQ(v int) predicate.Products {
-	return predicate.Products(sql.FieldEQ(FieldDeletedBy, v))
-}
-
-// DeletedByNEQ applies the NEQ predicate on the "deleted_by" field.
-func DeletedByNEQ(v int) predicate.Products {
-	return predicate.Products(sql.FieldNEQ(FieldDeletedBy, v))
-}
-
-// DeletedByIn applies the In predicate on the "deleted_by" field.
-func DeletedByIn(vs ...int) predicate.Products {
-	return predicate.Products(sql.FieldIn(FieldDeletedBy, vs...))
-}
-
-// DeletedByNotIn applies the NotIn predicate on the "deleted_by" field.
-func DeletedByNotIn(vs ...int) predicate.Products {
-	return predicate.Products(sql.FieldNotIn(FieldDeletedBy, vs...))
-}
-
-// DeletedByGT applies the GT predicate on the "deleted_by" field.
-func DeletedByGT(v int) predicate.Products {
-	return predicate.Products(sql.FieldGT(FieldDeletedBy, v))
-}
-
-// DeletedByGTE applies the GTE predicate on the "deleted_by" field.
-func DeletedByGTE(v int) predicate.Products {
-	return predicate.Products(sql.FieldGTE(FieldDeletedBy, v))
-}
-
-// DeletedByLT applies the LT predicate on the "deleted_by" field.
-func DeletedByLT(v int) predicate.Products {
-	return predicate.Products(sql.FieldLT(FieldDeletedBy, v))
-}
-
-// DeletedByLTE applies the LTE predicate on the "deleted_by" field.
-func DeletedByLTE(v int) predicate.Products {
-	return predicate.Products(sql.FieldLTE(FieldDeletedBy, v))
-}
-
-// DeletedByIsNil applies the IsNil predicate on the "deleted_by" field.
-func DeletedByIsNil() predicate.Products {
-	return predicate.Products(sql.FieldIsNull(FieldDeletedBy))
-}
-
-// DeletedByNotNil applies the NotNil predicate on the "deleted_by" field.
-func DeletedByNotNil() predicate.Products {
-	return predicate.Products(sql.FieldNotNull(FieldDeletedBy))
-}
-
 // CategoryIDEQ applies the EQ predicate on the "category_id" field.
 func CategoryIDEQ(v int) predicate.Products {
 	return predicate.Products(sql.FieldEQ(FieldCategoryID, v))
@@ -398,26 +208,6 @@ func CategoryIDIn(vs ...int) predicate.Products {
 // CategoryIDNotIn applies the NotIn predicate on the "category_id" field.
 func CategoryIDNotIn(vs ...int) predicate.Products {
 	return predicate.Products(sql.FieldNotIn(FieldCategoryID, vs...))
-}
-
-// CategoryIDGT applies the GT predicate on the "category_id" field.
-func CategoryIDGT(v int) predicate.Products {
-	return predicate.Products(sql.FieldGT(FieldCategoryID, v))
-}
-
-// CategoryIDGTE applies the GTE predicate on the "category_id" field.
-func CategoryIDGTE(v int) predicate.Products {
-	return predicate.Products(sql.FieldGTE(FieldCategoryID, v))
-}
-
-// CategoryIDLT applies the LT predicate on the "category_id" field.
-func CategoryIDLT(v int) predicate.Products {
-	return predicate.Products(sql.FieldLT(FieldCategoryID, v))
-}
-
-// CategoryIDLTE applies the LTE predicate on the "category_id" field.
-func CategoryIDLTE(v int) predicate.Products {
-	return predicate.Products(sql.FieldLTE(FieldCategoryID, v))
 }
 
 // CategoryIDIsNil applies the IsNil predicate on the "category_id" field.
@@ -450,26 +240,6 @@ func BrandIDNotIn(vs ...int) predicate.Products {
 	return predicate.Products(sql.FieldNotIn(FieldBrandID, vs...))
 }
 
-// BrandIDGT applies the GT predicate on the "brand_id" field.
-func BrandIDGT(v int) predicate.Products {
-	return predicate.Products(sql.FieldGT(FieldBrandID, v))
-}
-
-// BrandIDGTE applies the GTE predicate on the "brand_id" field.
-func BrandIDGTE(v int) predicate.Products {
-	return predicate.Products(sql.FieldGTE(FieldBrandID, v))
-}
-
-// BrandIDLT applies the LT predicate on the "brand_id" field.
-func BrandIDLT(v int) predicate.Products {
-	return predicate.Products(sql.FieldLT(FieldBrandID, v))
-}
-
-// BrandIDLTE applies the LTE predicate on the "brand_id" field.
-func BrandIDLTE(v int) predicate.Products {
-	return predicate.Products(sql.FieldLTE(FieldBrandID, v))
-}
-
 // BrandIDIsNil applies the IsNil predicate on the "brand_id" field.
 func BrandIDIsNil() predicate.Products {
 	return predicate.Products(sql.FieldIsNull(FieldBrandID))
@@ -498,26 +268,6 @@ func VariantTypeIDIn(vs ...int) predicate.Products {
 // VariantTypeIDNotIn applies the NotIn predicate on the "variant_type_id" field.
 func VariantTypeIDNotIn(vs ...int) predicate.Products {
 	return predicate.Products(sql.FieldNotIn(FieldVariantTypeID, vs...))
-}
-
-// VariantTypeIDGT applies the GT predicate on the "variant_type_id" field.
-func VariantTypeIDGT(v int) predicate.Products {
-	return predicate.Products(sql.FieldGT(FieldVariantTypeID, v))
-}
-
-// VariantTypeIDGTE applies the GTE predicate on the "variant_type_id" field.
-func VariantTypeIDGTE(v int) predicate.Products {
-	return predicate.Products(sql.FieldGTE(FieldVariantTypeID, v))
-}
-
-// VariantTypeIDLT applies the LT predicate on the "variant_type_id" field.
-func VariantTypeIDLT(v int) predicate.Products {
-	return predicate.Products(sql.FieldLT(FieldVariantTypeID, v))
-}
-
-// VariantTypeIDLTE applies the LTE predicate on the "variant_type_id" field.
-func VariantTypeIDLTE(v int) predicate.Products {
-	return predicate.Products(sql.FieldLTE(FieldVariantTypeID, v))
 }
 
 // VariantTypeIDIsNil applies the IsNil predicate on the "variant_type_id" field.
@@ -550,26 +300,6 @@ func ProductReferencesIDNotIn(vs ...int) predicate.Products {
 	return predicate.Products(sql.FieldNotIn(FieldProductReferencesID, vs...))
 }
 
-// ProductReferencesIDGT applies the GT predicate on the "product_references_id" field.
-func ProductReferencesIDGT(v int) predicate.Products {
-	return predicate.Products(sql.FieldGT(FieldProductReferencesID, v))
-}
-
-// ProductReferencesIDGTE applies the GTE predicate on the "product_references_id" field.
-func ProductReferencesIDGTE(v int) predicate.Products {
-	return predicate.Products(sql.FieldGTE(FieldProductReferencesID, v))
-}
-
-// ProductReferencesIDLT applies the LT predicate on the "product_references_id" field.
-func ProductReferencesIDLT(v int) predicate.Products {
-	return predicate.Products(sql.FieldLT(FieldProductReferencesID, v))
-}
-
-// ProductReferencesIDLTE applies the LTE predicate on the "product_references_id" field.
-func ProductReferencesIDLTE(v int) predicate.Products {
-	return predicate.Products(sql.FieldLTE(FieldProductReferencesID, v))
-}
-
 // ProductReferencesIDIsNil applies the IsNil predicate on the "product_references_id" field.
 func ProductReferencesIDIsNil() predicate.Products {
 	return predicate.Products(sql.FieldIsNull(FieldProductReferencesID))
@@ -580,44 +310,34 @@ func ProductReferencesIDNotNil() predicate.Products {
 	return predicate.Products(sql.FieldNotNull(FieldProductReferencesID))
 }
 
-// ImageIDEQ applies the EQ predicate on the "image_id" field.
-func ImageIDEQ(v int) predicate.Products {
-	return predicate.Products(sql.FieldEQ(FieldImageID, v))
+// ImagesIDEQ applies the EQ predicate on the "images_id" field.
+func ImagesIDEQ(v int) predicate.Products {
+	return predicate.Products(sql.FieldEQ(FieldImagesID, v))
 }
 
-// ImageIDNEQ applies the NEQ predicate on the "image_id" field.
-func ImageIDNEQ(v int) predicate.Products {
-	return predicate.Products(sql.FieldNEQ(FieldImageID, v))
+// ImagesIDNEQ applies the NEQ predicate on the "images_id" field.
+func ImagesIDNEQ(v int) predicate.Products {
+	return predicate.Products(sql.FieldNEQ(FieldImagesID, v))
 }
 
-// ImageIDIn applies the In predicate on the "image_id" field.
-func ImageIDIn(vs ...int) predicate.Products {
-	return predicate.Products(sql.FieldIn(FieldImageID, vs...))
+// ImagesIDIn applies the In predicate on the "images_id" field.
+func ImagesIDIn(vs ...int) predicate.Products {
+	return predicate.Products(sql.FieldIn(FieldImagesID, vs...))
 }
 
-// ImageIDNotIn applies the NotIn predicate on the "image_id" field.
-func ImageIDNotIn(vs ...int) predicate.Products {
-	return predicate.Products(sql.FieldNotIn(FieldImageID, vs...))
+// ImagesIDNotIn applies the NotIn predicate on the "images_id" field.
+func ImagesIDNotIn(vs ...int) predicate.Products {
+	return predicate.Products(sql.FieldNotIn(FieldImagesID, vs...))
 }
 
-// ImageIDGT applies the GT predicate on the "image_id" field.
-func ImageIDGT(v int) predicate.Products {
-	return predicate.Products(sql.FieldGT(FieldImageID, v))
+// ImagesIDIsNil applies the IsNil predicate on the "images_id" field.
+func ImagesIDIsNil() predicate.Products {
+	return predicate.Products(sql.FieldIsNull(FieldImagesID))
 }
 
-// ImageIDGTE applies the GTE predicate on the "image_id" field.
-func ImageIDGTE(v int) predicate.Products {
-	return predicate.Products(sql.FieldGTE(FieldImageID, v))
-}
-
-// ImageIDLT applies the LT predicate on the "image_id" field.
-func ImageIDLT(v int) predicate.Products {
-	return predicate.Products(sql.FieldLT(FieldImageID, v))
-}
-
-// ImageIDLTE applies the LTE predicate on the "image_id" field.
-func ImageIDLTE(v int) predicate.Products {
-	return predicate.Products(sql.FieldLTE(FieldImageID, v))
+// ImagesIDNotNil applies the NotNil predicate on the "images_id" field.
+func ImagesIDNotNil() predicate.Products {
+	return predicate.Products(sql.FieldNotNull(FieldImagesID))
 }
 
 // NameEQ applies the EQ predicate on the "name" field.
@@ -799,7 +519,7 @@ func HasProductReferences() predicate.Products {
 	return predicate.Products(func(s *sql.Selector) {
 		step := sqlgraph.NewStep(
 			sqlgraph.From(Table, FieldID),
-			sqlgraph.Edge(sqlgraph.O2M, false, ProductReferencesTable, ProductReferencesColumn),
+			sqlgraph.Edge(sqlgraph.M2O, true, ProductReferencesTable, ProductReferencesColumn),
 		)
 		sqlgraph.HasNeighbors(s, step)
 	})
@@ -822,7 +542,7 @@ func HasImages() predicate.Products {
 	return predicate.Products(func(s *sql.Selector) {
 		step := sqlgraph.NewStep(
 			sqlgraph.From(Table, FieldID),
-			sqlgraph.Edge(sqlgraph.O2M, false, ImagesTable, ImagesColumn),
+			sqlgraph.Edge(sqlgraph.M2O, true, ImagesTable, ImagesColumn),
 		)
 		sqlgraph.HasNeighbors(s, step)
 	})

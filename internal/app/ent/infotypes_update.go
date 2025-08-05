@@ -29,12 +29,6 @@ func (itu *InfoTypesUpdate) Where(ps ...predicate.InfoTypes) *InfoTypesUpdate {
 	return itu
 }
 
-// SetUpdatedAt sets the "updated_at" field.
-func (itu *InfoTypesUpdate) SetUpdatedAt(t time.Time) *InfoTypesUpdate {
-	itu.mutation.SetUpdatedAt(t)
-	return itu
-}
-
 // SetDeletedAt sets the "deleted_at" field.
 func (itu *InfoTypesUpdate) SetDeletedAt(t time.Time) *InfoTypesUpdate {
 	itu.mutation.SetDeletedAt(t)
@@ -52,54 +46,6 @@ func (itu *InfoTypesUpdate) SetNillableDeletedAt(t *time.Time) *InfoTypesUpdate 
 // ClearDeletedAt clears the value of the "deleted_at" field.
 func (itu *InfoTypesUpdate) ClearDeletedAt() *InfoTypesUpdate {
 	itu.mutation.ClearDeletedAt()
-	return itu
-}
-
-// SetUpdatedBy sets the "updated_by" field.
-func (itu *InfoTypesUpdate) SetUpdatedBy(i int) *InfoTypesUpdate {
-	itu.mutation.ResetUpdatedBy()
-	itu.mutation.SetUpdatedBy(i)
-	return itu
-}
-
-// SetNillableUpdatedBy sets the "updated_by" field if the given value is not nil.
-func (itu *InfoTypesUpdate) SetNillableUpdatedBy(i *int) *InfoTypesUpdate {
-	if i != nil {
-		itu.SetUpdatedBy(*i)
-	}
-	return itu
-}
-
-// AddUpdatedBy adds i to the "updated_by" field.
-func (itu *InfoTypesUpdate) AddUpdatedBy(i int) *InfoTypesUpdate {
-	itu.mutation.AddUpdatedBy(i)
-	return itu
-}
-
-// SetDeletedBy sets the "deleted_by" field.
-func (itu *InfoTypesUpdate) SetDeletedBy(i int) *InfoTypesUpdate {
-	itu.mutation.ResetDeletedBy()
-	itu.mutation.SetDeletedBy(i)
-	return itu
-}
-
-// SetNillableDeletedBy sets the "deleted_by" field if the given value is not nil.
-func (itu *InfoTypesUpdate) SetNillableDeletedBy(i *int) *InfoTypesUpdate {
-	if i != nil {
-		itu.SetDeletedBy(*i)
-	}
-	return itu
-}
-
-// AddDeletedBy adds i to the "deleted_by" field.
-func (itu *InfoTypesUpdate) AddDeletedBy(i int) *InfoTypesUpdate {
-	itu.mutation.AddDeletedBy(i)
-	return itu
-}
-
-// ClearDeletedBy clears the value of the "deleted_by" field.
-func (itu *InfoTypesUpdate) ClearDeletedBy() *InfoTypesUpdate {
-	itu.mutation.ClearDeletedBy()
 	return itu
 }
 
@@ -160,7 +106,6 @@ func (itu *InfoTypesUpdate) RemoveProductInfo(p ...*ProductInfo) *InfoTypesUpdat
 
 // Save executes the query and returns the number of nodes affected by the update operation.
 func (itu *InfoTypesUpdate) Save(ctx context.Context) (int, error) {
-	itu.defaults()
 	return withHooks(ctx, itu.sqlSave, itu.mutation, itu.hooks)
 }
 
@@ -186,28 +131,7 @@ func (itu *InfoTypesUpdate) ExecX(ctx context.Context) {
 	}
 }
 
-// defaults sets the default values of the builder before save.
-func (itu *InfoTypesUpdate) defaults() {
-	if _, ok := itu.mutation.UpdatedAt(); !ok {
-		v := infotypes.UpdateDefaultUpdatedAt()
-		itu.mutation.SetUpdatedAt(v)
-	}
-}
-
-// check runs all checks and user-defined validators on the builder.
-func (itu *InfoTypesUpdate) check() error {
-	if v, ok := itu.mutation.UpdatedBy(); ok {
-		if err := infotypes.UpdatedByValidator(v); err != nil {
-			return &ValidationError{Name: "updated_by", err: fmt.Errorf(`ent: validator failed for field "InfoTypes.updated_by": %w`, err)}
-		}
-	}
-	return nil
-}
-
 func (itu *InfoTypesUpdate) sqlSave(ctx context.Context) (n int, err error) {
-	if err := itu.check(); err != nil {
-		return n, err
-	}
 	_spec := sqlgraph.NewUpdateSpec(infotypes.Table, infotypes.Columns, sqlgraph.NewFieldSpec(infotypes.FieldID, field.TypeInt))
 	if ps := itu.mutation.predicates; len(ps) > 0 {
 		_spec.Predicate = func(selector *sql.Selector) {
@@ -216,29 +140,11 @@ func (itu *InfoTypesUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			}
 		}
 	}
-	if value, ok := itu.mutation.UpdatedAt(); ok {
-		_spec.SetField(infotypes.FieldUpdatedAt, field.TypeTime, value)
-	}
 	if value, ok := itu.mutation.DeletedAt(); ok {
 		_spec.SetField(infotypes.FieldDeletedAt, field.TypeTime, value)
 	}
 	if itu.mutation.DeletedAtCleared() {
 		_spec.ClearField(infotypes.FieldDeletedAt, field.TypeTime)
-	}
-	if value, ok := itu.mutation.UpdatedBy(); ok {
-		_spec.SetField(infotypes.FieldUpdatedBy, field.TypeInt, value)
-	}
-	if value, ok := itu.mutation.AddedUpdatedBy(); ok {
-		_spec.AddField(infotypes.FieldUpdatedBy, field.TypeInt, value)
-	}
-	if value, ok := itu.mutation.DeletedBy(); ok {
-		_spec.SetField(infotypes.FieldDeletedBy, field.TypeInt, value)
-	}
-	if value, ok := itu.mutation.AddedDeletedBy(); ok {
-		_spec.AddField(infotypes.FieldDeletedBy, field.TypeInt, value)
-	}
-	if itu.mutation.DeletedByCleared() {
-		_spec.ClearField(infotypes.FieldDeletedBy, field.TypeInt)
 	}
 	if value, ok := itu.mutation.Name(); ok {
 		_spec.SetField(infotypes.FieldName, field.TypeString, value)
@@ -308,12 +214,6 @@ type InfoTypesUpdateOne struct {
 	mutation *InfoTypesMutation
 }
 
-// SetUpdatedAt sets the "updated_at" field.
-func (ituo *InfoTypesUpdateOne) SetUpdatedAt(t time.Time) *InfoTypesUpdateOne {
-	ituo.mutation.SetUpdatedAt(t)
-	return ituo
-}
-
 // SetDeletedAt sets the "deleted_at" field.
 func (ituo *InfoTypesUpdateOne) SetDeletedAt(t time.Time) *InfoTypesUpdateOne {
 	ituo.mutation.SetDeletedAt(t)
@@ -331,54 +231,6 @@ func (ituo *InfoTypesUpdateOne) SetNillableDeletedAt(t *time.Time) *InfoTypesUpd
 // ClearDeletedAt clears the value of the "deleted_at" field.
 func (ituo *InfoTypesUpdateOne) ClearDeletedAt() *InfoTypesUpdateOne {
 	ituo.mutation.ClearDeletedAt()
-	return ituo
-}
-
-// SetUpdatedBy sets the "updated_by" field.
-func (ituo *InfoTypesUpdateOne) SetUpdatedBy(i int) *InfoTypesUpdateOne {
-	ituo.mutation.ResetUpdatedBy()
-	ituo.mutation.SetUpdatedBy(i)
-	return ituo
-}
-
-// SetNillableUpdatedBy sets the "updated_by" field if the given value is not nil.
-func (ituo *InfoTypesUpdateOne) SetNillableUpdatedBy(i *int) *InfoTypesUpdateOne {
-	if i != nil {
-		ituo.SetUpdatedBy(*i)
-	}
-	return ituo
-}
-
-// AddUpdatedBy adds i to the "updated_by" field.
-func (ituo *InfoTypesUpdateOne) AddUpdatedBy(i int) *InfoTypesUpdateOne {
-	ituo.mutation.AddUpdatedBy(i)
-	return ituo
-}
-
-// SetDeletedBy sets the "deleted_by" field.
-func (ituo *InfoTypesUpdateOne) SetDeletedBy(i int) *InfoTypesUpdateOne {
-	ituo.mutation.ResetDeletedBy()
-	ituo.mutation.SetDeletedBy(i)
-	return ituo
-}
-
-// SetNillableDeletedBy sets the "deleted_by" field if the given value is not nil.
-func (ituo *InfoTypesUpdateOne) SetNillableDeletedBy(i *int) *InfoTypesUpdateOne {
-	if i != nil {
-		ituo.SetDeletedBy(*i)
-	}
-	return ituo
-}
-
-// AddDeletedBy adds i to the "deleted_by" field.
-func (ituo *InfoTypesUpdateOne) AddDeletedBy(i int) *InfoTypesUpdateOne {
-	ituo.mutation.AddDeletedBy(i)
-	return ituo
-}
-
-// ClearDeletedBy clears the value of the "deleted_by" field.
-func (ituo *InfoTypesUpdateOne) ClearDeletedBy() *InfoTypesUpdateOne {
-	ituo.mutation.ClearDeletedBy()
 	return ituo
 }
 
@@ -452,7 +304,6 @@ func (ituo *InfoTypesUpdateOne) Select(field string, fields ...string) *InfoType
 
 // Save executes the query and returns the updated InfoTypes entity.
 func (ituo *InfoTypesUpdateOne) Save(ctx context.Context) (*InfoTypes, error) {
-	ituo.defaults()
 	return withHooks(ctx, ituo.sqlSave, ituo.mutation, ituo.hooks)
 }
 
@@ -478,28 +329,7 @@ func (ituo *InfoTypesUpdateOne) ExecX(ctx context.Context) {
 	}
 }
 
-// defaults sets the default values of the builder before save.
-func (ituo *InfoTypesUpdateOne) defaults() {
-	if _, ok := ituo.mutation.UpdatedAt(); !ok {
-		v := infotypes.UpdateDefaultUpdatedAt()
-		ituo.mutation.SetUpdatedAt(v)
-	}
-}
-
-// check runs all checks and user-defined validators on the builder.
-func (ituo *InfoTypesUpdateOne) check() error {
-	if v, ok := ituo.mutation.UpdatedBy(); ok {
-		if err := infotypes.UpdatedByValidator(v); err != nil {
-			return &ValidationError{Name: "updated_by", err: fmt.Errorf(`ent: validator failed for field "InfoTypes.updated_by": %w`, err)}
-		}
-	}
-	return nil
-}
-
 func (ituo *InfoTypesUpdateOne) sqlSave(ctx context.Context) (_node *InfoTypes, err error) {
-	if err := ituo.check(); err != nil {
-		return _node, err
-	}
 	_spec := sqlgraph.NewUpdateSpec(infotypes.Table, infotypes.Columns, sqlgraph.NewFieldSpec(infotypes.FieldID, field.TypeInt))
 	id, ok := ituo.mutation.ID()
 	if !ok {
@@ -525,29 +355,11 @@ func (ituo *InfoTypesUpdateOne) sqlSave(ctx context.Context) (_node *InfoTypes, 
 			}
 		}
 	}
-	if value, ok := ituo.mutation.UpdatedAt(); ok {
-		_spec.SetField(infotypes.FieldUpdatedAt, field.TypeTime, value)
-	}
 	if value, ok := ituo.mutation.DeletedAt(); ok {
 		_spec.SetField(infotypes.FieldDeletedAt, field.TypeTime, value)
 	}
 	if ituo.mutation.DeletedAtCleared() {
 		_spec.ClearField(infotypes.FieldDeletedAt, field.TypeTime)
-	}
-	if value, ok := ituo.mutation.UpdatedBy(); ok {
-		_spec.SetField(infotypes.FieldUpdatedBy, field.TypeInt, value)
-	}
-	if value, ok := ituo.mutation.AddedUpdatedBy(); ok {
-		_spec.AddField(infotypes.FieldUpdatedBy, field.TypeInt, value)
-	}
-	if value, ok := ituo.mutation.DeletedBy(); ok {
-		_spec.SetField(infotypes.FieldDeletedBy, field.TypeInt, value)
-	}
-	if value, ok := ituo.mutation.AddedDeletedBy(); ok {
-		_spec.AddField(infotypes.FieldDeletedBy, field.TypeInt, value)
-	}
-	if ituo.mutation.DeletedByCleared() {
-		_spec.ClearField(infotypes.FieldDeletedBy, field.TypeInt)
 	}
 	if value, ok := ituo.mutation.Name(); ok {
 		_spec.SetField(infotypes.FieldName, field.TypeString, value)

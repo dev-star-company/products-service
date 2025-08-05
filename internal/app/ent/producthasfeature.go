@@ -21,16 +21,8 @@ type ProductHasFeature struct {
 	ID int `json:"id,omitempty"`
 	// CreatedAt holds the value of the "created_at" field.
 	CreatedAt time.Time `json:"created_at,omitempty"`
-	// UpdatedAt holds the value of the "updated_at" field.
-	UpdatedAt time.Time `json:"updated_at,omitempty"`
 	// DeletedAt holds the value of the "deleted_at" field.
 	DeletedAt *time.Time `json:"deleted_at,omitempty"`
-	// CreatedBy holds the value of the "created_by" field.
-	CreatedBy int `json:"created_by,omitempty"`
-	// UpdatedBy holds the value of the "updated_by" field.
-	UpdatedBy int `json:"updated_by,omitempty"`
-	// DeletedBy holds the value of the "deleted_by" field.
-	DeletedBy *int `json:"deleted_by,omitempty"`
 	// FeatureID holds the value of the "feature_id" field.
 	FeatureID *int `json:"feature_id,omitempty"`
 	// ProductID holds the value of the "product_id" field.
@@ -79,9 +71,9 @@ func (*ProductHasFeature) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case producthasfeature.FieldID, producthasfeature.FieldCreatedBy, producthasfeature.FieldUpdatedBy, producthasfeature.FieldDeletedBy, producthasfeature.FieldFeatureID, producthasfeature.FieldProductID:
+		case producthasfeature.FieldID, producthasfeature.FieldFeatureID, producthasfeature.FieldProductID:
 			values[i] = new(sql.NullInt64)
-		case producthasfeature.FieldCreatedAt, producthasfeature.FieldUpdatedAt, producthasfeature.FieldDeletedAt:
+		case producthasfeature.FieldCreatedAt, producthasfeature.FieldDeletedAt:
 			values[i] = new(sql.NullTime)
 		default:
 			values[i] = new(sql.UnknownType)
@@ -110,37 +102,12 @@ func (phf *ProductHasFeature) assignValues(columns []string, values []any) error
 			} else if value.Valid {
 				phf.CreatedAt = value.Time
 			}
-		case producthasfeature.FieldUpdatedAt:
-			if value, ok := values[i].(*sql.NullTime); !ok {
-				return fmt.Errorf("unexpected type %T for field updated_at", values[i])
-			} else if value.Valid {
-				phf.UpdatedAt = value.Time
-			}
 		case producthasfeature.FieldDeletedAt:
 			if value, ok := values[i].(*sql.NullTime); !ok {
 				return fmt.Errorf("unexpected type %T for field deleted_at", values[i])
 			} else if value.Valid {
 				phf.DeletedAt = new(time.Time)
 				*phf.DeletedAt = value.Time
-			}
-		case producthasfeature.FieldCreatedBy:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field created_by", values[i])
-			} else if value.Valid {
-				phf.CreatedBy = int(value.Int64)
-			}
-		case producthasfeature.FieldUpdatedBy:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field updated_by", values[i])
-			} else if value.Valid {
-				phf.UpdatedBy = int(value.Int64)
-			}
-		case producthasfeature.FieldDeletedBy:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field deleted_by", values[i])
-			} else if value.Valid {
-				phf.DeletedBy = new(int)
-				*phf.DeletedBy = int(value.Int64)
 			}
 		case producthasfeature.FieldFeatureID:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
@@ -205,23 +172,9 @@ func (phf *ProductHasFeature) String() string {
 	builder.WriteString("created_at=")
 	builder.WriteString(phf.CreatedAt.Format(time.ANSIC))
 	builder.WriteString(", ")
-	builder.WriteString("updated_at=")
-	builder.WriteString(phf.UpdatedAt.Format(time.ANSIC))
-	builder.WriteString(", ")
 	if v := phf.DeletedAt; v != nil {
 		builder.WriteString("deleted_at=")
 		builder.WriteString(v.Format(time.ANSIC))
-	}
-	builder.WriteString(", ")
-	builder.WriteString("created_by=")
-	builder.WriteString(fmt.Sprintf("%v", phf.CreatedBy))
-	builder.WriteString(", ")
-	builder.WriteString("updated_by=")
-	builder.WriteString(fmt.Sprintf("%v", phf.UpdatedBy))
-	builder.WriteString(", ")
-	if v := phf.DeletedBy; v != nil {
-		builder.WriteString("deleted_by=")
-		builder.WriteString(fmt.Sprintf("%v", *v))
 	}
 	builder.WriteString(", ")
 	if v := phf.FeatureID; v != nil {

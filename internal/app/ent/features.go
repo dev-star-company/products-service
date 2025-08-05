@@ -19,16 +19,8 @@ type Features struct {
 	ID int `json:"id,omitempty"`
 	// CreatedAt holds the value of the "created_at" field.
 	CreatedAt time.Time `json:"created_at,omitempty"`
-	// UpdatedAt holds the value of the "updated_at" field.
-	UpdatedAt time.Time `json:"updated_at,omitempty"`
 	// DeletedAt holds the value of the "deleted_at" field.
 	DeletedAt *time.Time `json:"deleted_at,omitempty"`
-	// CreatedBy holds the value of the "created_by" field.
-	CreatedBy int `json:"created_by,omitempty"`
-	// UpdatedBy holds the value of the "updated_by" field.
-	UpdatedBy int `json:"updated_by,omitempty"`
-	// DeletedBy holds the value of the "deleted_by" field.
-	DeletedBy *int `json:"deleted_by,omitempty"`
 	// FeatureValueID holds the value of the "feature_value_id" field.
 	FeatureValueID *int `json:"feature_value_id,omitempty"`
 	// Name holds the value of the "name" field.
@@ -73,11 +65,11 @@ func (*Features) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case features.FieldID, features.FieldCreatedBy, features.FieldUpdatedBy, features.FieldDeletedBy, features.FieldFeatureValueID:
+		case features.FieldID, features.FieldFeatureValueID:
 			values[i] = new(sql.NullInt64)
 		case features.FieldName:
 			values[i] = new(sql.NullString)
-		case features.FieldCreatedAt, features.FieldUpdatedAt, features.FieldDeletedAt:
+		case features.FieldCreatedAt, features.FieldDeletedAt:
 			values[i] = new(sql.NullTime)
 		default:
 			values[i] = new(sql.UnknownType)
@@ -106,37 +98,12 @@ func (f *Features) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				f.CreatedAt = value.Time
 			}
-		case features.FieldUpdatedAt:
-			if value, ok := values[i].(*sql.NullTime); !ok {
-				return fmt.Errorf("unexpected type %T for field updated_at", values[i])
-			} else if value.Valid {
-				f.UpdatedAt = value.Time
-			}
 		case features.FieldDeletedAt:
 			if value, ok := values[i].(*sql.NullTime); !ok {
 				return fmt.Errorf("unexpected type %T for field deleted_at", values[i])
 			} else if value.Valid {
 				f.DeletedAt = new(time.Time)
 				*f.DeletedAt = value.Time
-			}
-		case features.FieldCreatedBy:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field created_by", values[i])
-			} else if value.Valid {
-				f.CreatedBy = int(value.Int64)
-			}
-		case features.FieldUpdatedBy:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field updated_by", values[i])
-			} else if value.Valid {
-				f.UpdatedBy = int(value.Int64)
-			}
-		case features.FieldDeletedBy:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field deleted_by", values[i])
-			} else if value.Valid {
-				f.DeletedBy = new(int)
-				*f.DeletedBy = int(value.Int64)
 			}
 		case features.FieldFeatureValueID:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
@@ -201,23 +168,9 @@ func (f *Features) String() string {
 	builder.WriteString("created_at=")
 	builder.WriteString(f.CreatedAt.Format(time.ANSIC))
 	builder.WriteString(", ")
-	builder.WriteString("updated_at=")
-	builder.WriteString(f.UpdatedAt.Format(time.ANSIC))
-	builder.WriteString(", ")
 	if v := f.DeletedAt; v != nil {
 		builder.WriteString("deleted_at=")
 		builder.WriteString(v.Format(time.ANSIC))
-	}
-	builder.WriteString(", ")
-	builder.WriteString("created_by=")
-	builder.WriteString(fmt.Sprintf("%v", f.CreatedBy))
-	builder.WriteString(", ")
-	builder.WriteString("updated_by=")
-	builder.WriteString(fmt.Sprintf("%v", f.UpdatedBy))
-	builder.WriteString(", ")
-	if v := f.DeletedBy; v != nil {
-		builder.WriteString("deleted_by=")
-		builder.WriteString(fmt.Sprintf("%v", *v))
 	}
 	builder.WriteString(", ")
 	if v := f.FeatureValueID; v != nil {

@@ -29,12 +29,6 @@ func (pu *PromotionsUpdate) Where(ps ...predicate.Promotions) *PromotionsUpdate 
 	return pu
 }
 
-// SetUpdatedAt sets the "updated_at" field.
-func (pu *PromotionsUpdate) SetUpdatedAt(t time.Time) *PromotionsUpdate {
-	pu.mutation.SetUpdatedAt(t)
-	return pu
-}
-
 // SetDeletedAt sets the "deleted_at" field.
 func (pu *PromotionsUpdate) SetDeletedAt(t time.Time) *PromotionsUpdate {
 	pu.mutation.SetDeletedAt(t)
@@ -52,54 +46,6 @@ func (pu *PromotionsUpdate) SetNillableDeletedAt(t *time.Time) *PromotionsUpdate
 // ClearDeletedAt clears the value of the "deleted_at" field.
 func (pu *PromotionsUpdate) ClearDeletedAt() *PromotionsUpdate {
 	pu.mutation.ClearDeletedAt()
-	return pu
-}
-
-// SetUpdatedBy sets the "updated_by" field.
-func (pu *PromotionsUpdate) SetUpdatedBy(i int) *PromotionsUpdate {
-	pu.mutation.ResetUpdatedBy()
-	pu.mutation.SetUpdatedBy(i)
-	return pu
-}
-
-// SetNillableUpdatedBy sets the "updated_by" field if the given value is not nil.
-func (pu *PromotionsUpdate) SetNillableUpdatedBy(i *int) *PromotionsUpdate {
-	if i != nil {
-		pu.SetUpdatedBy(*i)
-	}
-	return pu
-}
-
-// AddUpdatedBy adds i to the "updated_by" field.
-func (pu *PromotionsUpdate) AddUpdatedBy(i int) *PromotionsUpdate {
-	pu.mutation.AddUpdatedBy(i)
-	return pu
-}
-
-// SetDeletedBy sets the "deleted_by" field.
-func (pu *PromotionsUpdate) SetDeletedBy(i int) *PromotionsUpdate {
-	pu.mutation.ResetDeletedBy()
-	pu.mutation.SetDeletedBy(i)
-	return pu
-}
-
-// SetNillableDeletedBy sets the "deleted_by" field if the given value is not nil.
-func (pu *PromotionsUpdate) SetNillableDeletedBy(i *int) *PromotionsUpdate {
-	if i != nil {
-		pu.SetDeletedBy(*i)
-	}
-	return pu
-}
-
-// AddDeletedBy adds i to the "deleted_by" field.
-func (pu *PromotionsUpdate) AddDeletedBy(i int) *PromotionsUpdate {
-	pu.mutation.AddDeletedBy(i)
-	return pu
-}
-
-// ClearDeletedBy clears the value of the "deleted_by" field.
-func (pu *PromotionsUpdate) ClearDeletedBy() *PromotionsUpdate {
-	pu.mutation.ClearDeletedBy()
 	return pu
 }
 
@@ -188,7 +134,6 @@ func (pu *PromotionsUpdate) RemovePromotionHasProduct(p ...*PromotionHasProduct)
 
 // Save executes the query and returns the number of nodes affected by the update operation.
 func (pu *PromotionsUpdate) Save(ctx context.Context) (int, error) {
-	pu.defaults()
 	return withHooks(ctx, pu.sqlSave, pu.mutation, pu.hooks)
 }
 
@@ -214,28 +159,7 @@ func (pu *PromotionsUpdate) ExecX(ctx context.Context) {
 	}
 }
 
-// defaults sets the default values of the builder before save.
-func (pu *PromotionsUpdate) defaults() {
-	if _, ok := pu.mutation.UpdatedAt(); !ok {
-		v := promotions.UpdateDefaultUpdatedAt()
-		pu.mutation.SetUpdatedAt(v)
-	}
-}
-
-// check runs all checks and user-defined validators on the builder.
-func (pu *PromotionsUpdate) check() error {
-	if v, ok := pu.mutation.UpdatedBy(); ok {
-		if err := promotions.UpdatedByValidator(v); err != nil {
-			return &ValidationError{Name: "updated_by", err: fmt.Errorf(`ent: validator failed for field "Promotions.updated_by": %w`, err)}
-		}
-	}
-	return nil
-}
-
 func (pu *PromotionsUpdate) sqlSave(ctx context.Context) (n int, err error) {
-	if err := pu.check(); err != nil {
-		return n, err
-	}
 	_spec := sqlgraph.NewUpdateSpec(promotions.Table, promotions.Columns, sqlgraph.NewFieldSpec(promotions.FieldID, field.TypeInt))
 	if ps := pu.mutation.predicates; len(ps) > 0 {
 		_spec.Predicate = func(selector *sql.Selector) {
@@ -244,29 +168,11 @@ func (pu *PromotionsUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			}
 		}
 	}
-	if value, ok := pu.mutation.UpdatedAt(); ok {
-		_spec.SetField(promotions.FieldUpdatedAt, field.TypeTime, value)
-	}
 	if value, ok := pu.mutation.DeletedAt(); ok {
 		_spec.SetField(promotions.FieldDeletedAt, field.TypeTime, value)
 	}
 	if pu.mutation.DeletedAtCleared() {
 		_spec.ClearField(promotions.FieldDeletedAt, field.TypeTime)
-	}
-	if value, ok := pu.mutation.UpdatedBy(); ok {
-		_spec.SetField(promotions.FieldUpdatedBy, field.TypeInt, value)
-	}
-	if value, ok := pu.mutation.AddedUpdatedBy(); ok {
-		_spec.AddField(promotions.FieldUpdatedBy, field.TypeInt, value)
-	}
-	if value, ok := pu.mutation.DeletedBy(); ok {
-		_spec.SetField(promotions.FieldDeletedBy, field.TypeInt, value)
-	}
-	if value, ok := pu.mutation.AddedDeletedBy(); ok {
-		_spec.AddField(promotions.FieldDeletedBy, field.TypeInt, value)
-	}
-	if pu.mutation.DeletedByCleared() {
-		_spec.ClearField(promotions.FieldDeletedBy, field.TypeInt)
 	}
 	if value, ok := pu.mutation.Name(); ok {
 		_spec.SetField(promotions.FieldName, field.TypeString, value)
@@ -342,12 +248,6 @@ type PromotionsUpdateOne struct {
 	mutation *PromotionsMutation
 }
 
-// SetUpdatedAt sets the "updated_at" field.
-func (puo *PromotionsUpdateOne) SetUpdatedAt(t time.Time) *PromotionsUpdateOne {
-	puo.mutation.SetUpdatedAt(t)
-	return puo
-}
-
 // SetDeletedAt sets the "deleted_at" field.
 func (puo *PromotionsUpdateOne) SetDeletedAt(t time.Time) *PromotionsUpdateOne {
 	puo.mutation.SetDeletedAt(t)
@@ -365,54 +265,6 @@ func (puo *PromotionsUpdateOne) SetNillableDeletedAt(t *time.Time) *PromotionsUp
 // ClearDeletedAt clears the value of the "deleted_at" field.
 func (puo *PromotionsUpdateOne) ClearDeletedAt() *PromotionsUpdateOne {
 	puo.mutation.ClearDeletedAt()
-	return puo
-}
-
-// SetUpdatedBy sets the "updated_by" field.
-func (puo *PromotionsUpdateOne) SetUpdatedBy(i int) *PromotionsUpdateOne {
-	puo.mutation.ResetUpdatedBy()
-	puo.mutation.SetUpdatedBy(i)
-	return puo
-}
-
-// SetNillableUpdatedBy sets the "updated_by" field if the given value is not nil.
-func (puo *PromotionsUpdateOne) SetNillableUpdatedBy(i *int) *PromotionsUpdateOne {
-	if i != nil {
-		puo.SetUpdatedBy(*i)
-	}
-	return puo
-}
-
-// AddUpdatedBy adds i to the "updated_by" field.
-func (puo *PromotionsUpdateOne) AddUpdatedBy(i int) *PromotionsUpdateOne {
-	puo.mutation.AddUpdatedBy(i)
-	return puo
-}
-
-// SetDeletedBy sets the "deleted_by" field.
-func (puo *PromotionsUpdateOne) SetDeletedBy(i int) *PromotionsUpdateOne {
-	puo.mutation.ResetDeletedBy()
-	puo.mutation.SetDeletedBy(i)
-	return puo
-}
-
-// SetNillableDeletedBy sets the "deleted_by" field if the given value is not nil.
-func (puo *PromotionsUpdateOne) SetNillableDeletedBy(i *int) *PromotionsUpdateOne {
-	if i != nil {
-		puo.SetDeletedBy(*i)
-	}
-	return puo
-}
-
-// AddDeletedBy adds i to the "deleted_by" field.
-func (puo *PromotionsUpdateOne) AddDeletedBy(i int) *PromotionsUpdateOne {
-	puo.mutation.AddDeletedBy(i)
-	return puo
-}
-
-// ClearDeletedBy clears the value of the "deleted_by" field.
-func (puo *PromotionsUpdateOne) ClearDeletedBy() *PromotionsUpdateOne {
-	puo.mutation.ClearDeletedBy()
 	return puo
 }
 
@@ -514,7 +366,6 @@ func (puo *PromotionsUpdateOne) Select(field string, fields ...string) *Promotio
 
 // Save executes the query and returns the updated Promotions entity.
 func (puo *PromotionsUpdateOne) Save(ctx context.Context) (*Promotions, error) {
-	puo.defaults()
 	return withHooks(ctx, puo.sqlSave, puo.mutation, puo.hooks)
 }
 
@@ -540,28 +391,7 @@ func (puo *PromotionsUpdateOne) ExecX(ctx context.Context) {
 	}
 }
 
-// defaults sets the default values of the builder before save.
-func (puo *PromotionsUpdateOne) defaults() {
-	if _, ok := puo.mutation.UpdatedAt(); !ok {
-		v := promotions.UpdateDefaultUpdatedAt()
-		puo.mutation.SetUpdatedAt(v)
-	}
-}
-
-// check runs all checks and user-defined validators on the builder.
-func (puo *PromotionsUpdateOne) check() error {
-	if v, ok := puo.mutation.UpdatedBy(); ok {
-		if err := promotions.UpdatedByValidator(v); err != nil {
-			return &ValidationError{Name: "updated_by", err: fmt.Errorf(`ent: validator failed for field "Promotions.updated_by": %w`, err)}
-		}
-	}
-	return nil
-}
-
 func (puo *PromotionsUpdateOne) sqlSave(ctx context.Context) (_node *Promotions, err error) {
-	if err := puo.check(); err != nil {
-		return _node, err
-	}
 	_spec := sqlgraph.NewUpdateSpec(promotions.Table, promotions.Columns, sqlgraph.NewFieldSpec(promotions.FieldID, field.TypeInt))
 	id, ok := puo.mutation.ID()
 	if !ok {
@@ -587,29 +417,11 @@ func (puo *PromotionsUpdateOne) sqlSave(ctx context.Context) (_node *Promotions,
 			}
 		}
 	}
-	if value, ok := puo.mutation.UpdatedAt(); ok {
-		_spec.SetField(promotions.FieldUpdatedAt, field.TypeTime, value)
-	}
 	if value, ok := puo.mutation.DeletedAt(); ok {
 		_spec.SetField(promotions.FieldDeletedAt, field.TypeTime, value)
 	}
 	if puo.mutation.DeletedAtCleared() {
 		_spec.ClearField(promotions.FieldDeletedAt, field.TypeTime)
-	}
-	if value, ok := puo.mutation.UpdatedBy(); ok {
-		_spec.SetField(promotions.FieldUpdatedBy, field.TypeInt, value)
-	}
-	if value, ok := puo.mutation.AddedUpdatedBy(); ok {
-		_spec.AddField(promotions.FieldUpdatedBy, field.TypeInt, value)
-	}
-	if value, ok := puo.mutation.DeletedBy(); ok {
-		_spec.SetField(promotions.FieldDeletedBy, field.TypeInt, value)
-	}
-	if value, ok := puo.mutation.AddedDeletedBy(); ok {
-		_spec.AddField(promotions.FieldDeletedBy, field.TypeInt, value)
-	}
-	if puo.mutation.DeletedByCleared() {
-		_spec.ClearField(promotions.FieldDeletedBy, field.TypeInt)
 	}
 	if value, ok := puo.mutation.Name(); ok {
 		_spec.SetField(promotions.FieldName, field.TypeString, value)

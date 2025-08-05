@@ -30,12 +30,6 @@ func (fvu *FeaturesValuesUpdate) Where(ps ...predicate.FeaturesValues) *Features
 	return fvu
 }
 
-// SetUpdatedAt sets the "updated_at" field.
-func (fvu *FeaturesValuesUpdate) SetUpdatedAt(t time.Time) *FeaturesValuesUpdate {
-	fvu.mutation.SetUpdatedAt(t)
-	return fvu
-}
-
 // SetDeletedAt sets the "deleted_at" field.
 func (fvu *FeaturesValuesUpdate) SetDeletedAt(t time.Time) *FeaturesValuesUpdate {
 	fvu.mutation.SetDeletedAt(t)
@@ -53,54 +47,6 @@ func (fvu *FeaturesValuesUpdate) SetNillableDeletedAt(t *time.Time) *FeaturesVal
 // ClearDeletedAt clears the value of the "deleted_at" field.
 func (fvu *FeaturesValuesUpdate) ClearDeletedAt() *FeaturesValuesUpdate {
 	fvu.mutation.ClearDeletedAt()
-	return fvu
-}
-
-// SetUpdatedBy sets the "updated_by" field.
-func (fvu *FeaturesValuesUpdate) SetUpdatedBy(i int) *FeaturesValuesUpdate {
-	fvu.mutation.ResetUpdatedBy()
-	fvu.mutation.SetUpdatedBy(i)
-	return fvu
-}
-
-// SetNillableUpdatedBy sets the "updated_by" field if the given value is not nil.
-func (fvu *FeaturesValuesUpdate) SetNillableUpdatedBy(i *int) *FeaturesValuesUpdate {
-	if i != nil {
-		fvu.SetUpdatedBy(*i)
-	}
-	return fvu
-}
-
-// AddUpdatedBy adds i to the "updated_by" field.
-func (fvu *FeaturesValuesUpdate) AddUpdatedBy(i int) *FeaturesValuesUpdate {
-	fvu.mutation.AddUpdatedBy(i)
-	return fvu
-}
-
-// SetDeletedBy sets the "deleted_by" field.
-func (fvu *FeaturesValuesUpdate) SetDeletedBy(i int) *FeaturesValuesUpdate {
-	fvu.mutation.ResetDeletedBy()
-	fvu.mutation.SetDeletedBy(i)
-	return fvu
-}
-
-// SetNillableDeletedBy sets the "deleted_by" field if the given value is not nil.
-func (fvu *FeaturesValuesUpdate) SetNillableDeletedBy(i *int) *FeaturesValuesUpdate {
-	if i != nil {
-		fvu.SetDeletedBy(*i)
-	}
-	return fvu
-}
-
-// AddDeletedBy adds i to the "deleted_by" field.
-func (fvu *FeaturesValuesUpdate) AddDeletedBy(i int) *FeaturesValuesUpdate {
-	fvu.mutation.AddDeletedBy(i)
-	return fvu
-}
-
-// ClearDeletedBy clears the value of the "deleted_by" field.
-func (fvu *FeaturesValuesUpdate) ClearDeletedBy() *FeaturesValuesUpdate {
-	fvu.mutation.ClearDeletedBy()
 	return fvu
 }
 
@@ -208,7 +154,6 @@ func (fvu *FeaturesValuesUpdate) ClearFeatureUnitValues() *FeaturesValuesUpdate 
 
 // Save executes the query and returns the number of nodes affected by the update operation.
 func (fvu *FeaturesValuesUpdate) Save(ctx context.Context) (int, error) {
-	fvu.defaults()
 	return withHooks(ctx, fvu.sqlSave, fvu.mutation, fvu.hooks)
 }
 
@@ -234,21 +179,8 @@ func (fvu *FeaturesValuesUpdate) ExecX(ctx context.Context) {
 	}
 }
 
-// defaults sets the default values of the builder before save.
-func (fvu *FeaturesValuesUpdate) defaults() {
-	if _, ok := fvu.mutation.UpdatedAt(); !ok {
-		v := featuresvalues.UpdateDefaultUpdatedAt()
-		fvu.mutation.SetUpdatedAt(v)
-	}
-}
-
 // check runs all checks and user-defined validators on the builder.
 func (fvu *FeaturesValuesUpdate) check() error {
-	if v, ok := fvu.mutation.UpdatedBy(); ok {
-		if err := featuresvalues.UpdatedByValidator(v); err != nil {
-			return &ValidationError{Name: "updated_by", err: fmt.Errorf(`ent: validator failed for field "FeaturesValues.updated_by": %w`, err)}
-		}
-	}
 	if fvu.mutation.FeatureCleared() && len(fvu.mutation.FeatureIDs()) > 0 {
 		return errors.New(`ent: clearing a required unique edge "FeaturesValues.feature"`)
 	}
@@ -267,29 +199,11 @@ func (fvu *FeaturesValuesUpdate) sqlSave(ctx context.Context) (n int, err error)
 			}
 		}
 	}
-	if value, ok := fvu.mutation.UpdatedAt(); ok {
-		_spec.SetField(featuresvalues.FieldUpdatedAt, field.TypeTime, value)
-	}
 	if value, ok := fvu.mutation.DeletedAt(); ok {
 		_spec.SetField(featuresvalues.FieldDeletedAt, field.TypeTime, value)
 	}
 	if fvu.mutation.DeletedAtCleared() {
 		_spec.ClearField(featuresvalues.FieldDeletedAt, field.TypeTime)
-	}
-	if value, ok := fvu.mutation.UpdatedBy(); ok {
-		_spec.SetField(featuresvalues.FieldUpdatedBy, field.TypeInt, value)
-	}
-	if value, ok := fvu.mutation.AddedUpdatedBy(); ok {
-		_spec.AddField(featuresvalues.FieldUpdatedBy, field.TypeInt, value)
-	}
-	if value, ok := fvu.mutation.DeletedBy(); ok {
-		_spec.SetField(featuresvalues.FieldDeletedBy, field.TypeInt, value)
-	}
-	if value, ok := fvu.mutation.AddedDeletedBy(); ok {
-		_spec.AddField(featuresvalues.FieldDeletedBy, field.TypeInt, value)
-	}
-	if fvu.mutation.DeletedByCleared() {
-		_spec.ClearField(featuresvalues.FieldDeletedBy, field.TypeInt)
 	}
 	if value, ok := fvu.mutation.FeatureValuesID(); ok {
 		_spec.SetField(featuresvalues.FieldFeatureValuesID, field.TypeInt, value)
@@ -381,12 +295,6 @@ type FeaturesValuesUpdateOne struct {
 	mutation *FeaturesValuesMutation
 }
 
-// SetUpdatedAt sets the "updated_at" field.
-func (fvuo *FeaturesValuesUpdateOne) SetUpdatedAt(t time.Time) *FeaturesValuesUpdateOne {
-	fvuo.mutation.SetUpdatedAt(t)
-	return fvuo
-}
-
 // SetDeletedAt sets the "deleted_at" field.
 func (fvuo *FeaturesValuesUpdateOne) SetDeletedAt(t time.Time) *FeaturesValuesUpdateOne {
 	fvuo.mutation.SetDeletedAt(t)
@@ -404,54 +312,6 @@ func (fvuo *FeaturesValuesUpdateOne) SetNillableDeletedAt(t *time.Time) *Feature
 // ClearDeletedAt clears the value of the "deleted_at" field.
 func (fvuo *FeaturesValuesUpdateOne) ClearDeletedAt() *FeaturesValuesUpdateOne {
 	fvuo.mutation.ClearDeletedAt()
-	return fvuo
-}
-
-// SetUpdatedBy sets the "updated_by" field.
-func (fvuo *FeaturesValuesUpdateOne) SetUpdatedBy(i int) *FeaturesValuesUpdateOne {
-	fvuo.mutation.ResetUpdatedBy()
-	fvuo.mutation.SetUpdatedBy(i)
-	return fvuo
-}
-
-// SetNillableUpdatedBy sets the "updated_by" field if the given value is not nil.
-func (fvuo *FeaturesValuesUpdateOne) SetNillableUpdatedBy(i *int) *FeaturesValuesUpdateOne {
-	if i != nil {
-		fvuo.SetUpdatedBy(*i)
-	}
-	return fvuo
-}
-
-// AddUpdatedBy adds i to the "updated_by" field.
-func (fvuo *FeaturesValuesUpdateOne) AddUpdatedBy(i int) *FeaturesValuesUpdateOne {
-	fvuo.mutation.AddUpdatedBy(i)
-	return fvuo
-}
-
-// SetDeletedBy sets the "deleted_by" field.
-func (fvuo *FeaturesValuesUpdateOne) SetDeletedBy(i int) *FeaturesValuesUpdateOne {
-	fvuo.mutation.ResetDeletedBy()
-	fvuo.mutation.SetDeletedBy(i)
-	return fvuo
-}
-
-// SetNillableDeletedBy sets the "deleted_by" field if the given value is not nil.
-func (fvuo *FeaturesValuesUpdateOne) SetNillableDeletedBy(i *int) *FeaturesValuesUpdateOne {
-	if i != nil {
-		fvuo.SetDeletedBy(*i)
-	}
-	return fvuo
-}
-
-// AddDeletedBy adds i to the "deleted_by" field.
-func (fvuo *FeaturesValuesUpdateOne) AddDeletedBy(i int) *FeaturesValuesUpdateOne {
-	fvuo.mutation.AddDeletedBy(i)
-	return fvuo
-}
-
-// ClearDeletedBy clears the value of the "deleted_by" field.
-func (fvuo *FeaturesValuesUpdateOne) ClearDeletedBy() *FeaturesValuesUpdateOne {
-	fvuo.mutation.ClearDeletedBy()
 	return fvuo
 }
 
@@ -572,7 +432,6 @@ func (fvuo *FeaturesValuesUpdateOne) Select(field string, fields ...string) *Fea
 
 // Save executes the query and returns the updated FeaturesValues entity.
 func (fvuo *FeaturesValuesUpdateOne) Save(ctx context.Context) (*FeaturesValues, error) {
-	fvuo.defaults()
 	return withHooks(ctx, fvuo.sqlSave, fvuo.mutation, fvuo.hooks)
 }
 
@@ -598,21 +457,8 @@ func (fvuo *FeaturesValuesUpdateOne) ExecX(ctx context.Context) {
 	}
 }
 
-// defaults sets the default values of the builder before save.
-func (fvuo *FeaturesValuesUpdateOne) defaults() {
-	if _, ok := fvuo.mutation.UpdatedAt(); !ok {
-		v := featuresvalues.UpdateDefaultUpdatedAt()
-		fvuo.mutation.SetUpdatedAt(v)
-	}
-}
-
 // check runs all checks and user-defined validators on the builder.
 func (fvuo *FeaturesValuesUpdateOne) check() error {
-	if v, ok := fvuo.mutation.UpdatedBy(); ok {
-		if err := featuresvalues.UpdatedByValidator(v); err != nil {
-			return &ValidationError{Name: "updated_by", err: fmt.Errorf(`ent: validator failed for field "FeaturesValues.updated_by": %w`, err)}
-		}
-	}
 	if fvuo.mutation.FeatureCleared() && len(fvuo.mutation.FeatureIDs()) > 0 {
 		return errors.New(`ent: clearing a required unique edge "FeaturesValues.feature"`)
 	}
@@ -648,29 +494,11 @@ func (fvuo *FeaturesValuesUpdateOne) sqlSave(ctx context.Context) (_node *Featur
 			}
 		}
 	}
-	if value, ok := fvuo.mutation.UpdatedAt(); ok {
-		_spec.SetField(featuresvalues.FieldUpdatedAt, field.TypeTime, value)
-	}
 	if value, ok := fvuo.mutation.DeletedAt(); ok {
 		_spec.SetField(featuresvalues.FieldDeletedAt, field.TypeTime, value)
 	}
 	if fvuo.mutation.DeletedAtCleared() {
 		_spec.ClearField(featuresvalues.FieldDeletedAt, field.TypeTime)
-	}
-	if value, ok := fvuo.mutation.UpdatedBy(); ok {
-		_spec.SetField(featuresvalues.FieldUpdatedBy, field.TypeInt, value)
-	}
-	if value, ok := fvuo.mutation.AddedUpdatedBy(); ok {
-		_spec.AddField(featuresvalues.FieldUpdatedBy, field.TypeInt, value)
-	}
-	if value, ok := fvuo.mutation.DeletedBy(); ok {
-		_spec.SetField(featuresvalues.FieldDeletedBy, field.TypeInt, value)
-	}
-	if value, ok := fvuo.mutation.AddedDeletedBy(); ok {
-		_spec.AddField(featuresvalues.FieldDeletedBy, field.TypeInt, value)
-	}
-	if fvuo.mutation.DeletedByCleared() {
-		_spec.ClearField(featuresvalues.FieldDeletedBy, field.TypeInt)
 	}
 	if value, ok := fvuo.mutation.FeatureValuesID(); ok {
 		_spec.SetField(featuresvalues.FieldFeatureValuesID, field.TypeInt, value)

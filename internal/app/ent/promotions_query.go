@@ -415,7 +415,9 @@ func (pq *PromotionsQuery) loadPromotionHasProduct(ctx context.Context, query *P
 			init(nodes[i])
 		}
 	}
-	query.withFKs = true
+	if len(query.ctx.Fields) > 0 {
+		query.ctx.AppendFieldOnce(promotionhasproduct.FieldPromotionsID)
+	}
 	query.Where(predicate.PromotionHasProduct(func(s *sql.Selector) {
 		s.Where(sql.InValues(s.C(promotions.PromotionHasProductColumn), fks...))
 	}))
@@ -424,13 +426,13 @@ func (pq *PromotionsQuery) loadPromotionHasProduct(ctx context.Context, query *P
 		return err
 	}
 	for _, n := range neighbors {
-		fk := n.promotions_promotion_has_product
+		fk := n.PromotionsID
 		if fk == nil {
-			return fmt.Errorf(`foreign-key "promotions_promotion_has_product" is nil for node %v`, n.ID)
+			return fmt.Errorf(`foreign-key "promotions_id" is nil for node %v`, n.ID)
 		}
 		node, ok := nodeids[*fk]
 		if !ok {
-			return fmt.Errorf(`unexpected referenced foreign-key "promotions_promotion_has_product" returned %v for node %v`, *fk, n.ID)
+			return fmt.Errorf(`unexpected referenced foreign-key "promotions_id" returned %v for node %v`, *fk, n.ID)
 		}
 		assign(node, n)
 	}

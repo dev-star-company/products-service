@@ -29,12 +29,6 @@ func (cu *CategoryUpdate) Where(ps ...predicate.Category) *CategoryUpdate {
 	return cu
 }
 
-// SetUpdatedAt sets the "updated_at" field.
-func (cu *CategoryUpdate) SetUpdatedAt(t time.Time) *CategoryUpdate {
-	cu.mutation.SetUpdatedAt(t)
-	return cu
-}
-
 // SetDeletedAt sets the "deleted_at" field.
 func (cu *CategoryUpdate) SetDeletedAt(t time.Time) *CategoryUpdate {
 	cu.mutation.SetDeletedAt(t)
@@ -52,54 +46,6 @@ func (cu *CategoryUpdate) SetNillableDeletedAt(t *time.Time) *CategoryUpdate {
 // ClearDeletedAt clears the value of the "deleted_at" field.
 func (cu *CategoryUpdate) ClearDeletedAt() *CategoryUpdate {
 	cu.mutation.ClearDeletedAt()
-	return cu
-}
-
-// SetUpdatedBy sets the "updated_by" field.
-func (cu *CategoryUpdate) SetUpdatedBy(i int) *CategoryUpdate {
-	cu.mutation.ResetUpdatedBy()
-	cu.mutation.SetUpdatedBy(i)
-	return cu
-}
-
-// SetNillableUpdatedBy sets the "updated_by" field if the given value is not nil.
-func (cu *CategoryUpdate) SetNillableUpdatedBy(i *int) *CategoryUpdate {
-	if i != nil {
-		cu.SetUpdatedBy(*i)
-	}
-	return cu
-}
-
-// AddUpdatedBy adds i to the "updated_by" field.
-func (cu *CategoryUpdate) AddUpdatedBy(i int) *CategoryUpdate {
-	cu.mutation.AddUpdatedBy(i)
-	return cu
-}
-
-// SetDeletedBy sets the "deleted_by" field.
-func (cu *CategoryUpdate) SetDeletedBy(i int) *CategoryUpdate {
-	cu.mutation.ResetDeletedBy()
-	cu.mutation.SetDeletedBy(i)
-	return cu
-}
-
-// SetNillableDeletedBy sets the "deleted_by" field if the given value is not nil.
-func (cu *CategoryUpdate) SetNillableDeletedBy(i *int) *CategoryUpdate {
-	if i != nil {
-		cu.SetDeletedBy(*i)
-	}
-	return cu
-}
-
-// AddDeletedBy adds i to the "deleted_by" field.
-func (cu *CategoryUpdate) AddDeletedBy(i int) *CategoryUpdate {
-	cu.mutation.AddDeletedBy(i)
-	return cu
-}
-
-// ClearDeletedBy clears the value of the "deleted_by" field.
-func (cu *CategoryUpdate) ClearDeletedBy() *CategoryUpdate {
-	cu.mutation.ClearDeletedBy()
 	return cu
 }
 
@@ -248,7 +194,6 @@ func (cu *CategoryUpdate) RemoveChildren(c ...*Category) *CategoryUpdate {
 
 // Save executes the query and returns the number of nodes affected by the update operation.
 func (cu *CategoryUpdate) Save(ctx context.Context) (int, error) {
-	cu.defaults()
 	return withHooks(ctx, cu.sqlSave, cu.mutation, cu.hooks)
 }
 
@@ -274,28 +219,7 @@ func (cu *CategoryUpdate) ExecX(ctx context.Context) {
 	}
 }
 
-// defaults sets the default values of the builder before save.
-func (cu *CategoryUpdate) defaults() {
-	if _, ok := cu.mutation.UpdatedAt(); !ok {
-		v := category.UpdateDefaultUpdatedAt()
-		cu.mutation.SetUpdatedAt(v)
-	}
-}
-
-// check runs all checks and user-defined validators on the builder.
-func (cu *CategoryUpdate) check() error {
-	if v, ok := cu.mutation.UpdatedBy(); ok {
-		if err := category.UpdatedByValidator(v); err != nil {
-			return &ValidationError{Name: "updated_by", err: fmt.Errorf(`ent: validator failed for field "Category.updated_by": %w`, err)}
-		}
-	}
-	return nil
-}
-
 func (cu *CategoryUpdate) sqlSave(ctx context.Context) (n int, err error) {
-	if err := cu.check(); err != nil {
-		return n, err
-	}
 	_spec := sqlgraph.NewUpdateSpec(category.Table, category.Columns, sqlgraph.NewFieldSpec(category.FieldID, field.TypeInt))
 	if ps := cu.mutation.predicates; len(ps) > 0 {
 		_spec.Predicate = func(selector *sql.Selector) {
@@ -304,29 +228,11 @@ func (cu *CategoryUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			}
 		}
 	}
-	if value, ok := cu.mutation.UpdatedAt(); ok {
-		_spec.SetField(category.FieldUpdatedAt, field.TypeTime, value)
-	}
 	if value, ok := cu.mutation.DeletedAt(); ok {
 		_spec.SetField(category.FieldDeletedAt, field.TypeTime, value)
 	}
 	if cu.mutation.DeletedAtCleared() {
 		_spec.ClearField(category.FieldDeletedAt, field.TypeTime)
-	}
-	if value, ok := cu.mutation.UpdatedBy(); ok {
-		_spec.SetField(category.FieldUpdatedBy, field.TypeInt, value)
-	}
-	if value, ok := cu.mutation.AddedUpdatedBy(); ok {
-		_spec.AddField(category.FieldUpdatedBy, field.TypeInt, value)
-	}
-	if value, ok := cu.mutation.DeletedBy(); ok {
-		_spec.SetField(category.FieldDeletedBy, field.TypeInt, value)
-	}
-	if value, ok := cu.mutation.AddedDeletedBy(); ok {
-		_spec.AddField(category.FieldDeletedBy, field.TypeInt, value)
-	}
-	if cu.mutation.DeletedByCleared() {
-		_spec.ClearField(category.FieldDeletedBy, field.TypeInt)
 	}
 	if value, ok := cu.mutation.CategoryID(); ok {
 		_spec.SetField(category.FieldCategoryID, field.TypeInt, value)
@@ -479,12 +385,6 @@ type CategoryUpdateOne struct {
 	mutation *CategoryMutation
 }
 
-// SetUpdatedAt sets the "updated_at" field.
-func (cuo *CategoryUpdateOne) SetUpdatedAt(t time.Time) *CategoryUpdateOne {
-	cuo.mutation.SetUpdatedAt(t)
-	return cuo
-}
-
 // SetDeletedAt sets the "deleted_at" field.
 func (cuo *CategoryUpdateOne) SetDeletedAt(t time.Time) *CategoryUpdateOne {
 	cuo.mutation.SetDeletedAt(t)
@@ -502,54 +402,6 @@ func (cuo *CategoryUpdateOne) SetNillableDeletedAt(t *time.Time) *CategoryUpdate
 // ClearDeletedAt clears the value of the "deleted_at" field.
 func (cuo *CategoryUpdateOne) ClearDeletedAt() *CategoryUpdateOne {
 	cuo.mutation.ClearDeletedAt()
-	return cuo
-}
-
-// SetUpdatedBy sets the "updated_by" field.
-func (cuo *CategoryUpdateOne) SetUpdatedBy(i int) *CategoryUpdateOne {
-	cuo.mutation.ResetUpdatedBy()
-	cuo.mutation.SetUpdatedBy(i)
-	return cuo
-}
-
-// SetNillableUpdatedBy sets the "updated_by" field if the given value is not nil.
-func (cuo *CategoryUpdateOne) SetNillableUpdatedBy(i *int) *CategoryUpdateOne {
-	if i != nil {
-		cuo.SetUpdatedBy(*i)
-	}
-	return cuo
-}
-
-// AddUpdatedBy adds i to the "updated_by" field.
-func (cuo *CategoryUpdateOne) AddUpdatedBy(i int) *CategoryUpdateOne {
-	cuo.mutation.AddUpdatedBy(i)
-	return cuo
-}
-
-// SetDeletedBy sets the "deleted_by" field.
-func (cuo *CategoryUpdateOne) SetDeletedBy(i int) *CategoryUpdateOne {
-	cuo.mutation.ResetDeletedBy()
-	cuo.mutation.SetDeletedBy(i)
-	return cuo
-}
-
-// SetNillableDeletedBy sets the "deleted_by" field if the given value is not nil.
-func (cuo *CategoryUpdateOne) SetNillableDeletedBy(i *int) *CategoryUpdateOne {
-	if i != nil {
-		cuo.SetDeletedBy(*i)
-	}
-	return cuo
-}
-
-// AddDeletedBy adds i to the "deleted_by" field.
-func (cuo *CategoryUpdateOne) AddDeletedBy(i int) *CategoryUpdateOne {
-	cuo.mutation.AddDeletedBy(i)
-	return cuo
-}
-
-// ClearDeletedBy clears the value of the "deleted_by" field.
-func (cuo *CategoryUpdateOne) ClearDeletedBy() *CategoryUpdateOne {
-	cuo.mutation.ClearDeletedBy()
 	return cuo
 }
 
@@ -711,7 +563,6 @@ func (cuo *CategoryUpdateOne) Select(field string, fields ...string) *CategoryUp
 
 // Save executes the query and returns the updated Category entity.
 func (cuo *CategoryUpdateOne) Save(ctx context.Context) (*Category, error) {
-	cuo.defaults()
 	return withHooks(ctx, cuo.sqlSave, cuo.mutation, cuo.hooks)
 }
 
@@ -737,28 +588,7 @@ func (cuo *CategoryUpdateOne) ExecX(ctx context.Context) {
 	}
 }
 
-// defaults sets the default values of the builder before save.
-func (cuo *CategoryUpdateOne) defaults() {
-	if _, ok := cuo.mutation.UpdatedAt(); !ok {
-		v := category.UpdateDefaultUpdatedAt()
-		cuo.mutation.SetUpdatedAt(v)
-	}
-}
-
-// check runs all checks and user-defined validators on the builder.
-func (cuo *CategoryUpdateOne) check() error {
-	if v, ok := cuo.mutation.UpdatedBy(); ok {
-		if err := category.UpdatedByValidator(v); err != nil {
-			return &ValidationError{Name: "updated_by", err: fmt.Errorf(`ent: validator failed for field "Category.updated_by": %w`, err)}
-		}
-	}
-	return nil
-}
-
 func (cuo *CategoryUpdateOne) sqlSave(ctx context.Context) (_node *Category, err error) {
-	if err := cuo.check(); err != nil {
-		return _node, err
-	}
 	_spec := sqlgraph.NewUpdateSpec(category.Table, category.Columns, sqlgraph.NewFieldSpec(category.FieldID, field.TypeInt))
 	id, ok := cuo.mutation.ID()
 	if !ok {
@@ -784,29 +614,11 @@ func (cuo *CategoryUpdateOne) sqlSave(ctx context.Context) (_node *Category, err
 			}
 		}
 	}
-	if value, ok := cuo.mutation.UpdatedAt(); ok {
-		_spec.SetField(category.FieldUpdatedAt, field.TypeTime, value)
-	}
 	if value, ok := cuo.mutation.DeletedAt(); ok {
 		_spec.SetField(category.FieldDeletedAt, field.TypeTime, value)
 	}
 	if cuo.mutation.DeletedAtCleared() {
 		_spec.ClearField(category.FieldDeletedAt, field.TypeTime)
-	}
-	if value, ok := cuo.mutation.UpdatedBy(); ok {
-		_spec.SetField(category.FieldUpdatedBy, field.TypeInt, value)
-	}
-	if value, ok := cuo.mutation.AddedUpdatedBy(); ok {
-		_spec.AddField(category.FieldUpdatedBy, field.TypeInt, value)
-	}
-	if value, ok := cuo.mutation.DeletedBy(); ok {
-		_spec.SetField(category.FieldDeletedBy, field.TypeInt, value)
-	}
-	if value, ok := cuo.mutation.AddedDeletedBy(); ok {
-		_spec.AddField(category.FieldDeletedBy, field.TypeInt, value)
-	}
-	if cuo.mutation.DeletedByCleared() {
-		_spec.ClearField(category.FieldDeletedBy, field.TypeInt)
 	}
 	if value, ok := cuo.mutation.CategoryID(); ok {
 		_spec.SetField(category.FieldCategoryID, field.TypeInt, value)

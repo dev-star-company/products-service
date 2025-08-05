@@ -35,20 +35,6 @@ func (rsc *ReferenceSourcesCreate) SetNillableCreatedAt(t *time.Time) *Reference
 	return rsc
 }
 
-// SetUpdatedAt sets the "updated_at" field.
-func (rsc *ReferenceSourcesCreate) SetUpdatedAt(t time.Time) *ReferenceSourcesCreate {
-	rsc.mutation.SetUpdatedAt(t)
-	return rsc
-}
-
-// SetNillableUpdatedAt sets the "updated_at" field if the given value is not nil.
-func (rsc *ReferenceSourcesCreate) SetNillableUpdatedAt(t *time.Time) *ReferenceSourcesCreate {
-	if t != nil {
-		rsc.SetUpdatedAt(*t)
-	}
-	return rsc
-}
-
 // SetDeletedAt sets the "deleted_at" field.
 func (rsc *ReferenceSourcesCreate) SetDeletedAt(t time.Time) *ReferenceSourcesCreate {
 	rsc.mutation.SetDeletedAt(t)
@@ -59,32 +45,6 @@ func (rsc *ReferenceSourcesCreate) SetDeletedAt(t time.Time) *ReferenceSourcesCr
 func (rsc *ReferenceSourcesCreate) SetNillableDeletedAt(t *time.Time) *ReferenceSourcesCreate {
 	if t != nil {
 		rsc.SetDeletedAt(*t)
-	}
-	return rsc
-}
-
-// SetCreatedBy sets the "created_by" field.
-func (rsc *ReferenceSourcesCreate) SetCreatedBy(i int) *ReferenceSourcesCreate {
-	rsc.mutation.SetCreatedBy(i)
-	return rsc
-}
-
-// SetUpdatedBy sets the "updated_by" field.
-func (rsc *ReferenceSourcesCreate) SetUpdatedBy(i int) *ReferenceSourcesCreate {
-	rsc.mutation.SetUpdatedBy(i)
-	return rsc
-}
-
-// SetDeletedBy sets the "deleted_by" field.
-func (rsc *ReferenceSourcesCreate) SetDeletedBy(i int) *ReferenceSourcesCreate {
-	rsc.mutation.SetDeletedBy(i)
-	return rsc
-}
-
-// SetNillableDeletedBy sets the "deleted_by" field if the given value is not nil.
-func (rsc *ReferenceSourcesCreate) SetNillableDeletedBy(i *int) *ReferenceSourcesCreate {
-	if i != nil {
-		rsc.SetDeletedBy(*i)
 	}
 	return rsc
 }
@@ -149,35 +109,12 @@ func (rsc *ReferenceSourcesCreate) defaults() {
 		v := referencesources.DefaultCreatedAt()
 		rsc.mutation.SetCreatedAt(v)
 	}
-	if _, ok := rsc.mutation.UpdatedAt(); !ok {
-		v := referencesources.DefaultUpdatedAt()
-		rsc.mutation.SetUpdatedAt(v)
-	}
 }
 
 // check runs all checks and user-defined validators on the builder.
 func (rsc *ReferenceSourcesCreate) check() error {
 	if _, ok := rsc.mutation.CreatedAt(); !ok {
 		return &ValidationError{Name: "created_at", err: errors.New(`ent: missing required field "ReferenceSources.created_at"`)}
-	}
-	if _, ok := rsc.mutation.UpdatedAt(); !ok {
-		return &ValidationError{Name: "updated_at", err: errors.New(`ent: missing required field "ReferenceSources.updated_at"`)}
-	}
-	if _, ok := rsc.mutation.CreatedBy(); !ok {
-		return &ValidationError{Name: "created_by", err: errors.New(`ent: missing required field "ReferenceSources.created_by"`)}
-	}
-	if v, ok := rsc.mutation.CreatedBy(); ok {
-		if err := referencesources.CreatedByValidator(v); err != nil {
-			return &ValidationError{Name: "created_by", err: fmt.Errorf(`ent: validator failed for field "ReferenceSources.created_by": %w`, err)}
-		}
-	}
-	if _, ok := rsc.mutation.UpdatedBy(); !ok {
-		return &ValidationError{Name: "updated_by", err: errors.New(`ent: missing required field "ReferenceSources.updated_by"`)}
-	}
-	if v, ok := rsc.mutation.UpdatedBy(); ok {
-		if err := referencesources.UpdatedByValidator(v); err != nil {
-			return &ValidationError{Name: "updated_by", err: fmt.Errorf(`ent: validator failed for field "ReferenceSources.updated_by": %w`, err)}
-		}
 	}
 	if _, ok := rsc.mutation.Name(); !ok {
 		return &ValidationError{Name: "name", err: errors.New(`ent: missing required field "ReferenceSources.name"`)}
@@ -212,25 +149,9 @@ func (rsc *ReferenceSourcesCreate) createSpec() (*ReferenceSources, *sqlgraph.Cr
 		_spec.SetField(referencesources.FieldCreatedAt, field.TypeTime, value)
 		_node.CreatedAt = value
 	}
-	if value, ok := rsc.mutation.UpdatedAt(); ok {
-		_spec.SetField(referencesources.FieldUpdatedAt, field.TypeTime, value)
-		_node.UpdatedAt = value
-	}
 	if value, ok := rsc.mutation.DeletedAt(); ok {
 		_spec.SetField(referencesources.FieldDeletedAt, field.TypeTime, value)
 		_node.DeletedAt = &value
-	}
-	if value, ok := rsc.mutation.CreatedBy(); ok {
-		_spec.SetField(referencesources.FieldCreatedBy, field.TypeInt, value)
-		_node.CreatedBy = value
-	}
-	if value, ok := rsc.mutation.UpdatedBy(); ok {
-		_spec.SetField(referencesources.FieldUpdatedBy, field.TypeInt, value)
-		_node.UpdatedBy = value
-	}
-	if value, ok := rsc.mutation.DeletedBy(); ok {
-		_spec.SetField(referencesources.FieldDeletedBy, field.TypeInt, value)
-		_node.DeletedBy = &value
 	}
 	if value, ok := rsc.mutation.Name(); ok {
 		_spec.SetField(referencesources.FieldName, field.TypeString, value)

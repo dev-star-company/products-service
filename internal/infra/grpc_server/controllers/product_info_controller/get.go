@@ -19,8 +19,8 @@ func (c *controller) Get(ctx context.Context, in *product_info_proto.GetRequest)
 	}
 
 	return &product_info_proto.GetResponse{
-		RequesterId: uint32(product_info.CreatedBy),
-		InfoTypeId:  uint32(*product_info.InfoTypesID),
-		Value:       string(*product_info.Value),
+
+		InfoTypeId: uint32(*product_info.InfoTypesID),
+		Value:      string(*product_info.Value),
 	}, nil
 }

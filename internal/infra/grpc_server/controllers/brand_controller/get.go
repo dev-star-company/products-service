@@ -19,7 +19,7 @@ func (c *controller) Get(ctx context.Context, in *brand_proto.GetRequest) (*bran
 	}
 
 	return &brand_proto.GetResponse{
-		RequesterId: uint32(brand.CreatedBy),
-		Name:        *brand.Name,
+
+		Name: *brand.Name,
 	}, nil
 }

@@ -415,7 +415,9 @@ func (rsq *ReferenceSourcesQuery) loadProductReferences(ctx context.Context, que
 			init(nodes[i])
 		}
 	}
-	query.withFKs = true
+	if len(query.ctx.Fields) > 0 {
+		query.ctx.AppendFieldOnce(productreferences.FieldReferenceSourceID)
+	}
 	query.Where(predicate.ProductReferences(func(s *sql.Selector) {
 		s.Where(sql.InValues(s.C(referencesources.ProductReferencesColumn), fks...))
 	}))
@@ -424,13 +426,13 @@ func (rsq *ReferenceSourcesQuery) loadProductReferences(ctx context.Context, que
 		return err
 	}
 	for _, n := range neighbors {
-		fk := n.reference_sources_product_references
+		fk := n.ReferenceSourceID
 		if fk == nil {
-			return fmt.Errorf(`foreign-key "reference_sources_product_references" is nil for node %v`, n.ID)
+			return fmt.Errorf(`foreign-key "reference_source_id" is nil for node %v`, n.ID)
 		}
 		node, ok := nodeids[*fk]
 		if !ok {
-			return fmt.Errorf(`unexpected referenced foreign-key "reference_sources_product_references" returned %v for node %v`, *fk, n.ID)
+			return fmt.Errorf(`unexpected referenced foreign-key "reference_source_id" returned %v for node %v`, *fk, n.ID)
 		}
 		assign(node, n)
 	}

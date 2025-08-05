@@ -19,8 +19,7 @@ func (c *controller) Get(ctx context.Context, in *images_proto.GetRequest) (*ima
 	}
 
 	return &images_proto.GetResponse{
-		RequesterId:       uint32(images.CreatedBy),
-		ImageFolderPathId: uint32(*images.ImageFolderPathID),
+
 		Content:           string(*images.Content),
 		Path:              string(*images.Path),
 	}, nil

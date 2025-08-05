@@ -19,7 +19,6 @@ func (c *controller) Get(ctx context.Context, in *references_sources_proto.GetRe
 	}
 
 	return &references_sources_proto.GetResponse{
-		RequesterId: uint32(references_sources.CreatedBy),
-		Name:        *references_sources.Name,
+		Name: *references_sources.Name,
 	}, nil
 }

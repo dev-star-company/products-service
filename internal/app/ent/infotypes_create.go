@@ -35,20 +35,6 @@ func (itc *InfoTypesCreate) SetNillableCreatedAt(t *time.Time) *InfoTypesCreate 
 	return itc
 }
 
-// SetUpdatedAt sets the "updated_at" field.
-func (itc *InfoTypesCreate) SetUpdatedAt(t time.Time) *InfoTypesCreate {
-	itc.mutation.SetUpdatedAt(t)
-	return itc
-}
-
-// SetNillableUpdatedAt sets the "updated_at" field if the given value is not nil.
-func (itc *InfoTypesCreate) SetNillableUpdatedAt(t *time.Time) *InfoTypesCreate {
-	if t != nil {
-		itc.SetUpdatedAt(*t)
-	}
-	return itc
-}
-
 // SetDeletedAt sets the "deleted_at" field.
 func (itc *InfoTypesCreate) SetDeletedAt(t time.Time) *InfoTypesCreate {
 	itc.mutation.SetDeletedAt(t)
@@ -59,32 +45,6 @@ func (itc *InfoTypesCreate) SetDeletedAt(t time.Time) *InfoTypesCreate {
 func (itc *InfoTypesCreate) SetNillableDeletedAt(t *time.Time) *InfoTypesCreate {
 	if t != nil {
 		itc.SetDeletedAt(*t)
-	}
-	return itc
-}
-
-// SetCreatedBy sets the "created_by" field.
-func (itc *InfoTypesCreate) SetCreatedBy(i int) *InfoTypesCreate {
-	itc.mutation.SetCreatedBy(i)
-	return itc
-}
-
-// SetUpdatedBy sets the "updated_by" field.
-func (itc *InfoTypesCreate) SetUpdatedBy(i int) *InfoTypesCreate {
-	itc.mutation.SetUpdatedBy(i)
-	return itc
-}
-
-// SetDeletedBy sets the "deleted_by" field.
-func (itc *InfoTypesCreate) SetDeletedBy(i int) *InfoTypesCreate {
-	itc.mutation.SetDeletedBy(i)
-	return itc
-}
-
-// SetNillableDeletedBy sets the "deleted_by" field if the given value is not nil.
-func (itc *InfoTypesCreate) SetNillableDeletedBy(i *int) *InfoTypesCreate {
-	if i != nil {
-		itc.SetDeletedBy(*i)
 	}
 	return itc
 }
@@ -149,35 +109,12 @@ func (itc *InfoTypesCreate) defaults() {
 		v := infotypes.DefaultCreatedAt()
 		itc.mutation.SetCreatedAt(v)
 	}
-	if _, ok := itc.mutation.UpdatedAt(); !ok {
-		v := infotypes.DefaultUpdatedAt()
-		itc.mutation.SetUpdatedAt(v)
-	}
 }
 
 // check runs all checks and user-defined validators on the builder.
 func (itc *InfoTypesCreate) check() error {
 	if _, ok := itc.mutation.CreatedAt(); !ok {
 		return &ValidationError{Name: "created_at", err: errors.New(`ent: missing required field "InfoTypes.created_at"`)}
-	}
-	if _, ok := itc.mutation.UpdatedAt(); !ok {
-		return &ValidationError{Name: "updated_at", err: errors.New(`ent: missing required field "InfoTypes.updated_at"`)}
-	}
-	if _, ok := itc.mutation.CreatedBy(); !ok {
-		return &ValidationError{Name: "created_by", err: errors.New(`ent: missing required field "InfoTypes.created_by"`)}
-	}
-	if v, ok := itc.mutation.CreatedBy(); ok {
-		if err := infotypes.CreatedByValidator(v); err != nil {
-			return &ValidationError{Name: "created_by", err: fmt.Errorf(`ent: validator failed for field "InfoTypes.created_by": %w`, err)}
-		}
-	}
-	if _, ok := itc.mutation.UpdatedBy(); !ok {
-		return &ValidationError{Name: "updated_by", err: errors.New(`ent: missing required field "InfoTypes.updated_by"`)}
-	}
-	if v, ok := itc.mutation.UpdatedBy(); ok {
-		if err := infotypes.UpdatedByValidator(v); err != nil {
-			return &ValidationError{Name: "updated_by", err: fmt.Errorf(`ent: validator failed for field "InfoTypes.updated_by": %w`, err)}
-		}
 	}
 	if _, ok := itc.mutation.Name(); !ok {
 		return &ValidationError{Name: "name", err: errors.New(`ent: missing required field "InfoTypes.name"`)}
@@ -212,25 +149,9 @@ func (itc *InfoTypesCreate) createSpec() (*InfoTypes, *sqlgraph.CreateSpec) {
 		_spec.SetField(infotypes.FieldCreatedAt, field.TypeTime, value)
 		_node.CreatedAt = value
 	}
-	if value, ok := itc.mutation.UpdatedAt(); ok {
-		_spec.SetField(infotypes.FieldUpdatedAt, field.TypeTime, value)
-		_node.UpdatedAt = value
-	}
 	if value, ok := itc.mutation.DeletedAt(); ok {
 		_spec.SetField(infotypes.FieldDeletedAt, field.TypeTime, value)
 		_node.DeletedAt = &value
-	}
-	if value, ok := itc.mutation.CreatedBy(); ok {
-		_spec.SetField(infotypes.FieldCreatedBy, field.TypeInt, value)
-		_node.CreatedBy = value
-	}
-	if value, ok := itc.mutation.UpdatedBy(); ok {
-		_spec.SetField(infotypes.FieldUpdatedBy, field.TypeInt, value)
-		_node.UpdatedBy = value
-	}
-	if value, ok := itc.mutation.DeletedBy(); ok {
-		_spec.SetField(infotypes.FieldDeletedBy, field.TypeInt, value)
-		_node.DeletedBy = &value
 	}
 	if value, ok := itc.mutation.Name(); ok {
 		_spec.SetField(infotypes.FieldName, field.TypeString, value)

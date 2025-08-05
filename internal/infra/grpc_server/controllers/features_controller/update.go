@@ -9,9 +9,6 @@ import (
 )
 
 func (c *controller) Update(ctx context.Context, in *features_proto.UpdateRequest) (*features_proto.UpdateResponse, error) {
-	if in.RequesterId == 0 {
-		return nil, errs.ProductsNotFound(int(in.Id))
-	}
 
 	tx, err := c.Db.Tx(ctx)
 	if err != nil {
@@ -30,8 +27,6 @@ func (c *controller) Update(ctx context.Context, in *features_proto.UpdateReques
 		featuresQ.SetName(string(*in.Name))
 	}
 
-	featuresQ.SetUpdatedBy(int(in.RequesterId))
-
 	features, err = featuresQ.Save(ctx)
 	if err != nil {
 		if ent.IsNotFound(err) {
@@ -48,7 +43,7 @@ func (c *controller) Update(ctx context.Context, in *features_proto.UpdateReques
 	}
 
 	return &features_proto.UpdateResponse{
-		RequesterId:    uint32(features.CreatedBy),
+
 		FeatureValueId: uint32(*features.FeatureValueID),
 		Name:           string(*features.Name),
 	}, nil

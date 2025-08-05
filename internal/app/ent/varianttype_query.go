@@ -414,6 +414,9 @@ func (vtq *VariantTypeQuery) loadProducts(ctx context.Context, query *ProductsQu
 		}
 	}
 	query.withFKs = true
+	if len(query.ctx.Fields) > 0 {
+		query.ctx.AppendFieldOnce(products.FieldVariantTypeID)
+	}
 	query.Where(predicate.Products(func(s *sql.Selector) {
 		s.Where(sql.InValues(s.C(varianttype.ProductsColumn), fks...))
 	}))
@@ -422,13 +425,13 @@ func (vtq *VariantTypeQuery) loadProducts(ctx context.Context, query *ProductsQu
 		return err
 	}
 	for _, n := range neighbors {
-		fk := n.variant_type_products
+		fk := n.VariantTypeID
 		if fk == nil {
-			return fmt.Errorf(`foreign-key "variant_type_products" is nil for node %v`, n.ID)
+			return fmt.Errorf(`foreign-key "variant_type_id" is nil for node %v`, n.ID)
 		}
 		node, ok := nodeids[*fk]
 		if !ok {
-			return fmt.Errorf(`unexpected referenced foreign-key "variant_type_products" returned %v for node %v`, *fk, n.ID)
+			return fmt.Errorf(`unexpected referenced foreign-key "variant_type_id" returned %v for node %v`, *fk, n.ID)
 		}
 		assign(node, n)
 	}

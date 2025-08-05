@@ -30,12 +30,6 @@ func (ppu *ProductPricesUpdate) Where(ps ...predicate.ProductPrices) *ProductPri
 	return ppu
 }
 
-// SetUpdatedAt sets the "updated_at" field.
-func (ppu *ProductPricesUpdate) SetUpdatedAt(t time.Time) *ProductPricesUpdate {
-	ppu.mutation.SetUpdatedAt(t)
-	return ppu
-}
-
 // SetDeletedAt sets the "deleted_at" field.
 func (ppu *ProductPricesUpdate) SetDeletedAt(t time.Time) *ProductPricesUpdate {
 	ppu.mutation.SetDeletedAt(t)
@@ -53,54 +47,6 @@ func (ppu *ProductPricesUpdate) SetNillableDeletedAt(t *time.Time) *ProductPrice
 // ClearDeletedAt clears the value of the "deleted_at" field.
 func (ppu *ProductPricesUpdate) ClearDeletedAt() *ProductPricesUpdate {
 	ppu.mutation.ClearDeletedAt()
-	return ppu
-}
-
-// SetUpdatedBy sets the "updated_by" field.
-func (ppu *ProductPricesUpdate) SetUpdatedBy(i int) *ProductPricesUpdate {
-	ppu.mutation.ResetUpdatedBy()
-	ppu.mutation.SetUpdatedBy(i)
-	return ppu
-}
-
-// SetNillableUpdatedBy sets the "updated_by" field if the given value is not nil.
-func (ppu *ProductPricesUpdate) SetNillableUpdatedBy(i *int) *ProductPricesUpdate {
-	if i != nil {
-		ppu.SetUpdatedBy(*i)
-	}
-	return ppu
-}
-
-// AddUpdatedBy adds i to the "updated_by" field.
-func (ppu *ProductPricesUpdate) AddUpdatedBy(i int) *ProductPricesUpdate {
-	ppu.mutation.AddUpdatedBy(i)
-	return ppu
-}
-
-// SetDeletedBy sets the "deleted_by" field.
-func (ppu *ProductPricesUpdate) SetDeletedBy(i int) *ProductPricesUpdate {
-	ppu.mutation.ResetDeletedBy()
-	ppu.mutation.SetDeletedBy(i)
-	return ppu
-}
-
-// SetNillableDeletedBy sets the "deleted_by" field if the given value is not nil.
-func (ppu *ProductPricesUpdate) SetNillableDeletedBy(i *int) *ProductPricesUpdate {
-	if i != nil {
-		ppu.SetDeletedBy(*i)
-	}
-	return ppu
-}
-
-// AddDeletedBy adds i to the "deleted_by" field.
-func (ppu *ProductPricesUpdate) AddDeletedBy(i int) *ProductPricesUpdate {
-	ppu.mutation.AddDeletedBy(i)
-	return ppu
-}
-
-// ClearDeletedBy clears the value of the "deleted_by" field.
-func (ppu *ProductPricesUpdate) ClearDeletedBy() *ProductPricesUpdate {
-	ppu.mutation.ClearDeletedBy()
 	return ppu
 }
 
@@ -215,7 +161,6 @@ func (ppu *ProductPricesUpdate) ClearPriceType() *ProductPricesUpdate {
 
 // Save executes the query and returns the number of nodes affected by the update operation.
 func (ppu *ProductPricesUpdate) Save(ctx context.Context) (int, error) {
-	ppu.defaults()
 	return withHooks(ctx, ppu.sqlSave, ppu.mutation, ppu.hooks)
 }
 
@@ -241,21 +186,8 @@ func (ppu *ProductPricesUpdate) ExecX(ctx context.Context) {
 	}
 }
 
-// defaults sets the default values of the builder before save.
-func (ppu *ProductPricesUpdate) defaults() {
-	if _, ok := ppu.mutation.UpdatedAt(); !ok {
-		v := productprices.UpdateDefaultUpdatedAt()
-		ppu.mutation.SetUpdatedAt(v)
-	}
-}
-
 // check runs all checks and user-defined validators on the builder.
 func (ppu *ProductPricesUpdate) check() error {
-	if v, ok := ppu.mutation.UpdatedBy(); ok {
-		if err := productprices.UpdatedByValidator(v); err != nil {
-			return &ValidationError{Name: "updated_by", err: fmt.Errorf(`ent: validator failed for field "ProductPrices.updated_by": %w`, err)}
-		}
-	}
 	if ppu.mutation.PriceTypeCleared() && len(ppu.mutation.PriceTypeIDs()) > 0 {
 		return errors.New(`ent: clearing a required unique edge "ProductPrices.price_type"`)
 	}
@@ -274,29 +206,11 @@ func (ppu *ProductPricesUpdate) sqlSave(ctx context.Context) (n int, err error) 
 			}
 		}
 	}
-	if value, ok := ppu.mutation.UpdatedAt(); ok {
-		_spec.SetField(productprices.FieldUpdatedAt, field.TypeTime, value)
-	}
 	if value, ok := ppu.mutation.DeletedAt(); ok {
 		_spec.SetField(productprices.FieldDeletedAt, field.TypeTime, value)
 	}
 	if ppu.mutation.DeletedAtCleared() {
 		_spec.ClearField(productprices.FieldDeletedAt, field.TypeTime)
-	}
-	if value, ok := ppu.mutation.UpdatedBy(); ok {
-		_spec.SetField(productprices.FieldUpdatedBy, field.TypeInt, value)
-	}
-	if value, ok := ppu.mutation.AddedUpdatedBy(); ok {
-		_spec.AddField(productprices.FieldUpdatedBy, field.TypeInt, value)
-	}
-	if value, ok := ppu.mutation.DeletedBy(); ok {
-		_spec.SetField(productprices.FieldDeletedBy, field.TypeInt, value)
-	}
-	if value, ok := ppu.mutation.AddedDeletedBy(); ok {
-		_spec.AddField(productprices.FieldDeletedBy, field.TypeInt, value)
-	}
-	if ppu.mutation.DeletedByCleared() {
-		_spec.ClearField(productprices.FieldDeletedBy, field.TypeInt)
 	}
 	if value, ok := ppu.mutation.DefaultValue(); ok {
 		_spec.SetField(productprices.FieldDefaultValue, field.TypeFloat64, value)
@@ -391,12 +305,6 @@ type ProductPricesUpdateOne struct {
 	mutation *ProductPricesMutation
 }
 
-// SetUpdatedAt sets the "updated_at" field.
-func (ppuo *ProductPricesUpdateOne) SetUpdatedAt(t time.Time) *ProductPricesUpdateOne {
-	ppuo.mutation.SetUpdatedAt(t)
-	return ppuo
-}
-
 // SetDeletedAt sets the "deleted_at" field.
 func (ppuo *ProductPricesUpdateOne) SetDeletedAt(t time.Time) *ProductPricesUpdateOne {
 	ppuo.mutation.SetDeletedAt(t)
@@ -414,54 +322,6 @@ func (ppuo *ProductPricesUpdateOne) SetNillableDeletedAt(t *time.Time) *ProductP
 // ClearDeletedAt clears the value of the "deleted_at" field.
 func (ppuo *ProductPricesUpdateOne) ClearDeletedAt() *ProductPricesUpdateOne {
 	ppuo.mutation.ClearDeletedAt()
-	return ppuo
-}
-
-// SetUpdatedBy sets the "updated_by" field.
-func (ppuo *ProductPricesUpdateOne) SetUpdatedBy(i int) *ProductPricesUpdateOne {
-	ppuo.mutation.ResetUpdatedBy()
-	ppuo.mutation.SetUpdatedBy(i)
-	return ppuo
-}
-
-// SetNillableUpdatedBy sets the "updated_by" field if the given value is not nil.
-func (ppuo *ProductPricesUpdateOne) SetNillableUpdatedBy(i *int) *ProductPricesUpdateOne {
-	if i != nil {
-		ppuo.SetUpdatedBy(*i)
-	}
-	return ppuo
-}
-
-// AddUpdatedBy adds i to the "updated_by" field.
-func (ppuo *ProductPricesUpdateOne) AddUpdatedBy(i int) *ProductPricesUpdateOne {
-	ppuo.mutation.AddUpdatedBy(i)
-	return ppuo
-}
-
-// SetDeletedBy sets the "deleted_by" field.
-func (ppuo *ProductPricesUpdateOne) SetDeletedBy(i int) *ProductPricesUpdateOne {
-	ppuo.mutation.ResetDeletedBy()
-	ppuo.mutation.SetDeletedBy(i)
-	return ppuo
-}
-
-// SetNillableDeletedBy sets the "deleted_by" field if the given value is not nil.
-func (ppuo *ProductPricesUpdateOne) SetNillableDeletedBy(i *int) *ProductPricesUpdateOne {
-	if i != nil {
-		ppuo.SetDeletedBy(*i)
-	}
-	return ppuo
-}
-
-// AddDeletedBy adds i to the "deleted_by" field.
-func (ppuo *ProductPricesUpdateOne) AddDeletedBy(i int) *ProductPricesUpdateOne {
-	ppuo.mutation.AddDeletedBy(i)
-	return ppuo
-}
-
-// ClearDeletedBy clears the value of the "deleted_by" field.
-func (ppuo *ProductPricesUpdateOne) ClearDeletedBy() *ProductPricesUpdateOne {
-	ppuo.mutation.ClearDeletedBy()
 	return ppuo
 }
 
@@ -589,7 +449,6 @@ func (ppuo *ProductPricesUpdateOne) Select(field string, fields ...string) *Prod
 
 // Save executes the query and returns the updated ProductPrices entity.
 func (ppuo *ProductPricesUpdateOne) Save(ctx context.Context) (*ProductPrices, error) {
-	ppuo.defaults()
 	return withHooks(ctx, ppuo.sqlSave, ppuo.mutation, ppuo.hooks)
 }
 
@@ -615,21 +474,8 @@ func (ppuo *ProductPricesUpdateOne) ExecX(ctx context.Context) {
 	}
 }
 
-// defaults sets the default values of the builder before save.
-func (ppuo *ProductPricesUpdateOne) defaults() {
-	if _, ok := ppuo.mutation.UpdatedAt(); !ok {
-		v := productprices.UpdateDefaultUpdatedAt()
-		ppuo.mutation.SetUpdatedAt(v)
-	}
-}
-
 // check runs all checks and user-defined validators on the builder.
 func (ppuo *ProductPricesUpdateOne) check() error {
-	if v, ok := ppuo.mutation.UpdatedBy(); ok {
-		if err := productprices.UpdatedByValidator(v); err != nil {
-			return &ValidationError{Name: "updated_by", err: fmt.Errorf(`ent: validator failed for field "ProductPrices.updated_by": %w`, err)}
-		}
-	}
 	if ppuo.mutation.PriceTypeCleared() && len(ppuo.mutation.PriceTypeIDs()) > 0 {
 		return errors.New(`ent: clearing a required unique edge "ProductPrices.price_type"`)
 	}
@@ -665,29 +511,11 @@ func (ppuo *ProductPricesUpdateOne) sqlSave(ctx context.Context) (_node *Product
 			}
 		}
 	}
-	if value, ok := ppuo.mutation.UpdatedAt(); ok {
-		_spec.SetField(productprices.FieldUpdatedAt, field.TypeTime, value)
-	}
 	if value, ok := ppuo.mutation.DeletedAt(); ok {
 		_spec.SetField(productprices.FieldDeletedAt, field.TypeTime, value)
 	}
 	if ppuo.mutation.DeletedAtCleared() {
 		_spec.ClearField(productprices.FieldDeletedAt, field.TypeTime)
-	}
-	if value, ok := ppuo.mutation.UpdatedBy(); ok {
-		_spec.SetField(productprices.FieldUpdatedBy, field.TypeInt, value)
-	}
-	if value, ok := ppuo.mutation.AddedUpdatedBy(); ok {
-		_spec.AddField(productprices.FieldUpdatedBy, field.TypeInt, value)
-	}
-	if value, ok := ppuo.mutation.DeletedBy(); ok {
-		_spec.SetField(productprices.FieldDeletedBy, field.TypeInt, value)
-	}
-	if value, ok := ppuo.mutation.AddedDeletedBy(); ok {
-		_spec.AddField(productprices.FieldDeletedBy, field.TypeInt, value)
-	}
-	if ppuo.mutation.DeletedByCleared() {
-		_spec.ClearField(productprices.FieldDeletedBy, field.TypeInt)
 	}
 	if value, ok := ppuo.mutation.DefaultValue(); ok {
 		_spec.SetField(productprices.FieldDefaultValue, field.TypeFloat64, value)

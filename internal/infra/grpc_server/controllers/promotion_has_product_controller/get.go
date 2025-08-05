@@ -12,8 +12,8 @@ func (c *controller) Get(ctx context.Context, in *promotion_has_product_proto.Ge
 	promotion_has_product, err := c.Db.PromotionHasProduct.
 		Query().
 		Where(promotionhasproduct.ID(int(in.Id))).
-		WithPromotion().
-		WithProduct().
+		WithPromotions().
+		WithProducts().
 		Only(ctx)
 
 	if ent.IsNotFound(err) {
@@ -21,8 +21,8 @@ func (c *controller) Get(ctx context.Context, in *promotion_has_product_proto.Ge
 	}
 
 	return &promotion_has_product_proto.GetResponse{
-		RequesterId: uint32(promotion_has_product.CreatedBy),
-		PromotionId: uint32(*promotion_has_product.PromotionID),
-		ProductsId:  uint32(*promotion_has_product.ProductID),
+
+		PromotionId: uint32(*promotion_has_product.PromotionsID),
+		ProductsId:  uint32(*promotion_has_product.ProductsID),
 	}, nil
 }

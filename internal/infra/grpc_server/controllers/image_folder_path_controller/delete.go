@@ -9,9 +9,6 @@ import (
 )
 
 func (c *controller) Delete(ctx context.Context, in *image_folder_path_proto.DeleteRequest) (*image_folder_path_proto.DeleteResponse, error) {
-	if in.RequesterId == 0 {
-		return nil, errs.CategoryNotFound(int(in.Id))
-	}
 
 	tx, err := c.Db.Tx(ctx)
 	if err != nil {
@@ -20,7 +17,6 @@ func (c *controller) Delete(ctx context.Context, in *image_folder_path_proto.Del
 
 	err = tx.Category.UpdateOneID(int(in.Id)).
 		SetDeletedAt(time.Now()).
-		SetDeletedBy(int(in.RequesterId)).
 		Exec(ctx)
 
 	if err != nil {

@@ -29,12 +29,6 @@ func (ptu *PriceTypeUpdate) Where(ps ...predicate.PriceType) *PriceTypeUpdate {
 	return ptu
 }
 
-// SetUpdatedAt sets the "updated_at" field.
-func (ptu *PriceTypeUpdate) SetUpdatedAt(t time.Time) *PriceTypeUpdate {
-	ptu.mutation.SetUpdatedAt(t)
-	return ptu
-}
-
 // SetDeletedAt sets the "deleted_at" field.
 func (ptu *PriceTypeUpdate) SetDeletedAt(t time.Time) *PriceTypeUpdate {
 	ptu.mutation.SetDeletedAt(t)
@@ -52,54 +46,6 @@ func (ptu *PriceTypeUpdate) SetNillableDeletedAt(t *time.Time) *PriceTypeUpdate 
 // ClearDeletedAt clears the value of the "deleted_at" field.
 func (ptu *PriceTypeUpdate) ClearDeletedAt() *PriceTypeUpdate {
 	ptu.mutation.ClearDeletedAt()
-	return ptu
-}
-
-// SetUpdatedBy sets the "updated_by" field.
-func (ptu *PriceTypeUpdate) SetUpdatedBy(i int) *PriceTypeUpdate {
-	ptu.mutation.ResetUpdatedBy()
-	ptu.mutation.SetUpdatedBy(i)
-	return ptu
-}
-
-// SetNillableUpdatedBy sets the "updated_by" field if the given value is not nil.
-func (ptu *PriceTypeUpdate) SetNillableUpdatedBy(i *int) *PriceTypeUpdate {
-	if i != nil {
-		ptu.SetUpdatedBy(*i)
-	}
-	return ptu
-}
-
-// AddUpdatedBy adds i to the "updated_by" field.
-func (ptu *PriceTypeUpdate) AddUpdatedBy(i int) *PriceTypeUpdate {
-	ptu.mutation.AddUpdatedBy(i)
-	return ptu
-}
-
-// SetDeletedBy sets the "deleted_by" field.
-func (ptu *PriceTypeUpdate) SetDeletedBy(i int) *PriceTypeUpdate {
-	ptu.mutation.ResetDeletedBy()
-	ptu.mutation.SetDeletedBy(i)
-	return ptu
-}
-
-// SetNillableDeletedBy sets the "deleted_by" field if the given value is not nil.
-func (ptu *PriceTypeUpdate) SetNillableDeletedBy(i *int) *PriceTypeUpdate {
-	if i != nil {
-		ptu.SetDeletedBy(*i)
-	}
-	return ptu
-}
-
-// AddDeletedBy adds i to the "deleted_by" field.
-func (ptu *PriceTypeUpdate) AddDeletedBy(i int) *PriceTypeUpdate {
-	ptu.mutation.AddDeletedBy(i)
-	return ptu
-}
-
-// ClearDeletedBy clears the value of the "deleted_by" field.
-func (ptu *PriceTypeUpdate) ClearDeletedBy() *PriceTypeUpdate {
-	ptu.mutation.ClearDeletedBy()
 	return ptu
 }
 
@@ -160,7 +106,6 @@ func (ptu *PriceTypeUpdate) RemoveProductPrices(p ...*ProductPrices) *PriceTypeU
 
 // Save executes the query and returns the number of nodes affected by the update operation.
 func (ptu *PriceTypeUpdate) Save(ctx context.Context) (int, error) {
-	ptu.defaults()
 	return withHooks(ctx, ptu.sqlSave, ptu.mutation, ptu.hooks)
 }
 
@@ -186,28 +131,7 @@ func (ptu *PriceTypeUpdate) ExecX(ctx context.Context) {
 	}
 }
 
-// defaults sets the default values of the builder before save.
-func (ptu *PriceTypeUpdate) defaults() {
-	if _, ok := ptu.mutation.UpdatedAt(); !ok {
-		v := pricetype.UpdateDefaultUpdatedAt()
-		ptu.mutation.SetUpdatedAt(v)
-	}
-}
-
-// check runs all checks and user-defined validators on the builder.
-func (ptu *PriceTypeUpdate) check() error {
-	if v, ok := ptu.mutation.UpdatedBy(); ok {
-		if err := pricetype.UpdatedByValidator(v); err != nil {
-			return &ValidationError{Name: "updated_by", err: fmt.Errorf(`ent: validator failed for field "PriceType.updated_by": %w`, err)}
-		}
-	}
-	return nil
-}
-
 func (ptu *PriceTypeUpdate) sqlSave(ctx context.Context) (n int, err error) {
-	if err := ptu.check(); err != nil {
-		return n, err
-	}
 	_spec := sqlgraph.NewUpdateSpec(pricetype.Table, pricetype.Columns, sqlgraph.NewFieldSpec(pricetype.FieldID, field.TypeInt))
 	if ps := ptu.mutation.predicates; len(ps) > 0 {
 		_spec.Predicate = func(selector *sql.Selector) {
@@ -216,29 +140,11 @@ func (ptu *PriceTypeUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			}
 		}
 	}
-	if value, ok := ptu.mutation.UpdatedAt(); ok {
-		_spec.SetField(pricetype.FieldUpdatedAt, field.TypeTime, value)
-	}
 	if value, ok := ptu.mutation.DeletedAt(); ok {
 		_spec.SetField(pricetype.FieldDeletedAt, field.TypeTime, value)
 	}
 	if ptu.mutation.DeletedAtCleared() {
 		_spec.ClearField(pricetype.FieldDeletedAt, field.TypeTime)
-	}
-	if value, ok := ptu.mutation.UpdatedBy(); ok {
-		_spec.SetField(pricetype.FieldUpdatedBy, field.TypeInt, value)
-	}
-	if value, ok := ptu.mutation.AddedUpdatedBy(); ok {
-		_spec.AddField(pricetype.FieldUpdatedBy, field.TypeInt, value)
-	}
-	if value, ok := ptu.mutation.DeletedBy(); ok {
-		_spec.SetField(pricetype.FieldDeletedBy, field.TypeInt, value)
-	}
-	if value, ok := ptu.mutation.AddedDeletedBy(); ok {
-		_spec.AddField(pricetype.FieldDeletedBy, field.TypeInt, value)
-	}
-	if ptu.mutation.DeletedByCleared() {
-		_spec.ClearField(pricetype.FieldDeletedBy, field.TypeInt)
 	}
 	if value, ok := ptu.mutation.Name(); ok {
 		_spec.SetField(pricetype.FieldName, field.TypeString, value)
@@ -308,12 +214,6 @@ type PriceTypeUpdateOne struct {
 	mutation *PriceTypeMutation
 }
 
-// SetUpdatedAt sets the "updated_at" field.
-func (ptuo *PriceTypeUpdateOne) SetUpdatedAt(t time.Time) *PriceTypeUpdateOne {
-	ptuo.mutation.SetUpdatedAt(t)
-	return ptuo
-}
-
 // SetDeletedAt sets the "deleted_at" field.
 func (ptuo *PriceTypeUpdateOne) SetDeletedAt(t time.Time) *PriceTypeUpdateOne {
 	ptuo.mutation.SetDeletedAt(t)
@@ -331,54 +231,6 @@ func (ptuo *PriceTypeUpdateOne) SetNillableDeletedAt(t *time.Time) *PriceTypeUpd
 // ClearDeletedAt clears the value of the "deleted_at" field.
 func (ptuo *PriceTypeUpdateOne) ClearDeletedAt() *PriceTypeUpdateOne {
 	ptuo.mutation.ClearDeletedAt()
-	return ptuo
-}
-
-// SetUpdatedBy sets the "updated_by" field.
-func (ptuo *PriceTypeUpdateOne) SetUpdatedBy(i int) *PriceTypeUpdateOne {
-	ptuo.mutation.ResetUpdatedBy()
-	ptuo.mutation.SetUpdatedBy(i)
-	return ptuo
-}
-
-// SetNillableUpdatedBy sets the "updated_by" field if the given value is not nil.
-func (ptuo *PriceTypeUpdateOne) SetNillableUpdatedBy(i *int) *PriceTypeUpdateOne {
-	if i != nil {
-		ptuo.SetUpdatedBy(*i)
-	}
-	return ptuo
-}
-
-// AddUpdatedBy adds i to the "updated_by" field.
-func (ptuo *PriceTypeUpdateOne) AddUpdatedBy(i int) *PriceTypeUpdateOne {
-	ptuo.mutation.AddUpdatedBy(i)
-	return ptuo
-}
-
-// SetDeletedBy sets the "deleted_by" field.
-func (ptuo *PriceTypeUpdateOne) SetDeletedBy(i int) *PriceTypeUpdateOne {
-	ptuo.mutation.ResetDeletedBy()
-	ptuo.mutation.SetDeletedBy(i)
-	return ptuo
-}
-
-// SetNillableDeletedBy sets the "deleted_by" field if the given value is not nil.
-func (ptuo *PriceTypeUpdateOne) SetNillableDeletedBy(i *int) *PriceTypeUpdateOne {
-	if i != nil {
-		ptuo.SetDeletedBy(*i)
-	}
-	return ptuo
-}
-
-// AddDeletedBy adds i to the "deleted_by" field.
-func (ptuo *PriceTypeUpdateOne) AddDeletedBy(i int) *PriceTypeUpdateOne {
-	ptuo.mutation.AddDeletedBy(i)
-	return ptuo
-}
-
-// ClearDeletedBy clears the value of the "deleted_by" field.
-func (ptuo *PriceTypeUpdateOne) ClearDeletedBy() *PriceTypeUpdateOne {
-	ptuo.mutation.ClearDeletedBy()
 	return ptuo
 }
 
@@ -452,7 +304,6 @@ func (ptuo *PriceTypeUpdateOne) Select(field string, fields ...string) *PriceTyp
 
 // Save executes the query and returns the updated PriceType entity.
 func (ptuo *PriceTypeUpdateOne) Save(ctx context.Context) (*PriceType, error) {
-	ptuo.defaults()
 	return withHooks(ctx, ptuo.sqlSave, ptuo.mutation, ptuo.hooks)
 }
 
@@ -478,28 +329,7 @@ func (ptuo *PriceTypeUpdateOne) ExecX(ctx context.Context) {
 	}
 }
 
-// defaults sets the default values of the builder before save.
-func (ptuo *PriceTypeUpdateOne) defaults() {
-	if _, ok := ptuo.mutation.UpdatedAt(); !ok {
-		v := pricetype.UpdateDefaultUpdatedAt()
-		ptuo.mutation.SetUpdatedAt(v)
-	}
-}
-
-// check runs all checks and user-defined validators on the builder.
-func (ptuo *PriceTypeUpdateOne) check() error {
-	if v, ok := ptuo.mutation.UpdatedBy(); ok {
-		if err := pricetype.UpdatedByValidator(v); err != nil {
-			return &ValidationError{Name: "updated_by", err: fmt.Errorf(`ent: validator failed for field "PriceType.updated_by": %w`, err)}
-		}
-	}
-	return nil
-}
-
 func (ptuo *PriceTypeUpdateOne) sqlSave(ctx context.Context) (_node *PriceType, err error) {
-	if err := ptuo.check(); err != nil {
-		return _node, err
-	}
 	_spec := sqlgraph.NewUpdateSpec(pricetype.Table, pricetype.Columns, sqlgraph.NewFieldSpec(pricetype.FieldID, field.TypeInt))
 	id, ok := ptuo.mutation.ID()
 	if !ok {
@@ -525,29 +355,11 @@ func (ptuo *PriceTypeUpdateOne) sqlSave(ctx context.Context) (_node *PriceType, 
 			}
 		}
 	}
-	if value, ok := ptuo.mutation.UpdatedAt(); ok {
-		_spec.SetField(pricetype.FieldUpdatedAt, field.TypeTime, value)
-	}
 	if value, ok := ptuo.mutation.DeletedAt(); ok {
 		_spec.SetField(pricetype.FieldDeletedAt, field.TypeTime, value)
 	}
 	if ptuo.mutation.DeletedAtCleared() {
 		_spec.ClearField(pricetype.FieldDeletedAt, field.TypeTime)
-	}
-	if value, ok := ptuo.mutation.UpdatedBy(); ok {
-		_spec.SetField(pricetype.FieldUpdatedBy, field.TypeInt, value)
-	}
-	if value, ok := ptuo.mutation.AddedUpdatedBy(); ok {
-		_spec.AddField(pricetype.FieldUpdatedBy, field.TypeInt, value)
-	}
-	if value, ok := ptuo.mutation.DeletedBy(); ok {
-		_spec.SetField(pricetype.FieldDeletedBy, field.TypeInt, value)
-	}
-	if value, ok := ptuo.mutation.AddedDeletedBy(); ok {
-		_spec.AddField(pricetype.FieldDeletedBy, field.TypeInt, value)
-	}
-	if ptuo.mutation.DeletedByCleared() {
-		_spec.ClearField(pricetype.FieldDeletedBy, field.TypeInt)
 	}
 	if value, ok := ptuo.mutation.Name(); ok {
 		_spec.SetField(pricetype.FieldName, field.TypeString, value)

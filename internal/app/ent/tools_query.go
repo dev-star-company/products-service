@@ -413,7 +413,9 @@ func (tq *ToolsQuery) loadToolHasProduct(ctx context.Context, query *ToolHasProd
 			init(nodes[i])
 		}
 	}
-	query.withFKs = true
+	if len(query.ctx.Fields) > 0 {
+		query.ctx.AppendFieldOnce(toolhasproduct.FieldToolsID)
+	}
 	query.Where(predicate.ToolHasProduct(func(s *sql.Selector) {
 		s.Where(sql.InValues(s.C(tools.ToolHasProductColumn), fks...))
 	}))
@@ -422,13 +424,13 @@ func (tq *ToolsQuery) loadToolHasProduct(ctx context.Context, query *ToolHasProd
 		return err
 	}
 	for _, n := range neighbors {
-		fk := n.tools_tool_has_product
+		fk := n.ToolsID
 		if fk == nil {
-			return fmt.Errorf(`foreign-key "tools_tool_has_product" is nil for node %v`, n.ID)
+			return fmt.Errorf(`foreign-key "tools_id" is nil for node %v`, n.ID)
 		}
 		node, ok := nodeids[*fk]
 		if !ok {
-			return fmt.Errorf(`unexpected referenced foreign-key "tools_tool_has_product" returned %v for node %v`, *fk, n.ID)
+			return fmt.Errorf(`unexpected referenced foreign-key "tools_id" returned %v for node %v`, *fk, n.ID)
 		}
 		assign(node, n)
 	}

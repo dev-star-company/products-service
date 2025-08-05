@@ -9,9 +9,6 @@ import (
 )
 
 func (c *controller) Update(ctx context.Context, in *tool_has_product_proto.UpdateRequest) (*tool_has_product_proto.UpdateResponse, error) {
-	if in.RequesterId == 0 {
-		return nil, errs.ProductsNotFound(int(in.Id))
-	}
 
 	tx, err := c.Db.Tx(ctx)
 	if err != nil {
@@ -23,14 +20,12 @@ func (c *controller) Update(ctx context.Context, in *tool_has_product_proto.Upda
 	tool_has_productQ := tx.ToolHasProduct.UpdateOneID(int(in.Id))
 
 	if in.ToolId != nil && *in.ToolId > 0 {
-		tool_has_productQ.SetToolID(int(*in.ToolId))
+		tool_has_productQ.SetToolsID(int(*in.ToolId))
 	}
 
 	if in.ProductsId != nil && *in.ProductsId > 0 {
-		tool_has_productQ.SetProductID(int(*in.ProductsId))
+		tool_has_productQ.SetProductsID(int(*in.ProductsId))
 	}
-
-	tool_has_productQ.SetUpdatedBy(int(in.RequesterId))
 
 	tool_has_product, err = tool_has_productQ.Save(ctx)
 	if err != nil {
@@ -48,8 +43,7 @@ func (c *controller) Update(ctx context.Context, in *tool_has_product_proto.Upda
 	}
 
 	return &tool_has_product_proto.UpdateResponse{
-		RequesterId: uint32(tool_has_product.CreatedBy),
-		ToolId:      uint32(*tool_has_product.ToolID),
-		ProductsId:  uint32(*tool_has_product.ProductID),
+		ToolId:     uint32(*tool_has_product.ToolsID),
+		ProductsId: uint32(*tool_has_product.ProductsID),
 	}, nil
 }

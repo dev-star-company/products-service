@@ -14,8 +14,8 @@ type PromotionHasProduct struct {
 // Fields of the PromotionHasProduct.
 func (PromotionHasProduct) Fields() []ent.Field {
 	return []ent.Field{
-		field.Int("product_id").Nillable().Optional(),
-		field.Int("promotion_id").Nillable(),
+		field.Int("products_id").Nillable().Optional(),
+		field.Int("promotions_id").Nillable().Optional(),
 		field.Float("promocional_price").Nillable(),
 	}
 }
@@ -29,14 +29,14 @@ func (PromotionHasProduct) Mixin() []ent.Mixin {
 // Edges of the PromotionHasProduct.
 func (PromotionHasProduct) Edges() []ent.Edge {
 	return []ent.Edge{
-		edge.From("product", Products.Type).
+		edge.From("products", Products.Type).
 			Ref("promotion_has_product").
-			Unique().
-			Required(),
+			Field("products_id").
+			Unique(),     
 
-		edge.From("promotion", Promotions.Type).
+		edge.From("promotions", Promotions.Type).
 			Ref("promotion_has_product").
-			Unique().
-			Required(),
+			Field("promotions_id").
+			Unique(),
 	}
 }

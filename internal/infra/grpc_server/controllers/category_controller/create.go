@@ -9,10 +9,6 @@ import (
 
 func (c *controller) Create(ctx context.Context, in *category_proto.CreateRequest) (*category_proto.CreateResponse, error) {
 
-	if in.RequesterId == 0 {
-		return nil, errs.RequesterIdRequired()
-	}
-
 	tx, err := c.Db.Tx(ctx)
 	if err != nil {
 		return nil, errs.StartProductsError(err)
@@ -20,8 +16,6 @@ func (c *controller) Create(ctx context.Context, in *category_proto.CreateReques
 
 	create, err := c.Db.Category.Create().
 		SetName(in.Name).
-		SetCreatedBy(int(in.RequesterId)).
-		SetUpdatedBy(int(in.RequesterId)).
 		Save(ctx)
 
 	if err != nil {
@@ -33,7 +27,7 @@ func (c *controller) Create(ctx context.Context, in *category_proto.CreateReques
 	}
 
 	return &category_proto.CreateResponse{
-		RequesterId: uint32(create.CreatedBy),
-		Name:        string(*create.Name),
+
+		Name: string(*create.Name),
 	}, nil
 }

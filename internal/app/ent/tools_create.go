@@ -35,20 +35,6 @@ func (tc *ToolsCreate) SetNillableCreatedAt(t *time.Time) *ToolsCreate {
 	return tc
 }
 
-// SetUpdatedAt sets the "updated_at" field.
-func (tc *ToolsCreate) SetUpdatedAt(t time.Time) *ToolsCreate {
-	tc.mutation.SetUpdatedAt(t)
-	return tc
-}
-
-// SetNillableUpdatedAt sets the "updated_at" field if the given value is not nil.
-func (tc *ToolsCreate) SetNillableUpdatedAt(t *time.Time) *ToolsCreate {
-	if t != nil {
-		tc.SetUpdatedAt(*t)
-	}
-	return tc
-}
-
 // SetDeletedAt sets the "deleted_at" field.
 func (tc *ToolsCreate) SetDeletedAt(t time.Time) *ToolsCreate {
 	tc.mutation.SetDeletedAt(t)
@@ -59,32 +45,6 @@ func (tc *ToolsCreate) SetDeletedAt(t time.Time) *ToolsCreate {
 func (tc *ToolsCreate) SetNillableDeletedAt(t *time.Time) *ToolsCreate {
 	if t != nil {
 		tc.SetDeletedAt(*t)
-	}
-	return tc
-}
-
-// SetCreatedBy sets the "created_by" field.
-func (tc *ToolsCreate) SetCreatedBy(i int) *ToolsCreate {
-	tc.mutation.SetCreatedBy(i)
-	return tc
-}
-
-// SetUpdatedBy sets the "updated_by" field.
-func (tc *ToolsCreate) SetUpdatedBy(i int) *ToolsCreate {
-	tc.mutation.SetUpdatedBy(i)
-	return tc
-}
-
-// SetDeletedBy sets the "deleted_by" field.
-func (tc *ToolsCreate) SetDeletedBy(i int) *ToolsCreate {
-	tc.mutation.SetDeletedBy(i)
-	return tc
-}
-
-// SetNillableDeletedBy sets the "deleted_by" field if the given value is not nil.
-func (tc *ToolsCreate) SetNillableDeletedBy(i *int) *ToolsCreate {
-	if i != nil {
-		tc.SetDeletedBy(*i)
 	}
 	return tc
 }
@@ -149,35 +109,12 @@ func (tc *ToolsCreate) defaults() {
 		v := tools.DefaultCreatedAt()
 		tc.mutation.SetCreatedAt(v)
 	}
-	if _, ok := tc.mutation.UpdatedAt(); !ok {
-		v := tools.DefaultUpdatedAt()
-		tc.mutation.SetUpdatedAt(v)
-	}
 }
 
 // check runs all checks and user-defined validators on the builder.
 func (tc *ToolsCreate) check() error {
 	if _, ok := tc.mutation.CreatedAt(); !ok {
 		return &ValidationError{Name: "created_at", err: errors.New(`ent: missing required field "Tools.created_at"`)}
-	}
-	if _, ok := tc.mutation.UpdatedAt(); !ok {
-		return &ValidationError{Name: "updated_at", err: errors.New(`ent: missing required field "Tools.updated_at"`)}
-	}
-	if _, ok := tc.mutation.CreatedBy(); !ok {
-		return &ValidationError{Name: "created_by", err: errors.New(`ent: missing required field "Tools.created_by"`)}
-	}
-	if v, ok := tc.mutation.CreatedBy(); ok {
-		if err := tools.CreatedByValidator(v); err != nil {
-			return &ValidationError{Name: "created_by", err: fmt.Errorf(`ent: validator failed for field "Tools.created_by": %w`, err)}
-		}
-	}
-	if _, ok := tc.mutation.UpdatedBy(); !ok {
-		return &ValidationError{Name: "updated_by", err: errors.New(`ent: missing required field "Tools.updated_by"`)}
-	}
-	if v, ok := tc.mutation.UpdatedBy(); ok {
-		if err := tools.UpdatedByValidator(v); err != nil {
-			return &ValidationError{Name: "updated_by", err: fmt.Errorf(`ent: validator failed for field "Tools.updated_by": %w`, err)}
-		}
 	}
 	if _, ok := tc.mutation.Name(); !ok {
 		return &ValidationError{Name: "name", err: errors.New(`ent: missing required field "Tools.name"`)}
@@ -212,25 +149,9 @@ func (tc *ToolsCreate) createSpec() (*Tools, *sqlgraph.CreateSpec) {
 		_spec.SetField(tools.FieldCreatedAt, field.TypeTime, value)
 		_node.CreatedAt = value
 	}
-	if value, ok := tc.mutation.UpdatedAt(); ok {
-		_spec.SetField(tools.FieldUpdatedAt, field.TypeTime, value)
-		_node.UpdatedAt = value
-	}
 	if value, ok := tc.mutation.DeletedAt(); ok {
 		_spec.SetField(tools.FieldDeletedAt, field.TypeTime, value)
 		_node.DeletedAt = &value
-	}
-	if value, ok := tc.mutation.CreatedBy(); ok {
-		_spec.SetField(tools.FieldCreatedBy, field.TypeInt, value)
-		_node.CreatedBy = value
-	}
-	if value, ok := tc.mutation.UpdatedBy(); ok {
-		_spec.SetField(tools.FieldUpdatedBy, field.TypeInt, value)
-		_node.UpdatedBy = value
-	}
-	if value, ok := tc.mutation.DeletedBy(); ok {
-		_spec.SetField(tools.FieldDeletedBy, field.TypeInt, value)
-		_node.DeletedBy = &value
 	}
 	if value, ok := tc.mutation.Name(); ok {
 		_spec.SetField(tools.FieldName, field.TypeString, value)

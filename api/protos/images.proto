@@ -26,7 +26,7 @@ message Images {
 }
 
 message CreateRequest {
-  uint32 requester_id = 1;
+  
   uint32 image_folder_path_id = 2;
   string content = 3;
   string path = 4;
@@ -34,7 +34,7 @@ message CreateRequest {
 }
 
 message CreateResponse {
-  uint32 requester_id = 1;
+  
   uint32 image_folder_path_id = 2;
   string content = 3;
   string path = 4;
@@ -51,7 +51,7 @@ message GetRequest {
 }
 
 message GetResponse {
-  uint32 requester_id = 1;
+  
   uint32 image_folder_path_id = 2;
   string content = 3;
   string path = 4;
@@ -65,14 +65,14 @@ message GetResponse {
 
 message UpdateRequest {
   uint32 id = 1;
-  uint32 requester_id = 2;
+  
   optional uint32 image_folder_path_id = 3;
   optional string content = 4;
   optional string path = 5;
 }
 
 message UpdateResponse {
-  uint32 requester_id = 1;
+  
   uint32 image_folder_path_id = 2;
   string content = 3;
   string path = 4;
@@ -86,7 +86,7 @@ message UpdateResponse {
 
 message DeleteRequest {
   uint32 id = 1;
-  uint32 requester_id = 2;
+  
 }
 
 message DeleteResponse {

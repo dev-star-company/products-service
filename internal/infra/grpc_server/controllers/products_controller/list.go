@@ -41,7 +41,7 @@ func (c *controller) List(ctx context.Context, in *products_proto.ListRequest) (
 	}
 
 	if in.ImageId != nil {
-		query = query.Where(products.ImageID(int(*in.ImageId)))
+		query = query.Where(products.ImagesID(int(*in.ImageId)))
 	}
 
 	count, err := query.Count(ctx)

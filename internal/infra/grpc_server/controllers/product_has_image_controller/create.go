@@ -9,10 +9,6 @@ import (
 
 func (c *controller) Create(ctx context.Context, in *product_has_image_proto.CreateRequest) (*product_has_image_proto.CreateResponse, error) {
 
-	if in.RequesterId == 0 {
-		return nil, errs.RequesterIdRequired()
-	}
-
 	tx, err := c.Db.Tx(ctx)
 	if err != nil {
 		return nil, errs.StartProductsError(err)
@@ -22,8 +18,6 @@ func (c *controller) Create(ctx context.Context, in *product_has_image_proto.Cre
 		SetProductID(int(in.ProductsId)).
 		SetImageID(int(in.ImagesId)).
 		SetPriority(int(in.Priority)).
-		SetCreatedBy(int(in.RequesterId)).
-		SetUpdatedBy(int(in.RequesterId)).
 		Save(ctx)
 
 	if err != nil {

@@ -35,20 +35,6 @@ func (pc *PromotionsCreate) SetNillableCreatedAt(t *time.Time) *PromotionsCreate
 	return pc
 }
 
-// SetUpdatedAt sets the "updated_at" field.
-func (pc *PromotionsCreate) SetUpdatedAt(t time.Time) *PromotionsCreate {
-	pc.mutation.SetUpdatedAt(t)
-	return pc
-}
-
-// SetNillableUpdatedAt sets the "updated_at" field if the given value is not nil.
-func (pc *PromotionsCreate) SetNillableUpdatedAt(t *time.Time) *PromotionsCreate {
-	if t != nil {
-		pc.SetUpdatedAt(*t)
-	}
-	return pc
-}
-
 // SetDeletedAt sets the "deleted_at" field.
 func (pc *PromotionsCreate) SetDeletedAt(t time.Time) *PromotionsCreate {
 	pc.mutation.SetDeletedAt(t)
@@ -59,32 +45,6 @@ func (pc *PromotionsCreate) SetDeletedAt(t time.Time) *PromotionsCreate {
 func (pc *PromotionsCreate) SetNillableDeletedAt(t *time.Time) *PromotionsCreate {
 	if t != nil {
 		pc.SetDeletedAt(*t)
-	}
-	return pc
-}
-
-// SetCreatedBy sets the "created_by" field.
-func (pc *PromotionsCreate) SetCreatedBy(i int) *PromotionsCreate {
-	pc.mutation.SetCreatedBy(i)
-	return pc
-}
-
-// SetUpdatedBy sets the "updated_by" field.
-func (pc *PromotionsCreate) SetUpdatedBy(i int) *PromotionsCreate {
-	pc.mutation.SetUpdatedBy(i)
-	return pc
-}
-
-// SetDeletedBy sets the "deleted_by" field.
-func (pc *PromotionsCreate) SetDeletedBy(i int) *PromotionsCreate {
-	pc.mutation.SetDeletedBy(i)
-	return pc
-}
-
-// SetNillableDeletedBy sets the "deleted_by" field if the given value is not nil.
-func (pc *PromotionsCreate) SetNillableDeletedBy(i *int) *PromotionsCreate {
-	if i != nil {
-		pc.SetDeletedBy(*i)
 	}
 	return pc
 }
@@ -161,35 +121,12 @@ func (pc *PromotionsCreate) defaults() {
 		v := promotions.DefaultCreatedAt()
 		pc.mutation.SetCreatedAt(v)
 	}
-	if _, ok := pc.mutation.UpdatedAt(); !ok {
-		v := promotions.DefaultUpdatedAt()
-		pc.mutation.SetUpdatedAt(v)
-	}
 }
 
 // check runs all checks and user-defined validators on the builder.
 func (pc *PromotionsCreate) check() error {
 	if _, ok := pc.mutation.CreatedAt(); !ok {
 		return &ValidationError{Name: "created_at", err: errors.New(`ent: missing required field "Promotions.created_at"`)}
-	}
-	if _, ok := pc.mutation.UpdatedAt(); !ok {
-		return &ValidationError{Name: "updated_at", err: errors.New(`ent: missing required field "Promotions.updated_at"`)}
-	}
-	if _, ok := pc.mutation.CreatedBy(); !ok {
-		return &ValidationError{Name: "created_by", err: errors.New(`ent: missing required field "Promotions.created_by"`)}
-	}
-	if v, ok := pc.mutation.CreatedBy(); ok {
-		if err := promotions.CreatedByValidator(v); err != nil {
-			return &ValidationError{Name: "created_by", err: fmt.Errorf(`ent: validator failed for field "Promotions.created_by": %w`, err)}
-		}
-	}
-	if _, ok := pc.mutation.UpdatedBy(); !ok {
-		return &ValidationError{Name: "updated_by", err: errors.New(`ent: missing required field "Promotions.updated_by"`)}
-	}
-	if v, ok := pc.mutation.UpdatedBy(); ok {
-		if err := promotions.UpdatedByValidator(v); err != nil {
-			return &ValidationError{Name: "updated_by", err: fmt.Errorf(`ent: validator failed for field "Promotions.updated_by": %w`, err)}
-		}
 	}
 	if _, ok := pc.mutation.Name(); !ok {
 		return &ValidationError{Name: "name", err: errors.New(`ent: missing required field "Promotions.name"`)}
@@ -230,25 +167,9 @@ func (pc *PromotionsCreate) createSpec() (*Promotions, *sqlgraph.CreateSpec) {
 		_spec.SetField(promotions.FieldCreatedAt, field.TypeTime, value)
 		_node.CreatedAt = value
 	}
-	if value, ok := pc.mutation.UpdatedAt(); ok {
-		_spec.SetField(promotions.FieldUpdatedAt, field.TypeTime, value)
-		_node.UpdatedAt = value
-	}
 	if value, ok := pc.mutation.DeletedAt(); ok {
 		_spec.SetField(promotions.FieldDeletedAt, field.TypeTime, value)
 		_node.DeletedAt = &value
-	}
-	if value, ok := pc.mutation.CreatedBy(); ok {
-		_spec.SetField(promotions.FieldCreatedBy, field.TypeInt, value)
-		_node.CreatedBy = value
-	}
-	if value, ok := pc.mutation.UpdatedBy(); ok {
-		_spec.SetField(promotions.FieldUpdatedBy, field.TypeInt, value)
-		_node.UpdatedBy = value
-	}
-	if value, ok := pc.mutation.DeletedBy(); ok {
-		_spec.SetField(promotions.FieldDeletedBy, field.TypeInt, value)
-		_node.DeletedBy = &value
 	}
 	if value, ok := pc.mutation.Name(); ok {
 		_spec.SetField(promotions.FieldName, field.TypeString, value)

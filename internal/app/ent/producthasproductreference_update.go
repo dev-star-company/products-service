@@ -30,12 +30,6 @@ func (phpru *ProductHasProductReferenceUpdate) Where(ps ...predicate.ProductHasP
 	return phpru
 }
 
-// SetUpdatedAt sets the "updated_at" field.
-func (phpru *ProductHasProductReferenceUpdate) SetUpdatedAt(t time.Time) *ProductHasProductReferenceUpdate {
-	phpru.mutation.SetUpdatedAt(t)
-	return phpru
-}
-
 // SetDeletedAt sets the "deleted_at" field.
 func (phpru *ProductHasProductReferenceUpdate) SetDeletedAt(t time.Time) *ProductHasProductReferenceUpdate {
 	phpru.mutation.SetDeletedAt(t)
@@ -53,54 +47,6 @@ func (phpru *ProductHasProductReferenceUpdate) SetNillableDeletedAt(t *time.Time
 // ClearDeletedAt clears the value of the "deleted_at" field.
 func (phpru *ProductHasProductReferenceUpdate) ClearDeletedAt() *ProductHasProductReferenceUpdate {
 	phpru.mutation.ClearDeletedAt()
-	return phpru
-}
-
-// SetUpdatedBy sets the "updated_by" field.
-func (phpru *ProductHasProductReferenceUpdate) SetUpdatedBy(i int) *ProductHasProductReferenceUpdate {
-	phpru.mutation.ResetUpdatedBy()
-	phpru.mutation.SetUpdatedBy(i)
-	return phpru
-}
-
-// SetNillableUpdatedBy sets the "updated_by" field if the given value is not nil.
-func (phpru *ProductHasProductReferenceUpdate) SetNillableUpdatedBy(i *int) *ProductHasProductReferenceUpdate {
-	if i != nil {
-		phpru.SetUpdatedBy(*i)
-	}
-	return phpru
-}
-
-// AddUpdatedBy adds i to the "updated_by" field.
-func (phpru *ProductHasProductReferenceUpdate) AddUpdatedBy(i int) *ProductHasProductReferenceUpdate {
-	phpru.mutation.AddUpdatedBy(i)
-	return phpru
-}
-
-// SetDeletedBy sets the "deleted_by" field.
-func (phpru *ProductHasProductReferenceUpdate) SetDeletedBy(i int) *ProductHasProductReferenceUpdate {
-	phpru.mutation.ResetDeletedBy()
-	phpru.mutation.SetDeletedBy(i)
-	return phpru
-}
-
-// SetNillableDeletedBy sets the "deleted_by" field if the given value is not nil.
-func (phpru *ProductHasProductReferenceUpdate) SetNillableDeletedBy(i *int) *ProductHasProductReferenceUpdate {
-	if i != nil {
-		phpru.SetDeletedBy(*i)
-	}
-	return phpru
-}
-
-// AddDeletedBy adds i to the "deleted_by" field.
-func (phpru *ProductHasProductReferenceUpdate) AddDeletedBy(i int) *ProductHasProductReferenceUpdate {
-	phpru.mutation.AddDeletedBy(i)
-	return phpru
-}
-
-// ClearDeletedBy clears the value of the "deleted_by" field.
-func (phpru *ProductHasProductReferenceUpdate) ClearDeletedBy() *ProductHasProductReferenceUpdate {
-	phpru.mutation.ClearDeletedBy()
 	return phpru
 }
 
@@ -167,7 +113,6 @@ func (phpru *ProductHasProductReferenceUpdate) ClearProduct() *ProductHasProduct
 
 // Save executes the query and returns the number of nodes affected by the update operation.
 func (phpru *ProductHasProductReferenceUpdate) Save(ctx context.Context) (int, error) {
-	phpru.defaults()
 	return withHooks(ctx, phpru.sqlSave, phpru.mutation, phpru.hooks)
 }
 
@@ -193,21 +138,8 @@ func (phpru *ProductHasProductReferenceUpdate) ExecX(ctx context.Context) {
 	}
 }
 
-// defaults sets the default values of the builder before save.
-func (phpru *ProductHasProductReferenceUpdate) defaults() {
-	if _, ok := phpru.mutation.UpdatedAt(); !ok {
-		v := producthasproductreference.UpdateDefaultUpdatedAt()
-		phpru.mutation.SetUpdatedAt(v)
-	}
-}
-
 // check runs all checks and user-defined validators on the builder.
 func (phpru *ProductHasProductReferenceUpdate) check() error {
-	if v, ok := phpru.mutation.UpdatedBy(); ok {
-		if err := producthasproductreference.UpdatedByValidator(v); err != nil {
-			return &ValidationError{Name: "updated_by", err: fmt.Errorf(`ent: validator failed for field "ProductHasProductReference.updated_by": %w`, err)}
-		}
-	}
 	if phpru.mutation.ProductReferenceCleared() && len(phpru.mutation.ProductReferenceIDs()) > 0 {
 		return errors.New(`ent: clearing a required unique edge "ProductHasProductReference.product_reference"`)
 	}
@@ -226,29 +158,11 @@ func (phpru *ProductHasProductReferenceUpdate) sqlSave(ctx context.Context) (n i
 			}
 		}
 	}
-	if value, ok := phpru.mutation.UpdatedAt(); ok {
-		_spec.SetField(producthasproductreference.FieldUpdatedAt, field.TypeTime, value)
-	}
 	if value, ok := phpru.mutation.DeletedAt(); ok {
 		_spec.SetField(producthasproductreference.FieldDeletedAt, field.TypeTime, value)
 	}
 	if phpru.mutation.DeletedAtCleared() {
 		_spec.ClearField(producthasproductreference.FieldDeletedAt, field.TypeTime)
-	}
-	if value, ok := phpru.mutation.UpdatedBy(); ok {
-		_spec.SetField(producthasproductreference.FieldUpdatedBy, field.TypeInt, value)
-	}
-	if value, ok := phpru.mutation.AddedUpdatedBy(); ok {
-		_spec.AddField(producthasproductreference.FieldUpdatedBy, field.TypeInt, value)
-	}
-	if value, ok := phpru.mutation.DeletedBy(); ok {
-		_spec.SetField(producthasproductreference.FieldDeletedBy, field.TypeInt, value)
-	}
-	if value, ok := phpru.mutation.AddedDeletedBy(); ok {
-		_spec.AddField(producthasproductreference.FieldDeletedBy, field.TypeInt, value)
-	}
-	if phpru.mutation.DeletedByCleared() {
-		_spec.ClearField(producthasproductreference.FieldDeletedBy, field.TypeInt)
 	}
 	if phpru.mutation.ProductReferenceCleared() {
 		edge := &sqlgraph.EdgeSpec{
@@ -328,12 +242,6 @@ type ProductHasProductReferenceUpdateOne struct {
 	mutation *ProductHasProductReferenceMutation
 }
 
-// SetUpdatedAt sets the "updated_at" field.
-func (phpruo *ProductHasProductReferenceUpdateOne) SetUpdatedAt(t time.Time) *ProductHasProductReferenceUpdateOne {
-	phpruo.mutation.SetUpdatedAt(t)
-	return phpruo
-}
-
 // SetDeletedAt sets the "deleted_at" field.
 func (phpruo *ProductHasProductReferenceUpdateOne) SetDeletedAt(t time.Time) *ProductHasProductReferenceUpdateOne {
 	phpruo.mutation.SetDeletedAt(t)
@@ -351,54 +259,6 @@ func (phpruo *ProductHasProductReferenceUpdateOne) SetNillableDeletedAt(t *time.
 // ClearDeletedAt clears the value of the "deleted_at" field.
 func (phpruo *ProductHasProductReferenceUpdateOne) ClearDeletedAt() *ProductHasProductReferenceUpdateOne {
 	phpruo.mutation.ClearDeletedAt()
-	return phpruo
-}
-
-// SetUpdatedBy sets the "updated_by" field.
-func (phpruo *ProductHasProductReferenceUpdateOne) SetUpdatedBy(i int) *ProductHasProductReferenceUpdateOne {
-	phpruo.mutation.ResetUpdatedBy()
-	phpruo.mutation.SetUpdatedBy(i)
-	return phpruo
-}
-
-// SetNillableUpdatedBy sets the "updated_by" field if the given value is not nil.
-func (phpruo *ProductHasProductReferenceUpdateOne) SetNillableUpdatedBy(i *int) *ProductHasProductReferenceUpdateOne {
-	if i != nil {
-		phpruo.SetUpdatedBy(*i)
-	}
-	return phpruo
-}
-
-// AddUpdatedBy adds i to the "updated_by" field.
-func (phpruo *ProductHasProductReferenceUpdateOne) AddUpdatedBy(i int) *ProductHasProductReferenceUpdateOne {
-	phpruo.mutation.AddUpdatedBy(i)
-	return phpruo
-}
-
-// SetDeletedBy sets the "deleted_by" field.
-func (phpruo *ProductHasProductReferenceUpdateOne) SetDeletedBy(i int) *ProductHasProductReferenceUpdateOne {
-	phpruo.mutation.ResetDeletedBy()
-	phpruo.mutation.SetDeletedBy(i)
-	return phpruo
-}
-
-// SetNillableDeletedBy sets the "deleted_by" field if the given value is not nil.
-func (phpruo *ProductHasProductReferenceUpdateOne) SetNillableDeletedBy(i *int) *ProductHasProductReferenceUpdateOne {
-	if i != nil {
-		phpruo.SetDeletedBy(*i)
-	}
-	return phpruo
-}
-
-// AddDeletedBy adds i to the "deleted_by" field.
-func (phpruo *ProductHasProductReferenceUpdateOne) AddDeletedBy(i int) *ProductHasProductReferenceUpdateOne {
-	phpruo.mutation.AddDeletedBy(i)
-	return phpruo
-}
-
-// ClearDeletedBy clears the value of the "deleted_by" field.
-func (phpruo *ProductHasProductReferenceUpdateOne) ClearDeletedBy() *ProductHasProductReferenceUpdateOne {
-	phpruo.mutation.ClearDeletedBy()
 	return phpruo
 }
 
@@ -478,7 +338,6 @@ func (phpruo *ProductHasProductReferenceUpdateOne) Select(field string, fields .
 
 // Save executes the query and returns the updated ProductHasProductReference entity.
 func (phpruo *ProductHasProductReferenceUpdateOne) Save(ctx context.Context) (*ProductHasProductReference, error) {
-	phpruo.defaults()
 	return withHooks(ctx, phpruo.sqlSave, phpruo.mutation, phpruo.hooks)
 }
 
@@ -504,21 +363,8 @@ func (phpruo *ProductHasProductReferenceUpdateOne) ExecX(ctx context.Context) {
 	}
 }
 
-// defaults sets the default values of the builder before save.
-func (phpruo *ProductHasProductReferenceUpdateOne) defaults() {
-	if _, ok := phpruo.mutation.UpdatedAt(); !ok {
-		v := producthasproductreference.UpdateDefaultUpdatedAt()
-		phpruo.mutation.SetUpdatedAt(v)
-	}
-}
-
 // check runs all checks and user-defined validators on the builder.
 func (phpruo *ProductHasProductReferenceUpdateOne) check() error {
-	if v, ok := phpruo.mutation.UpdatedBy(); ok {
-		if err := producthasproductreference.UpdatedByValidator(v); err != nil {
-			return &ValidationError{Name: "updated_by", err: fmt.Errorf(`ent: validator failed for field "ProductHasProductReference.updated_by": %w`, err)}
-		}
-	}
 	if phpruo.mutation.ProductReferenceCleared() && len(phpruo.mutation.ProductReferenceIDs()) > 0 {
 		return errors.New(`ent: clearing a required unique edge "ProductHasProductReference.product_reference"`)
 	}
@@ -554,29 +400,11 @@ func (phpruo *ProductHasProductReferenceUpdateOne) sqlSave(ctx context.Context) 
 			}
 		}
 	}
-	if value, ok := phpruo.mutation.UpdatedAt(); ok {
-		_spec.SetField(producthasproductreference.FieldUpdatedAt, field.TypeTime, value)
-	}
 	if value, ok := phpruo.mutation.DeletedAt(); ok {
 		_spec.SetField(producthasproductreference.FieldDeletedAt, field.TypeTime, value)
 	}
 	if phpruo.mutation.DeletedAtCleared() {
 		_spec.ClearField(producthasproductreference.FieldDeletedAt, field.TypeTime)
-	}
-	if value, ok := phpruo.mutation.UpdatedBy(); ok {
-		_spec.SetField(producthasproductreference.FieldUpdatedBy, field.TypeInt, value)
-	}
-	if value, ok := phpruo.mutation.AddedUpdatedBy(); ok {
-		_spec.AddField(producthasproductreference.FieldUpdatedBy, field.TypeInt, value)
-	}
-	if value, ok := phpruo.mutation.DeletedBy(); ok {
-		_spec.SetField(producthasproductreference.FieldDeletedBy, field.TypeInt, value)
-	}
-	if value, ok := phpruo.mutation.AddedDeletedBy(); ok {
-		_spec.AddField(producthasproductreference.FieldDeletedBy, field.TypeInt, value)
-	}
-	if phpruo.mutation.DeletedByCleared() {
-		_spec.ClearField(producthasproductreference.FieldDeletedBy, field.TypeInt)
 	}
 	if phpruo.mutation.ProductReferenceCleared() {
 		edge := &sqlgraph.EdgeSpec{

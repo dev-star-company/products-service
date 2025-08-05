@@ -30,12 +30,6 @@ func (phfu *ProductHasFeatureUpdate) Where(ps ...predicate.ProductHasFeature) *P
 	return phfu
 }
 
-// SetUpdatedAt sets the "updated_at" field.
-func (phfu *ProductHasFeatureUpdate) SetUpdatedAt(t time.Time) *ProductHasFeatureUpdate {
-	phfu.mutation.SetUpdatedAt(t)
-	return phfu
-}
-
 // SetDeletedAt sets the "deleted_at" field.
 func (phfu *ProductHasFeatureUpdate) SetDeletedAt(t time.Time) *ProductHasFeatureUpdate {
 	phfu.mutation.SetDeletedAt(t)
@@ -53,54 +47,6 @@ func (phfu *ProductHasFeatureUpdate) SetNillableDeletedAt(t *time.Time) *Product
 // ClearDeletedAt clears the value of the "deleted_at" field.
 func (phfu *ProductHasFeatureUpdate) ClearDeletedAt() *ProductHasFeatureUpdate {
 	phfu.mutation.ClearDeletedAt()
-	return phfu
-}
-
-// SetUpdatedBy sets the "updated_by" field.
-func (phfu *ProductHasFeatureUpdate) SetUpdatedBy(i int) *ProductHasFeatureUpdate {
-	phfu.mutation.ResetUpdatedBy()
-	phfu.mutation.SetUpdatedBy(i)
-	return phfu
-}
-
-// SetNillableUpdatedBy sets the "updated_by" field if the given value is not nil.
-func (phfu *ProductHasFeatureUpdate) SetNillableUpdatedBy(i *int) *ProductHasFeatureUpdate {
-	if i != nil {
-		phfu.SetUpdatedBy(*i)
-	}
-	return phfu
-}
-
-// AddUpdatedBy adds i to the "updated_by" field.
-func (phfu *ProductHasFeatureUpdate) AddUpdatedBy(i int) *ProductHasFeatureUpdate {
-	phfu.mutation.AddUpdatedBy(i)
-	return phfu
-}
-
-// SetDeletedBy sets the "deleted_by" field.
-func (phfu *ProductHasFeatureUpdate) SetDeletedBy(i int) *ProductHasFeatureUpdate {
-	phfu.mutation.ResetDeletedBy()
-	phfu.mutation.SetDeletedBy(i)
-	return phfu
-}
-
-// SetNillableDeletedBy sets the "deleted_by" field if the given value is not nil.
-func (phfu *ProductHasFeatureUpdate) SetNillableDeletedBy(i *int) *ProductHasFeatureUpdate {
-	if i != nil {
-		phfu.SetDeletedBy(*i)
-	}
-	return phfu
-}
-
-// AddDeletedBy adds i to the "deleted_by" field.
-func (phfu *ProductHasFeatureUpdate) AddDeletedBy(i int) *ProductHasFeatureUpdate {
-	phfu.mutation.AddDeletedBy(i)
-	return phfu
-}
-
-// ClearDeletedBy clears the value of the "deleted_by" field.
-func (phfu *ProductHasFeatureUpdate) ClearDeletedBy() *ProductHasFeatureUpdate {
-	phfu.mutation.ClearDeletedBy()
 	return phfu
 }
 
@@ -187,7 +133,6 @@ func (phfu *ProductHasFeatureUpdate) ClearFeatures() *ProductHasFeatureUpdate {
 
 // Save executes the query and returns the number of nodes affected by the update operation.
 func (phfu *ProductHasFeatureUpdate) Save(ctx context.Context) (int, error) {
-	phfu.defaults()
 	return withHooks(ctx, phfu.sqlSave, phfu.mutation, phfu.hooks)
 }
 
@@ -213,21 +158,8 @@ func (phfu *ProductHasFeatureUpdate) ExecX(ctx context.Context) {
 	}
 }
 
-// defaults sets the default values of the builder before save.
-func (phfu *ProductHasFeatureUpdate) defaults() {
-	if _, ok := phfu.mutation.UpdatedAt(); !ok {
-		v := producthasfeature.UpdateDefaultUpdatedAt()
-		phfu.mutation.SetUpdatedAt(v)
-	}
-}
-
 // check runs all checks and user-defined validators on the builder.
 func (phfu *ProductHasFeatureUpdate) check() error {
-	if v, ok := phfu.mutation.UpdatedBy(); ok {
-		if err := producthasfeature.UpdatedByValidator(v); err != nil {
-			return &ValidationError{Name: "updated_by", err: fmt.Errorf(`ent: validator failed for field "ProductHasFeature.updated_by": %w`, err)}
-		}
-	}
 	if phfu.mutation.FeaturesCleared() && len(phfu.mutation.FeaturesIDs()) > 0 {
 		return errors.New(`ent: clearing a required unique edge "ProductHasFeature.features"`)
 	}
@@ -246,29 +178,11 @@ func (phfu *ProductHasFeatureUpdate) sqlSave(ctx context.Context) (n int, err er
 			}
 		}
 	}
-	if value, ok := phfu.mutation.UpdatedAt(); ok {
-		_spec.SetField(producthasfeature.FieldUpdatedAt, field.TypeTime, value)
-	}
 	if value, ok := phfu.mutation.DeletedAt(); ok {
 		_spec.SetField(producthasfeature.FieldDeletedAt, field.TypeTime, value)
 	}
 	if phfu.mutation.DeletedAtCleared() {
 		_spec.ClearField(producthasfeature.FieldDeletedAt, field.TypeTime)
-	}
-	if value, ok := phfu.mutation.UpdatedBy(); ok {
-		_spec.SetField(producthasfeature.FieldUpdatedBy, field.TypeInt, value)
-	}
-	if value, ok := phfu.mutation.AddedUpdatedBy(); ok {
-		_spec.AddField(producthasfeature.FieldUpdatedBy, field.TypeInt, value)
-	}
-	if value, ok := phfu.mutation.DeletedBy(); ok {
-		_spec.SetField(producthasfeature.FieldDeletedBy, field.TypeInt, value)
-	}
-	if value, ok := phfu.mutation.AddedDeletedBy(); ok {
-		_spec.AddField(producthasfeature.FieldDeletedBy, field.TypeInt, value)
-	}
-	if phfu.mutation.DeletedByCleared() {
-		_spec.ClearField(producthasfeature.FieldDeletedBy, field.TypeInt)
 	}
 	if phfu.mutation.ProductsCleared() {
 		edge := &sqlgraph.EdgeSpec{
@@ -348,12 +262,6 @@ type ProductHasFeatureUpdateOne struct {
 	mutation *ProductHasFeatureMutation
 }
 
-// SetUpdatedAt sets the "updated_at" field.
-func (phfuo *ProductHasFeatureUpdateOne) SetUpdatedAt(t time.Time) *ProductHasFeatureUpdateOne {
-	phfuo.mutation.SetUpdatedAt(t)
-	return phfuo
-}
-
 // SetDeletedAt sets the "deleted_at" field.
 func (phfuo *ProductHasFeatureUpdateOne) SetDeletedAt(t time.Time) *ProductHasFeatureUpdateOne {
 	phfuo.mutation.SetDeletedAt(t)
@@ -371,54 +279,6 @@ func (phfuo *ProductHasFeatureUpdateOne) SetNillableDeletedAt(t *time.Time) *Pro
 // ClearDeletedAt clears the value of the "deleted_at" field.
 func (phfuo *ProductHasFeatureUpdateOne) ClearDeletedAt() *ProductHasFeatureUpdateOne {
 	phfuo.mutation.ClearDeletedAt()
-	return phfuo
-}
-
-// SetUpdatedBy sets the "updated_by" field.
-func (phfuo *ProductHasFeatureUpdateOne) SetUpdatedBy(i int) *ProductHasFeatureUpdateOne {
-	phfuo.mutation.ResetUpdatedBy()
-	phfuo.mutation.SetUpdatedBy(i)
-	return phfuo
-}
-
-// SetNillableUpdatedBy sets the "updated_by" field if the given value is not nil.
-func (phfuo *ProductHasFeatureUpdateOne) SetNillableUpdatedBy(i *int) *ProductHasFeatureUpdateOne {
-	if i != nil {
-		phfuo.SetUpdatedBy(*i)
-	}
-	return phfuo
-}
-
-// AddUpdatedBy adds i to the "updated_by" field.
-func (phfuo *ProductHasFeatureUpdateOne) AddUpdatedBy(i int) *ProductHasFeatureUpdateOne {
-	phfuo.mutation.AddUpdatedBy(i)
-	return phfuo
-}
-
-// SetDeletedBy sets the "deleted_by" field.
-func (phfuo *ProductHasFeatureUpdateOne) SetDeletedBy(i int) *ProductHasFeatureUpdateOne {
-	phfuo.mutation.ResetDeletedBy()
-	phfuo.mutation.SetDeletedBy(i)
-	return phfuo
-}
-
-// SetNillableDeletedBy sets the "deleted_by" field if the given value is not nil.
-func (phfuo *ProductHasFeatureUpdateOne) SetNillableDeletedBy(i *int) *ProductHasFeatureUpdateOne {
-	if i != nil {
-		phfuo.SetDeletedBy(*i)
-	}
-	return phfuo
-}
-
-// AddDeletedBy adds i to the "deleted_by" field.
-func (phfuo *ProductHasFeatureUpdateOne) AddDeletedBy(i int) *ProductHasFeatureUpdateOne {
-	phfuo.mutation.AddDeletedBy(i)
-	return phfuo
-}
-
-// ClearDeletedBy clears the value of the "deleted_by" field.
-func (phfuo *ProductHasFeatureUpdateOne) ClearDeletedBy() *ProductHasFeatureUpdateOne {
-	phfuo.mutation.ClearDeletedBy()
 	return phfuo
 }
 
@@ -518,7 +378,6 @@ func (phfuo *ProductHasFeatureUpdateOne) Select(field string, fields ...string) 
 
 // Save executes the query and returns the updated ProductHasFeature entity.
 func (phfuo *ProductHasFeatureUpdateOne) Save(ctx context.Context) (*ProductHasFeature, error) {
-	phfuo.defaults()
 	return withHooks(ctx, phfuo.sqlSave, phfuo.mutation, phfuo.hooks)
 }
 
@@ -544,21 +403,8 @@ func (phfuo *ProductHasFeatureUpdateOne) ExecX(ctx context.Context) {
 	}
 }
 
-// defaults sets the default values of the builder before save.
-func (phfuo *ProductHasFeatureUpdateOne) defaults() {
-	if _, ok := phfuo.mutation.UpdatedAt(); !ok {
-		v := producthasfeature.UpdateDefaultUpdatedAt()
-		phfuo.mutation.SetUpdatedAt(v)
-	}
-}
-
 // check runs all checks and user-defined validators on the builder.
 func (phfuo *ProductHasFeatureUpdateOne) check() error {
-	if v, ok := phfuo.mutation.UpdatedBy(); ok {
-		if err := producthasfeature.UpdatedByValidator(v); err != nil {
-			return &ValidationError{Name: "updated_by", err: fmt.Errorf(`ent: validator failed for field "ProductHasFeature.updated_by": %w`, err)}
-		}
-	}
 	if phfuo.mutation.FeaturesCleared() && len(phfuo.mutation.FeaturesIDs()) > 0 {
 		return errors.New(`ent: clearing a required unique edge "ProductHasFeature.features"`)
 	}
@@ -594,29 +440,11 @@ func (phfuo *ProductHasFeatureUpdateOne) sqlSave(ctx context.Context) (_node *Pr
 			}
 		}
 	}
-	if value, ok := phfuo.mutation.UpdatedAt(); ok {
-		_spec.SetField(producthasfeature.FieldUpdatedAt, field.TypeTime, value)
-	}
 	if value, ok := phfuo.mutation.DeletedAt(); ok {
 		_spec.SetField(producthasfeature.FieldDeletedAt, field.TypeTime, value)
 	}
 	if phfuo.mutation.DeletedAtCleared() {
 		_spec.ClearField(producthasfeature.FieldDeletedAt, field.TypeTime)
-	}
-	if value, ok := phfuo.mutation.UpdatedBy(); ok {
-		_spec.SetField(producthasfeature.FieldUpdatedBy, field.TypeInt, value)
-	}
-	if value, ok := phfuo.mutation.AddedUpdatedBy(); ok {
-		_spec.AddField(producthasfeature.FieldUpdatedBy, field.TypeInt, value)
-	}
-	if value, ok := phfuo.mutation.DeletedBy(); ok {
-		_spec.SetField(producthasfeature.FieldDeletedBy, field.TypeInt, value)
-	}
-	if value, ok := phfuo.mutation.AddedDeletedBy(); ok {
-		_spec.AddField(producthasfeature.FieldDeletedBy, field.TypeInt, value)
-	}
-	if phfuo.mutation.DeletedByCleared() {
-		_spec.ClearField(producthasfeature.FieldDeletedBy, field.TypeInt)
 	}
 	if phfuo.mutation.ProductsCleared() {
 		edge := &sqlgraph.EdgeSpec{

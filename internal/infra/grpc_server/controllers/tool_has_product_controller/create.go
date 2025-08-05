@@ -9,20 +9,14 @@ import (
 
 func (c *controller) Create(ctx context.Context, in *tool_has_product_proto.CreateRequest) (*tool_has_product_proto.CreateResponse, error) {
 
-	if in.RequesterId == 0 {
-		return nil, errs.RequesterIdRequired()
-	}
-
 	tx, err := c.Db.Tx(ctx)
 	if err != nil {
 		return nil, errs.StartProductsError(err)
 	}
 
 	create, err := c.Db.ToolHasProduct.Create().
-		SetToolID(int(in.ToolId)).
-		SetProductID(int(in.ProductsId)).
-		SetCreatedBy(int(in.RequesterId)).
-		SetUpdatedBy(int(in.RequesterId)).
+		SetToolsID(int(in.ToolId)).
+		SetProductsID(int(in.ProductsId)).
 		Save(ctx)
 
 	if err != nil {
@@ -34,7 +28,7 @@ func (c *controller) Create(ctx context.Context, in *tool_has_product_proto.Crea
 	}
 
 	return &tool_has_product_proto.CreateResponse{
-		ToolId:     uint32(*create.ToolID),
-		ProductsId: uint32(*create.ProductID),
+		ToolId:     uint32(*create.ToolsID),
+		ProductsId: uint32(*create.ProductsID),
 	}, nil
 }

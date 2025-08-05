@@ -46,20 +46,6 @@ func (pc *ProductsCreate) SetNillableCreatedAt(t *time.Time) *ProductsCreate {
 	return pc
 }
 
-// SetUpdatedAt sets the "updated_at" field.
-func (pc *ProductsCreate) SetUpdatedAt(t time.Time) *ProductsCreate {
-	pc.mutation.SetUpdatedAt(t)
-	return pc
-}
-
-// SetNillableUpdatedAt sets the "updated_at" field if the given value is not nil.
-func (pc *ProductsCreate) SetNillableUpdatedAt(t *time.Time) *ProductsCreate {
-	if t != nil {
-		pc.SetUpdatedAt(*t)
-	}
-	return pc
-}
-
 // SetDeletedAt sets the "deleted_at" field.
 func (pc *ProductsCreate) SetDeletedAt(t time.Time) *ProductsCreate {
 	pc.mutation.SetDeletedAt(t)
@@ -70,32 +56,6 @@ func (pc *ProductsCreate) SetDeletedAt(t time.Time) *ProductsCreate {
 func (pc *ProductsCreate) SetNillableDeletedAt(t *time.Time) *ProductsCreate {
 	if t != nil {
 		pc.SetDeletedAt(*t)
-	}
-	return pc
-}
-
-// SetCreatedBy sets the "created_by" field.
-func (pc *ProductsCreate) SetCreatedBy(i int) *ProductsCreate {
-	pc.mutation.SetCreatedBy(i)
-	return pc
-}
-
-// SetUpdatedBy sets the "updated_by" field.
-func (pc *ProductsCreate) SetUpdatedBy(i int) *ProductsCreate {
-	pc.mutation.SetUpdatedBy(i)
-	return pc
-}
-
-// SetDeletedBy sets the "deleted_by" field.
-func (pc *ProductsCreate) SetDeletedBy(i int) *ProductsCreate {
-	pc.mutation.SetDeletedBy(i)
-	return pc
-}
-
-// SetNillableDeletedBy sets the "deleted_by" field if the given value is not nil.
-func (pc *ProductsCreate) SetNillableDeletedBy(i *int) *ProductsCreate {
-	if i != nil {
-		pc.SetDeletedBy(*i)
 	}
 	return pc
 }
@@ -156,9 +116,17 @@ func (pc *ProductsCreate) SetNillableProductReferencesID(i *int) *ProductsCreate
 	return pc
 }
 
-// SetImageID sets the "image_id" field.
-func (pc *ProductsCreate) SetImageID(i int) *ProductsCreate {
-	pc.mutation.SetImageID(i)
+// SetImagesID sets the "images_id" field.
+func (pc *ProductsCreate) SetImagesID(i int) *ProductsCreate {
+	pc.mutation.SetImagesID(i)
+	return pc
+}
+
+// SetNillableImagesID sets the "images_id" field if the given value is not nil.
+func (pc *ProductsCreate) SetNillableImagesID(i *int) *ProductsCreate {
+	if i != nil {
+		pc.SetImagesID(*i)
+	}
 	return pc
 }
 
@@ -189,34 +157,14 @@ func (pc *ProductsCreate) SetVariantType(v *VariantType) *ProductsCreate {
 	return pc.SetVariantTypeID(v.ID)
 }
 
-// AddProductReferenceIDs adds the "product_references" edge to the ProductReferences entity by IDs.
-func (pc *ProductsCreate) AddProductReferenceIDs(ids ...int) *ProductsCreate {
-	pc.mutation.AddProductReferenceIDs(ids...)
-	return pc
+// SetProductReferences sets the "product_references" edge to the ProductReferences entity.
+func (pc *ProductsCreate) SetProductReferences(p *ProductReferences) *ProductsCreate {
+	return pc.SetProductReferencesID(p.ID)
 }
 
-// AddProductReferences adds the "product_references" edges to the ProductReferences entity.
-func (pc *ProductsCreate) AddProductReferences(p ...*ProductReferences) *ProductsCreate {
-	ids := make([]int, len(p))
-	for i := range p {
-		ids[i] = p[i].ID
-	}
-	return pc.AddProductReferenceIDs(ids...)
-}
-
-// AddImageIDs adds the "images" edge to the Images entity by IDs.
-func (pc *ProductsCreate) AddImageIDs(ids ...int) *ProductsCreate {
-	pc.mutation.AddImageIDs(ids...)
-	return pc
-}
-
-// AddImages adds the "images" edges to the Images entity.
-func (pc *ProductsCreate) AddImages(i ...*Images) *ProductsCreate {
-	ids := make([]int, len(i))
-	for j := range i {
-		ids[j] = i[j].ID
-	}
-	return pc.AddImageIDs(ids...)
+// SetImages sets the "images" edge to the Images entity.
+func (pc *ProductsCreate) SetImages(i *Images) *ProductsCreate {
+	return pc.SetImagesID(i.ID)
 }
 
 // AddProductHasImageIDs adds the "product_has_image" edge to the ProductHasImage entity by IDs.
@@ -363,38 +311,12 @@ func (pc *ProductsCreate) defaults() {
 		v := products.DefaultCreatedAt()
 		pc.mutation.SetCreatedAt(v)
 	}
-	if _, ok := pc.mutation.UpdatedAt(); !ok {
-		v := products.DefaultUpdatedAt()
-		pc.mutation.SetUpdatedAt(v)
-	}
 }
 
 // check runs all checks and user-defined validators on the builder.
 func (pc *ProductsCreate) check() error {
 	if _, ok := pc.mutation.CreatedAt(); !ok {
 		return &ValidationError{Name: "created_at", err: errors.New(`ent: missing required field "Products.created_at"`)}
-	}
-	if _, ok := pc.mutation.UpdatedAt(); !ok {
-		return &ValidationError{Name: "updated_at", err: errors.New(`ent: missing required field "Products.updated_at"`)}
-	}
-	if _, ok := pc.mutation.CreatedBy(); !ok {
-		return &ValidationError{Name: "created_by", err: errors.New(`ent: missing required field "Products.created_by"`)}
-	}
-	if v, ok := pc.mutation.CreatedBy(); ok {
-		if err := products.CreatedByValidator(v); err != nil {
-			return &ValidationError{Name: "created_by", err: fmt.Errorf(`ent: validator failed for field "Products.created_by": %w`, err)}
-		}
-	}
-	if _, ok := pc.mutation.UpdatedBy(); !ok {
-		return &ValidationError{Name: "updated_by", err: errors.New(`ent: missing required field "Products.updated_by"`)}
-	}
-	if v, ok := pc.mutation.UpdatedBy(); ok {
-		if err := products.UpdatedByValidator(v); err != nil {
-			return &ValidationError{Name: "updated_by", err: fmt.Errorf(`ent: validator failed for field "Products.updated_by": %w`, err)}
-		}
-	}
-	if _, ok := pc.mutation.ImageID(); !ok {
-		return &ValidationError{Name: "image_id", err: errors.New(`ent: missing required field "Products.image_id"`)}
 	}
 	if _, ok := pc.mutation.Name(); !ok {
 		return &ValidationError{Name: "name", err: errors.New(`ent: missing required field "Products.name"`)}
@@ -432,45 +354,9 @@ func (pc *ProductsCreate) createSpec() (*Products, *sqlgraph.CreateSpec) {
 		_spec.SetField(products.FieldCreatedAt, field.TypeTime, value)
 		_node.CreatedAt = value
 	}
-	if value, ok := pc.mutation.UpdatedAt(); ok {
-		_spec.SetField(products.FieldUpdatedAt, field.TypeTime, value)
-		_node.UpdatedAt = value
-	}
 	if value, ok := pc.mutation.DeletedAt(); ok {
 		_spec.SetField(products.FieldDeletedAt, field.TypeTime, value)
 		_node.DeletedAt = &value
-	}
-	if value, ok := pc.mutation.CreatedBy(); ok {
-		_spec.SetField(products.FieldCreatedBy, field.TypeInt, value)
-		_node.CreatedBy = value
-	}
-	if value, ok := pc.mutation.UpdatedBy(); ok {
-		_spec.SetField(products.FieldUpdatedBy, field.TypeInt, value)
-		_node.UpdatedBy = value
-	}
-	if value, ok := pc.mutation.DeletedBy(); ok {
-		_spec.SetField(products.FieldDeletedBy, field.TypeInt, value)
-		_node.DeletedBy = &value
-	}
-	if value, ok := pc.mutation.CategoryID(); ok {
-		_spec.SetField(products.FieldCategoryID, field.TypeInt, value)
-		_node.CategoryID = &value
-	}
-	if value, ok := pc.mutation.BrandID(); ok {
-		_spec.SetField(products.FieldBrandID, field.TypeInt, value)
-		_node.BrandID = &value
-	}
-	if value, ok := pc.mutation.VariantTypeID(); ok {
-		_spec.SetField(products.FieldVariantTypeID, field.TypeInt, value)
-		_node.VariantTypeID = &value
-	}
-	if value, ok := pc.mutation.ProductReferencesID(); ok {
-		_spec.SetField(products.FieldProductReferencesID, field.TypeInt, value)
-		_node.ProductReferencesID = &value
-	}
-	if value, ok := pc.mutation.ImageID(); ok {
-		_spec.SetField(products.FieldImageID, field.TypeInt, value)
-		_node.ImageID = &value
 	}
 	if value, ok := pc.mutation.Name(); ok {
 		_spec.SetField(products.FieldName, field.TypeString, value)
@@ -494,7 +380,7 @@ func (pc *ProductsCreate) createSpec() (*Products, *sqlgraph.CreateSpec) {
 		for _, k := range nodes {
 			edge.Target.Nodes = append(edge.Target.Nodes, k)
 		}
-		_node.category_products = &nodes[0]
+		_node.CategoryID = &nodes[0]
 		_spec.Edges = append(_spec.Edges, edge)
 	}
 	if nodes := pc.mutation.BrandIDs(); len(nodes) > 0 {
@@ -511,7 +397,7 @@ func (pc *ProductsCreate) createSpec() (*Products, *sqlgraph.CreateSpec) {
 		for _, k := range nodes {
 			edge.Target.Nodes = append(edge.Target.Nodes, k)
 		}
-		_node.brand_products = &nodes[0]
+		_node.BrandID = &nodes[0]
 		_spec.Edges = append(_spec.Edges, edge)
 	}
 	if nodes := pc.mutation.VariantTypeIDs(); len(nodes) > 0 {
@@ -528,13 +414,13 @@ func (pc *ProductsCreate) createSpec() (*Products, *sqlgraph.CreateSpec) {
 		for _, k := range nodes {
 			edge.Target.Nodes = append(edge.Target.Nodes, k)
 		}
-		_node.variant_type_products = &nodes[0]
+		_node.VariantTypeID = &nodes[0]
 		_spec.Edges = append(_spec.Edges, edge)
 	}
 	if nodes := pc.mutation.ProductReferencesIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
 			Table:   products.ProductReferencesTable,
 			Columns: []string{products.ProductReferencesColumn},
 			Bidi:    false,
@@ -545,12 +431,13 @@ func (pc *ProductsCreate) createSpec() (*Products, *sqlgraph.CreateSpec) {
 		for _, k := range nodes {
 			edge.Target.Nodes = append(edge.Target.Nodes, k)
 		}
+		_node.ProductReferencesID = &nodes[0]
 		_spec.Edges = append(_spec.Edges, edge)
 	}
 	if nodes := pc.mutation.ImagesIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
 			Table:   products.ImagesTable,
 			Columns: []string{products.ImagesColumn},
 			Bidi:    false,
@@ -561,6 +448,7 @@ func (pc *ProductsCreate) createSpec() (*Products, *sqlgraph.CreateSpec) {
 		for _, k := range nodes {
 			edge.Target.Nodes = append(edge.Target.Nodes, k)
 		}
+		_node.ImagesID = &nodes[0]
 		_spec.Edges = append(_spec.Edges, edge)
 	}
 	if nodes := pc.mutation.ProductHasImageIDs(); len(nodes) > 0 {

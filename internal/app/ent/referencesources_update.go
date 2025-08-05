@@ -29,12 +29,6 @@ func (rsu *ReferenceSourcesUpdate) Where(ps ...predicate.ReferenceSources) *Refe
 	return rsu
 }
 
-// SetUpdatedAt sets the "updated_at" field.
-func (rsu *ReferenceSourcesUpdate) SetUpdatedAt(t time.Time) *ReferenceSourcesUpdate {
-	rsu.mutation.SetUpdatedAt(t)
-	return rsu
-}
-
 // SetDeletedAt sets the "deleted_at" field.
 func (rsu *ReferenceSourcesUpdate) SetDeletedAt(t time.Time) *ReferenceSourcesUpdate {
 	rsu.mutation.SetDeletedAt(t)
@@ -52,54 +46,6 @@ func (rsu *ReferenceSourcesUpdate) SetNillableDeletedAt(t *time.Time) *Reference
 // ClearDeletedAt clears the value of the "deleted_at" field.
 func (rsu *ReferenceSourcesUpdate) ClearDeletedAt() *ReferenceSourcesUpdate {
 	rsu.mutation.ClearDeletedAt()
-	return rsu
-}
-
-// SetUpdatedBy sets the "updated_by" field.
-func (rsu *ReferenceSourcesUpdate) SetUpdatedBy(i int) *ReferenceSourcesUpdate {
-	rsu.mutation.ResetUpdatedBy()
-	rsu.mutation.SetUpdatedBy(i)
-	return rsu
-}
-
-// SetNillableUpdatedBy sets the "updated_by" field if the given value is not nil.
-func (rsu *ReferenceSourcesUpdate) SetNillableUpdatedBy(i *int) *ReferenceSourcesUpdate {
-	if i != nil {
-		rsu.SetUpdatedBy(*i)
-	}
-	return rsu
-}
-
-// AddUpdatedBy adds i to the "updated_by" field.
-func (rsu *ReferenceSourcesUpdate) AddUpdatedBy(i int) *ReferenceSourcesUpdate {
-	rsu.mutation.AddUpdatedBy(i)
-	return rsu
-}
-
-// SetDeletedBy sets the "deleted_by" field.
-func (rsu *ReferenceSourcesUpdate) SetDeletedBy(i int) *ReferenceSourcesUpdate {
-	rsu.mutation.ResetDeletedBy()
-	rsu.mutation.SetDeletedBy(i)
-	return rsu
-}
-
-// SetNillableDeletedBy sets the "deleted_by" field if the given value is not nil.
-func (rsu *ReferenceSourcesUpdate) SetNillableDeletedBy(i *int) *ReferenceSourcesUpdate {
-	if i != nil {
-		rsu.SetDeletedBy(*i)
-	}
-	return rsu
-}
-
-// AddDeletedBy adds i to the "deleted_by" field.
-func (rsu *ReferenceSourcesUpdate) AddDeletedBy(i int) *ReferenceSourcesUpdate {
-	rsu.mutation.AddDeletedBy(i)
-	return rsu
-}
-
-// ClearDeletedBy clears the value of the "deleted_by" field.
-func (rsu *ReferenceSourcesUpdate) ClearDeletedBy() *ReferenceSourcesUpdate {
-	rsu.mutation.ClearDeletedBy()
 	return rsu
 }
 
@@ -160,7 +106,6 @@ func (rsu *ReferenceSourcesUpdate) RemoveProductReferences(p ...*ProductReferenc
 
 // Save executes the query and returns the number of nodes affected by the update operation.
 func (rsu *ReferenceSourcesUpdate) Save(ctx context.Context) (int, error) {
-	rsu.defaults()
 	return withHooks(ctx, rsu.sqlSave, rsu.mutation, rsu.hooks)
 }
 
@@ -186,28 +131,7 @@ func (rsu *ReferenceSourcesUpdate) ExecX(ctx context.Context) {
 	}
 }
 
-// defaults sets the default values of the builder before save.
-func (rsu *ReferenceSourcesUpdate) defaults() {
-	if _, ok := rsu.mutation.UpdatedAt(); !ok {
-		v := referencesources.UpdateDefaultUpdatedAt()
-		rsu.mutation.SetUpdatedAt(v)
-	}
-}
-
-// check runs all checks and user-defined validators on the builder.
-func (rsu *ReferenceSourcesUpdate) check() error {
-	if v, ok := rsu.mutation.UpdatedBy(); ok {
-		if err := referencesources.UpdatedByValidator(v); err != nil {
-			return &ValidationError{Name: "updated_by", err: fmt.Errorf(`ent: validator failed for field "ReferenceSources.updated_by": %w`, err)}
-		}
-	}
-	return nil
-}
-
 func (rsu *ReferenceSourcesUpdate) sqlSave(ctx context.Context) (n int, err error) {
-	if err := rsu.check(); err != nil {
-		return n, err
-	}
 	_spec := sqlgraph.NewUpdateSpec(referencesources.Table, referencesources.Columns, sqlgraph.NewFieldSpec(referencesources.FieldID, field.TypeInt))
 	if ps := rsu.mutation.predicates; len(ps) > 0 {
 		_spec.Predicate = func(selector *sql.Selector) {
@@ -216,29 +140,11 @@ func (rsu *ReferenceSourcesUpdate) sqlSave(ctx context.Context) (n int, err erro
 			}
 		}
 	}
-	if value, ok := rsu.mutation.UpdatedAt(); ok {
-		_spec.SetField(referencesources.FieldUpdatedAt, field.TypeTime, value)
-	}
 	if value, ok := rsu.mutation.DeletedAt(); ok {
 		_spec.SetField(referencesources.FieldDeletedAt, field.TypeTime, value)
 	}
 	if rsu.mutation.DeletedAtCleared() {
 		_spec.ClearField(referencesources.FieldDeletedAt, field.TypeTime)
-	}
-	if value, ok := rsu.mutation.UpdatedBy(); ok {
-		_spec.SetField(referencesources.FieldUpdatedBy, field.TypeInt, value)
-	}
-	if value, ok := rsu.mutation.AddedUpdatedBy(); ok {
-		_spec.AddField(referencesources.FieldUpdatedBy, field.TypeInt, value)
-	}
-	if value, ok := rsu.mutation.DeletedBy(); ok {
-		_spec.SetField(referencesources.FieldDeletedBy, field.TypeInt, value)
-	}
-	if value, ok := rsu.mutation.AddedDeletedBy(); ok {
-		_spec.AddField(referencesources.FieldDeletedBy, field.TypeInt, value)
-	}
-	if rsu.mutation.DeletedByCleared() {
-		_spec.ClearField(referencesources.FieldDeletedBy, field.TypeInt)
 	}
 	if value, ok := rsu.mutation.Name(); ok {
 		_spec.SetField(referencesources.FieldName, field.TypeString, value)
@@ -308,12 +214,6 @@ type ReferenceSourcesUpdateOne struct {
 	mutation *ReferenceSourcesMutation
 }
 
-// SetUpdatedAt sets the "updated_at" field.
-func (rsuo *ReferenceSourcesUpdateOne) SetUpdatedAt(t time.Time) *ReferenceSourcesUpdateOne {
-	rsuo.mutation.SetUpdatedAt(t)
-	return rsuo
-}
-
 // SetDeletedAt sets the "deleted_at" field.
 func (rsuo *ReferenceSourcesUpdateOne) SetDeletedAt(t time.Time) *ReferenceSourcesUpdateOne {
 	rsuo.mutation.SetDeletedAt(t)
@@ -331,54 +231,6 @@ func (rsuo *ReferenceSourcesUpdateOne) SetNillableDeletedAt(t *time.Time) *Refer
 // ClearDeletedAt clears the value of the "deleted_at" field.
 func (rsuo *ReferenceSourcesUpdateOne) ClearDeletedAt() *ReferenceSourcesUpdateOne {
 	rsuo.mutation.ClearDeletedAt()
-	return rsuo
-}
-
-// SetUpdatedBy sets the "updated_by" field.
-func (rsuo *ReferenceSourcesUpdateOne) SetUpdatedBy(i int) *ReferenceSourcesUpdateOne {
-	rsuo.mutation.ResetUpdatedBy()
-	rsuo.mutation.SetUpdatedBy(i)
-	return rsuo
-}
-
-// SetNillableUpdatedBy sets the "updated_by" field if the given value is not nil.
-func (rsuo *ReferenceSourcesUpdateOne) SetNillableUpdatedBy(i *int) *ReferenceSourcesUpdateOne {
-	if i != nil {
-		rsuo.SetUpdatedBy(*i)
-	}
-	return rsuo
-}
-
-// AddUpdatedBy adds i to the "updated_by" field.
-func (rsuo *ReferenceSourcesUpdateOne) AddUpdatedBy(i int) *ReferenceSourcesUpdateOne {
-	rsuo.mutation.AddUpdatedBy(i)
-	return rsuo
-}
-
-// SetDeletedBy sets the "deleted_by" field.
-func (rsuo *ReferenceSourcesUpdateOne) SetDeletedBy(i int) *ReferenceSourcesUpdateOne {
-	rsuo.mutation.ResetDeletedBy()
-	rsuo.mutation.SetDeletedBy(i)
-	return rsuo
-}
-
-// SetNillableDeletedBy sets the "deleted_by" field if the given value is not nil.
-func (rsuo *ReferenceSourcesUpdateOne) SetNillableDeletedBy(i *int) *ReferenceSourcesUpdateOne {
-	if i != nil {
-		rsuo.SetDeletedBy(*i)
-	}
-	return rsuo
-}
-
-// AddDeletedBy adds i to the "deleted_by" field.
-func (rsuo *ReferenceSourcesUpdateOne) AddDeletedBy(i int) *ReferenceSourcesUpdateOne {
-	rsuo.mutation.AddDeletedBy(i)
-	return rsuo
-}
-
-// ClearDeletedBy clears the value of the "deleted_by" field.
-func (rsuo *ReferenceSourcesUpdateOne) ClearDeletedBy() *ReferenceSourcesUpdateOne {
-	rsuo.mutation.ClearDeletedBy()
 	return rsuo
 }
 
@@ -452,7 +304,6 @@ func (rsuo *ReferenceSourcesUpdateOne) Select(field string, fields ...string) *R
 
 // Save executes the query and returns the updated ReferenceSources entity.
 func (rsuo *ReferenceSourcesUpdateOne) Save(ctx context.Context) (*ReferenceSources, error) {
-	rsuo.defaults()
 	return withHooks(ctx, rsuo.sqlSave, rsuo.mutation, rsuo.hooks)
 }
 
@@ -478,28 +329,7 @@ func (rsuo *ReferenceSourcesUpdateOne) ExecX(ctx context.Context) {
 	}
 }
 
-// defaults sets the default values of the builder before save.
-func (rsuo *ReferenceSourcesUpdateOne) defaults() {
-	if _, ok := rsuo.mutation.UpdatedAt(); !ok {
-		v := referencesources.UpdateDefaultUpdatedAt()
-		rsuo.mutation.SetUpdatedAt(v)
-	}
-}
-
-// check runs all checks and user-defined validators on the builder.
-func (rsuo *ReferenceSourcesUpdateOne) check() error {
-	if v, ok := rsuo.mutation.UpdatedBy(); ok {
-		if err := referencesources.UpdatedByValidator(v); err != nil {
-			return &ValidationError{Name: "updated_by", err: fmt.Errorf(`ent: validator failed for field "ReferenceSources.updated_by": %w`, err)}
-		}
-	}
-	return nil
-}
-
 func (rsuo *ReferenceSourcesUpdateOne) sqlSave(ctx context.Context) (_node *ReferenceSources, err error) {
-	if err := rsuo.check(); err != nil {
-		return _node, err
-	}
 	_spec := sqlgraph.NewUpdateSpec(referencesources.Table, referencesources.Columns, sqlgraph.NewFieldSpec(referencesources.FieldID, field.TypeInt))
 	id, ok := rsuo.mutation.ID()
 	if !ok {
@@ -525,29 +355,11 @@ func (rsuo *ReferenceSourcesUpdateOne) sqlSave(ctx context.Context) (_node *Refe
 			}
 		}
 	}
-	if value, ok := rsuo.mutation.UpdatedAt(); ok {
-		_spec.SetField(referencesources.FieldUpdatedAt, field.TypeTime, value)
-	}
 	if value, ok := rsuo.mutation.DeletedAt(); ok {
 		_spec.SetField(referencesources.FieldDeletedAt, field.TypeTime, value)
 	}
 	if rsuo.mutation.DeletedAtCleared() {
 		_spec.ClearField(referencesources.FieldDeletedAt, field.TypeTime)
-	}
-	if value, ok := rsuo.mutation.UpdatedBy(); ok {
-		_spec.SetField(referencesources.FieldUpdatedBy, field.TypeInt, value)
-	}
-	if value, ok := rsuo.mutation.AddedUpdatedBy(); ok {
-		_spec.AddField(referencesources.FieldUpdatedBy, field.TypeInt, value)
-	}
-	if value, ok := rsuo.mutation.DeletedBy(); ok {
-		_spec.SetField(referencesources.FieldDeletedBy, field.TypeInt, value)
-	}
-	if value, ok := rsuo.mutation.AddedDeletedBy(); ok {
-		_spec.AddField(referencesources.FieldDeletedBy, field.TypeInt, value)
-	}
-	if rsuo.mutation.DeletedByCleared() {
-		_spec.ClearField(referencesources.FieldDeletedBy, field.TypeInt)
 	}
 	if value, ok := rsuo.mutation.Name(); ok {
 		_spec.SetField(referencesources.FieldName, field.TypeString, value)

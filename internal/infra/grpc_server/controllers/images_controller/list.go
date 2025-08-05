@@ -24,10 +24,6 @@ func (c *controller) List(ctx context.Context, in *images_proto.ListRequest) (*i
 
 	query := tx.Images.Query()
 
-	if in.ImageFolderPathId != nil {
-		query = query.Where(images.ImageFolderPathID(int(*in.ImageFolderPathId)))
-	}
-
 	if in.Content != nil {
 		query = query.Where(images.Content(string(*in.Content)))
 	}

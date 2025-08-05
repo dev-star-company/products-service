@@ -9,9 +9,6 @@ import (
 )
 
 func (c *controller) Delete(ctx context.Context, in *promotion_has_product_proto.DeleteRequest) (*promotion_has_product_proto.DeleteResponse, error) {
-	if in.RequesterId == 0 {
-		return nil, errs.PromotionHasProductNotFound(int(in.Id))
-	}
 
 	tx, err := c.Db.Tx(ctx)
 	if err != nil {
@@ -20,7 +17,6 @@ func (c *controller) Delete(ctx context.Context, in *promotion_has_product_proto
 
 	err = tx.PromotionHasProduct.UpdateOneID(int(in.Id)).
 		SetDeletedAt(time.Now()).
-		SetDeletedBy(int(in.RequesterId)).
 		Exec(ctx)
 
 	if err != nil {

@@ -26,10 +26,9 @@ type ProductReferencesQuery struct {
 	order                          []productreferences.OrderOption
 	inters                         []Interceptor
 	predicates                     []predicate.ProductReferences
-	withProduct                    *ProductsQuery
 	withReferenceSources           *ReferenceSourcesQuery
+	withProducts                   *ProductsQuery
 	withProductHasProductReference *ProductHasProductReferenceQuery
-	withFKs                        bool
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
 	path func(context.Context) (*sql.Selector, error)
@@ -66,28 +65,6 @@ func (prq *ProductReferencesQuery) Order(o ...productreferences.OrderOption) *Pr
 	return prq
 }
 
-// QueryProduct chains the current query on the "product" edge.
-func (prq *ProductReferencesQuery) QueryProduct() *ProductsQuery {
-	query := (&ProductsClient{config: prq.config}).Query()
-	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
-		if err := prq.prepareQuery(ctx); err != nil {
-			return nil, err
-		}
-		selector := prq.sqlQuery(ctx)
-		if err := selector.Err(); err != nil {
-			return nil, err
-		}
-		step := sqlgraph.NewStep(
-			sqlgraph.From(productreferences.Table, productreferences.FieldID, selector),
-			sqlgraph.To(products.Table, products.FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, true, productreferences.ProductTable, productreferences.ProductColumn),
-		)
-		fromU = sqlgraph.SetNeighbors(prq.driver.Dialect(), step)
-		return fromU, nil
-	}
-	return query
-}
-
 // QueryReferenceSources chains the current query on the "reference_sources" edge.
 func (prq *ProductReferencesQuery) QueryReferenceSources() *ReferenceSourcesQuery {
 	query := (&ReferenceSourcesClient{config: prq.config}).Query()
@@ -103,6 +80,28 @@ func (prq *ProductReferencesQuery) QueryReferenceSources() *ReferenceSourcesQuer
 			sqlgraph.From(productreferences.Table, productreferences.FieldID, selector),
 			sqlgraph.To(referencesources.Table, referencesources.FieldID),
 			sqlgraph.Edge(sqlgraph.M2O, true, productreferences.ReferenceSourcesTable, productreferences.ReferenceSourcesColumn),
+		)
+		fromU = sqlgraph.SetNeighbors(prq.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
+}
+
+// QueryProducts chains the current query on the "products" edge.
+func (prq *ProductReferencesQuery) QueryProducts() *ProductsQuery {
+	query := (&ProductsClient{config: prq.config}).Query()
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := prq.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		selector := prq.sqlQuery(ctx)
+		if err := selector.Err(); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(productreferences.Table, productreferences.FieldID, selector),
+			sqlgraph.To(products.Table, products.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, productreferences.ProductsTable, productreferences.ProductsColumn),
 		)
 		fromU = sqlgraph.SetNeighbors(prq.driver.Dialect(), step)
 		return fromU, nil
@@ -324,24 +323,13 @@ func (prq *ProductReferencesQuery) Clone() *ProductReferencesQuery {
 		order:                          append([]productreferences.OrderOption{}, prq.order...),
 		inters:                         append([]Interceptor{}, prq.inters...),
 		predicates:                     append([]predicate.ProductReferences{}, prq.predicates...),
-		withProduct:                    prq.withProduct.Clone(),
 		withReferenceSources:           prq.withReferenceSources.Clone(),
+		withProducts:                   prq.withProducts.Clone(),
 		withProductHasProductReference: prq.withProductHasProductReference.Clone(),
 		// clone intermediate query.
 		sql:  prq.sql.Clone(),
 		path: prq.path,
 	}
-}
-
-// WithProduct tells the query-builder to eager-load the nodes that are connected to
-// the "product" edge. The optional arguments are used to configure the query builder of the edge.
-func (prq *ProductReferencesQuery) WithProduct(opts ...func(*ProductsQuery)) *ProductReferencesQuery {
-	query := (&ProductsClient{config: prq.config}).Query()
-	for _, opt := range opts {
-		opt(query)
-	}
-	prq.withProduct = query
-	return prq
 }
 
 // WithReferenceSources tells the query-builder to eager-load the nodes that are connected to
@@ -352,6 +340,17 @@ func (prq *ProductReferencesQuery) WithReferenceSources(opts ...func(*ReferenceS
 		opt(query)
 	}
 	prq.withReferenceSources = query
+	return prq
+}
+
+// WithProducts tells the query-builder to eager-load the nodes that are connected to
+// the "products" edge. The optional arguments are used to configure the query builder of the edge.
+func (prq *ProductReferencesQuery) WithProducts(opts ...func(*ProductsQuery)) *ProductReferencesQuery {
+	query := (&ProductsClient{config: prq.config}).Query()
+	for _, opt := range opts {
+		opt(query)
+	}
+	prq.withProducts = query
 	return prq
 }
 
@@ -443,20 +442,13 @@ func (prq *ProductReferencesQuery) prepareQuery(ctx context.Context) error {
 func (prq *ProductReferencesQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*ProductReferences, error) {
 	var (
 		nodes       = []*ProductReferences{}
-		withFKs     = prq.withFKs
 		_spec       = prq.querySpec()
 		loadedTypes = [3]bool{
-			prq.withProduct != nil,
 			prq.withReferenceSources != nil,
+			prq.withProducts != nil,
 			prq.withProductHasProductReference != nil,
 		}
 	)
-	if prq.withProduct != nil || prq.withReferenceSources != nil {
-		withFKs = true
-	}
-	if withFKs {
-		_spec.Node.Columns = append(_spec.Node.Columns, productreferences.ForeignKeys...)
-	}
 	_spec.ScanValues = func(columns []string) ([]any, error) {
 		return (*ProductReferences).scanValues(nil, columns)
 	}
@@ -475,15 +467,16 @@ func (prq *ProductReferencesQuery) sqlAll(ctx context.Context, hooks ...queryHoo
 	if len(nodes) == 0 {
 		return nodes, nil
 	}
-	if query := prq.withProduct; query != nil {
-		if err := prq.loadProduct(ctx, query, nodes, nil,
-			func(n *ProductReferences, e *Products) { n.Edges.Product = e }); err != nil {
-			return nil, err
-		}
-	}
 	if query := prq.withReferenceSources; query != nil {
 		if err := prq.loadReferenceSources(ctx, query, nodes, nil,
 			func(n *ProductReferences, e *ReferenceSources) { n.Edges.ReferenceSources = e }); err != nil {
+			return nil, err
+		}
+	}
+	if query := prq.withProducts; query != nil {
+		if err := prq.loadProducts(ctx, query, nodes,
+			func(n *ProductReferences) { n.Edges.Products = []*Products{} },
+			func(n *ProductReferences, e *Products) { n.Edges.Products = append(n.Edges.Products, e) }); err != nil {
 			return nil, err
 		}
 	}
@@ -499,46 +492,14 @@ func (prq *ProductReferencesQuery) sqlAll(ctx context.Context, hooks ...queryHoo
 	return nodes, nil
 }
 
-func (prq *ProductReferencesQuery) loadProduct(ctx context.Context, query *ProductsQuery, nodes []*ProductReferences, init func(*ProductReferences), assign func(*ProductReferences, *Products)) error {
-	ids := make([]int, 0, len(nodes))
-	nodeids := make(map[int][]*ProductReferences)
-	for i := range nodes {
-		if nodes[i].products_product_references == nil {
-			continue
-		}
-		fk := *nodes[i].products_product_references
-		if _, ok := nodeids[fk]; !ok {
-			ids = append(ids, fk)
-		}
-		nodeids[fk] = append(nodeids[fk], nodes[i])
-	}
-	if len(ids) == 0 {
-		return nil
-	}
-	query.Where(products.IDIn(ids...))
-	neighbors, err := query.All(ctx)
-	if err != nil {
-		return err
-	}
-	for _, n := range neighbors {
-		nodes, ok := nodeids[n.ID]
-		if !ok {
-			return fmt.Errorf(`unexpected foreign-key "products_product_references" returned %v`, n.ID)
-		}
-		for i := range nodes {
-			assign(nodes[i], n)
-		}
-	}
-	return nil
-}
 func (prq *ProductReferencesQuery) loadReferenceSources(ctx context.Context, query *ReferenceSourcesQuery, nodes []*ProductReferences, init func(*ProductReferences), assign func(*ProductReferences, *ReferenceSources)) error {
 	ids := make([]int, 0, len(nodes))
 	nodeids := make(map[int][]*ProductReferences)
 	for i := range nodes {
-		if nodes[i].reference_sources_product_references == nil {
+		if nodes[i].ReferenceSourceID == nil {
 			continue
 		}
-		fk := *nodes[i].reference_sources_product_references
+		fk := *nodes[i].ReferenceSourceID
 		if _, ok := nodeids[fk]; !ok {
 			ids = append(ids, fk)
 		}
@@ -555,11 +516,45 @@ func (prq *ProductReferencesQuery) loadReferenceSources(ctx context.Context, que
 	for _, n := range neighbors {
 		nodes, ok := nodeids[n.ID]
 		if !ok {
-			return fmt.Errorf(`unexpected foreign-key "reference_sources_product_references" returned %v`, n.ID)
+			return fmt.Errorf(`unexpected foreign-key "reference_source_id" returned %v`, n.ID)
 		}
 		for i := range nodes {
 			assign(nodes[i], n)
 		}
+	}
+	return nil
+}
+func (prq *ProductReferencesQuery) loadProducts(ctx context.Context, query *ProductsQuery, nodes []*ProductReferences, init func(*ProductReferences), assign func(*ProductReferences, *Products)) error {
+	fks := make([]driver.Value, 0, len(nodes))
+	nodeids := make(map[int]*ProductReferences)
+	for i := range nodes {
+		fks = append(fks, nodes[i].ID)
+		nodeids[nodes[i].ID] = nodes[i]
+		if init != nil {
+			init(nodes[i])
+		}
+	}
+	query.withFKs = true
+	if len(query.ctx.Fields) > 0 {
+		query.ctx.AppendFieldOnce(products.FieldProductReferencesID)
+	}
+	query.Where(predicate.Products(func(s *sql.Selector) {
+		s.Where(sql.InValues(s.C(productreferences.ProductsColumn), fks...))
+	}))
+	neighbors, err := query.All(ctx)
+	if err != nil {
+		return err
+	}
+	for _, n := range neighbors {
+		fk := n.ProductReferencesID
+		if fk == nil {
+			return fmt.Errorf(`foreign-key "product_references_id" is nil for node %v`, n.ID)
+		}
+		node, ok := nodeids[*fk]
+		if !ok {
+			return fmt.Errorf(`unexpected referenced foreign-key "product_references_id" returned %v for node %v`, *fk, n.ID)
+		}
+		assign(node, n)
 	}
 	return nil
 }
@@ -621,6 +616,9 @@ func (prq *ProductReferencesQuery) querySpec() *sqlgraph.QuerySpec {
 			if fields[i] != productreferences.FieldID {
 				_spec.Node.Columns = append(_spec.Node.Columns, fields[i])
 			}
+		}
+		if prq.withReferenceSources != nil {
+			_spec.Node.AddColumnOnce(productreferences.FieldReferenceSourceID)
 		}
 	}
 	if ps := prq.predicates; len(ps) > 0 {

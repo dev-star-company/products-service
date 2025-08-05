@@ -20,13 +20,12 @@ import (
 // PromotionHasProductQuery is the builder for querying PromotionHasProduct entities.
 type PromotionHasProductQuery struct {
 	config
-	ctx           *QueryContext
-	order         []promotionhasproduct.OrderOption
-	inters        []Interceptor
-	predicates    []predicate.PromotionHasProduct
-	withProduct   *ProductsQuery
-	withPromotion *PromotionsQuery
-	withFKs       bool
+	ctx            *QueryContext
+	order          []promotionhasproduct.OrderOption
+	inters         []Interceptor
+	predicates     []predicate.PromotionHasProduct
+	withProducts   *ProductsQuery
+	withPromotions *PromotionsQuery
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
 	path func(context.Context) (*sql.Selector, error)
@@ -63,8 +62,8 @@ func (phpq *PromotionHasProductQuery) Order(o ...promotionhasproduct.OrderOption
 	return phpq
 }
 
-// QueryProduct chains the current query on the "product" edge.
-func (phpq *PromotionHasProductQuery) QueryProduct() *ProductsQuery {
+// QueryProducts chains the current query on the "products" edge.
+func (phpq *PromotionHasProductQuery) QueryProducts() *ProductsQuery {
 	query := (&ProductsClient{config: phpq.config}).Query()
 	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
 		if err := phpq.prepareQuery(ctx); err != nil {
@@ -77,7 +76,7 @@ func (phpq *PromotionHasProductQuery) QueryProduct() *ProductsQuery {
 		step := sqlgraph.NewStep(
 			sqlgraph.From(promotionhasproduct.Table, promotionhasproduct.FieldID, selector),
 			sqlgraph.To(products.Table, products.FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, true, promotionhasproduct.ProductTable, promotionhasproduct.ProductColumn),
+			sqlgraph.Edge(sqlgraph.M2O, true, promotionhasproduct.ProductsTable, promotionhasproduct.ProductsColumn),
 		)
 		fromU = sqlgraph.SetNeighbors(phpq.driver.Dialect(), step)
 		return fromU, nil
@@ -85,8 +84,8 @@ func (phpq *PromotionHasProductQuery) QueryProduct() *ProductsQuery {
 	return query
 }
 
-// QueryPromotion chains the current query on the "promotion" edge.
-func (phpq *PromotionHasProductQuery) QueryPromotion() *PromotionsQuery {
+// QueryPromotions chains the current query on the "promotions" edge.
+func (phpq *PromotionHasProductQuery) QueryPromotions() *PromotionsQuery {
 	query := (&PromotionsClient{config: phpq.config}).Query()
 	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
 		if err := phpq.prepareQuery(ctx); err != nil {
@@ -99,7 +98,7 @@ func (phpq *PromotionHasProductQuery) QueryPromotion() *PromotionsQuery {
 		step := sqlgraph.NewStep(
 			sqlgraph.From(promotionhasproduct.Table, promotionhasproduct.FieldID, selector),
 			sqlgraph.To(promotions.Table, promotions.FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, true, promotionhasproduct.PromotionTable, promotionhasproduct.PromotionColumn),
+			sqlgraph.Edge(sqlgraph.M2O, true, promotionhasproduct.PromotionsTable, promotionhasproduct.PromotionsColumn),
 		)
 		fromU = sqlgraph.SetNeighbors(phpq.driver.Dialect(), step)
 		return fromU, nil
@@ -294,38 +293,38 @@ func (phpq *PromotionHasProductQuery) Clone() *PromotionHasProductQuery {
 		return nil
 	}
 	return &PromotionHasProductQuery{
-		config:        phpq.config,
-		ctx:           phpq.ctx.Clone(),
-		order:         append([]promotionhasproduct.OrderOption{}, phpq.order...),
-		inters:        append([]Interceptor{}, phpq.inters...),
-		predicates:    append([]predicate.PromotionHasProduct{}, phpq.predicates...),
-		withProduct:   phpq.withProduct.Clone(),
-		withPromotion: phpq.withPromotion.Clone(),
+		config:         phpq.config,
+		ctx:            phpq.ctx.Clone(),
+		order:          append([]promotionhasproduct.OrderOption{}, phpq.order...),
+		inters:         append([]Interceptor{}, phpq.inters...),
+		predicates:     append([]predicate.PromotionHasProduct{}, phpq.predicates...),
+		withProducts:   phpq.withProducts.Clone(),
+		withPromotions: phpq.withPromotions.Clone(),
 		// clone intermediate query.
 		sql:  phpq.sql.Clone(),
 		path: phpq.path,
 	}
 }
 
-// WithProduct tells the query-builder to eager-load the nodes that are connected to
-// the "product" edge. The optional arguments are used to configure the query builder of the edge.
-func (phpq *PromotionHasProductQuery) WithProduct(opts ...func(*ProductsQuery)) *PromotionHasProductQuery {
+// WithProducts tells the query-builder to eager-load the nodes that are connected to
+// the "products" edge. The optional arguments are used to configure the query builder of the edge.
+func (phpq *PromotionHasProductQuery) WithProducts(opts ...func(*ProductsQuery)) *PromotionHasProductQuery {
 	query := (&ProductsClient{config: phpq.config}).Query()
 	for _, opt := range opts {
 		opt(query)
 	}
-	phpq.withProduct = query
+	phpq.withProducts = query
 	return phpq
 }
 
-// WithPromotion tells the query-builder to eager-load the nodes that are connected to
-// the "promotion" edge. The optional arguments are used to configure the query builder of the edge.
-func (phpq *PromotionHasProductQuery) WithPromotion(opts ...func(*PromotionsQuery)) *PromotionHasProductQuery {
+// WithPromotions tells the query-builder to eager-load the nodes that are connected to
+// the "promotions" edge. The optional arguments are used to configure the query builder of the edge.
+func (phpq *PromotionHasProductQuery) WithPromotions(opts ...func(*PromotionsQuery)) *PromotionHasProductQuery {
 	query := (&PromotionsClient{config: phpq.config}).Query()
 	for _, opt := range opts {
 		opt(query)
 	}
-	phpq.withPromotion = query
+	phpq.withPromotions = query
 	return phpq
 }
 
@@ -406,19 +405,12 @@ func (phpq *PromotionHasProductQuery) prepareQuery(ctx context.Context) error {
 func (phpq *PromotionHasProductQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*PromotionHasProduct, error) {
 	var (
 		nodes       = []*PromotionHasProduct{}
-		withFKs     = phpq.withFKs
 		_spec       = phpq.querySpec()
 		loadedTypes = [2]bool{
-			phpq.withProduct != nil,
-			phpq.withPromotion != nil,
+			phpq.withProducts != nil,
+			phpq.withPromotions != nil,
 		}
 	)
-	if phpq.withProduct != nil || phpq.withPromotion != nil {
-		withFKs = true
-	}
-	if withFKs {
-		_spec.Node.Columns = append(_spec.Node.Columns, promotionhasproduct.ForeignKeys...)
-	}
 	_spec.ScanValues = func(columns []string) ([]any, error) {
 		return (*PromotionHasProduct).scanValues(nil, columns)
 	}
@@ -437,29 +429,29 @@ func (phpq *PromotionHasProductQuery) sqlAll(ctx context.Context, hooks ...query
 	if len(nodes) == 0 {
 		return nodes, nil
 	}
-	if query := phpq.withProduct; query != nil {
-		if err := phpq.loadProduct(ctx, query, nodes, nil,
-			func(n *PromotionHasProduct, e *Products) { n.Edges.Product = e }); err != nil {
+	if query := phpq.withProducts; query != nil {
+		if err := phpq.loadProducts(ctx, query, nodes, nil,
+			func(n *PromotionHasProduct, e *Products) { n.Edges.Products = e }); err != nil {
 			return nil, err
 		}
 	}
-	if query := phpq.withPromotion; query != nil {
-		if err := phpq.loadPromotion(ctx, query, nodes, nil,
-			func(n *PromotionHasProduct, e *Promotions) { n.Edges.Promotion = e }); err != nil {
+	if query := phpq.withPromotions; query != nil {
+		if err := phpq.loadPromotions(ctx, query, nodes, nil,
+			func(n *PromotionHasProduct, e *Promotions) { n.Edges.Promotions = e }); err != nil {
 			return nil, err
 		}
 	}
 	return nodes, nil
 }
 
-func (phpq *PromotionHasProductQuery) loadProduct(ctx context.Context, query *ProductsQuery, nodes []*PromotionHasProduct, init func(*PromotionHasProduct), assign func(*PromotionHasProduct, *Products)) error {
+func (phpq *PromotionHasProductQuery) loadProducts(ctx context.Context, query *ProductsQuery, nodes []*PromotionHasProduct, init func(*PromotionHasProduct), assign func(*PromotionHasProduct, *Products)) error {
 	ids := make([]int, 0, len(nodes))
 	nodeids := make(map[int][]*PromotionHasProduct)
 	for i := range nodes {
-		if nodes[i].products_promotion_has_product == nil {
+		if nodes[i].ProductsID == nil {
 			continue
 		}
-		fk := *nodes[i].products_promotion_has_product
+		fk := *nodes[i].ProductsID
 		if _, ok := nodeids[fk]; !ok {
 			ids = append(ids, fk)
 		}
@@ -476,7 +468,7 @@ func (phpq *PromotionHasProductQuery) loadProduct(ctx context.Context, query *Pr
 	for _, n := range neighbors {
 		nodes, ok := nodeids[n.ID]
 		if !ok {
-			return fmt.Errorf(`unexpected foreign-key "products_promotion_has_product" returned %v`, n.ID)
+			return fmt.Errorf(`unexpected foreign-key "products_id" returned %v`, n.ID)
 		}
 		for i := range nodes {
 			assign(nodes[i], n)
@@ -484,14 +476,14 @@ func (phpq *PromotionHasProductQuery) loadProduct(ctx context.Context, query *Pr
 	}
 	return nil
 }
-func (phpq *PromotionHasProductQuery) loadPromotion(ctx context.Context, query *PromotionsQuery, nodes []*PromotionHasProduct, init func(*PromotionHasProduct), assign func(*PromotionHasProduct, *Promotions)) error {
+func (phpq *PromotionHasProductQuery) loadPromotions(ctx context.Context, query *PromotionsQuery, nodes []*PromotionHasProduct, init func(*PromotionHasProduct), assign func(*PromotionHasProduct, *Promotions)) error {
 	ids := make([]int, 0, len(nodes))
 	nodeids := make(map[int][]*PromotionHasProduct)
 	for i := range nodes {
-		if nodes[i].promotions_promotion_has_product == nil {
+		if nodes[i].PromotionsID == nil {
 			continue
 		}
-		fk := *nodes[i].promotions_promotion_has_product
+		fk := *nodes[i].PromotionsID
 		if _, ok := nodeids[fk]; !ok {
 			ids = append(ids, fk)
 		}
@@ -508,7 +500,7 @@ func (phpq *PromotionHasProductQuery) loadPromotion(ctx context.Context, query *
 	for _, n := range neighbors {
 		nodes, ok := nodeids[n.ID]
 		if !ok {
-			return fmt.Errorf(`unexpected foreign-key "promotions_promotion_has_product" returned %v`, n.ID)
+			return fmt.Errorf(`unexpected foreign-key "promotions_id" returned %v`, n.ID)
 		}
 		for i := range nodes {
 			assign(nodes[i], n)
@@ -541,6 +533,12 @@ func (phpq *PromotionHasProductQuery) querySpec() *sqlgraph.QuerySpec {
 			if fields[i] != promotionhasproduct.FieldID {
 				_spec.Node.Columns = append(_spec.Node.Columns, fields[i])
 			}
+		}
+		if phpq.withProducts != nil {
+			_spec.Node.AddColumnOnce(promotionhasproduct.FieldProductsID)
+		}
+		if phpq.withPromotions != nil {
+			_spec.Node.AddColumnOnce(promotionhasproduct.FieldPromotionsID)
 		}
 	}
 	if ps := phpq.predicates; len(ps) > 0 {

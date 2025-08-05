@@ -36,20 +36,6 @@ func (phic *ProductHasInfoCreate) SetNillableCreatedAt(t *time.Time) *ProductHas
 	return phic
 }
 
-// SetUpdatedAt sets the "updated_at" field.
-func (phic *ProductHasInfoCreate) SetUpdatedAt(t time.Time) *ProductHasInfoCreate {
-	phic.mutation.SetUpdatedAt(t)
-	return phic
-}
-
-// SetNillableUpdatedAt sets the "updated_at" field if the given value is not nil.
-func (phic *ProductHasInfoCreate) SetNillableUpdatedAt(t *time.Time) *ProductHasInfoCreate {
-	if t != nil {
-		phic.SetUpdatedAt(*t)
-	}
-	return phic
-}
-
 // SetDeletedAt sets the "deleted_at" field.
 func (phic *ProductHasInfoCreate) SetDeletedAt(t time.Time) *ProductHasInfoCreate {
 	phic.mutation.SetDeletedAt(t)
@@ -60,32 +46,6 @@ func (phic *ProductHasInfoCreate) SetDeletedAt(t time.Time) *ProductHasInfoCreat
 func (phic *ProductHasInfoCreate) SetNillableDeletedAt(t *time.Time) *ProductHasInfoCreate {
 	if t != nil {
 		phic.SetDeletedAt(*t)
-	}
-	return phic
-}
-
-// SetCreatedBy sets the "created_by" field.
-func (phic *ProductHasInfoCreate) SetCreatedBy(i int) *ProductHasInfoCreate {
-	phic.mutation.SetCreatedBy(i)
-	return phic
-}
-
-// SetUpdatedBy sets the "updated_by" field.
-func (phic *ProductHasInfoCreate) SetUpdatedBy(i int) *ProductHasInfoCreate {
-	phic.mutation.SetUpdatedBy(i)
-	return phic
-}
-
-// SetDeletedBy sets the "deleted_by" field.
-func (phic *ProductHasInfoCreate) SetDeletedBy(i int) *ProductHasInfoCreate {
-	phic.mutation.SetDeletedBy(i)
-	return phic
-}
-
-// SetNillableDeletedBy sets the "deleted_by" field if the given value is not nil.
-func (phic *ProductHasInfoCreate) SetNillableDeletedBy(i *int) *ProductHasInfoCreate {
-	if i != nil {
-		phic.SetDeletedBy(*i)
 	}
 	return phic
 }
@@ -181,35 +141,12 @@ func (phic *ProductHasInfoCreate) defaults() {
 		v := producthasinfo.DefaultCreatedAt()
 		phic.mutation.SetCreatedAt(v)
 	}
-	if _, ok := phic.mutation.UpdatedAt(); !ok {
-		v := producthasinfo.DefaultUpdatedAt()
-		phic.mutation.SetUpdatedAt(v)
-	}
 }
 
 // check runs all checks and user-defined validators on the builder.
 func (phic *ProductHasInfoCreate) check() error {
 	if _, ok := phic.mutation.CreatedAt(); !ok {
 		return &ValidationError{Name: "created_at", err: errors.New(`ent: missing required field "ProductHasInfo.created_at"`)}
-	}
-	if _, ok := phic.mutation.UpdatedAt(); !ok {
-		return &ValidationError{Name: "updated_at", err: errors.New(`ent: missing required field "ProductHasInfo.updated_at"`)}
-	}
-	if _, ok := phic.mutation.CreatedBy(); !ok {
-		return &ValidationError{Name: "created_by", err: errors.New(`ent: missing required field "ProductHasInfo.created_by"`)}
-	}
-	if v, ok := phic.mutation.CreatedBy(); ok {
-		if err := producthasinfo.CreatedByValidator(v); err != nil {
-			return &ValidationError{Name: "created_by", err: fmt.Errorf(`ent: validator failed for field "ProductHasInfo.created_by": %w`, err)}
-		}
-	}
-	if _, ok := phic.mutation.UpdatedBy(); !ok {
-		return &ValidationError{Name: "updated_by", err: errors.New(`ent: missing required field "ProductHasInfo.updated_by"`)}
-	}
-	if v, ok := phic.mutation.UpdatedBy(); ok {
-		if err := producthasinfo.UpdatedByValidator(v); err != nil {
-			return &ValidationError{Name: "updated_by", err: fmt.Errorf(`ent: validator failed for field "ProductHasInfo.updated_by": %w`, err)}
-		}
 	}
 	return nil
 }
@@ -241,25 +178,9 @@ func (phic *ProductHasInfoCreate) createSpec() (*ProductHasInfo, *sqlgraph.Creat
 		_spec.SetField(producthasinfo.FieldCreatedAt, field.TypeTime, value)
 		_node.CreatedAt = value
 	}
-	if value, ok := phic.mutation.UpdatedAt(); ok {
-		_spec.SetField(producthasinfo.FieldUpdatedAt, field.TypeTime, value)
-		_node.UpdatedAt = value
-	}
 	if value, ok := phic.mutation.DeletedAt(); ok {
 		_spec.SetField(producthasinfo.FieldDeletedAt, field.TypeTime, value)
 		_node.DeletedAt = &value
-	}
-	if value, ok := phic.mutation.CreatedBy(); ok {
-		_spec.SetField(producthasinfo.FieldCreatedBy, field.TypeInt, value)
-		_node.CreatedBy = value
-	}
-	if value, ok := phic.mutation.UpdatedBy(); ok {
-		_spec.SetField(producthasinfo.FieldUpdatedBy, field.TypeInt, value)
-		_node.UpdatedBy = value
-	}
-	if value, ok := phic.mutation.DeletedBy(); ok {
-		_spec.SetField(producthasinfo.FieldDeletedBy, field.TypeInt, value)
-		_node.DeletedBy = &value
 	}
 	if nodes := phic.mutation.ProductsIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{

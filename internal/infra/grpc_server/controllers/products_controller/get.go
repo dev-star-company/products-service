@@ -24,12 +24,11 @@ func (c *controller) Get(ctx context.Context, in *products_proto.GetRequest) (*p
 	}
 
 	return &products_proto.GetResponse{
-		RequesterId:         uint32(products.CreatedBy),
+
 		CategoryId:          uint32(*products.CategoryID),
 		BrandId:             uint32(*products.BrandID),
 		VariantTypeId:       uint32(*products.VariantTypeID),
 		ProductReferencesId: uint32(*products.ProductReferencesID),
-		ImageId:             uint32(*products.ImageID),
 		Name:                *products.Name,
 		Stock:               uint32(products.Stock),
 	}, nil

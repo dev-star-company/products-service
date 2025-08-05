@@ -9,9 +9,6 @@ import (
 )
 
 func (c *controller) Update(ctx context.Context, in *product_prices_proto.UpdateRequest) (*product_prices_proto.UpdateResponse, error) {
-	if in.RequesterId == 0 {
-		return nil, errs.ProductsNotFound(int(in.Id))
-	}
 
 	tx, err := c.Db.Tx(ctx)
 	if err != nil {
@@ -38,8 +35,6 @@ func (c *controller) Update(ctx context.Context, in *product_prices_proto.Update
 		product_pricesQ.SetMinValue(float64(*in.MinValue))
 	}
 
-	product_pricesQ.SetUpdatedBy(int(in.RequesterId))
-
 	product_prices, err = product_pricesQ.Save(ctx)
 	if err != nil {
 		if ent.IsNotFound(err) {
@@ -56,7 +51,7 @@ func (c *controller) Update(ctx context.Context, in *product_prices_proto.Update
 	}
 
 	return &product_prices_proto.UpdateResponse{
-		RequesterId:  uint32(product_prices.CreatedBy),
+
 		PriceTypeId:  uint32(*product_prices.PriceTypeID),
 		ProductsId:   uint32(*product_prices.ProductID),
 		DefaultValue: float64(*product_prices.DefaultValue),

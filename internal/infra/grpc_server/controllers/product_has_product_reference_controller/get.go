@@ -21,7 +21,7 @@ func (c *controller) Get(ctx context.Context, in *product_has_product_reference_
 	}
 
 	return &product_has_product_reference_proto.GetResponse{
-		RequesterId:        uint32(product_has_product_reference.CreatedBy),
+
 		ProductReferenceId: uint32(*product_has_product_reference.ProductReferenceID),
 		ProductsId:         uint32(*product_has_product_reference.ProductID),
 	}, nil

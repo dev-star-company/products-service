@@ -19,7 +19,7 @@ func (c *controller) Get(ctx context.Context, in *product_references_proto.GetRe
 	}
 
 	return &product_references_proto.GetResponse{
-		RequesterId:       uint32(product_references.CreatedBy),
+
 		ReferenceSourceId: uint32(*product_references.ReferenceSourceID),
 		Value:             *product_references.Value,
 	}, nil

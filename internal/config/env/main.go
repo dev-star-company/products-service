@@ -28,7 +28,7 @@ func init() {
 	var err error
 
 	if strings.ToLower(os.Getenv("LAUNCH_MODE")) == "debug" {
-		absPath, pathErr := filepath.Abs(os.Args[0] + "/../../.env")
+		absPath, pathErr := filepath.Abs(os.Args[0] + "../../.env")
 		if pathErr != nil {
 			panic("error resolving absolute path: " + pathErr.Error())
 		}
@@ -55,7 +55,7 @@ func init() {
 	var err error
 	fmt.Println("Execution path:", os.Args[0])
 	if strings.ToLower(os.Getenv("LAUNCH_MODE")) == "debug" {
-		envFile, err = godotenv.Read("../.env")
+		envFile, err = godotenv.Read(".env")
 	} else {
 		envFile, err = godotenv.Read(".env")
 	}

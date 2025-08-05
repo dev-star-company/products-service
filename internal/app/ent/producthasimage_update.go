@@ -30,12 +30,6 @@ func (phiu *ProductHasImageUpdate) Where(ps ...predicate.ProductHasImage) *Produ
 	return phiu
 }
 
-// SetUpdatedAt sets the "updated_at" field.
-func (phiu *ProductHasImageUpdate) SetUpdatedAt(t time.Time) *ProductHasImageUpdate {
-	phiu.mutation.SetUpdatedAt(t)
-	return phiu
-}
-
 // SetDeletedAt sets the "deleted_at" field.
 func (phiu *ProductHasImageUpdate) SetDeletedAt(t time.Time) *ProductHasImageUpdate {
 	phiu.mutation.SetDeletedAt(t)
@@ -53,54 +47,6 @@ func (phiu *ProductHasImageUpdate) SetNillableDeletedAt(t *time.Time) *ProductHa
 // ClearDeletedAt clears the value of the "deleted_at" field.
 func (phiu *ProductHasImageUpdate) ClearDeletedAt() *ProductHasImageUpdate {
 	phiu.mutation.ClearDeletedAt()
-	return phiu
-}
-
-// SetUpdatedBy sets the "updated_by" field.
-func (phiu *ProductHasImageUpdate) SetUpdatedBy(i int) *ProductHasImageUpdate {
-	phiu.mutation.ResetUpdatedBy()
-	phiu.mutation.SetUpdatedBy(i)
-	return phiu
-}
-
-// SetNillableUpdatedBy sets the "updated_by" field if the given value is not nil.
-func (phiu *ProductHasImageUpdate) SetNillableUpdatedBy(i *int) *ProductHasImageUpdate {
-	if i != nil {
-		phiu.SetUpdatedBy(*i)
-	}
-	return phiu
-}
-
-// AddUpdatedBy adds i to the "updated_by" field.
-func (phiu *ProductHasImageUpdate) AddUpdatedBy(i int) *ProductHasImageUpdate {
-	phiu.mutation.AddUpdatedBy(i)
-	return phiu
-}
-
-// SetDeletedBy sets the "deleted_by" field.
-func (phiu *ProductHasImageUpdate) SetDeletedBy(i int) *ProductHasImageUpdate {
-	phiu.mutation.ResetDeletedBy()
-	phiu.mutation.SetDeletedBy(i)
-	return phiu
-}
-
-// SetNillableDeletedBy sets the "deleted_by" field if the given value is not nil.
-func (phiu *ProductHasImageUpdate) SetNillableDeletedBy(i *int) *ProductHasImageUpdate {
-	if i != nil {
-		phiu.SetDeletedBy(*i)
-	}
-	return phiu
-}
-
-// AddDeletedBy adds i to the "deleted_by" field.
-func (phiu *ProductHasImageUpdate) AddDeletedBy(i int) *ProductHasImageUpdate {
-	phiu.mutation.AddDeletedBy(i)
-	return phiu
-}
-
-// ClearDeletedBy clears the value of the "deleted_by" field.
-func (phiu *ProductHasImageUpdate) ClearDeletedBy() *ProductHasImageUpdate {
-	phiu.mutation.ClearDeletedBy()
 	return phiu
 }
 
@@ -188,7 +134,6 @@ func (phiu *ProductHasImageUpdate) ClearImage() *ProductHasImageUpdate {
 
 // Save executes the query and returns the number of nodes affected by the update operation.
 func (phiu *ProductHasImageUpdate) Save(ctx context.Context) (int, error) {
-	phiu.defaults()
 	return withHooks(ctx, phiu.sqlSave, phiu.mutation, phiu.hooks)
 }
 
@@ -214,21 +159,8 @@ func (phiu *ProductHasImageUpdate) ExecX(ctx context.Context) {
 	}
 }
 
-// defaults sets the default values of the builder before save.
-func (phiu *ProductHasImageUpdate) defaults() {
-	if _, ok := phiu.mutation.UpdatedAt(); !ok {
-		v := producthasimage.UpdateDefaultUpdatedAt()
-		phiu.mutation.SetUpdatedAt(v)
-	}
-}
-
 // check runs all checks and user-defined validators on the builder.
 func (phiu *ProductHasImageUpdate) check() error {
-	if v, ok := phiu.mutation.UpdatedBy(); ok {
-		if err := producthasimage.UpdatedByValidator(v); err != nil {
-			return &ValidationError{Name: "updated_by", err: fmt.Errorf(`ent: validator failed for field "ProductHasImage.updated_by": %w`, err)}
-		}
-	}
 	if phiu.mutation.ImageCleared() && len(phiu.mutation.ImageIDs()) > 0 {
 		return errors.New(`ent: clearing a required unique edge "ProductHasImage.image"`)
 	}
@@ -247,29 +179,11 @@ func (phiu *ProductHasImageUpdate) sqlSave(ctx context.Context) (n int, err erro
 			}
 		}
 	}
-	if value, ok := phiu.mutation.UpdatedAt(); ok {
-		_spec.SetField(producthasimage.FieldUpdatedAt, field.TypeTime, value)
-	}
 	if value, ok := phiu.mutation.DeletedAt(); ok {
 		_spec.SetField(producthasimage.FieldDeletedAt, field.TypeTime, value)
 	}
 	if phiu.mutation.DeletedAtCleared() {
 		_spec.ClearField(producthasimage.FieldDeletedAt, field.TypeTime)
-	}
-	if value, ok := phiu.mutation.UpdatedBy(); ok {
-		_spec.SetField(producthasimage.FieldUpdatedBy, field.TypeInt, value)
-	}
-	if value, ok := phiu.mutation.AddedUpdatedBy(); ok {
-		_spec.AddField(producthasimage.FieldUpdatedBy, field.TypeInt, value)
-	}
-	if value, ok := phiu.mutation.DeletedBy(); ok {
-		_spec.SetField(producthasimage.FieldDeletedBy, field.TypeInt, value)
-	}
-	if value, ok := phiu.mutation.AddedDeletedBy(); ok {
-		_spec.AddField(producthasimage.FieldDeletedBy, field.TypeInt, value)
-	}
-	if phiu.mutation.DeletedByCleared() {
-		_spec.ClearField(producthasimage.FieldDeletedBy, field.TypeInt)
 	}
 	if value, ok := phiu.mutation.Priority(); ok {
 		_spec.SetField(producthasimage.FieldPriority, field.TypeInt, value)
@@ -355,12 +269,6 @@ type ProductHasImageUpdateOne struct {
 	mutation *ProductHasImageMutation
 }
 
-// SetUpdatedAt sets the "updated_at" field.
-func (phiuo *ProductHasImageUpdateOne) SetUpdatedAt(t time.Time) *ProductHasImageUpdateOne {
-	phiuo.mutation.SetUpdatedAt(t)
-	return phiuo
-}
-
 // SetDeletedAt sets the "deleted_at" field.
 func (phiuo *ProductHasImageUpdateOne) SetDeletedAt(t time.Time) *ProductHasImageUpdateOne {
 	phiuo.mutation.SetDeletedAt(t)
@@ -378,54 +286,6 @@ func (phiuo *ProductHasImageUpdateOne) SetNillableDeletedAt(t *time.Time) *Produ
 // ClearDeletedAt clears the value of the "deleted_at" field.
 func (phiuo *ProductHasImageUpdateOne) ClearDeletedAt() *ProductHasImageUpdateOne {
 	phiuo.mutation.ClearDeletedAt()
-	return phiuo
-}
-
-// SetUpdatedBy sets the "updated_by" field.
-func (phiuo *ProductHasImageUpdateOne) SetUpdatedBy(i int) *ProductHasImageUpdateOne {
-	phiuo.mutation.ResetUpdatedBy()
-	phiuo.mutation.SetUpdatedBy(i)
-	return phiuo
-}
-
-// SetNillableUpdatedBy sets the "updated_by" field if the given value is not nil.
-func (phiuo *ProductHasImageUpdateOne) SetNillableUpdatedBy(i *int) *ProductHasImageUpdateOne {
-	if i != nil {
-		phiuo.SetUpdatedBy(*i)
-	}
-	return phiuo
-}
-
-// AddUpdatedBy adds i to the "updated_by" field.
-func (phiuo *ProductHasImageUpdateOne) AddUpdatedBy(i int) *ProductHasImageUpdateOne {
-	phiuo.mutation.AddUpdatedBy(i)
-	return phiuo
-}
-
-// SetDeletedBy sets the "deleted_by" field.
-func (phiuo *ProductHasImageUpdateOne) SetDeletedBy(i int) *ProductHasImageUpdateOne {
-	phiuo.mutation.ResetDeletedBy()
-	phiuo.mutation.SetDeletedBy(i)
-	return phiuo
-}
-
-// SetNillableDeletedBy sets the "deleted_by" field if the given value is not nil.
-func (phiuo *ProductHasImageUpdateOne) SetNillableDeletedBy(i *int) *ProductHasImageUpdateOne {
-	if i != nil {
-		phiuo.SetDeletedBy(*i)
-	}
-	return phiuo
-}
-
-// AddDeletedBy adds i to the "deleted_by" field.
-func (phiuo *ProductHasImageUpdateOne) AddDeletedBy(i int) *ProductHasImageUpdateOne {
-	phiuo.mutation.AddDeletedBy(i)
-	return phiuo
-}
-
-// ClearDeletedBy clears the value of the "deleted_by" field.
-func (phiuo *ProductHasImageUpdateOne) ClearDeletedBy() *ProductHasImageUpdateOne {
-	phiuo.mutation.ClearDeletedBy()
 	return phiuo
 }
 
@@ -526,7 +386,6 @@ func (phiuo *ProductHasImageUpdateOne) Select(field string, fields ...string) *P
 
 // Save executes the query and returns the updated ProductHasImage entity.
 func (phiuo *ProductHasImageUpdateOne) Save(ctx context.Context) (*ProductHasImage, error) {
-	phiuo.defaults()
 	return withHooks(ctx, phiuo.sqlSave, phiuo.mutation, phiuo.hooks)
 }
 
@@ -552,21 +411,8 @@ func (phiuo *ProductHasImageUpdateOne) ExecX(ctx context.Context) {
 	}
 }
 
-// defaults sets the default values of the builder before save.
-func (phiuo *ProductHasImageUpdateOne) defaults() {
-	if _, ok := phiuo.mutation.UpdatedAt(); !ok {
-		v := producthasimage.UpdateDefaultUpdatedAt()
-		phiuo.mutation.SetUpdatedAt(v)
-	}
-}
-
 // check runs all checks and user-defined validators on the builder.
 func (phiuo *ProductHasImageUpdateOne) check() error {
-	if v, ok := phiuo.mutation.UpdatedBy(); ok {
-		if err := producthasimage.UpdatedByValidator(v); err != nil {
-			return &ValidationError{Name: "updated_by", err: fmt.Errorf(`ent: validator failed for field "ProductHasImage.updated_by": %w`, err)}
-		}
-	}
 	if phiuo.mutation.ImageCleared() && len(phiuo.mutation.ImageIDs()) > 0 {
 		return errors.New(`ent: clearing a required unique edge "ProductHasImage.image"`)
 	}
@@ -602,29 +448,11 @@ func (phiuo *ProductHasImageUpdateOne) sqlSave(ctx context.Context) (_node *Prod
 			}
 		}
 	}
-	if value, ok := phiuo.mutation.UpdatedAt(); ok {
-		_spec.SetField(producthasimage.FieldUpdatedAt, field.TypeTime, value)
-	}
 	if value, ok := phiuo.mutation.DeletedAt(); ok {
 		_spec.SetField(producthasimage.FieldDeletedAt, field.TypeTime, value)
 	}
 	if phiuo.mutation.DeletedAtCleared() {
 		_spec.ClearField(producthasimage.FieldDeletedAt, field.TypeTime)
-	}
-	if value, ok := phiuo.mutation.UpdatedBy(); ok {
-		_spec.SetField(producthasimage.FieldUpdatedBy, field.TypeInt, value)
-	}
-	if value, ok := phiuo.mutation.AddedUpdatedBy(); ok {
-		_spec.AddField(producthasimage.FieldUpdatedBy, field.TypeInt, value)
-	}
-	if value, ok := phiuo.mutation.DeletedBy(); ok {
-		_spec.SetField(producthasimage.FieldDeletedBy, field.TypeInt, value)
-	}
-	if value, ok := phiuo.mutation.AddedDeletedBy(); ok {
-		_spec.AddField(producthasimage.FieldDeletedBy, field.TypeInt, value)
-	}
-	if phiuo.mutation.DeletedByCleared() {
-		_spec.ClearField(producthasimage.FieldDeletedBy, field.TypeInt)
 	}
 	if value, ok := phiuo.mutation.Priority(); ok {
 		_spec.SetField(producthasimage.FieldPriority, field.TypeInt, value)

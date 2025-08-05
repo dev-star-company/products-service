@@ -30,12 +30,6 @@ func (fu *FeaturesUpdate) Where(ps ...predicate.Features) *FeaturesUpdate {
 	return fu
 }
 
-// SetUpdatedAt sets the "updated_at" field.
-func (fu *FeaturesUpdate) SetUpdatedAt(t time.Time) *FeaturesUpdate {
-	fu.mutation.SetUpdatedAt(t)
-	return fu
-}
-
 // SetDeletedAt sets the "deleted_at" field.
 func (fu *FeaturesUpdate) SetDeletedAt(t time.Time) *FeaturesUpdate {
 	fu.mutation.SetDeletedAt(t)
@@ -53,54 +47,6 @@ func (fu *FeaturesUpdate) SetNillableDeletedAt(t *time.Time) *FeaturesUpdate {
 // ClearDeletedAt clears the value of the "deleted_at" field.
 func (fu *FeaturesUpdate) ClearDeletedAt() *FeaturesUpdate {
 	fu.mutation.ClearDeletedAt()
-	return fu
-}
-
-// SetUpdatedBy sets the "updated_by" field.
-func (fu *FeaturesUpdate) SetUpdatedBy(i int) *FeaturesUpdate {
-	fu.mutation.ResetUpdatedBy()
-	fu.mutation.SetUpdatedBy(i)
-	return fu
-}
-
-// SetNillableUpdatedBy sets the "updated_by" field if the given value is not nil.
-func (fu *FeaturesUpdate) SetNillableUpdatedBy(i *int) *FeaturesUpdate {
-	if i != nil {
-		fu.SetUpdatedBy(*i)
-	}
-	return fu
-}
-
-// AddUpdatedBy adds i to the "updated_by" field.
-func (fu *FeaturesUpdate) AddUpdatedBy(i int) *FeaturesUpdate {
-	fu.mutation.AddUpdatedBy(i)
-	return fu
-}
-
-// SetDeletedBy sets the "deleted_by" field.
-func (fu *FeaturesUpdate) SetDeletedBy(i int) *FeaturesUpdate {
-	fu.mutation.ResetDeletedBy()
-	fu.mutation.SetDeletedBy(i)
-	return fu
-}
-
-// SetNillableDeletedBy sets the "deleted_by" field if the given value is not nil.
-func (fu *FeaturesUpdate) SetNillableDeletedBy(i *int) *FeaturesUpdate {
-	if i != nil {
-		fu.SetDeletedBy(*i)
-	}
-	return fu
-}
-
-// AddDeletedBy adds i to the "deleted_by" field.
-func (fu *FeaturesUpdate) AddDeletedBy(i int) *FeaturesUpdate {
-	fu.mutation.AddDeletedBy(i)
-	return fu
-}
-
-// ClearDeletedBy clears the value of the "deleted_by" field.
-func (fu *FeaturesUpdate) ClearDeletedBy() *FeaturesUpdate {
-	fu.mutation.ClearDeletedBy()
 	return fu
 }
 
@@ -218,7 +164,6 @@ func (fu *FeaturesUpdate) RemoveProductHasFeature(p ...*ProductHasFeature) *Feat
 
 // Save executes the query and returns the number of nodes affected by the update operation.
 func (fu *FeaturesUpdate) Save(ctx context.Context) (int, error) {
-	fu.defaults()
 	return withHooks(ctx, fu.sqlSave, fu.mutation, fu.hooks)
 }
 
@@ -244,28 +189,7 @@ func (fu *FeaturesUpdate) ExecX(ctx context.Context) {
 	}
 }
 
-// defaults sets the default values of the builder before save.
-func (fu *FeaturesUpdate) defaults() {
-	if _, ok := fu.mutation.UpdatedAt(); !ok {
-		v := features.UpdateDefaultUpdatedAt()
-		fu.mutation.SetUpdatedAt(v)
-	}
-}
-
-// check runs all checks and user-defined validators on the builder.
-func (fu *FeaturesUpdate) check() error {
-	if v, ok := fu.mutation.UpdatedBy(); ok {
-		if err := features.UpdatedByValidator(v); err != nil {
-			return &ValidationError{Name: "updated_by", err: fmt.Errorf(`ent: validator failed for field "Features.updated_by": %w`, err)}
-		}
-	}
-	return nil
-}
-
 func (fu *FeaturesUpdate) sqlSave(ctx context.Context) (n int, err error) {
-	if err := fu.check(); err != nil {
-		return n, err
-	}
 	_spec := sqlgraph.NewUpdateSpec(features.Table, features.Columns, sqlgraph.NewFieldSpec(features.FieldID, field.TypeInt))
 	if ps := fu.mutation.predicates; len(ps) > 0 {
 		_spec.Predicate = func(selector *sql.Selector) {
@@ -274,29 +198,11 @@ func (fu *FeaturesUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			}
 		}
 	}
-	if value, ok := fu.mutation.UpdatedAt(); ok {
-		_spec.SetField(features.FieldUpdatedAt, field.TypeTime, value)
-	}
 	if value, ok := fu.mutation.DeletedAt(); ok {
 		_spec.SetField(features.FieldDeletedAt, field.TypeTime, value)
 	}
 	if fu.mutation.DeletedAtCleared() {
 		_spec.ClearField(features.FieldDeletedAt, field.TypeTime)
-	}
-	if value, ok := fu.mutation.UpdatedBy(); ok {
-		_spec.SetField(features.FieldUpdatedBy, field.TypeInt, value)
-	}
-	if value, ok := fu.mutation.AddedUpdatedBy(); ok {
-		_spec.AddField(features.FieldUpdatedBy, field.TypeInt, value)
-	}
-	if value, ok := fu.mutation.DeletedBy(); ok {
-		_spec.SetField(features.FieldDeletedBy, field.TypeInt, value)
-	}
-	if value, ok := fu.mutation.AddedDeletedBy(); ok {
-		_spec.AddField(features.FieldDeletedBy, field.TypeInt, value)
-	}
-	if fu.mutation.DeletedByCleared() {
-		_spec.ClearField(features.FieldDeletedBy, field.TypeInt)
 	}
 	if value, ok := fu.mutation.FeatureValueID(); ok {
 		_spec.SetField(features.FieldFeatureValueID, field.TypeInt, value)
@@ -417,12 +323,6 @@ type FeaturesUpdateOne struct {
 	mutation *FeaturesMutation
 }
 
-// SetUpdatedAt sets the "updated_at" field.
-func (fuo *FeaturesUpdateOne) SetUpdatedAt(t time.Time) *FeaturesUpdateOne {
-	fuo.mutation.SetUpdatedAt(t)
-	return fuo
-}
-
 // SetDeletedAt sets the "deleted_at" field.
 func (fuo *FeaturesUpdateOne) SetDeletedAt(t time.Time) *FeaturesUpdateOne {
 	fuo.mutation.SetDeletedAt(t)
@@ -440,54 +340,6 @@ func (fuo *FeaturesUpdateOne) SetNillableDeletedAt(t *time.Time) *FeaturesUpdate
 // ClearDeletedAt clears the value of the "deleted_at" field.
 func (fuo *FeaturesUpdateOne) ClearDeletedAt() *FeaturesUpdateOne {
 	fuo.mutation.ClearDeletedAt()
-	return fuo
-}
-
-// SetUpdatedBy sets the "updated_by" field.
-func (fuo *FeaturesUpdateOne) SetUpdatedBy(i int) *FeaturesUpdateOne {
-	fuo.mutation.ResetUpdatedBy()
-	fuo.mutation.SetUpdatedBy(i)
-	return fuo
-}
-
-// SetNillableUpdatedBy sets the "updated_by" field if the given value is not nil.
-func (fuo *FeaturesUpdateOne) SetNillableUpdatedBy(i *int) *FeaturesUpdateOne {
-	if i != nil {
-		fuo.SetUpdatedBy(*i)
-	}
-	return fuo
-}
-
-// AddUpdatedBy adds i to the "updated_by" field.
-func (fuo *FeaturesUpdateOne) AddUpdatedBy(i int) *FeaturesUpdateOne {
-	fuo.mutation.AddUpdatedBy(i)
-	return fuo
-}
-
-// SetDeletedBy sets the "deleted_by" field.
-func (fuo *FeaturesUpdateOne) SetDeletedBy(i int) *FeaturesUpdateOne {
-	fuo.mutation.ResetDeletedBy()
-	fuo.mutation.SetDeletedBy(i)
-	return fuo
-}
-
-// SetNillableDeletedBy sets the "deleted_by" field if the given value is not nil.
-func (fuo *FeaturesUpdateOne) SetNillableDeletedBy(i *int) *FeaturesUpdateOne {
-	if i != nil {
-		fuo.SetDeletedBy(*i)
-	}
-	return fuo
-}
-
-// AddDeletedBy adds i to the "deleted_by" field.
-func (fuo *FeaturesUpdateOne) AddDeletedBy(i int) *FeaturesUpdateOne {
-	fuo.mutation.AddDeletedBy(i)
-	return fuo
-}
-
-// ClearDeletedBy clears the value of the "deleted_by" field.
-func (fuo *FeaturesUpdateOne) ClearDeletedBy() *FeaturesUpdateOne {
-	fuo.mutation.ClearDeletedBy()
 	return fuo
 }
 
@@ -618,7 +470,6 @@ func (fuo *FeaturesUpdateOne) Select(field string, fields ...string) *FeaturesUp
 
 // Save executes the query and returns the updated Features entity.
 func (fuo *FeaturesUpdateOne) Save(ctx context.Context) (*Features, error) {
-	fuo.defaults()
 	return withHooks(ctx, fuo.sqlSave, fuo.mutation, fuo.hooks)
 }
 
@@ -644,28 +495,7 @@ func (fuo *FeaturesUpdateOne) ExecX(ctx context.Context) {
 	}
 }
 
-// defaults sets the default values of the builder before save.
-func (fuo *FeaturesUpdateOne) defaults() {
-	if _, ok := fuo.mutation.UpdatedAt(); !ok {
-		v := features.UpdateDefaultUpdatedAt()
-		fuo.mutation.SetUpdatedAt(v)
-	}
-}
-
-// check runs all checks and user-defined validators on the builder.
-func (fuo *FeaturesUpdateOne) check() error {
-	if v, ok := fuo.mutation.UpdatedBy(); ok {
-		if err := features.UpdatedByValidator(v); err != nil {
-			return &ValidationError{Name: "updated_by", err: fmt.Errorf(`ent: validator failed for field "Features.updated_by": %w`, err)}
-		}
-	}
-	return nil
-}
-
 func (fuo *FeaturesUpdateOne) sqlSave(ctx context.Context) (_node *Features, err error) {
-	if err := fuo.check(); err != nil {
-		return _node, err
-	}
 	_spec := sqlgraph.NewUpdateSpec(features.Table, features.Columns, sqlgraph.NewFieldSpec(features.FieldID, field.TypeInt))
 	id, ok := fuo.mutation.ID()
 	if !ok {
@@ -691,29 +521,11 @@ func (fuo *FeaturesUpdateOne) sqlSave(ctx context.Context) (_node *Features, err
 			}
 		}
 	}
-	if value, ok := fuo.mutation.UpdatedAt(); ok {
-		_spec.SetField(features.FieldUpdatedAt, field.TypeTime, value)
-	}
 	if value, ok := fuo.mutation.DeletedAt(); ok {
 		_spec.SetField(features.FieldDeletedAt, field.TypeTime, value)
 	}
 	if fuo.mutation.DeletedAtCleared() {
 		_spec.ClearField(features.FieldDeletedAt, field.TypeTime)
-	}
-	if value, ok := fuo.mutation.UpdatedBy(); ok {
-		_spec.SetField(features.FieldUpdatedBy, field.TypeInt, value)
-	}
-	if value, ok := fuo.mutation.AddedUpdatedBy(); ok {
-		_spec.AddField(features.FieldUpdatedBy, field.TypeInt, value)
-	}
-	if value, ok := fuo.mutation.DeletedBy(); ok {
-		_spec.SetField(features.FieldDeletedBy, field.TypeInt, value)
-	}
-	if value, ok := fuo.mutation.AddedDeletedBy(); ok {
-		_spec.AddField(features.FieldDeletedBy, field.TypeInt, value)
-	}
-	if fuo.mutation.DeletedByCleared() {
-		_spec.ClearField(features.FieldDeletedBy, field.TypeInt)
 	}
 	if value, ok := fuo.mutation.FeatureValueID(); ok {
 		_spec.SetField(features.FieldFeatureValueID, field.TypeInt, value)

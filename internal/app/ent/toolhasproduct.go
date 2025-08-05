@@ -21,59 +21,49 @@ type ToolHasProduct struct {
 	ID int `json:"id,omitempty"`
 	// CreatedAt holds the value of the "created_at" field.
 	CreatedAt time.Time `json:"created_at,omitempty"`
-	// UpdatedAt holds the value of the "updated_at" field.
-	UpdatedAt time.Time `json:"updated_at,omitempty"`
 	// DeletedAt holds the value of the "deleted_at" field.
 	DeletedAt *time.Time `json:"deleted_at,omitempty"`
-	// CreatedBy holds the value of the "created_by" field.
-	CreatedBy int `json:"created_by,omitempty"`
-	// UpdatedBy holds the value of the "updated_by" field.
-	UpdatedBy int `json:"updated_by,omitempty"`
-	// DeletedBy holds the value of the "deleted_by" field.
-	DeletedBy *int `json:"deleted_by,omitempty"`
-	// ToolID holds the value of the "tool_id" field.
-	ToolID *int `json:"tool_id,omitempty"`
-	// ProductID holds the value of the "product_id" field.
-	ProductID *int `json:"product_id,omitempty"`
+	// ProductsID holds the value of the "products_id" field.
+	ProductsID *int `json:"products_id,omitempty"`
+	// ToolsID holds the value of the "tools_id" field.
+	ToolsID *int `json:"tools_id,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the ToolHasProductQuery when eager-loading is set.
-	Edges                     ToolHasProductEdges `json:"edges"`
-	products_tool_has_product *int
-	tools_tool_has_product    *int
-	selectValues              sql.SelectValues
+	Edges        ToolHasProductEdges `json:"edges"`
+	selectValues sql.SelectValues
 }
 
 // ToolHasProductEdges holds the relations/edges for other nodes in the graph.
 type ToolHasProductEdges struct {
-	// Product holds the value of the product edge.
-	Product *Products `json:"product,omitempty"`
-	// Tool holds the value of the tool edge.
-	Tool *Tools `json:"tool,omitempty"`
+	// Products holds the value of the products edge.
+	Products *Products `json:"products,omitempty"`
+	// Tools holds the value of the tools edge.
+	Tools *Tools `json:"tools,omitempty"`
 	// loadedTypes holds the information for reporting if a
 	// type was loaded (or requested) in eager-loading or not.
 	loadedTypes [2]bool
 }
 
-// ProductOrErr returns the Product value or an error if the edge
+// ProductsOrErr returns the Products value or an error if the edge
 // was not loaded in eager-loading, or loaded but was not found.
-func (e ToolHasProductEdges) ProductOrErr() (*Products, error) {
-	if e.Product != nil {
-		return e.Product, nil
+func (e ToolHasProductEdges) ProductsOrErr() (*Products, error) {
+	if e.Products != nil {
+		return e.Products, nil
 	} else if e.loadedTypes[0] {
 		return nil, &NotFoundError{label: products.Label}
 	}
-	return nil, &NotLoadedError{edge: "product"}
+	return nil, &NotLoadedError{edge: "products"}
 }
 
-// ToolOrErr returns the Tool value or an error if the edge
+// ToolsOrErr returns the Tools value or an error if the edge
 // was not loaded in eager-loading, or loaded but was not found.
-func (e ToolHasProductEdges) ToolOrErr() (*Tools, error) {
-	if e.Tool != nil {
-		return e.Tool, nil
+func (e ToolHasProductEdges) ToolsOrErr() (*Tools, error) {
+	if e.Tools != nil {
+		return e.Tools, nil
 	} else if e.loadedTypes[1] {
 		return nil, &NotFoundError{label: tools.Label}
 	}
-	return nil, &NotLoadedError{edge: "tool"}
+	return nil, &NotLoadedError{edge: "tools"}
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -81,14 +71,10 @@ func (*ToolHasProduct) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case toolhasproduct.FieldID, toolhasproduct.FieldCreatedBy, toolhasproduct.FieldUpdatedBy, toolhasproduct.FieldDeletedBy, toolhasproduct.FieldToolID, toolhasproduct.FieldProductID:
+		case toolhasproduct.FieldID, toolhasproduct.FieldProductsID, toolhasproduct.FieldToolsID:
 			values[i] = new(sql.NullInt64)
-		case toolhasproduct.FieldCreatedAt, toolhasproduct.FieldUpdatedAt, toolhasproduct.FieldDeletedAt:
+		case toolhasproduct.FieldCreatedAt, toolhasproduct.FieldDeletedAt:
 			values[i] = new(sql.NullTime)
-		case toolhasproduct.ForeignKeys[0]: // products_tool_has_product
-			values[i] = new(sql.NullInt64)
-		case toolhasproduct.ForeignKeys[1]: // tools_tool_has_product
-			values[i] = new(sql.NullInt64)
 		default:
 			values[i] = new(sql.UnknownType)
 		}
@@ -116,12 +102,6 @@ func (thp *ToolHasProduct) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				thp.CreatedAt = value.Time
 			}
-		case toolhasproduct.FieldUpdatedAt:
-			if value, ok := values[i].(*sql.NullTime); !ok {
-				return fmt.Errorf("unexpected type %T for field updated_at", values[i])
-			} else if value.Valid {
-				thp.UpdatedAt = value.Time
-			}
 		case toolhasproduct.FieldDeletedAt:
 			if value, ok := values[i].(*sql.NullTime); !ok {
 				return fmt.Errorf("unexpected type %T for field deleted_at", values[i])
@@ -129,52 +109,19 @@ func (thp *ToolHasProduct) assignValues(columns []string, values []any) error {
 				thp.DeletedAt = new(time.Time)
 				*thp.DeletedAt = value.Time
 			}
-		case toolhasproduct.FieldCreatedBy:
+		case toolhasproduct.FieldProductsID:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field created_by", values[i])
+				return fmt.Errorf("unexpected type %T for field products_id", values[i])
 			} else if value.Valid {
-				thp.CreatedBy = int(value.Int64)
+				thp.ProductsID = new(int)
+				*thp.ProductsID = int(value.Int64)
 			}
-		case toolhasproduct.FieldUpdatedBy:
+		case toolhasproduct.FieldToolsID:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field updated_by", values[i])
+				return fmt.Errorf("unexpected type %T for field tools_id", values[i])
 			} else if value.Valid {
-				thp.UpdatedBy = int(value.Int64)
-			}
-		case toolhasproduct.FieldDeletedBy:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field deleted_by", values[i])
-			} else if value.Valid {
-				thp.DeletedBy = new(int)
-				*thp.DeletedBy = int(value.Int64)
-			}
-		case toolhasproduct.FieldToolID:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field tool_id", values[i])
-			} else if value.Valid {
-				thp.ToolID = new(int)
-				*thp.ToolID = int(value.Int64)
-			}
-		case toolhasproduct.FieldProductID:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field product_id", values[i])
-			} else if value.Valid {
-				thp.ProductID = new(int)
-				*thp.ProductID = int(value.Int64)
-			}
-		case toolhasproduct.ForeignKeys[0]:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for edge-field products_tool_has_product", value)
-			} else if value.Valid {
-				thp.products_tool_has_product = new(int)
-				*thp.products_tool_has_product = int(value.Int64)
-			}
-		case toolhasproduct.ForeignKeys[1]:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for edge-field tools_tool_has_product", value)
-			} else if value.Valid {
-				thp.tools_tool_has_product = new(int)
-				*thp.tools_tool_has_product = int(value.Int64)
+				thp.ToolsID = new(int)
+				*thp.ToolsID = int(value.Int64)
 			}
 		default:
 			thp.selectValues.Set(columns[i], values[i])
@@ -189,14 +136,14 @@ func (thp *ToolHasProduct) Value(name string) (ent.Value, error) {
 	return thp.selectValues.Get(name)
 }
 
-// QueryProduct queries the "product" edge of the ToolHasProduct entity.
-func (thp *ToolHasProduct) QueryProduct() *ProductsQuery {
-	return NewToolHasProductClient(thp.config).QueryProduct(thp)
+// QueryProducts queries the "products" edge of the ToolHasProduct entity.
+func (thp *ToolHasProduct) QueryProducts() *ProductsQuery {
+	return NewToolHasProductClient(thp.config).QueryProducts(thp)
 }
 
-// QueryTool queries the "tool" edge of the ToolHasProduct entity.
-func (thp *ToolHasProduct) QueryTool() *ToolsQuery {
-	return NewToolHasProductClient(thp.config).QueryTool(thp)
+// QueryTools queries the "tools" edge of the ToolHasProduct entity.
+func (thp *ToolHasProduct) QueryTools() *ToolsQuery {
+	return NewToolHasProductClient(thp.config).QueryTools(thp)
 }
 
 // Update returns a builder for updating this ToolHasProduct.
@@ -225,32 +172,18 @@ func (thp *ToolHasProduct) String() string {
 	builder.WriteString("created_at=")
 	builder.WriteString(thp.CreatedAt.Format(time.ANSIC))
 	builder.WriteString(", ")
-	builder.WriteString("updated_at=")
-	builder.WriteString(thp.UpdatedAt.Format(time.ANSIC))
-	builder.WriteString(", ")
 	if v := thp.DeletedAt; v != nil {
 		builder.WriteString("deleted_at=")
 		builder.WriteString(v.Format(time.ANSIC))
 	}
 	builder.WriteString(", ")
-	builder.WriteString("created_by=")
-	builder.WriteString(fmt.Sprintf("%v", thp.CreatedBy))
-	builder.WriteString(", ")
-	builder.WriteString("updated_by=")
-	builder.WriteString(fmt.Sprintf("%v", thp.UpdatedBy))
-	builder.WriteString(", ")
-	if v := thp.DeletedBy; v != nil {
-		builder.WriteString("deleted_by=")
+	if v := thp.ProductsID; v != nil {
+		builder.WriteString("products_id=")
 		builder.WriteString(fmt.Sprintf("%v", *v))
 	}
 	builder.WriteString(", ")
-	if v := thp.ToolID; v != nil {
-		builder.WriteString("tool_id=")
-		builder.WriteString(fmt.Sprintf("%v", *v))
-	}
-	builder.WriteString(", ")
-	if v := thp.ProductID; v != nil {
-		builder.WriteString("product_id=")
+	if v := thp.ToolsID; v != nil {
+		builder.WriteString("tools_id=")
 		builder.WriteString(fmt.Sprintf("%v", *v))
 	}
 	builder.WriteByte(')')

@@ -14,10 +14,7 @@ func ProductsToProto(products *ent.Products) *products_proto.Products {
 		Id:        uint32(products.ID),
 		Name:      *products.Name,
 		Stock:     uint32(products.Stock),
-		CreatedBy: uint32(products.CreatedBy),
-		UpdatedBy: uint32(products.UpdatedBy),
 		CreatedAt: products.CreatedAt.Format("2006-01-02 15:04:05"),
-		UpdatedAt: products.UpdatedAt.Format("2006-01-02 15:04:05"),
 	}
 
 	if products.CategoryID != nil {
@@ -40,19 +37,14 @@ func ProductsToProto(products *ent.Products) *products_proto.Products {
 		cur.ProductReferencesId = &x
 	}
 
-	if products.ImageID != nil {
-		x := uint32(*products.ImageID)
+	if products.ImagesID != nil {
+		x := uint32(*products.ImagesID)
 		cur.ImageId = &x
 	}
 
 	if products.DeletedAt != nil {
 		x := products.DeletedAt.Format("2006-01-02 15:04:05")
 		cur.DeletedAt = &x
-	}
-
-	if products.DeletedBy != nil {
-		x := uint32(*products.DeletedBy)
-		cur.DeletedBy = &x
 	}
 
 	return cur

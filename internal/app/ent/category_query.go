@@ -507,6 +507,9 @@ func (cq *CategoryQuery) loadProducts(ctx context.Context, query *ProductsQuery,
 		}
 	}
 	query.withFKs = true
+	if len(query.ctx.Fields) > 0 {
+		query.ctx.AppendFieldOnce(products.FieldCategoryID)
+	}
 	query.Where(predicate.Products(func(s *sql.Selector) {
 		s.Where(sql.InValues(s.C(category.ProductsColumn), fks...))
 	}))
@@ -515,13 +518,13 @@ func (cq *CategoryQuery) loadProducts(ctx context.Context, query *ProductsQuery,
 		return err
 	}
 	for _, n := range neighbors {
-		fk := n.category_products
+		fk := n.CategoryID
 		if fk == nil {
-			return fmt.Errorf(`foreign-key "category_products" is nil for node %v`, n.ID)
+			return fmt.Errorf(`foreign-key "category_id" is nil for node %v`, n.ID)
 		}
 		node, ok := nodeids[*fk]
 		if !ok {
-			return fmt.Errorf(`unexpected referenced foreign-key "category_products" returned %v for node %v`, *fk, n.ID)
+			return fmt.Errorf(`unexpected referenced foreign-key "category_id" returned %v for node %v`, *fk, n.ID)
 		}
 		assign(node, n)
 	}

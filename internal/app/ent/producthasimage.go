@@ -21,16 +21,8 @@ type ProductHasImage struct {
 	ID int `json:"id,omitempty"`
 	// CreatedAt holds the value of the "created_at" field.
 	CreatedAt time.Time `json:"created_at,omitempty"`
-	// UpdatedAt holds the value of the "updated_at" field.
-	UpdatedAt time.Time `json:"updated_at,omitempty"`
 	// DeletedAt holds the value of the "deleted_at" field.
 	DeletedAt *time.Time `json:"deleted_at,omitempty"`
-	// CreatedBy holds the value of the "created_by" field.
-	CreatedBy int `json:"created_by,omitempty"`
-	// UpdatedBy holds the value of the "updated_by" field.
-	UpdatedBy int `json:"updated_by,omitempty"`
-	// DeletedBy holds the value of the "deleted_by" field.
-	DeletedBy *int `json:"deleted_by,omitempty"`
 	// ImageID holds the value of the "image_id" field.
 	ImageID *int `json:"image_id,omitempty"`
 	// ProductID holds the value of the "product_id" field.
@@ -81,9 +73,9 @@ func (*ProductHasImage) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case producthasimage.FieldID, producthasimage.FieldCreatedBy, producthasimage.FieldUpdatedBy, producthasimage.FieldDeletedBy, producthasimage.FieldImageID, producthasimage.FieldProductID, producthasimage.FieldPriority:
+		case producthasimage.FieldID, producthasimage.FieldImageID, producthasimage.FieldProductID, producthasimage.FieldPriority:
 			values[i] = new(sql.NullInt64)
-		case producthasimage.FieldCreatedAt, producthasimage.FieldUpdatedAt, producthasimage.FieldDeletedAt:
+		case producthasimage.FieldCreatedAt, producthasimage.FieldDeletedAt:
 			values[i] = new(sql.NullTime)
 		default:
 			values[i] = new(sql.UnknownType)
@@ -112,37 +104,12 @@ func (phi *ProductHasImage) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				phi.CreatedAt = value.Time
 			}
-		case producthasimage.FieldUpdatedAt:
-			if value, ok := values[i].(*sql.NullTime); !ok {
-				return fmt.Errorf("unexpected type %T for field updated_at", values[i])
-			} else if value.Valid {
-				phi.UpdatedAt = value.Time
-			}
 		case producthasimage.FieldDeletedAt:
 			if value, ok := values[i].(*sql.NullTime); !ok {
 				return fmt.Errorf("unexpected type %T for field deleted_at", values[i])
 			} else if value.Valid {
 				phi.DeletedAt = new(time.Time)
 				*phi.DeletedAt = value.Time
-			}
-		case producthasimage.FieldCreatedBy:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field created_by", values[i])
-			} else if value.Valid {
-				phi.CreatedBy = int(value.Int64)
-			}
-		case producthasimage.FieldUpdatedBy:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field updated_by", values[i])
-			} else if value.Valid {
-				phi.UpdatedBy = int(value.Int64)
-			}
-		case producthasimage.FieldDeletedBy:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field deleted_by", values[i])
-			} else if value.Valid {
-				phi.DeletedBy = new(int)
-				*phi.DeletedBy = int(value.Int64)
 			}
 		case producthasimage.FieldImageID:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
@@ -213,23 +180,9 @@ func (phi *ProductHasImage) String() string {
 	builder.WriteString("created_at=")
 	builder.WriteString(phi.CreatedAt.Format(time.ANSIC))
 	builder.WriteString(", ")
-	builder.WriteString("updated_at=")
-	builder.WriteString(phi.UpdatedAt.Format(time.ANSIC))
-	builder.WriteString(", ")
 	if v := phi.DeletedAt; v != nil {
 		builder.WriteString("deleted_at=")
 		builder.WriteString(v.Format(time.ANSIC))
-	}
-	builder.WriteString(", ")
-	builder.WriteString("created_by=")
-	builder.WriteString(fmt.Sprintf("%v", phi.CreatedBy))
-	builder.WriteString(", ")
-	builder.WriteString("updated_by=")
-	builder.WriteString(fmt.Sprintf("%v", phi.UpdatedBy))
-	builder.WriteString(", ")
-	if v := phi.DeletedBy; v != nil {
-		builder.WriteString("deleted_by=")
-		builder.WriteString(fmt.Sprintf("%v", *v))
 	}
 	builder.WriteString(", ")
 	if v := phi.ImageID; v != nil {

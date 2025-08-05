@@ -30,12 +30,6 @@ func (ifpu *ImageFolderPathUpdate) Where(ps ...predicate.ImageFolderPath) *Image
 	return ifpu
 }
 
-// SetUpdatedAt sets the "updated_at" field.
-func (ifpu *ImageFolderPathUpdate) SetUpdatedAt(t time.Time) *ImageFolderPathUpdate {
-	ifpu.mutation.SetUpdatedAt(t)
-	return ifpu
-}
-
 // SetDeletedAt sets the "deleted_at" field.
 func (ifpu *ImageFolderPathUpdate) SetDeletedAt(t time.Time) *ImageFolderPathUpdate {
 	ifpu.mutation.SetDeletedAt(t)
@@ -53,54 +47,6 @@ func (ifpu *ImageFolderPathUpdate) SetNillableDeletedAt(t *time.Time) *ImageFold
 // ClearDeletedAt clears the value of the "deleted_at" field.
 func (ifpu *ImageFolderPathUpdate) ClearDeletedAt() *ImageFolderPathUpdate {
 	ifpu.mutation.ClearDeletedAt()
-	return ifpu
-}
-
-// SetUpdatedBy sets the "updated_by" field.
-func (ifpu *ImageFolderPathUpdate) SetUpdatedBy(i int) *ImageFolderPathUpdate {
-	ifpu.mutation.ResetUpdatedBy()
-	ifpu.mutation.SetUpdatedBy(i)
-	return ifpu
-}
-
-// SetNillableUpdatedBy sets the "updated_by" field if the given value is not nil.
-func (ifpu *ImageFolderPathUpdate) SetNillableUpdatedBy(i *int) *ImageFolderPathUpdate {
-	if i != nil {
-		ifpu.SetUpdatedBy(*i)
-	}
-	return ifpu
-}
-
-// AddUpdatedBy adds i to the "updated_by" field.
-func (ifpu *ImageFolderPathUpdate) AddUpdatedBy(i int) *ImageFolderPathUpdate {
-	ifpu.mutation.AddUpdatedBy(i)
-	return ifpu
-}
-
-// SetDeletedBy sets the "deleted_by" field.
-func (ifpu *ImageFolderPathUpdate) SetDeletedBy(i int) *ImageFolderPathUpdate {
-	ifpu.mutation.ResetDeletedBy()
-	ifpu.mutation.SetDeletedBy(i)
-	return ifpu
-}
-
-// SetNillableDeletedBy sets the "deleted_by" field if the given value is not nil.
-func (ifpu *ImageFolderPathUpdate) SetNillableDeletedBy(i *int) *ImageFolderPathUpdate {
-	if i != nil {
-		ifpu.SetDeletedBy(*i)
-	}
-	return ifpu
-}
-
-// AddDeletedBy adds i to the "deleted_by" field.
-func (ifpu *ImageFolderPathUpdate) AddDeletedBy(i int) *ImageFolderPathUpdate {
-	ifpu.mutation.AddDeletedBy(i)
-	return ifpu
-}
-
-// ClearDeletedBy clears the value of the "deleted_by" field.
-func (ifpu *ImageFolderPathUpdate) ClearDeletedBy() *ImageFolderPathUpdate {
-	ifpu.mutation.ClearDeletedBy()
 	return ifpu
 }
 
@@ -172,7 +118,6 @@ func (ifpu *ImageFolderPathUpdate) RemoveImages(i ...*Images) *ImageFolderPathUp
 
 // Save executes the query and returns the number of nodes affected by the update operation.
 func (ifpu *ImageFolderPathUpdate) Save(ctx context.Context) (int, error) {
-	ifpu.defaults()
 	return withHooks(ctx, ifpu.sqlSave, ifpu.mutation, ifpu.hooks)
 }
 
@@ -198,21 +143,8 @@ func (ifpu *ImageFolderPathUpdate) ExecX(ctx context.Context) {
 	}
 }
 
-// defaults sets the default values of the builder before save.
-func (ifpu *ImageFolderPathUpdate) defaults() {
-	if _, ok := ifpu.mutation.UpdatedAt(); !ok {
-		v := imagefolderpath.UpdateDefaultUpdatedAt()
-		ifpu.mutation.SetUpdatedAt(v)
-	}
-}
-
 // check runs all checks and user-defined validators on the builder.
 func (ifpu *ImageFolderPathUpdate) check() error {
-	if v, ok := ifpu.mutation.UpdatedBy(); ok {
-		if err := imagefolderpath.UpdatedByValidator(v); err != nil {
-			return &ValidationError{Name: "updated_by", err: fmt.Errorf(`ent: validator failed for field "ImageFolderPath.updated_by": %w`, err)}
-		}
-	}
 	if ifpu.mutation.ImageFolderSourceCleared() && len(ifpu.mutation.ImageFolderSourceIDs()) > 0 {
 		return errors.New(`ent: clearing a required unique edge "ImageFolderPath.image_folder_source"`)
 	}
@@ -231,29 +163,11 @@ func (ifpu *ImageFolderPathUpdate) sqlSave(ctx context.Context) (n int, err erro
 			}
 		}
 	}
-	if value, ok := ifpu.mutation.UpdatedAt(); ok {
-		_spec.SetField(imagefolderpath.FieldUpdatedAt, field.TypeTime, value)
-	}
 	if value, ok := ifpu.mutation.DeletedAt(); ok {
 		_spec.SetField(imagefolderpath.FieldDeletedAt, field.TypeTime, value)
 	}
 	if ifpu.mutation.DeletedAtCleared() {
 		_spec.ClearField(imagefolderpath.FieldDeletedAt, field.TypeTime)
-	}
-	if value, ok := ifpu.mutation.UpdatedBy(); ok {
-		_spec.SetField(imagefolderpath.FieldUpdatedBy, field.TypeInt, value)
-	}
-	if value, ok := ifpu.mutation.AddedUpdatedBy(); ok {
-		_spec.AddField(imagefolderpath.FieldUpdatedBy, field.TypeInt, value)
-	}
-	if value, ok := ifpu.mutation.DeletedBy(); ok {
-		_spec.SetField(imagefolderpath.FieldDeletedBy, field.TypeInt, value)
-	}
-	if value, ok := ifpu.mutation.AddedDeletedBy(); ok {
-		_spec.AddField(imagefolderpath.FieldDeletedBy, field.TypeInt, value)
-	}
-	if ifpu.mutation.DeletedByCleared() {
-		_spec.ClearField(imagefolderpath.FieldDeletedBy, field.TypeInt)
 	}
 	if ifpu.mutation.ImageFolderSourceCleared() {
 		edge := &sqlgraph.EdgeSpec{
@@ -349,12 +263,6 @@ type ImageFolderPathUpdateOne struct {
 	mutation *ImageFolderPathMutation
 }
 
-// SetUpdatedAt sets the "updated_at" field.
-func (ifpuo *ImageFolderPathUpdateOne) SetUpdatedAt(t time.Time) *ImageFolderPathUpdateOne {
-	ifpuo.mutation.SetUpdatedAt(t)
-	return ifpuo
-}
-
 // SetDeletedAt sets the "deleted_at" field.
 func (ifpuo *ImageFolderPathUpdateOne) SetDeletedAt(t time.Time) *ImageFolderPathUpdateOne {
 	ifpuo.mutation.SetDeletedAt(t)
@@ -372,54 +280,6 @@ func (ifpuo *ImageFolderPathUpdateOne) SetNillableDeletedAt(t *time.Time) *Image
 // ClearDeletedAt clears the value of the "deleted_at" field.
 func (ifpuo *ImageFolderPathUpdateOne) ClearDeletedAt() *ImageFolderPathUpdateOne {
 	ifpuo.mutation.ClearDeletedAt()
-	return ifpuo
-}
-
-// SetUpdatedBy sets the "updated_by" field.
-func (ifpuo *ImageFolderPathUpdateOne) SetUpdatedBy(i int) *ImageFolderPathUpdateOne {
-	ifpuo.mutation.ResetUpdatedBy()
-	ifpuo.mutation.SetUpdatedBy(i)
-	return ifpuo
-}
-
-// SetNillableUpdatedBy sets the "updated_by" field if the given value is not nil.
-func (ifpuo *ImageFolderPathUpdateOne) SetNillableUpdatedBy(i *int) *ImageFolderPathUpdateOne {
-	if i != nil {
-		ifpuo.SetUpdatedBy(*i)
-	}
-	return ifpuo
-}
-
-// AddUpdatedBy adds i to the "updated_by" field.
-func (ifpuo *ImageFolderPathUpdateOne) AddUpdatedBy(i int) *ImageFolderPathUpdateOne {
-	ifpuo.mutation.AddUpdatedBy(i)
-	return ifpuo
-}
-
-// SetDeletedBy sets the "deleted_by" field.
-func (ifpuo *ImageFolderPathUpdateOne) SetDeletedBy(i int) *ImageFolderPathUpdateOne {
-	ifpuo.mutation.ResetDeletedBy()
-	ifpuo.mutation.SetDeletedBy(i)
-	return ifpuo
-}
-
-// SetNillableDeletedBy sets the "deleted_by" field if the given value is not nil.
-func (ifpuo *ImageFolderPathUpdateOne) SetNillableDeletedBy(i *int) *ImageFolderPathUpdateOne {
-	if i != nil {
-		ifpuo.SetDeletedBy(*i)
-	}
-	return ifpuo
-}
-
-// AddDeletedBy adds i to the "deleted_by" field.
-func (ifpuo *ImageFolderPathUpdateOne) AddDeletedBy(i int) *ImageFolderPathUpdateOne {
-	ifpuo.mutation.AddDeletedBy(i)
-	return ifpuo
-}
-
-// ClearDeletedBy clears the value of the "deleted_by" field.
-func (ifpuo *ImageFolderPathUpdateOne) ClearDeletedBy() *ImageFolderPathUpdateOne {
-	ifpuo.mutation.ClearDeletedBy()
 	return ifpuo
 }
 
@@ -504,7 +364,6 @@ func (ifpuo *ImageFolderPathUpdateOne) Select(field string, fields ...string) *I
 
 // Save executes the query and returns the updated ImageFolderPath entity.
 func (ifpuo *ImageFolderPathUpdateOne) Save(ctx context.Context) (*ImageFolderPath, error) {
-	ifpuo.defaults()
 	return withHooks(ctx, ifpuo.sqlSave, ifpuo.mutation, ifpuo.hooks)
 }
 
@@ -530,21 +389,8 @@ func (ifpuo *ImageFolderPathUpdateOne) ExecX(ctx context.Context) {
 	}
 }
 
-// defaults sets the default values of the builder before save.
-func (ifpuo *ImageFolderPathUpdateOne) defaults() {
-	if _, ok := ifpuo.mutation.UpdatedAt(); !ok {
-		v := imagefolderpath.UpdateDefaultUpdatedAt()
-		ifpuo.mutation.SetUpdatedAt(v)
-	}
-}
-
 // check runs all checks and user-defined validators on the builder.
 func (ifpuo *ImageFolderPathUpdateOne) check() error {
-	if v, ok := ifpuo.mutation.UpdatedBy(); ok {
-		if err := imagefolderpath.UpdatedByValidator(v); err != nil {
-			return &ValidationError{Name: "updated_by", err: fmt.Errorf(`ent: validator failed for field "ImageFolderPath.updated_by": %w`, err)}
-		}
-	}
 	if ifpuo.mutation.ImageFolderSourceCleared() && len(ifpuo.mutation.ImageFolderSourceIDs()) > 0 {
 		return errors.New(`ent: clearing a required unique edge "ImageFolderPath.image_folder_source"`)
 	}
@@ -580,29 +426,11 @@ func (ifpuo *ImageFolderPathUpdateOne) sqlSave(ctx context.Context) (_node *Imag
 			}
 		}
 	}
-	if value, ok := ifpuo.mutation.UpdatedAt(); ok {
-		_spec.SetField(imagefolderpath.FieldUpdatedAt, field.TypeTime, value)
-	}
 	if value, ok := ifpuo.mutation.DeletedAt(); ok {
 		_spec.SetField(imagefolderpath.FieldDeletedAt, field.TypeTime, value)
 	}
 	if ifpuo.mutation.DeletedAtCleared() {
 		_spec.ClearField(imagefolderpath.FieldDeletedAt, field.TypeTime)
-	}
-	if value, ok := ifpuo.mutation.UpdatedBy(); ok {
-		_spec.SetField(imagefolderpath.FieldUpdatedBy, field.TypeInt, value)
-	}
-	if value, ok := ifpuo.mutation.AddedUpdatedBy(); ok {
-		_spec.AddField(imagefolderpath.FieldUpdatedBy, field.TypeInt, value)
-	}
-	if value, ok := ifpuo.mutation.DeletedBy(); ok {
-		_spec.SetField(imagefolderpath.FieldDeletedBy, field.TypeInt, value)
-	}
-	if value, ok := ifpuo.mutation.AddedDeletedBy(); ok {
-		_spec.AddField(imagefolderpath.FieldDeletedBy, field.TypeInt, value)
-	}
-	if ifpuo.mutation.DeletedByCleared() {
-		_spec.ClearField(imagefolderpath.FieldDeletedBy, field.TypeInt)
 	}
 	if ifpuo.mutation.ImageFolderSourceCleared() {
 		edge := &sqlgraph.EdgeSpec{

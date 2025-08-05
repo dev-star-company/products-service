@@ -36,20 +36,6 @@ func (thpc *ToolHasProductCreate) SetNillableCreatedAt(t *time.Time) *ToolHasPro
 	return thpc
 }
 
-// SetUpdatedAt sets the "updated_at" field.
-func (thpc *ToolHasProductCreate) SetUpdatedAt(t time.Time) *ToolHasProductCreate {
-	thpc.mutation.SetUpdatedAt(t)
-	return thpc
-}
-
-// SetNillableUpdatedAt sets the "updated_at" field if the given value is not nil.
-func (thpc *ToolHasProductCreate) SetNillableUpdatedAt(t *time.Time) *ToolHasProductCreate {
-	if t != nil {
-		thpc.SetUpdatedAt(*t)
-	}
-	return thpc
-}
-
 // SetDeletedAt sets the "deleted_at" field.
 func (thpc *ToolHasProductCreate) SetDeletedAt(t time.Time) *ToolHasProductCreate {
 	thpc.mutation.SetDeletedAt(t)
@@ -64,60 +50,42 @@ func (thpc *ToolHasProductCreate) SetNillableDeletedAt(t *time.Time) *ToolHasPro
 	return thpc
 }
 
-// SetCreatedBy sets the "created_by" field.
-func (thpc *ToolHasProductCreate) SetCreatedBy(i int) *ToolHasProductCreate {
-	thpc.mutation.SetCreatedBy(i)
+// SetProductsID sets the "products_id" field.
+func (thpc *ToolHasProductCreate) SetProductsID(i int) *ToolHasProductCreate {
+	thpc.mutation.SetProductsID(i)
 	return thpc
 }
 
-// SetUpdatedBy sets the "updated_by" field.
-func (thpc *ToolHasProductCreate) SetUpdatedBy(i int) *ToolHasProductCreate {
-	thpc.mutation.SetUpdatedBy(i)
-	return thpc
-}
-
-// SetDeletedBy sets the "deleted_by" field.
-func (thpc *ToolHasProductCreate) SetDeletedBy(i int) *ToolHasProductCreate {
-	thpc.mutation.SetDeletedBy(i)
-	return thpc
-}
-
-// SetNillableDeletedBy sets the "deleted_by" field if the given value is not nil.
-func (thpc *ToolHasProductCreate) SetNillableDeletedBy(i *int) *ToolHasProductCreate {
+// SetNillableProductsID sets the "products_id" field if the given value is not nil.
+func (thpc *ToolHasProductCreate) SetNillableProductsID(i *int) *ToolHasProductCreate {
 	if i != nil {
-		thpc.SetDeletedBy(*i)
+		thpc.SetProductsID(*i)
 	}
 	return thpc
 }
 
-// SetToolID sets the "tool_id" field.
-func (thpc *ToolHasProductCreate) SetToolID(i int) *ToolHasProductCreate {
-	thpc.mutation.SetToolID(i)
+// SetToolsID sets the "tools_id" field.
+func (thpc *ToolHasProductCreate) SetToolsID(i int) *ToolHasProductCreate {
+	thpc.mutation.SetToolsID(i)
 	return thpc
 }
 
-// SetProductID sets the "product_id" field.
-func (thpc *ToolHasProductCreate) SetProductID(i int) *ToolHasProductCreate {
-	thpc.mutation.SetProductID(i)
-	return thpc
-}
-
-// SetNillableProductID sets the "product_id" field if the given value is not nil.
-func (thpc *ToolHasProductCreate) SetNillableProductID(i *int) *ToolHasProductCreate {
+// SetNillableToolsID sets the "tools_id" field if the given value is not nil.
+func (thpc *ToolHasProductCreate) SetNillableToolsID(i *int) *ToolHasProductCreate {
 	if i != nil {
-		thpc.SetProductID(*i)
+		thpc.SetToolsID(*i)
 	}
 	return thpc
 }
 
-// SetProduct sets the "product" edge to the Products entity.
-func (thpc *ToolHasProductCreate) SetProduct(p *Products) *ToolHasProductCreate {
-	return thpc.SetProductID(p.ID)
+// SetProducts sets the "products" edge to the Products entity.
+func (thpc *ToolHasProductCreate) SetProducts(p *Products) *ToolHasProductCreate {
+	return thpc.SetProductsID(p.ID)
 }
 
-// SetTool sets the "tool" edge to the Tools entity.
-func (thpc *ToolHasProductCreate) SetTool(t *Tools) *ToolHasProductCreate {
-	return thpc.SetToolID(t.ID)
+// SetTools sets the "tools" edge to the Tools entity.
+func (thpc *ToolHasProductCreate) SetTools(t *Tools) *ToolHasProductCreate {
+	return thpc.SetToolsID(t.ID)
 }
 
 // Mutation returns the ToolHasProductMutation object of the builder.
@@ -159,44 +127,12 @@ func (thpc *ToolHasProductCreate) defaults() {
 		v := toolhasproduct.DefaultCreatedAt()
 		thpc.mutation.SetCreatedAt(v)
 	}
-	if _, ok := thpc.mutation.UpdatedAt(); !ok {
-		v := toolhasproduct.DefaultUpdatedAt()
-		thpc.mutation.SetUpdatedAt(v)
-	}
 }
 
 // check runs all checks and user-defined validators on the builder.
 func (thpc *ToolHasProductCreate) check() error {
 	if _, ok := thpc.mutation.CreatedAt(); !ok {
 		return &ValidationError{Name: "created_at", err: errors.New(`ent: missing required field "ToolHasProduct.created_at"`)}
-	}
-	if _, ok := thpc.mutation.UpdatedAt(); !ok {
-		return &ValidationError{Name: "updated_at", err: errors.New(`ent: missing required field "ToolHasProduct.updated_at"`)}
-	}
-	if _, ok := thpc.mutation.CreatedBy(); !ok {
-		return &ValidationError{Name: "created_by", err: errors.New(`ent: missing required field "ToolHasProduct.created_by"`)}
-	}
-	if v, ok := thpc.mutation.CreatedBy(); ok {
-		if err := toolhasproduct.CreatedByValidator(v); err != nil {
-			return &ValidationError{Name: "created_by", err: fmt.Errorf(`ent: validator failed for field "ToolHasProduct.created_by": %w`, err)}
-		}
-	}
-	if _, ok := thpc.mutation.UpdatedBy(); !ok {
-		return &ValidationError{Name: "updated_by", err: errors.New(`ent: missing required field "ToolHasProduct.updated_by"`)}
-	}
-	if v, ok := thpc.mutation.UpdatedBy(); ok {
-		if err := toolhasproduct.UpdatedByValidator(v); err != nil {
-			return &ValidationError{Name: "updated_by", err: fmt.Errorf(`ent: validator failed for field "ToolHasProduct.updated_by": %w`, err)}
-		}
-	}
-	if _, ok := thpc.mutation.ToolID(); !ok {
-		return &ValidationError{Name: "tool_id", err: errors.New(`ent: missing required field "ToolHasProduct.tool_id"`)}
-	}
-	if len(thpc.mutation.ProductIDs()) == 0 {
-		return &ValidationError{Name: "product", err: errors.New(`ent: missing required edge "ToolHasProduct.product"`)}
-	}
-	if len(thpc.mutation.ToolIDs()) == 0 {
-		return &ValidationError{Name: "tool", err: errors.New(`ent: missing required edge "ToolHasProduct.tool"`)}
 	}
 	return nil
 }
@@ -228,40 +164,16 @@ func (thpc *ToolHasProductCreate) createSpec() (*ToolHasProduct, *sqlgraph.Creat
 		_spec.SetField(toolhasproduct.FieldCreatedAt, field.TypeTime, value)
 		_node.CreatedAt = value
 	}
-	if value, ok := thpc.mutation.UpdatedAt(); ok {
-		_spec.SetField(toolhasproduct.FieldUpdatedAt, field.TypeTime, value)
-		_node.UpdatedAt = value
-	}
 	if value, ok := thpc.mutation.DeletedAt(); ok {
 		_spec.SetField(toolhasproduct.FieldDeletedAt, field.TypeTime, value)
 		_node.DeletedAt = &value
 	}
-	if value, ok := thpc.mutation.CreatedBy(); ok {
-		_spec.SetField(toolhasproduct.FieldCreatedBy, field.TypeInt, value)
-		_node.CreatedBy = value
-	}
-	if value, ok := thpc.mutation.UpdatedBy(); ok {
-		_spec.SetField(toolhasproduct.FieldUpdatedBy, field.TypeInt, value)
-		_node.UpdatedBy = value
-	}
-	if value, ok := thpc.mutation.DeletedBy(); ok {
-		_spec.SetField(toolhasproduct.FieldDeletedBy, field.TypeInt, value)
-		_node.DeletedBy = &value
-	}
-	if value, ok := thpc.mutation.ToolID(); ok {
-		_spec.SetField(toolhasproduct.FieldToolID, field.TypeInt, value)
-		_node.ToolID = &value
-	}
-	if value, ok := thpc.mutation.ProductID(); ok {
-		_spec.SetField(toolhasproduct.FieldProductID, field.TypeInt, value)
-		_node.ProductID = &value
-	}
-	if nodes := thpc.mutation.ProductIDs(); len(nodes) > 0 {
+	if nodes := thpc.mutation.ProductsIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2O,
 			Inverse: true,
-			Table:   toolhasproduct.ProductTable,
-			Columns: []string{toolhasproduct.ProductColumn},
+			Table:   toolhasproduct.ProductsTable,
+			Columns: []string{toolhasproduct.ProductsColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(products.FieldID, field.TypeInt),
@@ -270,15 +182,15 @@ func (thpc *ToolHasProductCreate) createSpec() (*ToolHasProduct, *sqlgraph.Creat
 		for _, k := range nodes {
 			edge.Target.Nodes = append(edge.Target.Nodes, k)
 		}
-		_node.products_tool_has_product = &nodes[0]
+		_node.ProductsID = &nodes[0]
 		_spec.Edges = append(_spec.Edges, edge)
 	}
-	if nodes := thpc.mutation.ToolIDs(); len(nodes) > 0 {
+	if nodes := thpc.mutation.ToolsIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2O,
 			Inverse: true,
-			Table:   toolhasproduct.ToolTable,
-			Columns: []string{toolhasproduct.ToolColumn},
+			Table:   toolhasproduct.ToolsTable,
+			Columns: []string{toolhasproduct.ToolsColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(tools.FieldID, field.TypeInt),
@@ -287,7 +199,7 @@ func (thpc *ToolHasProductCreate) createSpec() (*ToolHasProduct, *sqlgraph.Creat
 		for _, k := range nodes {
 			edge.Target.Nodes = append(edge.Target.Nodes, k)
 		}
-		_node.tools_tool_has_product = &nodes[0]
+		_node.ToolsID = &nodes[0]
 		_spec.Edges = append(_spec.Edges, edge)
 	}
 	return _node, _spec

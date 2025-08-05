@@ -36,20 +36,6 @@ func (phpc *PromotionHasProductCreate) SetNillableCreatedAt(t *time.Time) *Promo
 	return phpc
 }
 
-// SetUpdatedAt sets the "updated_at" field.
-func (phpc *PromotionHasProductCreate) SetUpdatedAt(t time.Time) *PromotionHasProductCreate {
-	phpc.mutation.SetUpdatedAt(t)
-	return phpc
-}
-
-// SetNillableUpdatedAt sets the "updated_at" field if the given value is not nil.
-func (phpc *PromotionHasProductCreate) SetNillableUpdatedAt(t *time.Time) *PromotionHasProductCreate {
-	if t != nil {
-		phpc.SetUpdatedAt(*t)
-	}
-	return phpc
-}
-
 // SetDeletedAt sets the "deleted_at" field.
 func (phpc *PromotionHasProductCreate) SetDeletedAt(t time.Time) *PromotionHasProductCreate {
 	phpc.mutation.SetDeletedAt(t)
@@ -64,49 +50,31 @@ func (phpc *PromotionHasProductCreate) SetNillableDeletedAt(t *time.Time) *Promo
 	return phpc
 }
 
-// SetCreatedBy sets the "created_by" field.
-func (phpc *PromotionHasProductCreate) SetCreatedBy(i int) *PromotionHasProductCreate {
-	phpc.mutation.SetCreatedBy(i)
+// SetProductsID sets the "products_id" field.
+func (phpc *PromotionHasProductCreate) SetProductsID(i int) *PromotionHasProductCreate {
+	phpc.mutation.SetProductsID(i)
 	return phpc
 }
 
-// SetUpdatedBy sets the "updated_by" field.
-func (phpc *PromotionHasProductCreate) SetUpdatedBy(i int) *PromotionHasProductCreate {
-	phpc.mutation.SetUpdatedBy(i)
-	return phpc
-}
-
-// SetDeletedBy sets the "deleted_by" field.
-func (phpc *PromotionHasProductCreate) SetDeletedBy(i int) *PromotionHasProductCreate {
-	phpc.mutation.SetDeletedBy(i)
-	return phpc
-}
-
-// SetNillableDeletedBy sets the "deleted_by" field if the given value is not nil.
-func (phpc *PromotionHasProductCreate) SetNillableDeletedBy(i *int) *PromotionHasProductCreate {
+// SetNillableProductsID sets the "products_id" field if the given value is not nil.
+func (phpc *PromotionHasProductCreate) SetNillableProductsID(i *int) *PromotionHasProductCreate {
 	if i != nil {
-		phpc.SetDeletedBy(*i)
+		phpc.SetProductsID(*i)
 	}
 	return phpc
 }
 
-// SetProductID sets the "product_id" field.
-func (phpc *PromotionHasProductCreate) SetProductID(i int) *PromotionHasProductCreate {
-	phpc.mutation.SetProductID(i)
+// SetPromotionsID sets the "promotions_id" field.
+func (phpc *PromotionHasProductCreate) SetPromotionsID(i int) *PromotionHasProductCreate {
+	phpc.mutation.SetPromotionsID(i)
 	return phpc
 }
 
-// SetNillableProductID sets the "product_id" field if the given value is not nil.
-func (phpc *PromotionHasProductCreate) SetNillableProductID(i *int) *PromotionHasProductCreate {
+// SetNillablePromotionsID sets the "promotions_id" field if the given value is not nil.
+func (phpc *PromotionHasProductCreate) SetNillablePromotionsID(i *int) *PromotionHasProductCreate {
 	if i != nil {
-		phpc.SetProductID(*i)
+		phpc.SetPromotionsID(*i)
 	}
-	return phpc
-}
-
-// SetPromotionID sets the "promotion_id" field.
-func (phpc *PromotionHasProductCreate) SetPromotionID(i int) *PromotionHasProductCreate {
-	phpc.mutation.SetPromotionID(i)
 	return phpc
 }
 
@@ -116,14 +84,14 @@ func (phpc *PromotionHasProductCreate) SetPromocionalPrice(f float64) *Promotion
 	return phpc
 }
 
-// SetProduct sets the "product" edge to the Products entity.
-func (phpc *PromotionHasProductCreate) SetProduct(p *Products) *PromotionHasProductCreate {
-	return phpc.SetProductID(p.ID)
+// SetProducts sets the "products" edge to the Products entity.
+func (phpc *PromotionHasProductCreate) SetProducts(p *Products) *PromotionHasProductCreate {
+	return phpc.SetProductsID(p.ID)
 }
 
-// SetPromotion sets the "promotion" edge to the Promotions entity.
-func (phpc *PromotionHasProductCreate) SetPromotion(p *Promotions) *PromotionHasProductCreate {
-	return phpc.SetPromotionID(p.ID)
+// SetPromotions sets the "promotions" edge to the Promotions entity.
+func (phpc *PromotionHasProductCreate) SetPromotions(p *Promotions) *PromotionHasProductCreate {
+	return phpc.SetPromotionsID(p.ID)
 }
 
 // Mutation returns the PromotionHasProductMutation object of the builder.
@@ -165,10 +133,6 @@ func (phpc *PromotionHasProductCreate) defaults() {
 		v := promotionhasproduct.DefaultCreatedAt()
 		phpc.mutation.SetCreatedAt(v)
 	}
-	if _, ok := phpc.mutation.UpdatedAt(); !ok {
-		v := promotionhasproduct.DefaultUpdatedAt()
-		phpc.mutation.SetUpdatedAt(v)
-	}
 }
 
 // check runs all checks and user-defined validators on the builder.
@@ -176,36 +140,8 @@ func (phpc *PromotionHasProductCreate) check() error {
 	if _, ok := phpc.mutation.CreatedAt(); !ok {
 		return &ValidationError{Name: "created_at", err: errors.New(`ent: missing required field "PromotionHasProduct.created_at"`)}
 	}
-	if _, ok := phpc.mutation.UpdatedAt(); !ok {
-		return &ValidationError{Name: "updated_at", err: errors.New(`ent: missing required field "PromotionHasProduct.updated_at"`)}
-	}
-	if _, ok := phpc.mutation.CreatedBy(); !ok {
-		return &ValidationError{Name: "created_by", err: errors.New(`ent: missing required field "PromotionHasProduct.created_by"`)}
-	}
-	if v, ok := phpc.mutation.CreatedBy(); ok {
-		if err := promotionhasproduct.CreatedByValidator(v); err != nil {
-			return &ValidationError{Name: "created_by", err: fmt.Errorf(`ent: validator failed for field "PromotionHasProduct.created_by": %w`, err)}
-		}
-	}
-	if _, ok := phpc.mutation.UpdatedBy(); !ok {
-		return &ValidationError{Name: "updated_by", err: errors.New(`ent: missing required field "PromotionHasProduct.updated_by"`)}
-	}
-	if v, ok := phpc.mutation.UpdatedBy(); ok {
-		if err := promotionhasproduct.UpdatedByValidator(v); err != nil {
-			return &ValidationError{Name: "updated_by", err: fmt.Errorf(`ent: validator failed for field "PromotionHasProduct.updated_by": %w`, err)}
-		}
-	}
-	if _, ok := phpc.mutation.PromotionID(); !ok {
-		return &ValidationError{Name: "promotion_id", err: errors.New(`ent: missing required field "PromotionHasProduct.promotion_id"`)}
-	}
 	if _, ok := phpc.mutation.PromocionalPrice(); !ok {
 		return &ValidationError{Name: "promocional_price", err: errors.New(`ent: missing required field "PromotionHasProduct.promocional_price"`)}
-	}
-	if len(phpc.mutation.ProductIDs()) == 0 {
-		return &ValidationError{Name: "product", err: errors.New(`ent: missing required edge "PromotionHasProduct.product"`)}
-	}
-	if len(phpc.mutation.PromotionIDs()) == 0 {
-		return &ValidationError{Name: "promotion", err: errors.New(`ent: missing required edge "PromotionHasProduct.promotion"`)}
 	}
 	return nil
 }
@@ -237,44 +173,20 @@ func (phpc *PromotionHasProductCreate) createSpec() (*PromotionHasProduct, *sqlg
 		_spec.SetField(promotionhasproduct.FieldCreatedAt, field.TypeTime, value)
 		_node.CreatedAt = value
 	}
-	if value, ok := phpc.mutation.UpdatedAt(); ok {
-		_spec.SetField(promotionhasproduct.FieldUpdatedAt, field.TypeTime, value)
-		_node.UpdatedAt = value
-	}
 	if value, ok := phpc.mutation.DeletedAt(); ok {
 		_spec.SetField(promotionhasproduct.FieldDeletedAt, field.TypeTime, value)
 		_node.DeletedAt = &value
-	}
-	if value, ok := phpc.mutation.CreatedBy(); ok {
-		_spec.SetField(promotionhasproduct.FieldCreatedBy, field.TypeInt, value)
-		_node.CreatedBy = value
-	}
-	if value, ok := phpc.mutation.UpdatedBy(); ok {
-		_spec.SetField(promotionhasproduct.FieldUpdatedBy, field.TypeInt, value)
-		_node.UpdatedBy = value
-	}
-	if value, ok := phpc.mutation.DeletedBy(); ok {
-		_spec.SetField(promotionhasproduct.FieldDeletedBy, field.TypeInt, value)
-		_node.DeletedBy = &value
-	}
-	if value, ok := phpc.mutation.ProductID(); ok {
-		_spec.SetField(promotionhasproduct.FieldProductID, field.TypeInt, value)
-		_node.ProductID = &value
-	}
-	if value, ok := phpc.mutation.PromotionID(); ok {
-		_spec.SetField(promotionhasproduct.FieldPromotionID, field.TypeInt, value)
-		_node.PromotionID = &value
 	}
 	if value, ok := phpc.mutation.PromocionalPrice(); ok {
 		_spec.SetField(promotionhasproduct.FieldPromocionalPrice, field.TypeFloat64, value)
 		_node.PromocionalPrice = &value
 	}
-	if nodes := phpc.mutation.ProductIDs(); len(nodes) > 0 {
+	if nodes := phpc.mutation.ProductsIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2O,
 			Inverse: true,
-			Table:   promotionhasproduct.ProductTable,
-			Columns: []string{promotionhasproduct.ProductColumn},
+			Table:   promotionhasproduct.ProductsTable,
+			Columns: []string{promotionhasproduct.ProductsColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(products.FieldID, field.TypeInt),
@@ -283,15 +195,15 @@ func (phpc *PromotionHasProductCreate) createSpec() (*PromotionHasProduct, *sqlg
 		for _, k := range nodes {
 			edge.Target.Nodes = append(edge.Target.Nodes, k)
 		}
-		_node.products_promotion_has_product = &nodes[0]
+		_node.ProductsID = &nodes[0]
 		_spec.Edges = append(_spec.Edges, edge)
 	}
-	if nodes := phpc.mutation.PromotionIDs(); len(nodes) > 0 {
+	if nodes := phpc.mutation.PromotionsIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2O,
 			Inverse: true,
-			Table:   promotionhasproduct.PromotionTable,
-			Columns: []string{promotionhasproduct.PromotionColumn},
+			Table:   promotionhasproduct.PromotionsTable,
+			Columns: []string{promotionhasproduct.PromotionsColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(promotions.FieldID, field.TypeInt),
@@ -300,7 +212,7 @@ func (phpc *PromotionHasProductCreate) createSpec() (*PromotionHasProduct, *sqlg
 		for _, k := range nodes {
 			edge.Target.Nodes = append(edge.Target.Nodes, k)
 		}
-		_node.promotions_promotion_has_product = &nodes[0]
+		_node.PromotionsID = &nodes[0]
 		_spec.Edges = append(_spec.Edges, edge)
 	}
 	return _node, _spec

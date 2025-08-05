@@ -36,20 +36,6 @@ func (fc *FeaturesCreate) SetNillableCreatedAt(t *time.Time) *FeaturesCreate {
 	return fc
 }
 
-// SetUpdatedAt sets the "updated_at" field.
-func (fc *FeaturesCreate) SetUpdatedAt(t time.Time) *FeaturesCreate {
-	fc.mutation.SetUpdatedAt(t)
-	return fc
-}
-
-// SetNillableUpdatedAt sets the "updated_at" field if the given value is not nil.
-func (fc *FeaturesCreate) SetNillableUpdatedAt(t *time.Time) *FeaturesCreate {
-	if t != nil {
-		fc.SetUpdatedAt(*t)
-	}
-	return fc
-}
-
 // SetDeletedAt sets the "deleted_at" field.
 func (fc *FeaturesCreate) SetDeletedAt(t time.Time) *FeaturesCreate {
 	fc.mutation.SetDeletedAt(t)
@@ -60,32 +46,6 @@ func (fc *FeaturesCreate) SetDeletedAt(t time.Time) *FeaturesCreate {
 func (fc *FeaturesCreate) SetNillableDeletedAt(t *time.Time) *FeaturesCreate {
 	if t != nil {
 		fc.SetDeletedAt(*t)
-	}
-	return fc
-}
-
-// SetCreatedBy sets the "created_by" field.
-func (fc *FeaturesCreate) SetCreatedBy(i int) *FeaturesCreate {
-	fc.mutation.SetCreatedBy(i)
-	return fc
-}
-
-// SetUpdatedBy sets the "updated_by" field.
-func (fc *FeaturesCreate) SetUpdatedBy(i int) *FeaturesCreate {
-	fc.mutation.SetUpdatedBy(i)
-	return fc
-}
-
-// SetDeletedBy sets the "deleted_by" field.
-func (fc *FeaturesCreate) SetDeletedBy(i int) *FeaturesCreate {
-	fc.mutation.SetDeletedBy(i)
-	return fc
-}
-
-// SetNillableDeletedBy sets the "deleted_by" field if the given value is not nil.
-func (fc *FeaturesCreate) SetNillableDeletedBy(i *int) *FeaturesCreate {
-	if i != nil {
-		fc.SetDeletedBy(*i)
 	}
 	return fc
 }
@@ -171,35 +131,12 @@ func (fc *FeaturesCreate) defaults() {
 		v := features.DefaultCreatedAt()
 		fc.mutation.SetCreatedAt(v)
 	}
-	if _, ok := fc.mutation.UpdatedAt(); !ok {
-		v := features.DefaultUpdatedAt()
-		fc.mutation.SetUpdatedAt(v)
-	}
 }
 
 // check runs all checks and user-defined validators on the builder.
 func (fc *FeaturesCreate) check() error {
 	if _, ok := fc.mutation.CreatedAt(); !ok {
 		return &ValidationError{Name: "created_at", err: errors.New(`ent: missing required field "Features.created_at"`)}
-	}
-	if _, ok := fc.mutation.UpdatedAt(); !ok {
-		return &ValidationError{Name: "updated_at", err: errors.New(`ent: missing required field "Features.updated_at"`)}
-	}
-	if _, ok := fc.mutation.CreatedBy(); !ok {
-		return &ValidationError{Name: "created_by", err: errors.New(`ent: missing required field "Features.created_by"`)}
-	}
-	if v, ok := fc.mutation.CreatedBy(); ok {
-		if err := features.CreatedByValidator(v); err != nil {
-			return &ValidationError{Name: "created_by", err: fmt.Errorf(`ent: validator failed for field "Features.created_by": %w`, err)}
-		}
-	}
-	if _, ok := fc.mutation.UpdatedBy(); !ok {
-		return &ValidationError{Name: "updated_by", err: errors.New(`ent: missing required field "Features.updated_by"`)}
-	}
-	if v, ok := fc.mutation.UpdatedBy(); ok {
-		if err := features.UpdatedByValidator(v); err != nil {
-			return &ValidationError{Name: "updated_by", err: fmt.Errorf(`ent: validator failed for field "Features.updated_by": %w`, err)}
-		}
 	}
 	if _, ok := fc.mutation.FeatureValueID(); !ok {
 		return &ValidationError{Name: "feature_value_id", err: errors.New(`ent: missing required field "Features.feature_value_id"`)}
@@ -237,25 +174,9 @@ func (fc *FeaturesCreate) createSpec() (*Features, *sqlgraph.CreateSpec) {
 		_spec.SetField(features.FieldCreatedAt, field.TypeTime, value)
 		_node.CreatedAt = value
 	}
-	if value, ok := fc.mutation.UpdatedAt(); ok {
-		_spec.SetField(features.FieldUpdatedAt, field.TypeTime, value)
-		_node.UpdatedAt = value
-	}
 	if value, ok := fc.mutation.DeletedAt(); ok {
 		_spec.SetField(features.FieldDeletedAt, field.TypeTime, value)
 		_node.DeletedAt = &value
-	}
-	if value, ok := fc.mutation.CreatedBy(); ok {
-		_spec.SetField(features.FieldCreatedBy, field.TypeInt, value)
-		_node.CreatedBy = value
-	}
-	if value, ok := fc.mutation.UpdatedBy(); ok {
-		_spec.SetField(features.FieldUpdatedBy, field.TypeInt, value)
-		_node.UpdatedBy = value
-	}
-	if value, ok := fc.mutation.DeletedBy(); ok {
-		_spec.SetField(features.FieldDeletedBy, field.TypeInt, value)
-		_node.DeletedBy = &value
 	}
 	if value, ok := fc.mutation.FeatureValueID(); ok {
 		_spec.SetField(features.FieldFeatureValueID, field.TypeInt, value)

@@ -30,12 +30,6 @@ func (fvtu *FeaturesValuesTypesUpdate) Where(ps ...predicate.FeaturesValuesTypes
 	return fvtu
 }
 
-// SetUpdatedAt sets the "updated_at" field.
-func (fvtu *FeaturesValuesTypesUpdate) SetUpdatedAt(t time.Time) *FeaturesValuesTypesUpdate {
-	fvtu.mutation.SetUpdatedAt(t)
-	return fvtu
-}
-
 // SetDeletedAt sets the "deleted_at" field.
 func (fvtu *FeaturesValuesTypesUpdate) SetDeletedAt(t time.Time) *FeaturesValuesTypesUpdate {
 	fvtu.mutation.SetDeletedAt(t)
@@ -53,54 +47,6 @@ func (fvtu *FeaturesValuesTypesUpdate) SetNillableDeletedAt(t *time.Time) *Featu
 // ClearDeletedAt clears the value of the "deleted_at" field.
 func (fvtu *FeaturesValuesTypesUpdate) ClearDeletedAt() *FeaturesValuesTypesUpdate {
 	fvtu.mutation.ClearDeletedAt()
-	return fvtu
-}
-
-// SetUpdatedBy sets the "updated_by" field.
-func (fvtu *FeaturesValuesTypesUpdate) SetUpdatedBy(i int) *FeaturesValuesTypesUpdate {
-	fvtu.mutation.ResetUpdatedBy()
-	fvtu.mutation.SetUpdatedBy(i)
-	return fvtu
-}
-
-// SetNillableUpdatedBy sets the "updated_by" field if the given value is not nil.
-func (fvtu *FeaturesValuesTypesUpdate) SetNillableUpdatedBy(i *int) *FeaturesValuesTypesUpdate {
-	if i != nil {
-		fvtu.SetUpdatedBy(*i)
-	}
-	return fvtu
-}
-
-// AddUpdatedBy adds i to the "updated_by" field.
-func (fvtu *FeaturesValuesTypesUpdate) AddUpdatedBy(i int) *FeaturesValuesTypesUpdate {
-	fvtu.mutation.AddUpdatedBy(i)
-	return fvtu
-}
-
-// SetDeletedBy sets the "deleted_by" field.
-func (fvtu *FeaturesValuesTypesUpdate) SetDeletedBy(i int) *FeaturesValuesTypesUpdate {
-	fvtu.mutation.ResetDeletedBy()
-	fvtu.mutation.SetDeletedBy(i)
-	return fvtu
-}
-
-// SetNillableDeletedBy sets the "deleted_by" field if the given value is not nil.
-func (fvtu *FeaturesValuesTypesUpdate) SetNillableDeletedBy(i *int) *FeaturesValuesTypesUpdate {
-	if i != nil {
-		fvtu.SetDeletedBy(*i)
-	}
-	return fvtu
-}
-
-// AddDeletedBy adds i to the "deleted_by" field.
-func (fvtu *FeaturesValuesTypesUpdate) AddDeletedBy(i int) *FeaturesValuesTypesUpdate {
-	fvtu.mutation.AddDeletedBy(i)
-	return fvtu
-}
-
-// ClearDeletedBy clears the value of the "deleted_by" field.
-func (fvtu *FeaturesValuesTypesUpdate) ClearDeletedBy() *FeaturesValuesTypesUpdate {
-	fvtu.mutation.ClearDeletedBy()
 	return fvtu
 }
 
@@ -197,7 +143,6 @@ func (fvtu *FeaturesValuesTypesUpdate) RemoveFeatureValues(f ...*FeaturesValues)
 
 // Save executes the query and returns the number of nodes affected by the update operation.
 func (fvtu *FeaturesValuesTypesUpdate) Save(ctx context.Context) (int, error) {
-	fvtu.defaults()
 	return withHooks(ctx, fvtu.sqlSave, fvtu.mutation, fvtu.hooks)
 }
 
@@ -223,28 +168,7 @@ func (fvtu *FeaturesValuesTypesUpdate) ExecX(ctx context.Context) {
 	}
 }
 
-// defaults sets the default values of the builder before save.
-func (fvtu *FeaturesValuesTypesUpdate) defaults() {
-	if _, ok := fvtu.mutation.UpdatedAt(); !ok {
-		v := featuresvaluestypes.UpdateDefaultUpdatedAt()
-		fvtu.mutation.SetUpdatedAt(v)
-	}
-}
-
-// check runs all checks and user-defined validators on the builder.
-func (fvtu *FeaturesValuesTypesUpdate) check() error {
-	if v, ok := fvtu.mutation.UpdatedBy(); ok {
-		if err := featuresvaluestypes.UpdatedByValidator(v); err != nil {
-			return &ValidationError{Name: "updated_by", err: fmt.Errorf(`ent: validator failed for field "FeaturesValuesTypes.updated_by": %w`, err)}
-		}
-	}
-	return nil
-}
-
 func (fvtu *FeaturesValuesTypesUpdate) sqlSave(ctx context.Context) (n int, err error) {
-	if err := fvtu.check(); err != nil {
-		return n, err
-	}
 	_spec := sqlgraph.NewUpdateSpec(featuresvaluestypes.Table, featuresvaluestypes.Columns, sqlgraph.NewFieldSpec(featuresvaluestypes.FieldID, field.TypeInt))
 	if ps := fvtu.mutation.predicates; len(ps) > 0 {
 		_spec.Predicate = func(selector *sql.Selector) {
@@ -253,29 +177,11 @@ func (fvtu *FeaturesValuesTypesUpdate) sqlSave(ctx context.Context) (n int, err 
 			}
 		}
 	}
-	if value, ok := fvtu.mutation.UpdatedAt(); ok {
-		_spec.SetField(featuresvaluestypes.FieldUpdatedAt, field.TypeTime, value)
-	}
 	if value, ok := fvtu.mutation.DeletedAt(); ok {
 		_spec.SetField(featuresvaluestypes.FieldDeletedAt, field.TypeTime, value)
 	}
 	if fvtu.mutation.DeletedAtCleared() {
 		_spec.ClearField(featuresvaluestypes.FieldDeletedAt, field.TypeTime)
-	}
-	if value, ok := fvtu.mutation.UpdatedBy(); ok {
-		_spec.SetField(featuresvaluestypes.FieldUpdatedBy, field.TypeInt, value)
-	}
-	if value, ok := fvtu.mutation.AddedUpdatedBy(); ok {
-		_spec.AddField(featuresvaluestypes.FieldUpdatedBy, field.TypeInt, value)
-	}
-	if value, ok := fvtu.mutation.DeletedBy(); ok {
-		_spec.SetField(featuresvaluestypes.FieldDeletedBy, field.TypeInt, value)
-	}
-	if value, ok := fvtu.mutation.AddedDeletedBy(); ok {
-		_spec.AddField(featuresvaluestypes.FieldDeletedBy, field.TypeInt, value)
-	}
-	if fvtu.mutation.DeletedByCleared() {
-		_spec.ClearField(featuresvaluestypes.FieldDeletedBy, field.TypeInt)
 	}
 	if value, ok := fvtu.mutation.Name(); ok {
 		_spec.SetField(featuresvaluestypes.FieldName, field.TypeString, value)
@@ -390,12 +296,6 @@ type FeaturesValuesTypesUpdateOne struct {
 	mutation *FeaturesValuesTypesMutation
 }
 
-// SetUpdatedAt sets the "updated_at" field.
-func (fvtuo *FeaturesValuesTypesUpdateOne) SetUpdatedAt(t time.Time) *FeaturesValuesTypesUpdateOne {
-	fvtuo.mutation.SetUpdatedAt(t)
-	return fvtuo
-}
-
 // SetDeletedAt sets the "deleted_at" field.
 func (fvtuo *FeaturesValuesTypesUpdateOne) SetDeletedAt(t time.Time) *FeaturesValuesTypesUpdateOne {
 	fvtuo.mutation.SetDeletedAt(t)
@@ -413,54 +313,6 @@ func (fvtuo *FeaturesValuesTypesUpdateOne) SetNillableDeletedAt(t *time.Time) *F
 // ClearDeletedAt clears the value of the "deleted_at" field.
 func (fvtuo *FeaturesValuesTypesUpdateOne) ClearDeletedAt() *FeaturesValuesTypesUpdateOne {
 	fvtuo.mutation.ClearDeletedAt()
-	return fvtuo
-}
-
-// SetUpdatedBy sets the "updated_by" field.
-func (fvtuo *FeaturesValuesTypesUpdateOne) SetUpdatedBy(i int) *FeaturesValuesTypesUpdateOne {
-	fvtuo.mutation.ResetUpdatedBy()
-	fvtuo.mutation.SetUpdatedBy(i)
-	return fvtuo
-}
-
-// SetNillableUpdatedBy sets the "updated_by" field if the given value is not nil.
-func (fvtuo *FeaturesValuesTypesUpdateOne) SetNillableUpdatedBy(i *int) *FeaturesValuesTypesUpdateOne {
-	if i != nil {
-		fvtuo.SetUpdatedBy(*i)
-	}
-	return fvtuo
-}
-
-// AddUpdatedBy adds i to the "updated_by" field.
-func (fvtuo *FeaturesValuesTypesUpdateOne) AddUpdatedBy(i int) *FeaturesValuesTypesUpdateOne {
-	fvtuo.mutation.AddUpdatedBy(i)
-	return fvtuo
-}
-
-// SetDeletedBy sets the "deleted_by" field.
-func (fvtuo *FeaturesValuesTypesUpdateOne) SetDeletedBy(i int) *FeaturesValuesTypesUpdateOne {
-	fvtuo.mutation.ResetDeletedBy()
-	fvtuo.mutation.SetDeletedBy(i)
-	return fvtuo
-}
-
-// SetNillableDeletedBy sets the "deleted_by" field if the given value is not nil.
-func (fvtuo *FeaturesValuesTypesUpdateOne) SetNillableDeletedBy(i *int) *FeaturesValuesTypesUpdateOne {
-	if i != nil {
-		fvtuo.SetDeletedBy(*i)
-	}
-	return fvtuo
-}
-
-// AddDeletedBy adds i to the "deleted_by" field.
-func (fvtuo *FeaturesValuesTypesUpdateOne) AddDeletedBy(i int) *FeaturesValuesTypesUpdateOne {
-	fvtuo.mutation.AddDeletedBy(i)
-	return fvtuo
-}
-
-// ClearDeletedBy clears the value of the "deleted_by" field.
-func (fvtuo *FeaturesValuesTypesUpdateOne) ClearDeletedBy() *FeaturesValuesTypesUpdateOne {
-	fvtuo.mutation.ClearDeletedBy()
 	return fvtuo
 }
 
@@ -570,7 +422,6 @@ func (fvtuo *FeaturesValuesTypesUpdateOne) Select(field string, fields ...string
 
 // Save executes the query and returns the updated FeaturesValuesTypes entity.
 func (fvtuo *FeaturesValuesTypesUpdateOne) Save(ctx context.Context) (*FeaturesValuesTypes, error) {
-	fvtuo.defaults()
 	return withHooks(ctx, fvtuo.sqlSave, fvtuo.mutation, fvtuo.hooks)
 }
 
@@ -596,28 +447,7 @@ func (fvtuo *FeaturesValuesTypesUpdateOne) ExecX(ctx context.Context) {
 	}
 }
 
-// defaults sets the default values of the builder before save.
-func (fvtuo *FeaturesValuesTypesUpdateOne) defaults() {
-	if _, ok := fvtuo.mutation.UpdatedAt(); !ok {
-		v := featuresvaluestypes.UpdateDefaultUpdatedAt()
-		fvtuo.mutation.SetUpdatedAt(v)
-	}
-}
-
-// check runs all checks and user-defined validators on the builder.
-func (fvtuo *FeaturesValuesTypesUpdateOne) check() error {
-	if v, ok := fvtuo.mutation.UpdatedBy(); ok {
-		if err := featuresvaluestypes.UpdatedByValidator(v); err != nil {
-			return &ValidationError{Name: "updated_by", err: fmt.Errorf(`ent: validator failed for field "FeaturesValuesTypes.updated_by": %w`, err)}
-		}
-	}
-	return nil
-}
-
 func (fvtuo *FeaturesValuesTypesUpdateOne) sqlSave(ctx context.Context) (_node *FeaturesValuesTypes, err error) {
-	if err := fvtuo.check(); err != nil {
-		return _node, err
-	}
 	_spec := sqlgraph.NewUpdateSpec(featuresvaluestypes.Table, featuresvaluestypes.Columns, sqlgraph.NewFieldSpec(featuresvaluestypes.FieldID, field.TypeInt))
 	id, ok := fvtuo.mutation.ID()
 	if !ok {
@@ -643,29 +473,11 @@ func (fvtuo *FeaturesValuesTypesUpdateOne) sqlSave(ctx context.Context) (_node *
 			}
 		}
 	}
-	if value, ok := fvtuo.mutation.UpdatedAt(); ok {
-		_spec.SetField(featuresvaluestypes.FieldUpdatedAt, field.TypeTime, value)
-	}
 	if value, ok := fvtuo.mutation.DeletedAt(); ok {
 		_spec.SetField(featuresvaluestypes.FieldDeletedAt, field.TypeTime, value)
 	}
 	if fvtuo.mutation.DeletedAtCleared() {
 		_spec.ClearField(featuresvaluestypes.FieldDeletedAt, field.TypeTime)
-	}
-	if value, ok := fvtuo.mutation.UpdatedBy(); ok {
-		_spec.SetField(featuresvaluestypes.FieldUpdatedBy, field.TypeInt, value)
-	}
-	if value, ok := fvtuo.mutation.AddedUpdatedBy(); ok {
-		_spec.AddField(featuresvaluestypes.FieldUpdatedBy, field.TypeInt, value)
-	}
-	if value, ok := fvtuo.mutation.DeletedBy(); ok {
-		_spec.SetField(featuresvaluestypes.FieldDeletedBy, field.TypeInt, value)
-	}
-	if value, ok := fvtuo.mutation.AddedDeletedBy(); ok {
-		_spec.AddField(featuresvaluestypes.FieldDeletedBy, field.TypeInt, value)
-	}
-	if fvtuo.mutation.DeletedByCleared() {
-		_spec.ClearField(featuresvaluestypes.FieldDeletedBy, field.TypeInt)
 	}
 	if value, ok := fvtuo.mutation.Name(); ok {
 		_spec.SetField(featuresvaluestypes.FieldName, field.TypeString, value)

@@ -36,20 +36,6 @@ func (phfc *ProductHasFeatureCreate) SetNillableCreatedAt(t *time.Time) *Product
 	return phfc
 }
 
-// SetUpdatedAt sets the "updated_at" field.
-func (phfc *ProductHasFeatureCreate) SetUpdatedAt(t time.Time) *ProductHasFeatureCreate {
-	phfc.mutation.SetUpdatedAt(t)
-	return phfc
-}
-
-// SetNillableUpdatedAt sets the "updated_at" field if the given value is not nil.
-func (phfc *ProductHasFeatureCreate) SetNillableUpdatedAt(t *time.Time) *ProductHasFeatureCreate {
-	if t != nil {
-		phfc.SetUpdatedAt(*t)
-	}
-	return phfc
-}
-
 // SetDeletedAt sets the "deleted_at" field.
 func (phfc *ProductHasFeatureCreate) SetDeletedAt(t time.Time) *ProductHasFeatureCreate {
 	phfc.mutation.SetDeletedAt(t)
@@ -60,32 +46,6 @@ func (phfc *ProductHasFeatureCreate) SetDeletedAt(t time.Time) *ProductHasFeatur
 func (phfc *ProductHasFeatureCreate) SetNillableDeletedAt(t *time.Time) *ProductHasFeatureCreate {
 	if t != nil {
 		phfc.SetDeletedAt(*t)
-	}
-	return phfc
-}
-
-// SetCreatedBy sets the "created_by" field.
-func (phfc *ProductHasFeatureCreate) SetCreatedBy(i int) *ProductHasFeatureCreate {
-	phfc.mutation.SetCreatedBy(i)
-	return phfc
-}
-
-// SetUpdatedBy sets the "updated_by" field.
-func (phfc *ProductHasFeatureCreate) SetUpdatedBy(i int) *ProductHasFeatureCreate {
-	phfc.mutation.SetUpdatedBy(i)
-	return phfc
-}
-
-// SetDeletedBy sets the "deleted_by" field.
-func (phfc *ProductHasFeatureCreate) SetDeletedBy(i int) *ProductHasFeatureCreate {
-	phfc.mutation.SetDeletedBy(i)
-	return phfc
-}
-
-// SetNillableDeletedBy sets the "deleted_by" field if the given value is not nil.
-func (phfc *ProductHasFeatureCreate) SetNillableDeletedBy(i *int) *ProductHasFeatureCreate {
-	if i != nil {
-		phfc.SetDeletedBy(*i)
 	}
 	return phfc
 }
@@ -179,35 +139,12 @@ func (phfc *ProductHasFeatureCreate) defaults() {
 		v := producthasfeature.DefaultCreatedAt()
 		phfc.mutation.SetCreatedAt(v)
 	}
-	if _, ok := phfc.mutation.UpdatedAt(); !ok {
-		v := producthasfeature.DefaultUpdatedAt()
-		phfc.mutation.SetUpdatedAt(v)
-	}
 }
 
 // check runs all checks and user-defined validators on the builder.
 func (phfc *ProductHasFeatureCreate) check() error {
 	if _, ok := phfc.mutation.CreatedAt(); !ok {
 		return &ValidationError{Name: "created_at", err: errors.New(`ent: missing required field "ProductHasFeature.created_at"`)}
-	}
-	if _, ok := phfc.mutation.UpdatedAt(); !ok {
-		return &ValidationError{Name: "updated_at", err: errors.New(`ent: missing required field "ProductHasFeature.updated_at"`)}
-	}
-	if _, ok := phfc.mutation.CreatedBy(); !ok {
-		return &ValidationError{Name: "created_by", err: errors.New(`ent: missing required field "ProductHasFeature.created_by"`)}
-	}
-	if v, ok := phfc.mutation.CreatedBy(); ok {
-		if err := producthasfeature.CreatedByValidator(v); err != nil {
-			return &ValidationError{Name: "created_by", err: fmt.Errorf(`ent: validator failed for field "ProductHasFeature.created_by": %w`, err)}
-		}
-	}
-	if _, ok := phfc.mutation.UpdatedBy(); !ok {
-		return &ValidationError{Name: "updated_by", err: errors.New(`ent: missing required field "ProductHasFeature.updated_by"`)}
-	}
-	if v, ok := phfc.mutation.UpdatedBy(); ok {
-		if err := producthasfeature.UpdatedByValidator(v); err != nil {
-			return &ValidationError{Name: "updated_by", err: fmt.Errorf(`ent: validator failed for field "ProductHasFeature.updated_by": %w`, err)}
-		}
 	}
 	if _, ok := phfc.mutation.FeatureID(); !ok {
 		return &ValidationError{Name: "feature_id", err: errors.New(`ent: missing required field "ProductHasFeature.feature_id"`)}
@@ -245,25 +182,9 @@ func (phfc *ProductHasFeatureCreate) createSpec() (*ProductHasFeature, *sqlgraph
 		_spec.SetField(producthasfeature.FieldCreatedAt, field.TypeTime, value)
 		_node.CreatedAt = value
 	}
-	if value, ok := phfc.mutation.UpdatedAt(); ok {
-		_spec.SetField(producthasfeature.FieldUpdatedAt, field.TypeTime, value)
-		_node.UpdatedAt = value
-	}
 	if value, ok := phfc.mutation.DeletedAt(); ok {
 		_spec.SetField(producthasfeature.FieldDeletedAt, field.TypeTime, value)
 		_node.DeletedAt = &value
-	}
-	if value, ok := phfc.mutation.CreatedBy(); ok {
-		_spec.SetField(producthasfeature.FieldCreatedBy, field.TypeInt, value)
-		_node.CreatedBy = value
-	}
-	if value, ok := phfc.mutation.UpdatedBy(); ok {
-		_spec.SetField(producthasfeature.FieldUpdatedBy, field.TypeInt, value)
-		_node.UpdatedBy = value
-	}
-	if value, ok := phfc.mutation.DeletedBy(); ok {
-		_spec.SetField(producthasfeature.FieldDeletedBy, field.TypeInt, value)
-		_node.DeletedBy = &value
 	}
 	if nodes := phfc.mutation.ProductsIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{

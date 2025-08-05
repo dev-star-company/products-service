@@ -12,11 +12,7 @@ var (
 	BrandsColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
 		{Name: "created_at", Type: field.TypeTime},
-		{Name: "updated_at", Type: field.TypeTime},
 		{Name: "deleted_at", Type: field.TypeTime, Nullable: true},
-		{Name: "created_by", Type: field.TypeInt},
-		{Name: "updated_by", Type: field.TypeInt},
-		{Name: "deleted_by", Type: field.TypeInt, Nullable: true},
 		{Name: "name", Type: field.TypeString},
 	}
 	// BrandsTable holds the schema information for the "brands" table.
@@ -29,11 +25,7 @@ var (
 	CategoriesColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
 		{Name: "created_at", Type: field.TypeTime},
-		{Name: "updated_at", Type: field.TypeTime},
 		{Name: "deleted_at", Type: field.TypeTime, Nullable: true},
-		{Name: "created_by", Type: field.TypeInt},
-		{Name: "updated_by", Type: field.TypeInt},
-		{Name: "deleted_by", Type: field.TypeInt, Nullable: true},
 		{Name: "category_id", Type: field.TypeInt, Nullable: true},
 		{Name: "name", Type: field.TypeString},
 		{Name: "category_children", Type: field.TypeInt, Nullable: true},
@@ -46,7 +38,7 @@ var (
 		ForeignKeys: []*schema.ForeignKey{
 			{
 				Symbol:     "categories_categories_children",
-				Columns:    []*schema.Column{CategoriesColumns[9]},
+				Columns:    []*schema.Column{CategoriesColumns[5]},
 				RefColumns: []*schema.Column{CategoriesColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
@@ -56,11 +48,7 @@ var (
 	FeaturesColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
 		{Name: "created_at", Type: field.TypeTime},
-		{Name: "updated_at", Type: field.TypeTime},
 		{Name: "deleted_at", Type: field.TypeTime, Nullable: true},
-		{Name: "created_by", Type: field.TypeInt},
-		{Name: "updated_by", Type: field.TypeInt},
-		{Name: "deleted_by", Type: field.TypeInt, Nullable: true},
 		{Name: "feature_value_id", Type: field.TypeInt},
 		{Name: "name", Type: field.TypeString},
 	}
@@ -74,11 +62,7 @@ var (
 	FeaturesUnitValuesColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
 		{Name: "created_at", Type: field.TypeTime},
-		{Name: "updated_at", Type: field.TypeTime},
 		{Name: "deleted_at", Type: field.TypeTime, Nullable: true},
-		{Name: "created_by", Type: field.TypeInt},
-		{Name: "updated_by", Type: field.TypeInt},
-		{Name: "deleted_by", Type: field.TypeInt, Nullable: true},
 		{Name: "name", Type: field.TypeString},
 		{Name: "decimals", Type: field.TypeInt, Nullable: true},
 	}
@@ -92,11 +76,7 @@ var (
 	FeaturesValuesColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
 		{Name: "created_at", Type: field.TypeTime},
-		{Name: "updated_at", Type: field.TypeTime},
 		{Name: "deleted_at", Type: field.TypeTime, Nullable: true},
-		{Name: "created_by", Type: field.TypeInt},
-		{Name: "updated_by", Type: field.TypeInt},
-		{Name: "deleted_by", Type: field.TypeInt, Nullable: true},
 		{Name: "feature_values_id", Type: field.TypeInt, Nullable: true},
 		{Name: "value", Type: field.TypeString},
 		{Name: "feature_id", Type: field.TypeInt},
@@ -111,19 +91,19 @@ var (
 		ForeignKeys: []*schema.ForeignKey{
 			{
 				Symbol:     "features_values_features_feature_values",
-				Columns:    []*schema.Column{FeaturesValuesColumns[9]},
+				Columns:    []*schema.Column{FeaturesValuesColumns[5]},
 				RefColumns: []*schema.Column{FeaturesColumns[0]},
 				OnDelete:   schema.NoAction,
 			},
 			{
 				Symbol:     "features_values_features_unit_values_feature_values",
-				Columns:    []*schema.Column{FeaturesValuesColumns[10]},
+				Columns:    []*schema.Column{FeaturesValuesColumns[6]},
 				RefColumns: []*schema.Column{FeaturesUnitValuesColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 			{
 				Symbol:     "features_values_features_values_types_feature_values",
-				Columns:    []*schema.Column{FeaturesValuesColumns[11]},
+				Columns:    []*schema.Column{FeaturesValuesColumns[7]},
 				RefColumns: []*schema.Column{FeaturesValuesTypesColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
@@ -133,11 +113,7 @@ var (
 	FeaturesValuesTypesColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
 		{Name: "created_at", Type: field.TypeTime},
-		{Name: "updated_at", Type: field.TypeTime},
 		{Name: "deleted_at", Type: field.TypeTime, Nullable: true},
-		{Name: "created_by", Type: field.TypeInt},
-		{Name: "updated_by", Type: field.TypeInt},
-		{Name: "deleted_by", Type: field.TypeInt, Nullable: true},
 		{Name: "name", Type: field.TypeString},
 	}
 	// FeaturesValuesTypesTable holds the schema information for the "features_values_types" table.
@@ -150,11 +126,7 @@ var (
 	ImageFolderPathsColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
 		{Name: "created_at", Type: field.TypeTime},
-		{Name: "updated_at", Type: field.TypeTime},
 		{Name: "deleted_at", Type: field.TypeTime, Nullable: true},
-		{Name: "created_by", Type: field.TypeInt},
-		{Name: "updated_by", Type: field.TypeInt},
-		{Name: "deleted_by", Type: field.TypeInt, Nullable: true},
 		{Name: "image_folder_source_id", Type: field.TypeInt},
 	}
 	// ImageFolderPathsTable holds the schema information for the "image_folder_paths" table.
@@ -165,7 +137,7 @@ var (
 		ForeignKeys: []*schema.ForeignKey{
 			{
 				Symbol:     "image_folder_paths_image_folder_sources_image_folder_path",
-				Columns:    []*schema.Column{ImageFolderPathsColumns[7]},
+				Columns:    []*schema.Column{ImageFolderPathsColumns[3]},
 				RefColumns: []*schema.Column{ImageFolderSourcesColumns[0]},
 				OnDelete:   schema.NoAction,
 			},
@@ -175,11 +147,7 @@ var (
 	ImageFolderSourcesColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
 		{Name: "created_at", Type: field.TypeTime},
-		{Name: "updated_at", Type: field.TypeTime},
 		{Name: "deleted_at", Type: field.TypeTime, Nullable: true},
-		{Name: "created_by", Type: field.TypeInt},
-		{Name: "updated_by", Type: field.TypeInt},
-		{Name: "deleted_by", Type: field.TypeInt, Nullable: true},
 		{Name: "name", Type: field.TypeString},
 		{Name: "base_url", Type: field.TypeString},
 		{Name: "access_key", Type: field.TypeString, Nullable: true},
@@ -195,15 +163,10 @@ var (
 	ImagesColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
 		{Name: "created_at", Type: field.TypeTime},
-		{Name: "updated_at", Type: field.TypeTime},
 		{Name: "deleted_at", Type: field.TypeTime, Nullable: true},
-		{Name: "created_by", Type: field.TypeInt},
-		{Name: "updated_by", Type: field.TypeInt},
-		{Name: "deleted_by", Type: field.TypeInt, Nullable: true},
 		{Name: "content", Type: field.TypeString},
 		{Name: "path", Type: field.TypeString},
-		{Name: "image_folder_path_id", Type: field.TypeInt},
-		{Name: "products_images", Type: field.TypeInt, Nullable: true},
+		{Name: "image_folder_path_images", Type: field.TypeInt},
 	}
 	// ImagesTable holds the schema information for the "images" table.
 	ImagesTable = &schema.Table{
@@ -213,15 +176,9 @@ var (
 		ForeignKeys: []*schema.ForeignKey{
 			{
 				Symbol:     "images_image_folder_paths_images",
-				Columns:    []*schema.Column{ImagesColumns[9]},
+				Columns:    []*schema.Column{ImagesColumns[5]},
 				RefColumns: []*schema.Column{ImageFolderPathsColumns[0]},
 				OnDelete:   schema.NoAction,
-			},
-			{
-				Symbol:     "images_products_images",
-				Columns:    []*schema.Column{ImagesColumns[10]},
-				RefColumns: []*schema.Column{ProductsColumns[0]},
-				OnDelete:   schema.SetNull,
 			},
 		},
 	}
@@ -229,11 +186,7 @@ var (
 	InfoTypesColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
 		{Name: "created_at", Type: field.TypeTime},
-		{Name: "updated_at", Type: field.TypeTime},
 		{Name: "deleted_at", Type: field.TypeTime, Nullable: true},
-		{Name: "created_by", Type: field.TypeInt},
-		{Name: "updated_by", Type: field.TypeInt},
-		{Name: "deleted_by", Type: field.TypeInt, Nullable: true},
 		{Name: "name", Type: field.TypeString},
 	}
 	// InfoTypesTable holds the schema information for the "info_types" table.
@@ -246,11 +199,7 @@ var (
 	PriceTypesColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
 		{Name: "created_at", Type: field.TypeTime},
-		{Name: "updated_at", Type: field.TypeTime},
 		{Name: "deleted_at", Type: field.TypeTime, Nullable: true},
-		{Name: "created_by", Type: field.TypeInt},
-		{Name: "updated_by", Type: field.TypeInt},
-		{Name: "deleted_by", Type: field.TypeInt, Nullable: true},
 		{Name: "name", Type: field.TypeString},
 	}
 	// PriceTypesTable holds the schema information for the "price_types" table.
@@ -263,11 +212,7 @@ var (
 	ProductHasFeaturesColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
 		{Name: "created_at", Type: field.TypeTime},
-		{Name: "updated_at", Type: field.TypeTime},
 		{Name: "deleted_at", Type: field.TypeTime, Nullable: true},
-		{Name: "created_by", Type: field.TypeInt},
-		{Name: "updated_by", Type: field.TypeInt},
-		{Name: "deleted_by", Type: field.TypeInt, Nullable: true},
 		{Name: "feature_id", Type: field.TypeInt},
 		{Name: "product_id", Type: field.TypeInt, Nullable: true},
 	}
@@ -279,13 +224,13 @@ var (
 		ForeignKeys: []*schema.ForeignKey{
 			{
 				Symbol:     "product_has_features_features_product_has_feature",
-				Columns:    []*schema.Column{ProductHasFeaturesColumns[7]},
+				Columns:    []*schema.Column{ProductHasFeaturesColumns[3]},
 				RefColumns: []*schema.Column{FeaturesColumns[0]},
 				OnDelete:   schema.NoAction,
 			},
 			{
 				Symbol:     "product_has_features_products_product_has_feature",
-				Columns:    []*schema.Column{ProductHasFeaturesColumns[8]},
+				Columns:    []*schema.Column{ProductHasFeaturesColumns[4]},
 				RefColumns: []*schema.Column{ProductsColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
@@ -295,11 +240,7 @@ var (
 	ProductHasImagesColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
 		{Name: "created_at", Type: field.TypeTime},
-		{Name: "updated_at", Type: field.TypeTime},
 		{Name: "deleted_at", Type: field.TypeTime, Nullable: true},
-		{Name: "created_by", Type: field.TypeInt},
-		{Name: "updated_by", Type: field.TypeInt},
-		{Name: "deleted_by", Type: field.TypeInt, Nullable: true},
 		{Name: "priority", Type: field.TypeInt},
 		{Name: "image_id", Type: field.TypeInt},
 		{Name: "product_id", Type: field.TypeInt, Nullable: true},
@@ -312,13 +253,13 @@ var (
 		ForeignKeys: []*schema.ForeignKey{
 			{
 				Symbol:     "product_has_images_images_product_has_image",
-				Columns:    []*schema.Column{ProductHasImagesColumns[8]},
+				Columns:    []*schema.Column{ProductHasImagesColumns[4]},
 				RefColumns: []*schema.Column{ImagesColumns[0]},
 				OnDelete:   schema.NoAction,
 			},
 			{
 				Symbol:     "product_has_images_products_product_has_image",
-				Columns:    []*schema.Column{ProductHasImagesColumns[9]},
+				Columns:    []*schema.Column{ProductHasImagesColumns[5]},
 				RefColumns: []*schema.Column{ProductsColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
@@ -328,11 +269,7 @@ var (
 	ProductHasInfosColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
 		{Name: "created_at", Type: field.TypeTime},
-		{Name: "updated_at", Type: field.TypeTime},
 		{Name: "deleted_at", Type: field.TypeTime, Nullable: true},
-		{Name: "created_by", Type: field.TypeInt},
-		{Name: "updated_by", Type: field.TypeInt},
-		{Name: "deleted_by", Type: field.TypeInt, Nullable: true},
 		{Name: "product_info_products", Type: field.TypeInt, Nullable: true},
 		{Name: "product_info_id", Type: field.TypeInt, Nullable: true},
 		{Name: "product_id", Type: field.TypeInt, Nullable: true},
@@ -345,19 +282,19 @@ var (
 		ForeignKeys: []*schema.ForeignKey{
 			{
 				Symbol:     "product_has_infos_product_infos_products",
-				Columns:    []*schema.Column{ProductHasInfosColumns[7]},
+				Columns:    []*schema.Column{ProductHasInfosColumns[3]},
 				RefColumns: []*schema.Column{ProductInfosColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 			{
 				Symbol:     "product_has_infos_product_infos_product_has_info",
-				Columns:    []*schema.Column{ProductHasInfosColumns[8]},
+				Columns:    []*schema.Column{ProductHasInfosColumns[4]},
 				RefColumns: []*schema.Column{ProductInfosColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 			{
 				Symbol:     "product_has_infos_products_product_has_info",
-				Columns:    []*schema.Column{ProductHasInfosColumns[9]},
+				Columns:    []*schema.Column{ProductHasInfosColumns[5]},
 				RefColumns: []*schema.Column{ProductsColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
@@ -367,11 +304,7 @@ var (
 	ProductHasProductReferencesColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
 		{Name: "created_at", Type: field.TypeTime},
-		{Name: "updated_at", Type: field.TypeTime},
 		{Name: "deleted_at", Type: field.TypeTime, Nullable: true},
-		{Name: "created_by", Type: field.TypeInt},
-		{Name: "updated_by", Type: field.TypeInt},
-		{Name: "deleted_by", Type: field.TypeInt, Nullable: true},
 		{Name: "product_reference_id", Type: field.TypeInt},
 		{Name: "product_id", Type: field.TypeInt, Nullable: true},
 	}
@@ -383,13 +316,13 @@ var (
 		ForeignKeys: []*schema.ForeignKey{
 			{
 				Symbol:     "product_has_product_references_product_references_product_has_product_reference",
-				Columns:    []*schema.Column{ProductHasProductReferencesColumns[7]},
+				Columns:    []*schema.Column{ProductHasProductReferencesColumns[3]},
 				RefColumns: []*schema.Column{ProductReferencesColumns[0]},
 				OnDelete:   schema.NoAction,
 			},
 			{
 				Symbol:     "product_has_product_references_products_product_has_product_reference",
-				Columns:    []*schema.Column{ProductHasProductReferencesColumns[8]},
+				Columns:    []*schema.Column{ProductHasProductReferencesColumns[4]},
 				RefColumns: []*schema.Column{ProductsColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
@@ -399,11 +332,7 @@ var (
 	ProductInfosColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
 		{Name: "created_at", Type: field.TypeTime},
-		{Name: "updated_at", Type: field.TypeTime},
 		{Name: "deleted_at", Type: field.TypeTime, Nullable: true},
-		{Name: "created_by", Type: field.TypeInt},
-		{Name: "updated_by", Type: field.TypeInt},
-		{Name: "deleted_by", Type: field.TypeInt, Nullable: true},
 		{Name: "value", Type: field.TypeString},
 		{Name: "features_values_types_product_info", Type: field.TypeInt, Nullable: true},
 		{Name: "info_types_id", Type: field.TypeInt, Nullable: true},
@@ -416,13 +345,13 @@ var (
 		ForeignKeys: []*schema.ForeignKey{
 			{
 				Symbol:     "product_infos_features_values_types_product_info",
-				Columns:    []*schema.Column{ProductInfosColumns[8]},
+				Columns:    []*schema.Column{ProductInfosColumns[4]},
 				RefColumns: []*schema.Column{FeaturesValuesTypesColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 			{
 				Symbol:     "product_infos_info_types_product_info",
-				Columns:    []*schema.Column{ProductInfosColumns[9]},
+				Columns:    []*schema.Column{ProductInfosColumns[5]},
 				RefColumns: []*schema.Column{InfoTypesColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
@@ -432,11 +361,7 @@ var (
 	ProductPricesColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
 		{Name: "created_at", Type: field.TypeTime},
-		{Name: "updated_at", Type: field.TypeTime},
 		{Name: "deleted_at", Type: field.TypeTime, Nullable: true},
-		{Name: "created_by", Type: field.TypeInt},
-		{Name: "updated_by", Type: field.TypeInt},
-		{Name: "deleted_by", Type: field.TypeInt, Nullable: true},
 		{Name: "default_value", Type: field.TypeFloat64},
 		{Name: "min_value", Type: field.TypeFloat64, Nullable: true},
 		{Name: "price_type_id", Type: field.TypeInt},
@@ -450,13 +375,13 @@ var (
 		ForeignKeys: []*schema.ForeignKey{
 			{
 				Symbol:     "product_prices_price_types_product_prices",
-				Columns:    []*schema.Column{ProductPricesColumns[9]},
+				Columns:    []*schema.Column{ProductPricesColumns[5]},
 				RefColumns: []*schema.Column{PriceTypesColumns[0]},
 				OnDelete:   schema.NoAction,
 			},
 			{
 				Symbol:     "product_prices_products_product_prices",
-				Columns:    []*schema.Column{ProductPricesColumns[10]},
+				Columns:    []*schema.Column{ProductPricesColumns[6]},
 				RefColumns: []*schema.Column{ProductsColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
@@ -466,15 +391,9 @@ var (
 	ProductReferencesColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
 		{Name: "created_at", Type: field.TypeTime},
-		{Name: "updated_at", Type: field.TypeTime},
 		{Name: "deleted_at", Type: field.TypeTime, Nullable: true},
-		{Name: "created_by", Type: field.TypeInt},
-		{Name: "updated_by", Type: field.TypeInt},
-		{Name: "deleted_by", Type: field.TypeInt, Nullable: true},
-		{Name: "reference_source_id", Type: field.TypeInt},
 		{Name: "value", Type: field.TypeString},
-		{Name: "products_product_references", Type: field.TypeInt},
-		{Name: "reference_sources_product_references", Type: field.TypeInt},
+		{Name: "reference_source_id", Type: field.TypeInt, Nullable: true},
 	}
 	// ProductReferencesTable holds the schema information for the "product_references" table.
 	ProductReferencesTable = &schema.Table{
@@ -483,16 +402,10 @@ var (
 		PrimaryKey: []*schema.Column{ProductReferencesColumns[0]},
 		ForeignKeys: []*schema.ForeignKey{
 			{
-				Symbol:     "product_references_products_product_references",
-				Columns:    []*schema.Column{ProductReferencesColumns[9]},
-				RefColumns: []*schema.Column{ProductsColumns[0]},
-				OnDelete:   schema.NoAction,
-			},
-			{
 				Symbol:     "product_references_reference_sources_product_references",
-				Columns:    []*schema.Column{ProductReferencesColumns[10]},
+				Columns:    []*schema.Column{ProductReferencesColumns[4]},
 				RefColumns: []*schema.Column{ReferenceSourcesColumns[0]},
-				OnDelete:   schema.NoAction,
+				OnDelete:   schema.SetNull,
 			},
 		},
 	}
@@ -500,25 +413,18 @@ var (
 	ProductsColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
 		{Name: "created_at", Type: field.TypeTime},
-		{Name: "updated_at", Type: field.TypeTime},
 		{Name: "deleted_at", Type: field.TypeTime, Nullable: true},
-		{Name: "created_by", Type: field.TypeInt},
-		{Name: "updated_by", Type: field.TypeInt},
-		{Name: "deleted_by", Type: field.TypeInt, Nullable: true},
-		{Name: "category_id", Type: field.TypeInt, Nullable: true},
-		{Name: "brand_id", Type: field.TypeInt, Nullable: true},
-		{Name: "variant_type_id", Type: field.TypeInt, Nullable: true},
-		{Name: "product_references_id", Type: field.TypeInt, Nullable: true},
-		{Name: "image_id", Type: field.TypeInt},
 		{Name: "name", Type: field.TypeString},
 		{Name: "stock", Type: field.TypeInt},
-		{Name: "brand_products", Type: field.TypeInt, Nullable: true},
-		{Name: "category_products", Type: field.TypeInt, Nullable: true},
+		{Name: "brand_id", Type: field.TypeInt, Nullable: true},
+		{Name: "category_id", Type: field.TypeInt, Nullable: true},
+		{Name: "images_id", Type: field.TypeInt, Nullable: true},
+		{Name: "product_references_id", Type: field.TypeInt, Nullable: true},
 		{Name: "user_products", Type: field.TypeInt, Nullable: true},
 		{Name: "user_created_products", Type: field.TypeInt, Nullable: true},
 		{Name: "user_updated_products", Type: field.TypeInt, Nullable: true},
 		{Name: "user_deleted_products", Type: field.TypeInt, Nullable: true},
-		{Name: "variant_type_products", Type: field.TypeInt, Nullable: true},
+		{Name: "variant_type_id", Type: field.TypeInt, Nullable: true},
 	}
 	// ProductsTable holds the schema information for the "products" table.
 	ProductsTable = &schema.Table{
@@ -528,43 +434,55 @@ var (
 		ForeignKeys: []*schema.ForeignKey{
 			{
 				Symbol:     "products_brands_products",
-				Columns:    []*schema.Column{ProductsColumns[14]},
+				Columns:    []*schema.Column{ProductsColumns[5]},
 				RefColumns: []*schema.Column{BrandsColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 			{
 				Symbol:     "products_categories_products",
-				Columns:    []*schema.Column{ProductsColumns[15]},
+				Columns:    []*schema.Column{ProductsColumns[6]},
 				RefColumns: []*schema.Column{CategoriesColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 			{
+				Symbol:     "products_images_products",
+				Columns:    []*schema.Column{ProductsColumns[7]},
+				RefColumns: []*schema.Column{ImagesColumns[0]},
+				OnDelete:   schema.SetNull,
+			},
+			{
+				Symbol:     "products_product_references_products",
+				Columns:    []*schema.Column{ProductsColumns[8]},
+				RefColumns: []*schema.Column{ProductReferencesColumns[0]},
+				OnDelete:   schema.SetNull,
+			},
+			{
 				Symbol:     "products_users_products",
-				Columns:    []*schema.Column{ProductsColumns[16]},
+				Columns:    []*schema.Column{ProductsColumns[9]},
 				RefColumns: []*schema.Column{UsersColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 			{
 				Symbol:     "products_users_created_products",
-				Columns:    []*schema.Column{ProductsColumns[17]},
+				Columns:    []*schema.Column{ProductsColumns[10]},
 				RefColumns: []*schema.Column{UsersColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 			{
 				Symbol:     "products_users_updated_products",
-				Columns:    []*schema.Column{ProductsColumns[18]},
+				Columns:    []*schema.Column{ProductsColumns[11]},
 				RefColumns: []*schema.Column{UsersColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 			{
 				Symbol:     "products_users_deleted_products",
-				Columns:    []*schema.Column{ProductsColumns[19]},
+				Columns:    []*schema.Column{ProductsColumns[12]},
 				RefColumns: []*schema.Column{UsersColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 			{
 				Symbol:     "products_variant_types_products",
-				Columns:    []*schema.Column{ProductsColumns[20]},
+				Columns:    []*schema.Column{ProductsColumns[13]},
 				RefColumns: []*schema.Column{VariantTypesColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
@@ -574,16 +492,10 @@ var (
 	PromotionHasProductsColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
 		{Name: "created_at", Type: field.TypeTime},
-		{Name: "updated_at", Type: field.TypeTime},
 		{Name: "deleted_at", Type: field.TypeTime, Nullable: true},
-		{Name: "created_by", Type: field.TypeInt},
-		{Name: "updated_by", Type: field.TypeInt},
-		{Name: "deleted_by", Type: field.TypeInt, Nullable: true},
-		{Name: "product_id", Type: field.TypeInt, Nullable: true},
-		{Name: "promotion_id", Type: field.TypeInt},
 		{Name: "promocional_price", Type: field.TypeFloat64},
-		{Name: "products_promotion_has_product", Type: field.TypeInt},
-		{Name: "promotions_promotion_has_product", Type: field.TypeInt},
+		{Name: "products_id", Type: field.TypeInt, Nullable: true},
+		{Name: "promotions_id", Type: field.TypeInt, Nullable: true},
 	}
 	// PromotionHasProductsTable holds the schema information for the "promotion_has_products" table.
 	PromotionHasProductsTable = &schema.Table{
@@ -593,15 +505,15 @@ var (
 		ForeignKeys: []*schema.ForeignKey{
 			{
 				Symbol:     "promotion_has_products_products_promotion_has_product",
-				Columns:    []*schema.Column{PromotionHasProductsColumns[10]},
+				Columns:    []*schema.Column{PromotionHasProductsColumns[4]},
 				RefColumns: []*schema.Column{ProductsColumns[0]},
-				OnDelete:   schema.NoAction,
+				OnDelete:   schema.SetNull,
 			},
 			{
 				Symbol:     "promotion_has_products_promotions_promotion_has_product",
-				Columns:    []*schema.Column{PromotionHasProductsColumns[11]},
+				Columns:    []*schema.Column{PromotionHasProductsColumns[5]},
 				RefColumns: []*schema.Column{PromotionsColumns[0]},
-				OnDelete:   schema.NoAction,
+				OnDelete:   schema.SetNull,
 			},
 		},
 	}
@@ -609,11 +521,7 @@ var (
 	PromotionsColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
 		{Name: "created_at", Type: field.TypeTime},
-		{Name: "updated_at", Type: field.TypeTime},
 		{Name: "deleted_at", Type: field.TypeTime, Nullable: true},
-		{Name: "created_by", Type: field.TypeInt},
-		{Name: "updated_by", Type: field.TypeInt},
-		{Name: "deleted_by", Type: field.TypeInt, Nullable: true},
 		{Name: "name", Type: field.TypeString},
 		{Name: "starting_datetime", Type: field.TypeTime},
 		{Name: "ending_datetime", Type: field.TypeTime},
@@ -628,11 +536,7 @@ var (
 	ReferenceSourcesColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
 		{Name: "created_at", Type: field.TypeTime},
-		{Name: "updated_at", Type: field.TypeTime},
 		{Name: "deleted_at", Type: field.TypeTime, Nullable: true},
-		{Name: "created_by", Type: field.TypeInt},
-		{Name: "updated_by", Type: field.TypeInt},
-		{Name: "deleted_by", Type: field.TypeInt, Nullable: true},
 		{Name: "name", Type: field.TypeString},
 	}
 	// ReferenceSourcesTable holds the schema information for the "reference_sources" table.
@@ -645,15 +549,9 @@ var (
 	ToolHasProductsColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
 		{Name: "created_at", Type: field.TypeTime},
-		{Name: "updated_at", Type: field.TypeTime},
 		{Name: "deleted_at", Type: field.TypeTime, Nullable: true},
-		{Name: "created_by", Type: field.TypeInt},
-		{Name: "updated_by", Type: field.TypeInt},
-		{Name: "deleted_by", Type: field.TypeInt, Nullable: true},
-		{Name: "tool_id", Type: field.TypeInt},
-		{Name: "product_id", Type: field.TypeInt, Nullable: true},
-		{Name: "products_tool_has_product", Type: field.TypeInt},
-		{Name: "tools_tool_has_product", Type: field.TypeInt},
+		{Name: "products_id", Type: field.TypeInt, Nullable: true},
+		{Name: "tools_id", Type: field.TypeInt, Nullable: true},
 	}
 	// ToolHasProductsTable holds the schema information for the "tool_has_products" table.
 	ToolHasProductsTable = &schema.Table{
@@ -663,15 +561,15 @@ var (
 		ForeignKeys: []*schema.ForeignKey{
 			{
 				Symbol:     "tool_has_products_products_tool_has_product",
-				Columns:    []*schema.Column{ToolHasProductsColumns[9]},
+				Columns:    []*schema.Column{ToolHasProductsColumns[3]},
 				RefColumns: []*schema.Column{ProductsColumns[0]},
-				OnDelete:   schema.NoAction,
+				OnDelete:   schema.SetNull,
 			},
 			{
 				Symbol:     "tool_has_products_tools_tool_has_product",
-				Columns:    []*schema.Column{ToolHasProductsColumns[10]},
+				Columns:    []*schema.Column{ToolHasProductsColumns[4]},
 				RefColumns: []*schema.Column{ToolsColumns[0]},
-				OnDelete:   schema.NoAction,
+				OnDelete:   schema.SetNull,
 			},
 		},
 	}
@@ -679,11 +577,7 @@ var (
 	ToolsColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
 		{Name: "created_at", Type: field.TypeTime},
-		{Name: "updated_at", Type: field.TypeTime},
 		{Name: "deleted_at", Type: field.TypeTime, Nullable: true},
-		{Name: "created_by", Type: field.TypeInt},
-		{Name: "updated_by", Type: field.TypeInt},
-		{Name: "deleted_by", Type: field.TypeInt, Nullable: true},
 		{Name: "name", Type: field.TypeString},
 	}
 	// ToolsTable holds the schema information for the "tools" table.
@@ -696,11 +590,7 @@ var (
 	UsersColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
 		{Name: "created_at", Type: field.TypeTime},
-		{Name: "updated_at", Type: field.TypeTime},
 		{Name: "deleted_at", Type: field.TypeTime, Nullable: true},
-		{Name: "created_by", Type: field.TypeInt},
-		{Name: "updated_by", Type: field.TypeInt},
-		{Name: "deleted_by", Type: field.TypeInt, Nullable: true},
 		{Name: "name", Type: field.TypeString},
 		{Name: "surname", Type: field.TypeString},
 	}
@@ -714,11 +604,7 @@ var (
 	VariantTypesColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
 		{Name: "created_at", Type: field.TypeTime},
-		{Name: "updated_at", Type: field.TypeTime},
 		{Name: "deleted_at", Type: field.TypeTime, Nullable: true},
-		{Name: "created_by", Type: field.TypeInt},
-		{Name: "updated_by", Type: field.TypeInt},
-		{Name: "deleted_by", Type: field.TypeInt, Nullable: true},
 		{Name: "name", Type: field.TypeString},
 	}
 	// VariantTypesTable holds the schema information for the "variant_types" table.
@@ -765,7 +651,6 @@ func init() {
 	FeaturesValuesTable.ForeignKeys[2].RefTable = FeaturesValuesTypesTable
 	ImageFolderPathsTable.ForeignKeys[0].RefTable = ImageFolderSourcesTable
 	ImagesTable.ForeignKeys[0].RefTable = ImageFolderPathsTable
-	ImagesTable.ForeignKeys[1].RefTable = ProductsTable
 	ProductHasFeaturesTable.ForeignKeys[0].RefTable = FeaturesTable
 	ProductHasFeaturesTable.ForeignKeys[1].RefTable = ProductsTable
 	ProductHasImagesTable.ForeignKeys[0].RefTable = ImagesTable
@@ -779,15 +664,16 @@ func init() {
 	ProductInfosTable.ForeignKeys[1].RefTable = InfoTypesTable
 	ProductPricesTable.ForeignKeys[0].RefTable = PriceTypesTable
 	ProductPricesTable.ForeignKeys[1].RefTable = ProductsTable
-	ProductReferencesTable.ForeignKeys[0].RefTable = ProductsTable
-	ProductReferencesTable.ForeignKeys[1].RefTable = ReferenceSourcesTable
+	ProductReferencesTable.ForeignKeys[0].RefTable = ReferenceSourcesTable
 	ProductsTable.ForeignKeys[0].RefTable = BrandsTable
 	ProductsTable.ForeignKeys[1].RefTable = CategoriesTable
-	ProductsTable.ForeignKeys[2].RefTable = UsersTable
-	ProductsTable.ForeignKeys[3].RefTable = UsersTable
+	ProductsTable.ForeignKeys[2].RefTable = ImagesTable
+	ProductsTable.ForeignKeys[3].RefTable = ProductReferencesTable
 	ProductsTable.ForeignKeys[4].RefTable = UsersTable
 	ProductsTable.ForeignKeys[5].RefTable = UsersTable
-	ProductsTable.ForeignKeys[6].RefTable = VariantTypesTable
+	ProductsTable.ForeignKeys[6].RefTable = UsersTable
+	ProductsTable.ForeignKeys[7].RefTable = UsersTable
+	ProductsTable.ForeignKeys[8].RefTable = VariantTypesTable
 	PromotionHasProductsTable.ForeignKeys[0].RefTable = ProductsTable
 	PromotionHasProductsTable.ForeignKeys[1].RefTable = PromotionsTable
 	ToolHasProductsTable.ForeignKeys[0].RefTable = ProductsTable

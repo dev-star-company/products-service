@@ -16,60 +16,41 @@ const (
 	FieldID = "id"
 	// FieldCreatedAt holds the string denoting the created_at field in the database.
 	FieldCreatedAt = "created_at"
-	// FieldUpdatedAt holds the string denoting the updated_at field in the database.
-	FieldUpdatedAt = "updated_at"
 	// FieldDeletedAt holds the string denoting the deleted_at field in the database.
 	FieldDeletedAt = "deleted_at"
-	// FieldCreatedBy holds the string denoting the created_by field in the database.
-	FieldCreatedBy = "created_by"
-	// FieldUpdatedBy holds the string denoting the updated_by field in the database.
-	FieldUpdatedBy = "updated_by"
-	// FieldDeletedBy holds the string denoting the deleted_by field in the database.
-	FieldDeletedBy = "deleted_by"
-	// FieldToolID holds the string denoting the tool_id field in the database.
-	FieldToolID = "tool_id"
-	// FieldProductID holds the string denoting the product_id field in the database.
-	FieldProductID = "product_id"
-	// EdgeProduct holds the string denoting the product edge name in mutations.
-	EdgeProduct = "product"
-	// EdgeTool holds the string denoting the tool edge name in mutations.
-	EdgeTool = "tool"
+	// FieldProductsID holds the string denoting the products_id field in the database.
+	FieldProductsID = "products_id"
+	// FieldToolsID holds the string denoting the tools_id field in the database.
+	FieldToolsID = "tools_id"
+	// EdgeProducts holds the string denoting the products edge name in mutations.
+	EdgeProducts = "products"
+	// EdgeTools holds the string denoting the tools edge name in mutations.
+	EdgeTools = "tools"
 	// Table holds the table name of the toolhasproduct in the database.
 	Table = "tool_has_products"
-	// ProductTable is the table that holds the product relation/edge.
-	ProductTable = "tool_has_products"
-	// ProductInverseTable is the table name for the Products entity.
+	// ProductsTable is the table that holds the products relation/edge.
+	ProductsTable = "tool_has_products"
+	// ProductsInverseTable is the table name for the Products entity.
 	// It exists in this package in order to avoid circular dependency with the "products" package.
-	ProductInverseTable = "products"
-	// ProductColumn is the table column denoting the product relation/edge.
-	ProductColumn = "products_tool_has_product"
-	// ToolTable is the table that holds the tool relation/edge.
-	ToolTable = "tool_has_products"
-	// ToolInverseTable is the table name for the Tools entity.
+	ProductsInverseTable = "products"
+	// ProductsColumn is the table column denoting the products relation/edge.
+	ProductsColumn = "products_id"
+	// ToolsTable is the table that holds the tools relation/edge.
+	ToolsTable = "tool_has_products"
+	// ToolsInverseTable is the table name for the Tools entity.
 	// It exists in this package in order to avoid circular dependency with the "tools" package.
-	ToolInverseTable = "tools"
-	// ToolColumn is the table column denoting the tool relation/edge.
-	ToolColumn = "tools_tool_has_product"
+	ToolsInverseTable = "tools"
+	// ToolsColumn is the table column denoting the tools relation/edge.
+	ToolsColumn = "tools_id"
 )
 
 // Columns holds all SQL columns for toolhasproduct fields.
 var Columns = []string{
 	FieldID,
 	FieldCreatedAt,
-	FieldUpdatedAt,
 	FieldDeletedAt,
-	FieldCreatedBy,
-	FieldUpdatedBy,
-	FieldDeletedBy,
-	FieldToolID,
-	FieldProductID,
-}
-
-// ForeignKeys holds the SQL foreign-keys that are owned by the "tool_has_products"
-// table and are not defined as standalone fields in the schema.
-var ForeignKeys = []string{
-	"products_tool_has_product",
-	"tools_tool_has_product",
+	FieldProductsID,
+	FieldToolsID,
 }
 
 // ValidColumn reports if the column name is valid (part of the table columns).
@@ -79,25 +60,12 @@ func ValidColumn(column string) bool {
 			return true
 		}
 	}
-	for i := range ForeignKeys {
-		if column == ForeignKeys[i] {
-			return true
-		}
-	}
 	return false
 }
 
 var (
 	// DefaultCreatedAt holds the default value on creation for the "created_at" field.
 	DefaultCreatedAt func() time.Time
-	// DefaultUpdatedAt holds the default value on creation for the "updated_at" field.
-	DefaultUpdatedAt func() time.Time
-	// UpdateDefaultUpdatedAt holds the default value on update for the "updated_at" field.
-	UpdateDefaultUpdatedAt func() time.Time
-	// CreatedByValidator is a validator for the "created_by" field. It is called by the builders before save.
-	CreatedByValidator func(int) error
-	// UpdatedByValidator is a validator for the "updated_by" field. It is called by the builders before save.
-	UpdatedByValidator func(int) error
 )
 
 // OrderOption defines the ordering options for the ToolHasProduct queries.
@@ -113,65 +81,45 @@ func ByCreatedAt(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldCreatedAt, opts...).ToFunc()
 }
 
-// ByUpdatedAt orders the results by the updated_at field.
-func ByUpdatedAt(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldUpdatedAt, opts...).ToFunc()
-}
-
 // ByDeletedAt orders the results by the deleted_at field.
 func ByDeletedAt(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldDeletedAt, opts...).ToFunc()
 }
 
-// ByCreatedBy orders the results by the created_by field.
-func ByCreatedBy(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldCreatedBy, opts...).ToFunc()
+// ByProductsID orders the results by the products_id field.
+func ByProductsID(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldProductsID, opts...).ToFunc()
 }
 
-// ByUpdatedBy orders the results by the updated_by field.
-func ByUpdatedBy(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldUpdatedBy, opts...).ToFunc()
+// ByToolsID orders the results by the tools_id field.
+func ByToolsID(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldToolsID, opts...).ToFunc()
 }
 
-// ByDeletedBy orders the results by the deleted_by field.
-func ByDeletedBy(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldDeletedBy, opts...).ToFunc()
-}
-
-// ByToolID orders the results by the tool_id field.
-func ByToolID(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldToolID, opts...).ToFunc()
-}
-
-// ByProductID orders the results by the product_id field.
-func ByProductID(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldProductID, opts...).ToFunc()
-}
-
-// ByProductField orders the results by product field.
-func ByProductField(field string, opts ...sql.OrderTermOption) OrderOption {
+// ByProductsField orders the results by products field.
+func ByProductsField(field string, opts ...sql.OrderTermOption) OrderOption {
 	return func(s *sql.Selector) {
-		sqlgraph.OrderByNeighborTerms(s, newProductStep(), sql.OrderByField(field, opts...))
+		sqlgraph.OrderByNeighborTerms(s, newProductsStep(), sql.OrderByField(field, opts...))
 	}
 }
 
-// ByToolField orders the results by tool field.
-func ByToolField(field string, opts ...sql.OrderTermOption) OrderOption {
+// ByToolsField orders the results by tools field.
+func ByToolsField(field string, opts ...sql.OrderTermOption) OrderOption {
 	return func(s *sql.Selector) {
-		sqlgraph.OrderByNeighborTerms(s, newToolStep(), sql.OrderByField(field, opts...))
+		sqlgraph.OrderByNeighborTerms(s, newToolsStep(), sql.OrderByField(field, opts...))
 	}
 }
-func newProductStep() *sqlgraph.Step {
+func newProductsStep() *sqlgraph.Step {
 	return sqlgraph.NewStep(
 		sqlgraph.From(Table, FieldID),
-		sqlgraph.To(ProductInverseTable, FieldID),
-		sqlgraph.Edge(sqlgraph.M2O, true, ProductTable, ProductColumn),
+		sqlgraph.To(ProductsInverseTable, FieldID),
+		sqlgraph.Edge(sqlgraph.M2O, true, ProductsTable, ProductsColumn),
 	)
 }
-func newToolStep() *sqlgraph.Step {
+func newToolsStep() *sqlgraph.Step {
 	return sqlgraph.NewStep(
 		sqlgraph.From(Table, FieldID),
-		sqlgraph.To(ToolInverseTable, FieldID),
-		sqlgraph.Edge(sqlgraph.M2O, true, ToolTable, ToolColumn),
+		sqlgraph.To(ToolsInverseTable, FieldID),
+		sqlgraph.Edge(sqlgraph.M2O, true, ToolsTable, ToolsColumn),
 	)
 }

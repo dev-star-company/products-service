@@ -19,7 +19,7 @@ func (c *controller) Get(ctx context.Context, in *product_prices_proto.GetReques
 	}
 
 	return &product_prices_proto.GetResponse{
-		RequesterId:  uint32(product_prices.CreatedBy),
+
 		PriceTypeId:  uint32(*product_prices.PriceTypeID),
 		ProductsId:   uint32(*product_prices.ProductID),
 		DefaultValue: float64(*product_prices.DefaultValue),

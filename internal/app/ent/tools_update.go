@@ -29,12 +29,6 @@ func (tu *ToolsUpdate) Where(ps ...predicate.Tools) *ToolsUpdate {
 	return tu
 }
 
-// SetUpdatedAt sets the "updated_at" field.
-func (tu *ToolsUpdate) SetUpdatedAt(t time.Time) *ToolsUpdate {
-	tu.mutation.SetUpdatedAt(t)
-	return tu
-}
-
 // SetDeletedAt sets the "deleted_at" field.
 func (tu *ToolsUpdate) SetDeletedAt(t time.Time) *ToolsUpdate {
 	tu.mutation.SetDeletedAt(t)
@@ -52,54 +46,6 @@ func (tu *ToolsUpdate) SetNillableDeletedAt(t *time.Time) *ToolsUpdate {
 // ClearDeletedAt clears the value of the "deleted_at" field.
 func (tu *ToolsUpdate) ClearDeletedAt() *ToolsUpdate {
 	tu.mutation.ClearDeletedAt()
-	return tu
-}
-
-// SetUpdatedBy sets the "updated_by" field.
-func (tu *ToolsUpdate) SetUpdatedBy(i int) *ToolsUpdate {
-	tu.mutation.ResetUpdatedBy()
-	tu.mutation.SetUpdatedBy(i)
-	return tu
-}
-
-// SetNillableUpdatedBy sets the "updated_by" field if the given value is not nil.
-func (tu *ToolsUpdate) SetNillableUpdatedBy(i *int) *ToolsUpdate {
-	if i != nil {
-		tu.SetUpdatedBy(*i)
-	}
-	return tu
-}
-
-// AddUpdatedBy adds i to the "updated_by" field.
-func (tu *ToolsUpdate) AddUpdatedBy(i int) *ToolsUpdate {
-	tu.mutation.AddUpdatedBy(i)
-	return tu
-}
-
-// SetDeletedBy sets the "deleted_by" field.
-func (tu *ToolsUpdate) SetDeletedBy(i int) *ToolsUpdate {
-	tu.mutation.ResetDeletedBy()
-	tu.mutation.SetDeletedBy(i)
-	return tu
-}
-
-// SetNillableDeletedBy sets the "deleted_by" field if the given value is not nil.
-func (tu *ToolsUpdate) SetNillableDeletedBy(i *int) *ToolsUpdate {
-	if i != nil {
-		tu.SetDeletedBy(*i)
-	}
-	return tu
-}
-
-// AddDeletedBy adds i to the "deleted_by" field.
-func (tu *ToolsUpdate) AddDeletedBy(i int) *ToolsUpdate {
-	tu.mutation.AddDeletedBy(i)
-	return tu
-}
-
-// ClearDeletedBy clears the value of the "deleted_by" field.
-func (tu *ToolsUpdate) ClearDeletedBy() *ToolsUpdate {
-	tu.mutation.ClearDeletedBy()
 	return tu
 }
 
@@ -160,7 +106,6 @@ func (tu *ToolsUpdate) RemoveToolHasProduct(t ...*ToolHasProduct) *ToolsUpdate {
 
 // Save executes the query and returns the number of nodes affected by the update operation.
 func (tu *ToolsUpdate) Save(ctx context.Context) (int, error) {
-	tu.defaults()
 	return withHooks(ctx, tu.sqlSave, tu.mutation, tu.hooks)
 }
 
@@ -186,28 +131,7 @@ func (tu *ToolsUpdate) ExecX(ctx context.Context) {
 	}
 }
 
-// defaults sets the default values of the builder before save.
-func (tu *ToolsUpdate) defaults() {
-	if _, ok := tu.mutation.UpdatedAt(); !ok {
-		v := tools.UpdateDefaultUpdatedAt()
-		tu.mutation.SetUpdatedAt(v)
-	}
-}
-
-// check runs all checks and user-defined validators on the builder.
-func (tu *ToolsUpdate) check() error {
-	if v, ok := tu.mutation.UpdatedBy(); ok {
-		if err := tools.UpdatedByValidator(v); err != nil {
-			return &ValidationError{Name: "updated_by", err: fmt.Errorf(`ent: validator failed for field "Tools.updated_by": %w`, err)}
-		}
-	}
-	return nil
-}
-
 func (tu *ToolsUpdate) sqlSave(ctx context.Context) (n int, err error) {
-	if err := tu.check(); err != nil {
-		return n, err
-	}
 	_spec := sqlgraph.NewUpdateSpec(tools.Table, tools.Columns, sqlgraph.NewFieldSpec(tools.FieldID, field.TypeInt))
 	if ps := tu.mutation.predicates; len(ps) > 0 {
 		_spec.Predicate = func(selector *sql.Selector) {
@@ -216,29 +140,11 @@ func (tu *ToolsUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			}
 		}
 	}
-	if value, ok := tu.mutation.UpdatedAt(); ok {
-		_spec.SetField(tools.FieldUpdatedAt, field.TypeTime, value)
-	}
 	if value, ok := tu.mutation.DeletedAt(); ok {
 		_spec.SetField(tools.FieldDeletedAt, field.TypeTime, value)
 	}
 	if tu.mutation.DeletedAtCleared() {
 		_spec.ClearField(tools.FieldDeletedAt, field.TypeTime)
-	}
-	if value, ok := tu.mutation.UpdatedBy(); ok {
-		_spec.SetField(tools.FieldUpdatedBy, field.TypeInt, value)
-	}
-	if value, ok := tu.mutation.AddedUpdatedBy(); ok {
-		_spec.AddField(tools.FieldUpdatedBy, field.TypeInt, value)
-	}
-	if value, ok := tu.mutation.DeletedBy(); ok {
-		_spec.SetField(tools.FieldDeletedBy, field.TypeInt, value)
-	}
-	if value, ok := tu.mutation.AddedDeletedBy(); ok {
-		_spec.AddField(tools.FieldDeletedBy, field.TypeInt, value)
-	}
-	if tu.mutation.DeletedByCleared() {
-		_spec.ClearField(tools.FieldDeletedBy, field.TypeInt)
 	}
 	if value, ok := tu.mutation.Name(); ok {
 		_spec.SetField(tools.FieldName, field.TypeString, value)
@@ -308,12 +214,6 @@ type ToolsUpdateOne struct {
 	mutation *ToolsMutation
 }
 
-// SetUpdatedAt sets the "updated_at" field.
-func (tuo *ToolsUpdateOne) SetUpdatedAt(t time.Time) *ToolsUpdateOne {
-	tuo.mutation.SetUpdatedAt(t)
-	return tuo
-}
-
 // SetDeletedAt sets the "deleted_at" field.
 func (tuo *ToolsUpdateOne) SetDeletedAt(t time.Time) *ToolsUpdateOne {
 	tuo.mutation.SetDeletedAt(t)
@@ -331,54 +231,6 @@ func (tuo *ToolsUpdateOne) SetNillableDeletedAt(t *time.Time) *ToolsUpdateOne {
 // ClearDeletedAt clears the value of the "deleted_at" field.
 func (tuo *ToolsUpdateOne) ClearDeletedAt() *ToolsUpdateOne {
 	tuo.mutation.ClearDeletedAt()
-	return tuo
-}
-
-// SetUpdatedBy sets the "updated_by" field.
-func (tuo *ToolsUpdateOne) SetUpdatedBy(i int) *ToolsUpdateOne {
-	tuo.mutation.ResetUpdatedBy()
-	tuo.mutation.SetUpdatedBy(i)
-	return tuo
-}
-
-// SetNillableUpdatedBy sets the "updated_by" field if the given value is not nil.
-func (tuo *ToolsUpdateOne) SetNillableUpdatedBy(i *int) *ToolsUpdateOne {
-	if i != nil {
-		tuo.SetUpdatedBy(*i)
-	}
-	return tuo
-}
-
-// AddUpdatedBy adds i to the "updated_by" field.
-func (tuo *ToolsUpdateOne) AddUpdatedBy(i int) *ToolsUpdateOne {
-	tuo.mutation.AddUpdatedBy(i)
-	return tuo
-}
-
-// SetDeletedBy sets the "deleted_by" field.
-func (tuo *ToolsUpdateOne) SetDeletedBy(i int) *ToolsUpdateOne {
-	tuo.mutation.ResetDeletedBy()
-	tuo.mutation.SetDeletedBy(i)
-	return tuo
-}
-
-// SetNillableDeletedBy sets the "deleted_by" field if the given value is not nil.
-func (tuo *ToolsUpdateOne) SetNillableDeletedBy(i *int) *ToolsUpdateOne {
-	if i != nil {
-		tuo.SetDeletedBy(*i)
-	}
-	return tuo
-}
-
-// AddDeletedBy adds i to the "deleted_by" field.
-func (tuo *ToolsUpdateOne) AddDeletedBy(i int) *ToolsUpdateOne {
-	tuo.mutation.AddDeletedBy(i)
-	return tuo
-}
-
-// ClearDeletedBy clears the value of the "deleted_by" field.
-func (tuo *ToolsUpdateOne) ClearDeletedBy() *ToolsUpdateOne {
-	tuo.mutation.ClearDeletedBy()
 	return tuo
 }
 
@@ -452,7 +304,6 @@ func (tuo *ToolsUpdateOne) Select(field string, fields ...string) *ToolsUpdateOn
 
 // Save executes the query and returns the updated Tools entity.
 func (tuo *ToolsUpdateOne) Save(ctx context.Context) (*Tools, error) {
-	tuo.defaults()
 	return withHooks(ctx, tuo.sqlSave, tuo.mutation, tuo.hooks)
 }
 
@@ -478,28 +329,7 @@ func (tuo *ToolsUpdateOne) ExecX(ctx context.Context) {
 	}
 }
 
-// defaults sets the default values of the builder before save.
-func (tuo *ToolsUpdateOne) defaults() {
-	if _, ok := tuo.mutation.UpdatedAt(); !ok {
-		v := tools.UpdateDefaultUpdatedAt()
-		tuo.mutation.SetUpdatedAt(v)
-	}
-}
-
-// check runs all checks and user-defined validators on the builder.
-func (tuo *ToolsUpdateOne) check() error {
-	if v, ok := tuo.mutation.UpdatedBy(); ok {
-		if err := tools.UpdatedByValidator(v); err != nil {
-			return &ValidationError{Name: "updated_by", err: fmt.Errorf(`ent: validator failed for field "Tools.updated_by": %w`, err)}
-		}
-	}
-	return nil
-}
-
 func (tuo *ToolsUpdateOne) sqlSave(ctx context.Context) (_node *Tools, err error) {
-	if err := tuo.check(); err != nil {
-		return _node, err
-	}
 	_spec := sqlgraph.NewUpdateSpec(tools.Table, tools.Columns, sqlgraph.NewFieldSpec(tools.FieldID, field.TypeInt))
 	id, ok := tuo.mutation.ID()
 	if !ok {
@@ -525,29 +355,11 @@ func (tuo *ToolsUpdateOne) sqlSave(ctx context.Context) (_node *Tools, err error
 			}
 		}
 	}
-	if value, ok := tuo.mutation.UpdatedAt(); ok {
-		_spec.SetField(tools.FieldUpdatedAt, field.TypeTime, value)
-	}
 	if value, ok := tuo.mutation.DeletedAt(); ok {
 		_spec.SetField(tools.FieldDeletedAt, field.TypeTime, value)
 	}
 	if tuo.mutation.DeletedAtCleared() {
 		_spec.ClearField(tools.FieldDeletedAt, field.TypeTime)
-	}
-	if value, ok := tuo.mutation.UpdatedBy(); ok {
-		_spec.SetField(tools.FieldUpdatedBy, field.TypeInt, value)
-	}
-	if value, ok := tuo.mutation.AddedUpdatedBy(); ok {
-		_spec.AddField(tools.FieldUpdatedBy, field.TypeInt, value)
-	}
-	if value, ok := tuo.mutation.DeletedBy(); ok {
-		_spec.SetField(tools.FieldDeletedBy, field.TypeInt, value)
-	}
-	if value, ok := tuo.mutation.AddedDeletedBy(); ok {
-		_spec.AddField(tools.FieldDeletedBy, field.TypeInt, value)
-	}
-	if tuo.mutation.DeletedByCleared() {
-		_spec.ClearField(tools.FieldDeletedBy, field.TypeInt)
 	}
 	if value, ok := tuo.mutation.Name(); ok {
 		_spec.SetField(tools.FieldName, field.TypeString, value)

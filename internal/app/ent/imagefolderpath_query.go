@@ -489,9 +489,6 @@ func (ifpq *ImageFolderPathQuery) loadImages(ctx context.Context, query *ImagesQ
 		}
 	}
 	query.withFKs = true
-	if len(query.ctx.Fields) > 0 {
-		query.ctx.AppendFieldOnce(images.FieldImageFolderPathID)
-	}
 	query.Where(predicate.Images(func(s *sql.Selector) {
 		s.Where(sql.InValues(s.C(imagefolderpath.ImagesColumn), fks...))
 	}))
@@ -500,13 +497,13 @@ func (ifpq *ImageFolderPathQuery) loadImages(ctx context.Context, query *ImagesQ
 		return err
 	}
 	for _, n := range neighbors {
-		fk := n.ImageFolderPathID
+		fk := n.image_folder_path_images
 		if fk == nil {
-			return fmt.Errorf(`foreign-key "image_folder_path_id" is nil for node %v`, n.ID)
+			return fmt.Errorf(`foreign-key "image_folder_path_images" is nil for node %v`, n.ID)
 		}
 		node, ok := nodeids[*fk]
 		if !ok {
-			return fmt.Errorf(`unexpected referenced foreign-key "image_folder_path_id" returned %v for node %v`, *fk, n.ID)
+			return fmt.Errorf(`unexpected referenced foreign-key "image_folder_path_images" returned %v for node %v`, *fk, n.ID)
 		}
 		assign(node, n)
 	}

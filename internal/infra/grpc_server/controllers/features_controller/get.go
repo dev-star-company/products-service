@@ -19,7 +19,7 @@ func (c *controller) Get(ctx context.Context, in *features_proto.GetRequest) (*f
 	}
 
 	return &features_proto.GetResponse{
-		RequesterId:    uint32(features.CreatedBy),
+
 		FeatureValueId: uint32(*features.FeatureValueID),
 		Name:           *features.Name,
 	}, nil

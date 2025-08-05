@@ -9,10 +9,6 @@ import (
 
 func (c *controller) Create(ctx context.Context, in *product_has_product_reference_proto.CreateRequest) (*product_has_product_reference_proto.CreateResponse, error) {
 
-	if in.RequesterId == 0 {
-		return nil, errs.RequesterIdRequired()
-	}
-
 	tx, err := c.Db.Tx(ctx)
 	if err != nil {
 		return nil, errs.StartProductsError(err)
@@ -21,8 +17,6 @@ func (c *controller) Create(ctx context.Context, in *product_has_product_referen
 	create, err := c.Db.ProductHasProductReference.Create().
 		SetProductReferenceID(int(in.ProductReferenceId)).
 		SetProductID(int(in.ProductsId)).
-		SetCreatedBy(int(in.RequesterId)).
-		SetUpdatedBy(int(in.RequesterId)).
 		Save(ctx)
 
 	if err != nil {

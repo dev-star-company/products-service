@@ -30,12 +30,6 @@ func (thpu *ToolHasProductUpdate) Where(ps ...predicate.ToolHasProduct) *ToolHas
 	return thpu
 }
 
-// SetUpdatedAt sets the "updated_at" field.
-func (thpu *ToolHasProductUpdate) SetUpdatedAt(t time.Time) *ToolHasProductUpdate {
-	thpu.mutation.SetUpdatedAt(t)
-	return thpu
-}
-
 // SetDeletedAt sets the "deleted_at" field.
 func (thpu *ToolHasProductUpdate) SetDeletedAt(t time.Time) *ToolHasProductUpdate {
 	thpu.mutation.SetDeletedAt(t)
@@ -56,109 +50,54 @@ func (thpu *ToolHasProductUpdate) ClearDeletedAt() *ToolHasProductUpdate {
 	return thpu
 }
 
-// SetUpdatedBy sets the "updated_by" field.
-func (thpu *ToolHasProductUpdate) SetUpdatedBy(i int) *ToolHasProductUpdate {
-	thpu.mutation.ResetUpdatedBy()
-	thpu.mutation.SetUpdatedBy(i)
+// SetProductsID sets the "products_id" field.
+func (thpu *ToolHasProductUpdate) SetProductsID(i int) *ToolHasProductUpdate {
+	thpu.mutation.SetProductsID(i)
 	return thpu
 }
 
-// SetNillableUpdatedBy sets the "updated_by" field if the given value is not nil.
-func (thpu *ToolHasProductUpdate) SetNillableUpdatedBy(i *int) *ToolHasProductUpdate {
+// SetNillableProductsID sets the "products_id" field if the given value is not nil.
+func (thpu *ToolHasProductUpdate) SetNillableProductsID(i *int) *ToolHasProductUpdate {
 	if i != nil {
-		thpu.SetUpdatedBy(*i)
+		thpu.SetProductsID(*i)
 	}
 	return thpu
 }
 
-// AddUpdatedBy adds i to the "updated_by" field.
-func (thpu *ToolHasProductUpdate) AddUpdatedBy(i int) *ToolHasProductUpdate {
-	thpu.mutation.AddUpdatedBy(i)
+// ClearProductsID clears the value of the "products_id" field.
+func (thpu *ToolHasProductUpdate) ClearProductsID() *ToolHasProductUpdate {
+	thpu.mutation.ClearProductsID()
 	return thpu
 }
 
-// SetDeletedBy sets the "deleted_by" field.
-func (thpu *ToolHasProductUpdate) SetDeletedBy(i int) *ToolHasProductUpdate {
-	thpu.mutation.ResetDeletedBy()
-	thpu.mutation.SetDeletedBy(i)
+// SetToolsID sets the "tools_id" field.
+func (thpu *ToolHasProductUpdate) SetToolsID(i int) *ToolHasProductUpdate {
+	thpu.mutation.SetToolsID(i)
 	return thpu
 }
 
-// SetNillableDeletedBy sets the "deleted_by" field if the given value is not nil.
-func (thpu *ToolHasProductUpdate) SetNillableDeletedBy(i *int) *ToolHasProductUpdate {
+// SetNillableToolsID sets the "tools_id" field if the given value is not nil.
+func (thpu *ToolHasProductUpdate) SetNillableToolsID(i *int) *ToolHasProductUpdate {
 	if i != nil {
-		thpu.SetDeletedBy(*i)
+		thpu.SetToolsID(*i)
 	}
 	return thpu
 }
 
-// AddDeletedBy adds i to the "deleted_by" field.
-func (thpu *ToolHasProductUpdate) AddDeletedBy(i int) *ToolHasProductUpdate {
-	thpu.mutation.AddDeletedBy(i)
+// ClearToolsID clears the value of the "tools_id" field.
+func (thpu *ToolHasProductUpdate) ClearToolsID() *ToolHasProductUpdate {
+	thpu.mutation.ClearToolsID()
 	return thpu
 }
 
-// ClearDeletedBy clears the value of the "deleted_by" field.
-func (thpu *ToolHasProductUpdate) ClearDeletedBy() *ToolHasProductUpdate {
-	thpu.mutation.ClearDeletedBy()
-	return thpu
+// SetProducts sets the "products" edge to the Products entity.
+func (thpu *ToolHasProductUpdate) SetProducts(p *Products) *ToolHasProductUpdate {
+	return thpu.SetProductsID(p.ID)
 }
 
-// SetToolID sets the "tool_id" field.
-func (thpu *ToolHasProductUpdate) SetToolID(i int) *ToolHasProductUpdate {
-	thpu.mutation.ResetToolID()
-	thpu.mutation.SetToolID(i)
-	return thpu
-}
-
-// SetNillableToolID sets the "tool_id" field if the given value is not nil.
-func (thpu *ToolHasProductUpdate) SetNillableToolID(i *int) *ToolHasProductUpdate {
-	if i != nil {
-		thpu.SetToolID(*i)
-	}
-	return thpu
-}
-
-// AddToolID adds i to the "tool_id" field.
-func (thpu *ToolHasProductUpdate) AddToolID(i int) *ToolHasProductUpdate {
-	thpu.mutation.AddToolID(i)
-	return thpu
-}
-
-// SetProductID sets the "product_id" field.
-func (thpu *ToolHasProductUpdate) SetProductID(i int) *ToolHasProductUpdate {
-	thpu.mutation.ResetProductID()
-	thpu.mutation.SetProductID(i)
-	return thpu
-}
-
-// SetNillableProductID sets the "product_id" field if the given value is not nil.
-func (thpu *ToolHasProductUpdate) SetNillableProductID(i *int) *ToolHasProductUpdate {
-	if i != nil {
-		thpu.SetProductID(*i)
-	}
-	return thpu
-}
-
-// AddProductID adds i to the "product_id" field.
-func (thpu *ToolHasProductUpdate) AddProductID(i int) *ToolHasProductUpdate {
-	thpu.mutation.AddProductID(i)
-	return thpu
-}
-
-// ClearProductID clears the value of the "product_id" field.
-func (thpu *ToolHasProductUpdate) ClearProductID() *ToolHasProductUpdate {
-	thpu.mutation.ClearProductID()
-	return thpu
-}
-// SetProduct sets the "product" edge to the Products entity.
-func (thpu *ToolHasProductUpdate) SetProduct(p *Products) *ToolHasProductUpdate {
-	return thpu.SetProductID(p.ID)
-}
-
-// SetTool sets the "tool" edge to the Tools entity.
-func (thpu *ToolHasProductUpdate) SetTool(t *Tools) *ToolHasProductUpdate {
-	return thpu.SetToolID(t.ID)
+// SetTools sets the "tools" edge to the Tools entity.
+func (thpu *ToolHasProductUpdate) SetTools(t *Tools) *ToolHasProductUpdate {
+	return thpu.SetToolsID(t.ID)
 }
 
 // Mutation returns the ToolHasProductMutation object of the builder.
@@ -166,21 +105,20 @@ func (thpu *ToolHasProductUpdate) Mutation() *ToolHasProductMutation {
 	return thpu.mutation
 }
 
-// ClearProduct clears the "product" edge to the Products entity.
-func (thpu *ToolHasProductUpdate) ClearProduct() *ToolHasProductUpdate {
-	thpu.mutation.ClearProduct()
+// ClearProducts clears the "products" edge to the Products entity.
+func (thpu *ToolHasProductUpdate) ClearProducts() *ToolHasProductUpdate {
+	thpu.mutation.ClearProducts()
 	return thpu
 }
 
-// ClearTool clears the "tool" edge to the Tools entity.
-func (thpu *ToolHasProductUpdate) ClearTool() *ToolHasProductUpdate {
-	thpu.mutation.ClearTool()
+// ClearTools clears the "tools" edge to the Tools entity.
+func (thpu *ToolHasProductUpdate) ClearTools() *ToolHasProductUpdate {
+	thpu.mutation.ClearTools()
 	return thpu
 }
 
 // Save executes the query and returns the number of nodes affected by the update operation.
 func (thpu *ToolHasProductUpdate) Save(ctx context.Context) (int, error) {
-	thpu.defaults()
 	return withHooks(ctx, thpu.sqlSave, thpu.mutation, thpu.hooks)
 }
 
@@ -206,34 +144,7 @@ func (thpu *ToolHasProductUpdate) ExecX(ctx context.Context) {
 	}
 }
 
-// defaults sets the default values of the builder before save.
-func (thpu *ToolHasProductUpdate) defaults() {
-	if _, ok := thpu.mutation.UpdatedAt(); !ok {
-		v := toolhasproduct.UpdateDefaultUpdatedAt()
-		thpu.mutation.SetUpdatedAt(v)
-	}
-}
-
-// check runs all checks and user-defined validators on the builder.
-func (thpu *ToolHasProductUpdate) check() error {
-	if v, ok := thpu.mutation.UpdatedBy(); ok {
-		if err := toolhasproduct.UpdatedByValidator(v); err != nil {
-			return &ValidationError{Name: "updated_by", err: fmt.Errorf(`ent: validator failed for field "ToolHasProduct.updated_by": %w`, err)}
-		}
-	}
-	if thpu.mutation.ProductCleared() && len(thpu.mutation.ProductIDs()) > 0 {
-		return errors.New(`ent: clearing a required unique edge "ToolHasProduct.product"`)
-	}
-	if thpu.mutation.ToolCleared() && len(thpu.mutation.ToolIDs()) > 0 {
-		return errors.New(`ent: clearing a required unique edge "ToolHasProduct.tool"`)
-	}
-	return nil
-}
-
 func (thpu *ToolHasProductUpdate) sqlSave(ctx context.Context) (n int, err error) {
-	if err := thpu.check(); err != nil {
-		return n, err
-	}
 	_spec := sqlgraph.NewUpdateSpec(toolhasproduct.Table, toolhasproduct.Columns, sqlgraph.NewFieldSpec(toolhasproduct.FieldID, field.TypeInt))
 	if ps := thpu.mutation.predicates; len(ps) > 0 {
 		_spec.Predicate = func(selector *sql.Selector) {
@@ -242,51 +153,18 @@ func (thpu *ToolHasProductUpdate) sqlSave(ctx context.Context) (n int, err error
 			}
 		}
 	}
-	if value, ok := thpu.mutation.UpdatedAt(); ok {
-		_spec.SetField(toolhasproduct.FieldUpdatedAt, field.TypeTime, value)
-	}
 	if value, ok := thpu.mutation.DeletedAt(); ok {
 		_spec.SetField(toolhasproduct.FieldDeletedAt, field.TypeTime, value)
 	}
 	if thpu.mutation.DeletedAtCleared() {
 		_spec.ClearField(toolhasproduct.FieldDeletedAt, field.TypeTime)
 	}
-	if value, ok := thpu.mutation.UpdatedBy(); ok {
-		_spec.SetField(toolhasproduct.FieldUpdatedBy, field.TypeInt, value)
-	}
-	if value, ok := thpu.mutation.AddedUpdatedBy(); ok {
-		_spec.AddField(toolhasproduct.FieldUpdatedBy, field.TypeInt, value)
-	}
-	if value, ok := thpu.mutation.DeletedBy(); ok {
-		_spec.SetField(toolhasproduct.FieldDeletedBy, field.TypeInt, value)
-	}
-	if value, ok := thpu.mutation.AddedDeletedBy(); ok {
-		_spec.AddField(toolhasproduct.FieldDeletedBy, field.TypeInt, value)
-	}
-	if thpu.mutation.DeletedByCleared() {
-		_spec.ClearField(toolhasproduct.FieldDeletedBy, field.TypeInt)
-	}
-	if value, ok := thpu.mutation.ToolID(); ok {
-		_spec.SetField(toolhasproduct.FieldToolID, field.TypeInt, value)
-	}
-	if value, ok := thpu.mutation.AddedToolID(); ok {
-		_spec.AddField(toolhasproduct.FieldToolID, field.TypeInt, value)
-	}
-	if value, ok := thpu.mutation.ProductID(); ok {
-		_spec.SetField(toolhasproduct.FieldProductID, field.TypeInt, value)
-	}
-	if value, ok := thpu.mutation.AddedProductID(); ok {
-		_spec.AddField(toolhasproduct.FieldProductID, field.TypeInt, value)
-	}
-	if thpu.mutation.ProductIDCleared() {
-		_spec.ClearField(toolhasproduct.FieldProductID, field.TypeInt)
-	}
-	if thpu.mutation.ProductCleared() {
+	if thpu.mutation.ProductsCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2O,
 			Inverse: true,
-			Table:   toolhasproduct.ProductTable,
-			Columns: []string{toolhasproduct.ProductColumn},
+			Table:   toolhasproduct.ProductsTable,
+			Columns: []string{toolhasproduct.ProductsColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(products.FieldID, field.TypeInt),
@@ -294,12 +172,12 @@ func (thpu *ToolHasProductUpdate) sqlSave(ctx context.Context) (n int, err error
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
-	if nodes := thpu.mutation.ProductIDs(); len(nodes) > 0 {
+	if nodes := thpu.mutation.ProductsIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2O,
 			Inverse: true,
-			Table:   toolhasproduct.ProductTable,
-			Columns: []string{toolhasproduct.ProductColumn},
+			Table:   toolhasproduct.ProductsTable,
+			Columns: []string{toolhasproduct.ProductsColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(products.FieldID, field.TypeInt),
@@ -310,12 +188,12 @@ func (thpu *ToolHasProductUpdate) sqlSave(ctx context.Context) (n int, err error
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
-	if thpu.mutation.ToolCleared() {
+	if thpu.mutation.ToolsCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2O,
 			Inverse: true,
-			Table:   toolhasproduct.ToolTable,
-			Columns: []string{toolhasproduct.ToolColumn},
+			Table:   toolhasproduct.ToolsTable,
+			Columns: []string{toolhasproduct.ToolsColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(tools.FieldID, field.TypeInt),
@@ -323,12 +201,12 @@ func (thpu *ToolHasProductUpdate) sqlSave(ctx context.Context) (n int, err error
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
-	if nodes := thpu.mutation.ToolIDs(); len(nodes) > 0 {
+	if nodes := thpu.mutation.ToolsIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2O,
 			Inverse: true,
-			Table:   toolhasproduct.ToolTable,
-			Columns: []string{toolhasproduct.ToolColumn},
+			Table:   toolhasproduct.ToolsTable,
+			Columns: []string{toolhasproduct.ToolsColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(tools.FieldID, field.TypeInt),
@@ -359,12 +237,6 @@ type ToolHasProductUpdateOne struct {
 	mutation *ToolHasProductMutation
 }
 
-// SetUpdatedAt sets the "updated_at" field.
-func (thpuo *ToolHasProductUpdateOne) SetUpdatedAt(t time.Time) *ToolHasProductUpdateOne {
-	thpuo.mutation.SetUpdatedAt(t)
-	return thpuo
-}
-
 // SetDeletedAt sets the "deleted_at" field.
 func (thpuo *ToolHasProductUpdateOne) SetDeletedAt(t time.Time) *ToolHasProductUpdateOne {
 	thpuo.mutation.SetDeletedAt(t)
@@ -385,110 +257,54 @@ func (thpuo *ToolHasProductUpdateOne) ClearDeletedAt() *ToolHasProductUpdateOne 
 	return thpuo
 }
 
-// SetUpdatedBy sets the "updated_by" field.
-func (thpuo *ToolHasProductUpdateOne) SetUpdatedBy(i int) *ToolHasProductUpdateOne {
-	thpuo.mutation.ResetUpdatedBy()
-	thpuo.mutation.SetUpdatedBy(i)
+// SetProductsID sets the "products_id" field.
+func (thpuo *ToolHasProductUpdateOne) SetProductsID(i int) *ToolHasProductUpdateOne {
+	thpuo.mutation.SetProductsID(i)
 	return thpuo
 }
 
-// SetNillableUpdatedBy sets the "updated_by" field if the given value is not nil.
-func (thpuo *ToolHasProductUpdateOne) SetNillableUpdatedBy(i *int) *ToolHasProductUpdateOne {
+// SetNillableProductsID sets the "products_id" field if the given value is not nil.
+func (thpuo *ToolHasProductUpdateOne) SetNillableProductsID(i *int) *ToolHasProductUpdateOne {
 	if i != nil {
-		thpuo.SetUpdatedBy(*i)
+		thpuo.SetProductsID(*i)
 	}
 	return thpuo
 }
 
-// AddUpdatedBy adds i to the "updated_by" field.
-func (thpuo *ToolHasProductUpdateOne) AddUpdatedBy(i int) *ToolHasProductUpdateOne {
-	thpuo.mutation.AddUpdatedBy(i)
+// ClearProductsID clears the value of the "products_id" field.
+func (thpuo *ToolHasProductUpdateOne) ClearProductsID() *ToolHasProductUpdateOne {
+	thpuo.mutation.ClearProductsID()
 	return thpuo
 }
 
-// SetDeletedBy sets the "deleted_by" field.
-func (thpuo *ToolHasProductUpdateOne) SetDeletedBy(i int) *ToolHasProductUpdateOne {
-	thpuo.mutation.ResetDeletedBy()
-	thpuo.mutation.SetDeletedBy(i)
+// SetToolsID sets the "tools_id" field.
+func (thpuo *ToolHasProductUpdateOne) SetToolsID(i int) *ToolHasProductUpdateOne {
+	thpuo.mutation.SetToolsID(i)
 	return thpuo
 }
 
-// SetNillableDeletedBy sets the "deleted_by" field if the given value is not nil.
-func (thpuo *ToolHasProductUpdateOne) SetNillableDeletedBy(i *int) *ToolHasProductUpdateOne {
+// SetNillableToolsID sets the "tools_id" field if the given value is not nil.
+func (thpuo *ToolHasProductUpdateOne) SetNillableToolsID(i *int) *ToolHasProductUpdateOne {
 	if i != nil {
-		thpuo.SetDeletedBy(*i)
+		thpuo.SetToolsID(*i)
 	}
 	return thpuo
 }
 
-// AddDeletedBy adds i to the "deleted_by" field.
-func (thpuo *ToolHasProductUpdateOne) AddDeletedBy(i int) *ToolHasProductUpdateOne {
-	thpuo.mutation.AddDeletedBy(i)
+// ClearToolsID clears the value of the "tools_id" field.
+func (thpuo *ToolHasProductUpdateOne) ClearToolsID() *ToolHasProductUpdateOne {
+	thpuo.mutation.ClearToolsID()
 	return thpuo
 }
 
-// ClearDeletedBy clears the value of the "deleted_by" field.
-func (thpuo *ToolHasProductUpdateOne) ClearDeletedBy() *ToolHasProductUpdateOne {
-	thpuo.mutation.ClearDeletedBy()
-	return thpuo
+// SetProducts sets the "products" edge to the Products entity.
+func (thpuo *ToolHasProductUpdateOne) SetProducts(p *Products) *ToolHasProductUpdateOne {
+	return thpuo.SetProductsID(p.ID)
 }
 
-// SetToolID sets the "tool_id" field.
-func (thpuo *ToolHasProductUpdateOne) SetToolID(i int) *ToolHasProductUpdateOne {
-	thpuo.mutation.ResetToolID()
-	thpuo.mutation.SetToolID(i)
-	return thpuo
-}
-
-// SetNillableToolID sets the "tool_id" field if the given value is not nil.
-func (thpuo *ToolHasProductUpdateOne) SetNillableToolID(i *int) *ToolHasProductUpdateOne {
-	if i != nil {
-		thpuo.SetToolID(*i)
-	}
-	return thpuo
-}
-
-// AddToolID adds i to the "tool_id" field.
-func (thpuo *ToolHasProductUpdateOne) AddToolID(i int) *ToolHasProductUpdateOne {
-	thpuo.mutation.AddToolID(i)
-	return thpuo
-}
-
-// SetProductID sets the "product_id" field.
-func (thpuo *ToolHasProductUpdateOne) SetProductID(i int) *ToolHasProductUpdateOne {
-	thpuo.mutation.ResetProductID()
-	thpuo.mutation.SetProductID(i)
-	return thpuo
-}
-
-// SetNillableProductID sets the "product_id" field if the given value is not nil.
-func (thpuo *ToolHasProductUpdateOne) SetNillableProductID(i *int) *ToolHasProductUpdateOne {
-	if i != nil {
-		thpuo.SetProductID(*i)
-	}
-	return thpuo
-}
-
-// AddProductID adds i to the "product_id" field.
-func (thpuo *ToolHasProductUpdateOne) AddProductID(i int) *ToolHasProductUpdateOne {
-	thpuo.mutation.AddProductID(i)
-	return thpuo
-}
-
-// ClearProductID clears the value of the "product_id" field.
-func (thpuo *ToolHasProductUpdateOne) ClearProductID() *ToolHasProductUpdateOne {
-	thpuo.mutation.ClearProductID()
-	return thpuo
-}
-
-// SetProduct sets the "product" edge to the Products entity.
-func (thpuo *ToolHasProductUpdateOne) SetProduct(p *Products) *ToolHasProductUpdateOne {
-	return thpuo.SetProductID(p.ID)
-}
-
-// SetTool sets the "tool" edge to the Tools entity.
-func (thpuo *ToolHasProductUpdateOne) SetTool(t *Tools) *ToolHasProductUpdateOne {
-	return thpuo.SetToolID(t.ID)
+// SetTools sets the "tools" edge to the Tools entity.
+func (thpuo *ToolHasProductUpdateOne) SetTools(t *Tools) *ToolHasProductUpdateOne {
+	return thpuo.SetToolsID(t.ID)
 }
 
 // Mutation returns the ToolHasProductMutation object of the builder.
@@ -496,15 +312,15 @@ func (thpuo *ToolHasProductUpdateOne) Mutation() *ToolHasProductMutation {
 	return thpuo.mutation
 }
 
-// ClearProduct clears the "product" edge to the Products entity.
-func (thpuo *ToolHasProductUpdateOne) ClearProduct() *ToolHasProductUpdateOne {
-	thpuo.mutation.ClearProduct()
+// ClearProducts clears the "products" edge to the Products entity.
+func (thpuo *ToolHasProductUpdateOne) ClearProducts() *ToolHasProductUpdateOne {
+	thpuo.mutation.ClearProducts()
 	return thpuo
 }
 
-// ClearTool clears the "tool" edge to the Tools entity.
-func (thpuo *ToolHasProductUpdateOne) ClearTool() *ToolHasProductUpdateOne {
-	thpuo.mutation.ClearTool()
+// ClearTools clears the "tools" edge to the Tools entity.
+func (thpuo *ToolHasProductUpdateOne) ClearTools() *ToolHasProductUpdateOne {
+	thpuo.mutation.ClearTools()
 	return thpuo
 }
 
@@ -523,7 +339,6 @@ func (thpuo *ToolHasProductUpdateOne) Select(field string, fields ...string) *To
 
 // Save executes the query and returns the updated ToolHasProduct entity.
 func (thpuo *ToolHasProductUpdateOne) Save(ctx context.Context) (*ToolHasProduct, error) {
-	thpuo.defaults()
 	return withHooks(ctx, thpuo.sqlSave, thpuo.mutation, thpuo.hooks)
 }
 
@@ -549,34 +364,7 @@ func (thpuo *ToolHasProductUpdateOne) ExecX(ctx context.Context) {
 	}
 }
 
-// defaults sets the default values of the builder before save.
-func (thpuo *ToolHasProductUpdateOne) defaults() {
-	if _, ok := thpuo.mutation.UpdatedAt(); !ok {
-		v := toolhasproduct.UpdateDefaultUpdatedAt()
-		thpuo.mutation.SetUpdatedAt(v)
-	}
-}
-
-// check runs all checks and user-defined validators on the builder.
-func (thpuo *ToolHasProductUpdateOne) check() error {
-	if v, ok := thpuo.mutation.UpdatedBy(); ok {
-		if err := toolhasproduct.UpdatedByValidator(v); err != nil {
-			return &ValidationError{Name: "updated_by", err: fmt.Errorf(`ent: validator failed for field "ToolHasProduct.updated_by": %w`, err)}
-		}
-	}
-	if thpuo.mutation.ProductCleared() && len(thpuo.mutation.ProductIDs()) > 0 {
-		return errors.New(`ent: clearing a required unique edge "ToolHasProduct.product"`)
-	}
-	if thpuo.mutation.ToolCleared() && len(thpuo.mutation.ToolIDs()) > 0 {
-		return errors.New(`ent: clearing a required unique edge "ToolHasProduct.tool"`)
-	}
-	return nil
-}
-
 func (thpuo *ToolHasProductUpdateOne) sqlSave(ctx context.Context) (_node *ToolHasProduct, err error) {
-	if err := thpuo.check(); err != nil {
-		return _node, err
-	}
 	_spec := sqlgraph.NewUpdateSpec(toolhasproduct.Table, toolhasproduct.Columns, sqlgraph.NewFieldSpec(toolhasproduct.FieldID, field.TypeInt))
 	id, ok := thpuo.mutation.ID()
 	if !ok {
@@ -602,51 +390,18 @@ func (thpuo *ToolHasProductUpdateOne) sqlSave(ctx context.Context) (_node *ToolH
 			}
 		}
 	}
-	if value, ok := thpuo.mutation.UpdatedAt(); ok {
-		_spec.SetField(toolhasproduct.FieldUpdatedAt, field.TypeTime, value)
-	}
 	if value, ok := thpuo.mutation.DeletedAt(); ok {
 		_spec.SetField(toolhasproduct.FieldDeletedAt, field.TypeTime, value)
 	}
 	if thpuo.mutation.DeletedAtCleared() {
 		_spec.ClearField(toolhasproduct.FieldDeletedAt, field.TypeTime)
 	}
-	if value, ok := thpuo.mutation.UpdatedBy(); ok {
-		_spec.SetField(toolhasproduct.FieldUpdatedBy, field.TypeInt, value)
-	}
-	if value, ok := thpuo.mutation.AddedUpdatedBy(); ok {
-		_spec.AddField(toolhasproduct.FieldUpdatedBy, field.TypeInt, value)
-	}
-	if value, ok := thpuo.mutation.DeletedBy(); ok {
-		_spec.SetField(toolhasproduct.FieldDeletedBy, field.TypeInt, value)
-	}
-	if value, ok := thpuo.mutation.AddedDeletedBy(); ok {
-		_spec.AddField(toolhasproduct.FieldDeletedBy, field.TypeInt, value)
-	}
-	if thpuo.mutation.DeletedByCleared() {
-		_spec.ClearField(toolhasproduct.FieldDeletedBy, field.TypeInt)
-	}
-	if value, ok := thpuo.mutation.ToolID(); ok {
-		_spec.SetField(toolhasproduct.FieldToolID, field.TypeInt, value)
-	}
-	if value, ok := thpuo.mutation.AddedToolID(); ok {
-		_spec.AddField(toolhasproduct.FieldToolID, field.TypeInt, value)
-	}
-	if value, ok := thpuo.mutation.ProductID(); ok {
-		_spec.SetField(toolhasproduct.FieldProductID, field.TypeInt, value)
-	}
-	if value, ok := thpuo.mutation.AddedProductID(); ok {
-		_spec.AddField(toolhasproduct.FieldProductID, field.TypeInt, value)
-	}
-	if thpuo.mutation.ProductIDCleared() {
-		_spec.ClearField(toolhasproduct.FieldProductID, field.TypeInt)
-	}
-	if thpuo.mutation.ProductCleared() {
+	if thpuo.mutation.ProductsCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2O,
 			Inverse: true,
-			Table:   toolhasproduct.ProductTable,
-			Columns: []string{toolhasproduct.ProductColumn},
+			Table:   toolhasproduct.ProductsTable,
+			Columns: []string{toolhasproduct.ProductsColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(products.FieldID, field.TypeInt),
@@ -654,12 +409,12 @@ func (thpuo *ToolHasProductUpdateOne) sqlSave(ctx context.Context) (_node *ToolH
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
-	if nodes := thpuo.mutation.ProductIDs(); len(nodes) > 0 {
+	if nodes := thpuo.mutation.ProductsIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2O,
 			Inverse: true,
-			Table:   toolhasproduct.ProductTable,
-			Columns: []string{toolhasproduct.ProductColumn},
+			Table:   toolhasproduct.ProductsTable,
+			Columns: []string{toolhasproduct.ProductsColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(products.FieldID, field.TypeInt),
@@ -670,12 +425,12 @@ func (thpuo *ToolHasProductUpdateOne) sqlSave(ctx context.Context) (_node *ToolH
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
-	if thpuo.mutation.ToolCleared() {
+	if thpuo.mutation.ToolsCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2O,
 			Inverse: true,
-			Table:   toolhasproduct.ToolTable,
-			Columns: []string{toolhasproduct.ToolColumn},
+			Table:   toolhasproduct.ToolsTable,
+			Columns: []string{toolhasproduct.ToolsColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(tools.FieldID, field.TypeInt),
@@ -683,12 +438,12 @@ func (thpuo *ToolHasProductUpdateOne) sqlSave(ctx context.Context) (_node *ToolH
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
-	if nodes := thpuo.mutation.ToolIDs(); len(nodes) > 0 {
+	if nodes := thpuo.mutation.ToolsIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2O,
 			Inverse: true,
-			Table:   toolhasproduct.ToolTable,
-			Columns: []string{toolhasproduct.ToolColumn},
+			Table:   toolhasproduct.ToolsTable,
+			Columns: []string{toolhasproduct.ToolsColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(tools.FieldID, field.TypeInt),

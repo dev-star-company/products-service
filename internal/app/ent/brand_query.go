@@ -414,6 +414,9 @@ func (bq *BrandQuery) loadProducts(ctx context.Context, query *ProductsQuery, no
 		}
 	}
 	query.withFKs = true
+	if len(query.ctx.Fields) > 0 {
+		query.ctx.AppendFieldOnce(products.FieldBrandID)
+	}
 	query.Where(predicate.Products(func(s *sql.Selector) {
 		s.Where(sql.InValues(s.C(brand.ProductsColumn), fks...))
 	}))
@@ -422,13 +425,13 @@ func (bq *BrandQuery) loadProducts(ctx context.Context, query *ProductsQuery, no
 		return err
 	}
 	for _, n := range neighbors {
-		fk := n.brand_products
+		fk := n.BrandID
 		if fk == nil {
-			return fmt.Errorf(`foreign-key "brand_products" is nil for node %v`, n.ID)
+			return fmt.Errorf(`foreign-key "brand_id" is nil for node %v`, n.ID)
 		}
 		node, ok := nodeids[*fk]
 		if !ok {
-			return fmt.Errorf(`unexpected referenced foreign-key "brand_products" returned %v for node %v`, *fk, n.ID)
+			return fmt.Errorf(`unexpected referenced foreign-key "brand_id" returned %v for node %v`, *fk, n.ID)
 		}
 		assign(node, n)
 	}

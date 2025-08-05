@@ -9,10 +9,6 @@ import (
 
 func (c *controller) Create(ctx context.Context, in *features_proto.CreateRequest) (*features_proto.CreateResponse, error) {
 
-	if in.RequesterId == 0 {
-		return nil, errs.RequesterIdRequired()
-	}
-
 	tx, err := c.Db.Tx(ctx)
 	if err != nil {
 		return nil, errs.StartProductsError(err)
@@ -21,8 +17,6 @@ func (c *controller) Create(ctx context.Context, in *features_proto.CreateReques
 	create, err := c.Db.Features.Create().
 		SetFeatureValueID(int(in.FeatureValueId)).
 		SetName(in.Name).
-		SetCreatedBy(int(in.RequesterId)).
-		SetUpdatedBy(int(in.RequesterId)).
 		Save(ctx)
 
 	if err != nil {

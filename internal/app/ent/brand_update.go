@@ -29,12 +29,6 @@ func (bu *BrandUpdate) Where(ps ...predicate.Brand) *BrandUpdate {
 	return bu
 }
 
-// SetUpdatedAt sets the "updated_at" field.
-func (bu *BrandUpdate) SetUpdatedAt(t time.Time) *BrandUpdate {
-	bu.mutation.SetUpdatedAt(t)
-	return bu
-}
-
 // SetDeletedAt sets the "deleted_at" field.
 func (bu *BrandUpdate) SetDeletedAt(t time.Time) *BrandUpdate {
 	bu.mutation.SetDeletedAt(t)
@@ -52,54 +46,6 @@ func (bu *BrandUpdate) SetNillableDeletedAt(t *time.Time) *BrandUpdate {
 // ClearDeletedAt clears the value of the "deleted_at" field.
 func (bu *BrandUpdate) ClearDeletedAt() *BrandUpdate {
 	bu.mutation.ClearDeletedAt()
-	return bu
-}
-
-// SetUpdatedBy sets the "updated_by" field.
-func (bu *BrandUpdate) SetUpdatedBy(i int) *BrandUpdate {
-	bu.mutation.ResetUpdatedBy()
-	bu.mutation.SetUpdatedBy(i)
-	return bu
-}
-
-// SetNillableUpdatedBy sets the "updated_by" field if the given value is not nil.
-func (bu *BrandUpdate) SetNillableUpdatedBy(i *int) *BrandUpdate {
-	if i != nil {
-		bu.SetUpdatedBy(*i)
-	}
-	return bu
-}
-
-// AddUpdatedBy adds i to the "updated_by" field.
-func (bu *BrandUpdate) AddUpdatedBy(i int) *BrandUpdate {
-	bu.mutation.AddUpdatedBy(i)
-	return bu
-}
-
-// SetDeletedBy sets the "deleted_by" field.
-func (bu *BrandUpdate) SetDeletedBy(i int) *BrandUpdate {
-	bu.mutation.ResetDeletedBy()
-	bu.mutation.SetDeletedBy(i)
-	return bu
-}
-
-// SetNillableDeletedBy sets the "deleted_by" field if the given value is not nil.
-func (bu *BrandUpdate) SetNillableDeletedBy(i *int) *BrandUpdate {
-	if i != nil {
-		bu.SetDeletedBy(*i)
-	}
-	return bu
-}
-
-// AddDeletedBy adds i to the "deleted_by" field.
-func (bu *BrandUpdate) AddDeletedBy(i int) *BrandUpdate {
-	bu.mutation.AddDeletedBy(i)
-	return bu
-}
-
-// ClearDeletedBy clears the value of the "deleted_by" field.
-func (bu *BrandUpdate) ClearDeletedBy() *BrandUpdate {
-	bu.mutation.ClearDeletedBy()
 	return bu
 }
 
@@ -160,7 +106,6 @@ func (bu *BrandUpdate) RemoveProducts(p ...*Products) *BrandUpdate {
 
 // Save executes the query and returns the number of nodes affected by the update operation.
 func (bu *BrandUpdate) Save(ctx context.Context) (int, error) {
-	bu.defaults()
 	return withHooks(ctx, bu.sqlSave, bu.mutation, bu.hooks)
 }
 
@@ -186,28 +131,7 @@ func (bu *BrandUpdate) ExecX(ctx context.Context) {
 	}
 }
 
-// defaults sets the default values of the builder before save.
-func (bu *BrandUpdate) defaults() {
-	if _, ok := bu.mutation.UpdatedAt(); !ok {
-		v := brand.UpdateDefaultUpdatedAt()
-		bu.mutation.SetUpdatedAt(v)
-	}
-}
-
-// check runs all checks and user-defined validators on the builder.
-func (bu *BrandUpdate) check() error {
-	if v, ok := bu.mutation.UpdatedBy(); ok {
-		if err := brand.UpdatedByValidator(v); err != nil {
-			return &ValidationError{Name: "updated_by", err: fmt.Errorf(`ent: validator failed for field "Brand.updated_by": %w`, err)}
-		}
-	}
-	return nil
-}
-
 func (bu *BrandUpdate) sqlSave(ctx context.Context) (n int, err error) {
-	if err := bu.check(); err != nil {
-		return n, err
-	}
 	_spec := sqlgraph.NewUpdateSpec(brand.Table, brand.Columns, sqlgraph.NewFieldSpec(brand.FieldID, field.TypeInt))
 	if ps := bu.mutation.predicates; len(ps) > 0 {
 		_spec.Predicate = func(selector *sql.Selector) {
@@ -216,29 +140,11 @@ func (bu *BrandUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			}
 		}
 	}
-	if value, ok := bu.mutation.UpdatedAt(); ok {
-		_spec.SetField(brand.FieldUpdatedAt, field.TypeTime, value)
-	}
 	if value, ok := bu.mutation.DeletedAt(); ok {
 		_spec.SetField(brand.FieldDeletedAt, field.TypeTime, value)
 	}
 	if bu.mutation.DeletedAtCleared() {
 		_spec.ClearField(brand.FieldDeletedAt, field.TypeTime)
-	}
-	if value, ok := bu.mutation.UpdatedBy(); ok {
-		_spec.SetField(brand.FieldUpdatedBy, field.TypeInt, value)
-	}
-	if value, ok := bu.mutation.AddedUpdatedBy(); ok {
-		_spec.AddField(brand.FieldUpdatedBy, field.TypeInt, value)
-	}
-	if value, ok := bu.mutation.DeletedBy(); ok {
-		_spec.SetField(brand.FieldDeletedBy, field.TypeInt, value)
-	}
-	if value, ok := bu.mutation.AddedDeletedBy(); ok {
-		_spec.AddField(brand.FieldDeletedBy, field.TypeInt, value)
-	}
-	if bu.mutation.DeletedByCleared() {
-		_spec.ClearField(brand.FieldDeletedBy, field.TypeInt)
 	}
 	if value, ok := bu.mutation.Name(); ok {
 		_spec.SetField(brand.FieldName, field.TypeString, value)
@@ -308,12 +214,6 @@ type BrandUpdateOne struct {
 	mutation *BrandMutation
 }
 
-// SetUpdatedAt sets the "updated_at" field.
-func (buo *BrandUpdateOne) SetUpdatedAt(t time.Time) *BrandUpdateOne {
-	buo.mutation.SetUpdatedAt(t)
-	return buo
-}
-
 // SetDeletedAt sets the "deleted_at" field.
 func (buo *BrandUpdateOne) SetDeletedAt(t time.Time) *BrandUpdateOne {
 	buo.mutation.SetDeletedAt(t)
@@ -331,54 +231,6 @@ func (buo *BrandUpdateOne) SetNillableDeletedAt(t *time.Time) *BrandUpdateOne {
 // ClearDeletedAt clears the value of the "deleted_at" field.
 func (buo *BrandUpdateOne) ClearDeletedAt() *BrandUpdateOne {
 	buo.mutation.ClearDeletedAt()
-	return buo
-}
-
-// SetUpdatedBy sets the "updated_by" field.
-func (buo *BrandUpdateOne) SetUpdatedBy(i int) *BrandUpdateOne {
-	buo.mutation.ResetUpdatedBy()
-	buo.mutation.SetUpdatedBy(i)
-	return buo
-}
-
-// SetNillableUpdatedBy sets the "updated_by" field if the given value is not nil.
-func (buo *BrandUpdateOne) SetNillableUpdatedBy(i *int) *BrandUpdateOne {
-	if i != nil {
-		buo.SetUpdatedBy(*i)
-	}
-	return buo
-}
-
-// AddUpdatedBy adds i to the "updated_by" field.
-func (buo *BrandUpdateOne) AddUpdatedBy(i int) *BrandUpdateOne {
-	buo.mutation.AddUpdatedBy(i)
-	return buo
-}
-
-// SetDeletedBy sets the "deleted_by" field.
-func (buo *BrandUpdateOne) SetDeletedBy(i int) *BrandUpdateOne {
-	buo.mutation.ResetDeletedBy()
-	buo.mutation.SetDeletedBy(i)
-	return buo
-}
-
-// SetNillableDeletedBy sets the "deleted_by" field if the given value is not nil.
-func (buo *BrandUpdateOne) SetNillableDeletedBy(i *int) *BrandUpdateOne {
-	if i != nil {
-		buo.SetDeletedBy(*i)
-	}
-	return buo
-}
-
-// AddDeletedBy adds i to the "deleted_by" field.
-func (buo *BrandUpdateOne) AddDeletedBy(i int) *BrandUpdateOne {
-	buo.mutation.AddDeletedBy(i)
-	return buo
-}
-
-// ClearDeletedBy clears the value of the "deleted_by" field.
-func (buo *BrandUpdateOne) ClearDeletedBy() *BrandUpdateOne {
-	buo.mutation.ClearDeletedBy()
 	return buo
 }
 
@@ -452,7 +304,6 @@ func (buo *BrandUpdateOne) Select(field string, fields ...string) *BrandUpdateOn
 
 // Save executes the query and returns the updated Brand entity.
 func (buo *BrandUpdateOne) Save(ctx context.Context) (*Brand, error) {
-	buo.defaults()
 	return withHooks(ctx, buo.sqlSave, buo.mutation, buo.hooks)
 }
 
@@ -478,28 +329,7 @@ func (buo *BrandUpdateOne) ExecX(ctx context.Context) {
 	}
 }
 
-// defaults sets the default values of the builder before save.
-func (buo *BrandUpdateOne) defaults() {
-	if _, ok := buo.mutation.UpdatedAt(); !ok {
-		v := brand.UpdateDefaultUpdatedAt()
-		buo.mutation.SetUpdatedAt(v)
-	}
-}
-
-// check runs all checks and user-defined validators on the builder.
-func (buo *BrandUpdateOne) check() error {
-	if v, ok := buo.mutation.UpdatedBy(); ok {
-		if err := brand.UpdatedByValidator(v); err != nil {
-			return &ValidationError{Name: "updated_by", err: fmt.Errorf(`ent: validator failed for field "Brand.updated_by": %w`, err)}
-		}
-	}
-	return nil
-}
-
 func (buo *BrandUpdateOne) sqlSave(ctx context.Context) (_node *Brand, err error) {
-	if err := buo.check(); err != nil {
-		return _node, err
-	}
 	_spec := sqlgraph.NewUpdateSpec(brand.Table, brand.Columns, sqlgraph.NewFieldSpec(brand.FieldID, field.TypeInt))
 	id, ok := buo.mutation.ID()
 	if !ok {
@@ -525,29 +355,11 @@ func (buo *BrandUpdateOne) sqlSave(ctx context.Context) (_node *Brand, err error
 			}
 		}
 	}
-	if value, ok := buo.mutation.UpdatedAt(); ok {
-		_spec.SetField(brand.FieldUpdatedAt, field.TypeTime, value)
-	}
 	if value, ok := buo.mutation.DeletedAt(); ok {
 		_spec.SetField(brand.FieldDeletedAt, field.TypeTime, value)
 	}
 	if buo.mutation.DeletedAtCleared() {
 		_spec.ClearField(brand.FieldDeletedAt, field.TypeTime)
-	}
-	if value, ok := buo.mutation.UpdatedBy(); ok {
-		_spec.SetField(brand.FieldUpdatedBy, field.TypeInt, value)
-	}
-	if value, ok := buo.mutation.AddedUpdatedBy(); ok {
-		_spec.AddField(brand.FieldUpdatedBy, field.TypeInt, value)
-	}
-	if value, ok := buo.mutation.DeletedBy(); ok {
-		_spec.SetField(brand.FieldDeletedBy, field.TypeInt, value)
-	}
-	if value, ok := buo.mutation.AddedDeletedBy(); ok {
-		_spec.AddField(brand.FieldDeletedBy, field.TypeInt, value)
-	}
-	if buo.mutation.DeletedByCleared() {
-		_spec.ClearField(brand.FieldDeletedBy, field.TypeInt)
 	}
 	if value, ok := buo.mutation.Name(); ok {
 		_spec.SetField(brand.FieldName, field.TypeString, value)

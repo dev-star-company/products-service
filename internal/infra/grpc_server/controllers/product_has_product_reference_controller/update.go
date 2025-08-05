@@ -9,9 +9,6 @@ import (
 )
 
 func (c *controller) Update(ctx context.Context, in *product_has_product_reference_proto.UpdateRequest) (*product_has_product_reference_proto.UpdateResponse, error) {
-	if in.RequesterId == 0 {
-		return nil, errs.ProductHasProductReferenceNotFound(int(in.Id))
-	}
 
 	tx, err := c.Db.Tx(ctx)
 	if err != nil {
@@ -30,8 +27,6 @@ func (c *controller) Update(ctx context.Context, in *product_has_product_referen
 		product_has_product_referenceQ.SetProductID(int(*in.ProductsId))
 	}
 
-	product_has_product_referenceQ.SetUpdatedBy(int(in.RequesterId))
-
 	product_has_product_reference, err = product_has_product_referenceQ.Save(ctx)
 	if err != nil {
 		if ent.IsNotFound(err) {
@@ -48,7 +43,7 @@ func (c *controller) Update(ctx context.Context, in *product_has_product_referen
 	}
 
 	return &product_has_product_reference_proto.UpdateResponse{
-		RequesterId:        uint32(product_has_product_reference.CreatedBy),
+
 		ProductReferenceId: uint32(*product_has_product_reference.ProductReferenceID),
 		ProductsId:         uint32(*product_has_product_reference.ProductID),
 	}, nil

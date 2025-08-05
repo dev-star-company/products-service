@@ -14,8 +14,8 @@ type ToolHasProduct struct {
 // Fields of the ToolHasProduct.
 func (ToolHasProduct) Fields() []ent.Field {
 	return []ent.Field{
-		field.Int("tool_id").Nillable(),
-		field.Int("product_id").Nillable().Optional(),
+		field.Int("products_id").Nillable().Optional(),
+		field.Int("tools_id").Nillable().Optional(),
 	}
 }
 
@@ -28,14 +28,14 @@ func (ToolHasProduct) Mixin() []ent.Mixin {
 // Edges of the ToolHasProduct.
 func (ToolHasProduct) Edges() []ent.Edge {
 	return []ent.Edge{
-		edge.From("product", Products.Type).
+		edge.From("products", Products.Type).
 			Ref("tool_has_product").
-			Unique().
-			Required(),
+			Field("products_id").
+			Unique(),
 
-		edge.From("tool", Tools.Type).
+		edge.From("tools", Tools.Type).
 			Ref("tool_has_product").
-			Unique().
-			Required(),
+			Field("tools_id").
+			Unique(),
 	}
 }

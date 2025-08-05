@@ -18,7 +18,7 @@ func (Products) Fields() []ent.Field {
 		field.Int("brand_id").Nillable().Optional(),
 		field.Int("variant_type_id").Nillable().Optional(),
 		field.Int("product_references_id").Nillable().Optional(),
-		field.Int("image_id").Nillable(),
+		field.Int("images_id").Nillable().Optional(),
 		field.String("name").Nillable(),
 		field.Int("stock"),
 	}
@@ -35,18 +35,28 @@ func (Products) Edges() []ent.Edge {
 	return []ent.Edge{
 		edge.From("category", Category.Type).
 			Ref("products").
+			Field("category_id").
 			Unique(),
 
 		edge.From("brand", Brand.Type).
 			Ref("products").
+			Field("brand_id").
 			Unique(),
 
 		edge.From("variant_type", VariantType.Type).
 			Ref("products").
+			Field("variant_type_id").
 			Unique(),
 
-		edge.To("product_references", ProductReferences.Type),
-		edge.To("images", Images.Type),
+		edge.From("product_references", ProductReferences.Type).
+			Ref("products").
+			Field("product_references_id").
+			Unique(),
+
+		edge.From("images", Images.Type).
+			Ref("products").
+			Field("images_id").
+			Unique(),
 		edge.To("product_has_image", ProductHasImage.Type),
 		edge.To("promotion_has_product", PromotionHasProduct.Type),
 		edge.To("tool_has_product", ToolHasProduct.Type),

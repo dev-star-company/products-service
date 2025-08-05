@@ -10,6 +10,7 @@ import (
 	"products-service/internal/app/ent/images"
 	"products-service/internal/app/ent/predicate"
 	"products-service/internal/app/ent/producthasimage"
+	"products-service/internal/app/ent/products"
 	"time"
 
 	"entgo.io/ent/dialect/sql"
@@ -30,12 +31,6 @@ func (iu *ImagesUpdate) Where(ps ...predicate.Images) *ImagesUpdate {
 	return iu
 }
 
-// SetUpdatedAt sets the "updated_at" field.
-func (iu *ImagesUpdate) SetUpdatedAt(t time.Time) *ImagesUpdate {
-	iu.mutation.SetUpdatedAt(t)
-	return iu
-}
-
 // SetDeletedAt sets the "deleted_at" field.
 func (iu *ImagesUpdate) SetDeletedAt(t time.Time) *ImagesUpdate {
 	iu.mutation.SetDeletedAt(t)
@@ -53,68 +48,6 @@ func (iu *ImagesUpdate) SetNillableDeletedAt(t *time.Time) *ImagesUpdate {
 // ClearDeletedAt clears the value of the "deleted_at" field.
 func (iu *ImagesUpdate) ClearDeletedAt() *ImagesUpdate {
 	iu.mutation.ClearDeletedAt()
-	return iu
-}
-
-// SetUpdatedBy sets the "updated_by" field.
-func (iu *ImagesUpdate) SetUpdatedBy(i int) *ImagesUpdate {
-	iu.mutation.ResetUpdatedBy()
-	iu.mutation.SetUpdatedBy(i)
-	return iu
-}
-
-// SetNillableUpdatedBy sets the "updated_by" field if the given value is not nil.
-func (iu *ImagesUpdate) SetNillableUpdatedBy(i *int) *ImagesUpdate {
-	if i != nil {
-		iu.SetUpdatedBy(*i)
-	}
-	return iu
-}
-
-// AddUpdatedBy adds i to the "updated_by" field.
-func (iu *ImagesUpdate) AddUpdatedBy(i int) *ImagesUpdate {
-	iu.mutation.AddUpdatedBy(i)
-	return iu
-}
-
-// SetDeletedBy sets the "deleted_by" field.
-func (iu *ImagesUpdate) SetDeletedBy(i int) *ImagesUpdate {
-	iu.mutation.ResetDeletedBy()
-	iu.mutation.SetDeletedBy(i)
-	return iu
-}
-
-// SetNillableDeletedBy sets the "deleted_by" field if the given value is not nil.
-func (iu *ImagesUpdate) SetNillableDeletedBy(i *int) *ImagesUpdate {
-	if i != nil {
-		iu.SetDeletedBy(*i)
-	}
-	return iu
-}
-
-// AddDeletedBy adds i to the "deleted_by" field.
-func (iu *ImagesUpdate) AddDeletedBy(i int) *ImagesUpdate {
-	iu.mutation.AddDeletedBy(i)
-	return iu
-}
-
-// ClearDeletedBy clears the value of the "deleted_by" field.
-func (iu *ImagesUpdate) ClearDeletedBy() *ImagesUpdate {
-	iu.mutation.ClearDeletedBy()
-	return iu
-}
-
-// SetImageFolderPathID sets the "image_folder_path_id" field.
-func (iu *ImagesUpdate) SetImageFolderPathID(i int) *ImagesUpdate {
-	iu.mutation.SetImageFolderPathID(i)
-	return iu
-}
-
-// SetNillableImageFolderPathID sets the "image_folder_path_id" field if the given value is not nil.
-func (iu *ImagesUpdate) SetNillableImageFolderPathID(i *int) *ImagesUpdate {
-	if i != nil {
-		iu.SetImageFolderPathID(*i)
-	}
 	return iu
 }
 
@@ -146,9 +79,30 @@ func (iu *ImagesUpdate) SetNillablePath(s *string) *ImagesUpdate {
 	return iu
 }
 
+// SetImageFolderPathID sets the "image_folder_path" edge to the ImageFolderPath entity by ID.
+func (iu *ImagesUpdate) SetImageFolderPathID(id int) *ImagesUpdate {
+	iu.mutation.SetImageFolderPathID(id)
+	return iu
+}
+
 // SetImageFolderPath sets the "image_folder_path" edge to the ImageFolderPath entity.
 func (iu *ImagesUpdate) SetImageFolderPath(i *ImageFolderPath) *ImagesUpdate {
 	return iu.SetImageFolderPathID(i.ID)
+}
+
+// AddProductIDs adds the "products" edge to the Products entity by IDs.
+func (iu *ImagesUpdate) AddProductIDs(ids ...int) *ImagesUpdate {
+	iu.mutation.AddProductIDs(ids...)
+	return iu
+}
+
+// AddProducts adds the "products" edges to the Products entity.
+func (iu *ImagesUpdate) AddProducts(p ...*Products) *ImagesUpdate {
+	ids := make([]int, len(p))
+	for i := range p {
+		ids[i] = p[i].ID
+	}
+	return iu.AddProductIDs(ids...)
 }
 
 // AddProductHasImageIDs adds the "product_has_image" edge to the ProductHasImage entity by IDs.
@@ -177,6 +131,27 @@ func (iu *ImagesUpdate) ClearImageFolderPath() *ImagesUpdate {
 	return iu
 }
 
+// ClearProducts clears all "products" edges to the Products entity.
+func (iu *ImagesUpdate) ClearProducts() *ImagesUpdate {
+	iu.mutation.ClearProducts()
+	return iu
+}
+
+// RemoveProductIDs removes the "products" edge to Products entities by IDs.
+func (iu *ImagesUpdate) RemoveProductIDs(ids ...int) *ImagesUpdate {
+	iu.mutation.RemoveProductIDs(ids...)
+	return iu
+}
+
+// RemoveProducts removes "products" edges to Products entities.
+func (iu *ImagesUpdate) RemoveProducts(p ...*Products) *ImagesUpdate {
+	ids := make([]int, len(p))
+	for i := range p {
+		ids[i] = p[i].ID
+	}
+	return iu.RemoveProductIDs(ids...)
+}
+
 // ClearProductHasImage clears all "product_has_image" edges to the ProductHasImage entity.
 func (iu *ImagesUpdate) ClearProductHasImage() *ImagesUpdate {
 	iu.mutation.ClearProductHasImage()
@@ -200,7 +175,6 @@ func (iu *ImagesUpdate) RemoveProductHasImage(p ...*ProductHasImage) *ImagesUpda
 
 // Save executes the query and returns the number of nodes affected by the update operation.
 func (iu *ImagesUpdate) Save(ctx context.Context) (int, error) {
-	iu.defaults()
 	return withHooks(ctx, iu.sqlSave, iu.mutation, iu.hooks)
 }
 
@@ -226,21 +200,8 @@ func (iu *ImagesUpdate) ExecX(ctx context.Context) {
 	}
 }
 
-// defaults sets the default values of the builder before save.
-func (iu *ImagesUpdate) defaults() {
-	if _, ok := iu.mutation.UpdatedAt(); !ok {
-		v := images.UpdateDefaultUpdatedAt()
-		iu.mutation.SetUpdatedAt(v)
-	}
-}
-
 // check runs all checks and user-defined validators on the builder.
 func (iu *ImagesUpdate) check() error {
-	if v, ok := iu.mutation.UpdatedBy(); ok {
-		if err := images.UpdatedByValidator(v); err != nil {
-			return &ValidationError{Name: "updated_by", err: fmt.Errorf(`ent: validator failed for field "Images.updated_by": %w`, err)}
-		}
-	}
 	if iu.mutation.ImageFolderPathCleared() && len(iu.mutation.ImageFolderPathIDs()) > 0 {
 		return errors.New(`ent: clearing a required unique edge "Images.image_folder_path"`)
 	}
@@ -259,29 +220,11 @@ func (iu *ImagesUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			}
 		}
 	}
-	if value, ok := iu.mutation.UpdatedAt(); ok {
-		_spec.SetField(images.FieldUpdatedAt, field.TypeTime, value)
-	}
 	if value, ok := iu.mutation.DeletedAt(); ok {
 		_spec.SetField(images.FieldDeletedAt, field.TypeTime, value)
 	}
 	if iu.mutation.DeletedAtCleared() {
 		_spec.ClearField(images.FieldDeletedAt, field.TypeTime)
-	}
-	if value, ok := iu.mutation.UpdatedBy(); ok {
-		_spec.SetField(images.FieldUpdatedBy, field.TypeInt, value)
-	}
-	if value, ok := iu.mutation.AddedUpdatedBy(); ok {
-		_spec.AddField(images.FieldUpdatedBy, field.TypeInt, value)
-	}
-	if value, ok := iu.mutation.DeletedBy(); ok {
-		_spec.SetField(images.FieldDeletedBy, field.TypeInt, value)
-	}
-	if value, ok := iu.mutation.AddedDeletedBy(); ok {
-		_spec.AddField(images.FieldDeletedBy, field.TypeInt, value)
-	}
-	if iu.mutation.DeletedByCleared() {
-		_spec.ClearField(images.FieldDeletedBy, field.TypeInt)
 	}
 	if value, ok := iu.mutation.Content(); ok {
 		_spec.SetField(images.FieldContent, field.TypeString, value)
@@ -311,6 +254,51 @@ func (iu *ImagesUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(imagefolderpath.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if iu.mutation.ProductsCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   images.ProductsTable,
+			Columns: []string{images.ProductsColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(products.FieldID, field.TypeInt),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := iu.mutation.RemovedProductsIDs(); len(nodes) > 0 && !iu.mutation.ProductsCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   images.ProductsTable,
+			Columns: []string{images.ProductsColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(products.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := iu.mutation.ProductsIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   images.ProductsTable,
+			Columns: []string{images.ProductsColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(products.FieldID, field.TypeInt),
 			},
 		}
 		for _, k := range nodes {
@@ -383,12 +371,6 @@ type ImagesUpdateOne struct {
 	mutation *ImagesMutation
 }
 
-// SetUpdatedAt sets the "updated_at" field.
-func (iuo *ImagesUpdateOne) SetUpdatedAt(t time.Time) *ImagesUpdateOne {
-	iuo.mutation.SetUpdatedAt(t)
-	return iuo
-}
-
 // SetDeletedAt sets the "deleted_at" field.
 func (iuo *ImagesUpdateOne) SetDeletedAt(t time.Time) *ImagesUpdateOne {
 	iuo.mutation.SetDeletedAt(t)
@@ -406,68 +388,6 @@ func (iuo *ImagesUpdateOne) SetNillableDeletedAt(t *time.Time) *ImagesUpdateOne 
 // ClearDeletedAt clears the value of the "deleted_at" field.
 func (iuo *ImagesUpdateOne) ClearDeletedAt() *ImagesUpdateOne {
 	iuo.mutation.ClearDeletedAt()
-	return iuo
-}
-
-// SetUpdatedBy sets the "updated_by" field.
-func (iuo *ImagesUpdateOne) SetUpdatedBy(i int) *ImagesUpdateOne {
-	iuo.mutation.ResetUpdatedBy()
-	iuo.mutation.SetUpdatedBy(i)
-	return iuo
-}
-
-// SetNillableUpdatedBy sets the "updated_by" field if the given value is not nil.
-func (iuo *ImagesUpdateOne) SetNillableUpdatedBy(i *int) *ImagesUpdateOne {
-	if i != nil {
-		iuo.SetUpdatedBy(*i)
-	}
-	return iuo
-}
-
-// AddUpdatedBy adds i to the "updated_by" field.
-func (iuo *ImagesUpdateOne) AddUpdatedBy(i int) *ImagesUpdateOne {
-	iuo.mutation.AddUpdatedBy(i)
-	return iuo
-}
-
-// SetDeletedBy sets the "deleted_by" field.
-func (iuo *ImagesUpdateOne) SetDeletedBy(i int) *ImagesUpdateOne {
-	iuo.mutation.ResetDeletedBy()
-	iuo.mutation.SetDeletedBy(i)
-	return iuo
-}
-
-// SetNillableDeletedBy sets the "deleted_by" field if the given value is not nil.
-func (iuo *ImagesUpdateOne) SetNillableDeletedBy(i *int) *ImagesUpdateOne {
-	if i != nil {
-		iuo.SetDeletedBy(*i)
-	}
-	return iuo
-}
-
-// AddDeletedBy adds i to the "deleted_by" field.
-func (iuo *ImagesUpdateOne) AddDeletedBy(i int) *ImagesUpdateOne {
-	iuo.mutation.AddDeletedBy(i)
-	return iuo
-}
-
-// ClearDeletedBy clears the value of the "deleted_by" field.
-func (iuo *ImagesUpdateOne) ClearDeletedBy() *ImagesUpdateOne {
-	iuo.mutation.ClearDeletedBy()
-	return iuo
-}
-
-// SetImageFolderPathID sets the "image_folder_path_id" field.
-func (iuo *ImagesUpdateOne) SetImageFolderPathID(i int) *ImagesUpdateOne {
-	iuo.mutation.SetImageFolderPathID(i)
-	return iuo
-}
-
-// SetNillableImageFolderPathID sets the "image_folder_path_id" field if the given value is not nil.
-func (iuo *ImagesUpdateOne) SetNillableImageFolderPathID(i *int) *ImagesUpdateOne {
-	if i != nil {
-		iuo.SetImageFolderPathID(*i)
-	}
 	return iuo
 }
 
@@ -499,9 +419,30 @@ func (iuo *ImagesUpdateOne) SetNillablePath(s *string) *ImagesUpdateOne {
 	return iuo
 }
 
+// SetImageFolderPathID sets the "image_folder_path" edge to the ImageFolderPath entity by ID.
+func (iuo *ImagesUpdateOne) SetImageFolderPathID(id int) *ImagesUpdateOne {
+	iuo.mutation.SetImageFolderPathID(id)
+	return iuo
+}
+
 // SetImageFolderPath sets the "image_folder_path" edge to the ImageFolderPath entity.
 func (iuo *ImagesUpdateOne) SetImageFolderPath(i *ImageFolderPath) *ImagesUpdateOne {
 	return iuo.SetImageFolderPathID(i.ID)
+}
+
+// AddProductIDs adds the "products" edge to the Products entity by IDs.
+func (iuo *ImagesUpdateOne) AddProductIDs(ids ...int) *ImagesUpdateOne {
+	iuo.mutation.AddProductIDs(ids...)
+	return iuo
+}
+
+// AddProducts adds the "products" edges to the Products entity.
+func (iuo *ImagesUpdateOne) AddProducts(p ...*Products) *ImagesUpdateOne {
+	ids := make([]int, len(p))
+	for i := range p {
+		ids[i] = p[i].ID
+	}
+	return iuo.AddProductIDs(ids...)
 }
 
 // AddProductHasImageIDs adds the "product_has_image" edge to the ProductHasImage entity by IDs.
@@ -528,6 +469,27 @@ func (iuo *ImagesUpdateOne) Mutation() *ImagesMutation {
 func (iuo *ImagesUpdateOne) ClearImageFolderPath() *ImagesUpdateOne {
 	iuo.mutation.ClearImageFolderPath()
 	return iuo
+}
+
+// ClearProducts clears all "products" edges to the Products entity.
+func (iuo *ImagesUpdateOne) ClearProducts() *ImagesUpdateOne {
+	iuo.mutation.ClearProducts()
+	return iuo
+}
+
+// RemoveProductIDs removes the "products" edge to Products entities by IDs.
+func (iuo *ImagesUpdateOne) RemoveProductIDs(ids ...int) *ImagesUpdateOne {
+	iuo.mutation.RemoveProductIDs(ids...)
+	return iuo
+}
+
+// RemoveProducts removes "products" edges to Products entities.
+func (iuo *ImagesUpdateOne) RemoveProducts(p ...*Products) *ImagesUpdateOne {
+	ids := make([]int, len(p))
+	for i := range p {
+		ids[i] = p[i].ID
+	}
+	return iuo.RemoveProductIDs(ids...)
 }
 
 // ClearProductHasImage clears all "product_has_image" edges to the ProductHasImage entity.
@@ -566,7 +528,6 @@ func (iuo *ImagesUpdateOne) Select(field string, fields ...string) *ImagesUpdate
 
 // Save executes the query and returns the updated Images entity.
 func (iuo *ImagesUpdateOne) Save(ctx context.Context) (*Images, error) {
-	iuo.defaults()
 	return withHooks(ctx, iuo.sqlSave, iuo.mutation, iuo.hooks)
 }
 
@@ -592,21 +553,8 @@ func (iuo *ImagesUpdateOne) ExecX(ctx context.Context) {
 	}
 }
 
-// defaults sets the default values of the builder before save.
-func (iuo *ImagesUpdateOne) defaults() {
-	if _, ok := iuo.mutation.UpdatedAt(); !ok {
-		v := images.UpdateDefaultUpdatedAt()
-		iuo.mutation.SetUpdatedAt(v)
-	}
-}
-
 // check runs all checks and user-defined validators on the builder.
 func (iuo *ImagesUpdateOne) check() error {
-	if v, ok := iuo.mutation.UpdatedBy(); ok {
-		if err := images.UpdatedByValidator(v); err != nil {
-			return &ValidationError{Name: "updated_by", err: fmt.Errorf(`ent: validator failed for field "Images.updated_by": %w`, err)}
-		}
-	}
 	if iuo.mutation.ImageFolderPathCleared() && len(iuo.mutation.ImageFolderPathIDs()) > 0 {
 		return errors.New(`ent: clearing a required unique edge "Images.image_folder_path"`)
 	}
@@ -642,29 +590,11 @@ func (iuo *ImagesUpdateOne) sqlSave(ctx context.Context) (_node *Images, err err
 			}
 		}
 	}
-	if value, ok := iuo.mutation.UpdatedAt(); ok {
-		_spec.SetField(images.FieldUpdatedAt, field.TypeTime, value)
-	}
 	if value, ok := iuo.mutation.DeletedAt(); ok {
 		_spec.SetField(images.FieldDeletedAt, field.TypeTime, value)
 	}
 	if iuo.mutation.DeletedAtCleared() {
 		_spec.ClearField(images.FieldDeletedAt, field.TypeTime)
-	}
-	if value, ok := iuo.mutation.UpdatedBy(); ok {
-		_spec.SetField(images.FieldUpdatedBy, field.TypeInt, value)
-	}
-	if value, ok := iuo.mutation.AddedUpdatedBy(); ok {
-		_spec.AddField(images.FieldUpdatedBy, field.TypeInt, value)
-	}
-	if value, ok := iuo.mutation.DeletedBy(); ok {
-		_spec.SetField(images.FieldDeletedBy, field.TypeInt, value)
-	}
-	if value, ok := iuo.mutation.AddedDeletedBy(); ok {
-		_spec.AddField(images.FieldDeletedBy, field.TypeInt, value)
-	}
-	if iuo.mutation.DeletedByCleared() {
-		_spec.ClearField(images.FieldDeletedBy, field.TypeInt)
 	}
 	if value, ok := iuo.mutation.Content(); ok {
 		_spec.SetField(images.FieldContent, field.TypeString, value)
@@ -694,6 +624,51 @@ func (iuo *ImagesUpdateOne) sqlSave(ctx context.Context) (_node *Images, err err
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(imagefolderpath.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if iuo.mutation.ProductsCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   images.ProductsTable,
+			Columns: []string{images.ProductsColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(products.FieldID, field.TypeInt),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := iuo.mutation.RemovedProductsIDs(); len(nodes) > 0 && !iuo.mutation.ProductsCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   images.ProductsTable,
+			Columns: []string{images.ProductsColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(products.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := iuo.mutation.ProductsIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   images.ProductsTable,
+			Columns: []string{images.ProductsColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(products.FieldID, field.TypeInt),
 			},
 		}
 		for _, k := range nodes {

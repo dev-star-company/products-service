@@ -16,16 +16,8 @@ const (
 	FieldID = "id"
 	// FieldCreatedAt holds the string denoting the created_at field in the database.
 	FieldCreatedAt = "created_at"
-	// FieldUpdatedAt holds the string denoting the updated_at field in the database.
-	FieldUpdatedAt = "updated_at"
 	// FieldDeletedAt holds the string denoting the deleted_at field in the database.
 	FieldDeletedAt = "deleted_at"
-	// FieldCreatedBy holds the string denoting the created_by field in the database.
-	FieldCreatedBy = "created_by"
-	// FieldUpdatedBy holds the string denoting the updated_by field in the database.
-	FieldUpdatedBy = "updated_by"
-	// FieldDeletedBy holds the string denoting the deleted_by field in the database.
-	FieldDeletedBy = "deleted_by"
 	// FieldCategoryID holds the string denoting the category_id field in the database.
 	FieldCategoryID = "category_id"
 	// FieldBrandID holds the string denoting the brand_id field in the database.
@@ -34,8 +26,8 @@ const (
 	FieldVariantTypeID = "variant_type_id"
 	// FieldProductReferencesID holds the string denoting the product_references_id field in the database.
 	FieldProductReferencesID = "product_references_id"
-	// FieldImageID holds the string denoting the image_id field in the database.
-	FieldImageID = "image_id"
+	// FieldImagesID holds the string denoting the images_id field in the database.
+	FieldImagesID = "images_id"
 	// FieldName holds the string denoting the name field in the database.
 	FieldName = "name"
 	// FieldStock holds the string denoting the stock field in the database.
@@ -72,35 +64,35 @@ const (
 	// It exists in this package in order to avoid circular dependency with the "category" package.
 	CategoryInverseTable = "categories"
 	// CategoryColumn is the table column denoting the category relation/edge.
-	CategoryColumn = "category_products"
+	CategoryColumn = "category_id"
 	// BrandTable is the table that holds the brand relation/edge.
 	BrandTable = "products"
 	// BrandInverseTable is the table name for the Brand entity.
 	// It exists in this package in order to avoid circular dependency with the "brand" package.
 	BrandInverseTable = "brands"
 	// BrandColumn is the table column denoting the brand relation/edge.
-	BrandColumn = "brand_products"
+	BrandColumn = "brand_id"
 	// VariantTypeTable is the table that holds the variant_type relation/edge.
 	VariantTypeTable = "products"
 	// VariantTypeInverseTable is the table name for the VariantType entity.
 	// It exists in this package in order to avoid circular dependency with the "varianttype" package.
 	VariantTypeInverseTable = "variant_types"
 	// VariantTypeColumn is the table column denoting the variant_type relation/edge.
-	VariantTypeColumn = "variant_type_products"
+	VariantTypeColumn = "variant_type_id"
 	// ProductReferencesTable is the table that holds the product_references relation/edge.
-	ProductReferencesTable = "product_references"
+	ProductReferencesTable = "products"
 	// ProductReferencesInverseTable is the table name for the ProductReferences entity.
 	// It exists in this package in order to avoid circular dependency with the "productreferences" package.
 	ProductReferencesInverseTable = "product_references"
 	// ProductReferencesColumn is the table column denoting the product_references relation/edge.
-	ProductReferencesColumn = "products_product_references"
+	ProductReferencesColumn = "product_references_id"
 	// ImagesTable is the table that holds the images relation/edge.
-	ImagesTable = "images"
+	ImagesTable = "products"
 	// ImagesInverseTable is the table name for the Images entity.
 	// It exists in this package in order to avoid circular dependency with the "images" package.
 	ImagesInverseTable = "images"
 	// ImagesColumn is the table column denoting the images relation/edge.
-	ImagesColumn = "products_images"
+	ImagesColumn = "images_id"
 	// ProductHasImageTable is the table that holds the product_has_image relation/edge.
 	ProductHasImageTable = "product_has_images"
 	// ProductHasImageInverseTable is the table name for the ProductHasImage entity.
@@ -114,14 +106,14 @@ const (
 	// It exists in this package in order to avoid circular dependency with the "promotionhasproduct" package.
 	PromotionHasProductInverseTable = "promotion_has_products"
 	// PromotionHasProductColumn is the table column denoting the promotion_has_product relation/edge.
-	PromotionHasProductColumn = "products_promotion_has_product"
+	PromotionHasProductColumn = "products_id"
 	// ToolHasProductTable is the table that holds the tool_has_product relation/edge.
 	ToolHasProductTable = "tool_has_products"
 	// ToolHasProductInverseTable is the table name for the ToolHasProduct entity.
 	// It exists in this package in order to avoid circular dependency with the "toolhasproduct" package.
 	ToolHasProductInverseTable = "tool_has_products"
 	// ToolHasProductColumn is the table column denoting the tool_has_product relation/edge.
-	ToolHasProductColumn = "products_tool_has_product"
+	ToolHasProductColumn = "products_id"
 	// ProductHasFeatureTable is the table that holds the product_has_feature relation/edge.
 	ProductHasFeatureTable = "product_has_features"
 	// ProductHasFeatureInverseTable is the table name for the ProductHasFeature entity.
@@ -156,16 +148,12 @@ const (
 var Columns = []string{
 	FieldID,
 	FieldCreatedAt,
-	FieldUpdatedAt,
 	FieldDeletedAt,
-	FieldCreatedBy,
-	FieldUpdatedBy,
-	FieldDeletedBy,
 	FieldCategoryID,
 	FieldBrandID,
 	FieldVariantTypeID,
 	FieldProductReferencesID,
-	FieldImageID,
+	FieldImagesID,
 	FieldName,
 	FieldStock,
 }
@@ -173,13 +161,10 @@ var Columns = []string{
 // ForeignKeys holds the SQL foreign-keys that are owned by the "products"
 // table and are not defined as standalone fields in the schema.
 var ForeignKeys = []string{
-	"brand_products",
-	"category_products",
 	"user_products",
 	"user_created_products",
 	"user_updated_products",
 	"user_deleted_products",
-	"variant_type_products",
 }
 
 // ValidColumn reports if the column name is valid (part of the table columns).
@@ -200,14 +185,6 @@ func ValidColumn(column string) bool {
 var (
 	// DefaultCreatedAt holds the default value on creation for the "created_at" field.
 	DefaultCreatedAt func() time.Time
-	// DefaultUpdatedAt holds the default value on creation for the "updated_at" field.
-	DefaultUpdatedAt func() time.Time
-	// UpdateDefaultUpdatedAt holds the default value on update for the "updated_at" field.
-	UpdateDefaultUpdatedAt func() time.Time
-	// CreatedByValidator is a validator for the "created_by" field. It is called by the builders before save.
-	CreatedByValidator func(int) error
-	// UpdatedByValidator is a validator for the "updated_by" field. It is called by the builders before save.
-	UpdatedByValidator func(int) error
 )
 
 // OrderOption defines the ordering options for the Products queries.
@@ -223,29 +200,9 @@ func ByCreatedAt(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldCreatedAt, opts...).ToFunc()
 }
 
-// ByUpdatedAt orders the results by the updated_at field.
-func ByUpdatedAt(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldUpdatedAt, opts...).ToFunc()
-}
-
 // ByDeletedAt orders the results by the deleted_at field.
 func ByDeletedAt(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldDeletedAt, opts...).ToFunc()
-}
-
-// ByCreatedBy orders the results by the created_by field.
-func ByCreatedBy(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldCreatedBy, opts...).ToFunc()
-}
-
-// ByUpdatedBy orders the results by the updated_by field.
-func ByUpdatedBy(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldUpdatedBy, opts...).ToFunc()
-}
-
-// ByDeletedBy orders the results by the deleted_by field.
-func ByDeletedBy(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldDeletedBy, opts...).ToFunc()
 }
 
 // ByCategoryID orders the results by the category_id field.
@@ -268,9 +225,9 @@ func ByProductReferencesID(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldProductReferencesID, opts...).ToFunc()
 }
 
-// ByImageID orders the results by the image_id field.
-func ByImageID(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldImageID, opts...).ToFunc()
+// ByImagesID orders the results by the images_id field.
+func ByImagesID(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldImagesID, opts...).ToFunc()
 }
 
 // ByName orders the results by the name field.
@@ -304,31 +261,17 @@ func ByVariantTypeField(field string, opts ...sql.OrderTermOption) OrderOption {
 	}
 }
 
-// ByProductReferencesCount orders the results by product_references count.
-func ByProductReferencesCount(opts ...sql.OrderTermOption) OrderOption {
+// ByProductReferencesField orders the results by product_references field.
+func ByProductReferencesField(field string, opts ...sql.OrderTermOption) OrderOption {
 	return func(s *sql.Selector) {
-		sqlgraph.OrderByNeighborsCount(s, newProductReferencesStep(), opts...)
+		sqlgraph.OrderByNeighborTerms(s, newProductReferencesStep(), sql.OrderByField(field, opts...))
 	}
 }
 
-// ByProductReferences orders the results by product_references terms.
-func ByProductReferences(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
+// ByImagesField orders the results by images field.
+func ByImagesField(field string, opts ...sql.OrderTermOption) OrderOption {
 	return func(s *sql.Selector) {
-		sqlgraph.OrderByNeighborTerms(s, newProductReferencesStep(), append([]sql.OrderTerm{term}, terms...)...)
-	}
-}
-
-// ByImagesCount orders the results by images count.
-func ByImagesCount(opts ...sql.OrderTermOption) OrderOption {
-	return func(s *sql.Selector) {
-		sqlgraph.OrderByNeighborsCount(s, newImagesStep(), opts...)
-	}
-}
-
-// ByImages orders the results by images terms.
-func ByImages(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
-	return func(s *sql.Selector) {
-		sqlgraph.OrderByNeighborTerms(s, newImagesStep(), append([]sql.OrderTerm{term}, terms...)...)
+		sqlgraph.OrderByNeighborTerms(s, newImagesStep(), sql.OrderByField(field, opts...))
 	}
 }
 
@@ -454,14 +397,14 @@ func newProductReferencesStep() *sqlgraph.Step {
 	return sqlgraph.NewStep(
 		sqlgraph.From(Table, FieldID),
 		sqlgraph.To(ProductReferencesInverseTable, FieldID),
-		sqlgraph.Edge(sqlgraph.O2M, false, ProductReferencesTable, ProductReferencesColumn),
+		sqlgraph.Edge(sqlgraph.M2O, true, ProductReferencesTable, ProductReferencesColumn),
 	)
 }
 func newImagesStep() *sqlgraph.Step {
 	return sqlgraph.NewStep(
 		sqlgraph.From(Table, FieldID),
 		sqlgraph.To(ImagesInverseTable, FieldID),
-		sqlgraph.Edge(sqlgraph.O2M, false, ImagesTable, ImagesColumn),
+		sqlgraph.Edge(sqlgraph.M2O, true, ImagesTable, ImagesColumn),
 	)
 }
 func newProductHasImageStep() *sqlgraph.Step {

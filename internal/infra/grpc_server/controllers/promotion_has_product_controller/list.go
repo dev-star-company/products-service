@@ -25,11 +25,11 @@ func (c *controller) List(ctx context.Context, in *promotion_has_product_proto.L
 	query := tx.PromotionHasProduct.Query()
 
 	if in.PromotionId != nil {
-		query = query.Where(promotionhasproduct.PromotionID(int(*in.PromotionId)))
+		query = query.Where(promotionhasproduct.PromotionsID(int(*in.PromotionId)))
 	}
 
 	if in.ProductsId != nil {
-		query = query.Where(promotionhasproduct.ProductID(int(*in.ProductsId)))
+		query = query.Where(promotionhasproduct.ProductsID(int(*in.ProductsId)))
 	}
 
 	count, err := query.Count(ctx)

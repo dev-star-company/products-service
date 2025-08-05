@@ -25,11 +25,11 @@ func (c *controller) List(ctx context.Context, in *tool_has_product_proto.ListRe
 	query := tx.ToolHasProduct.Query()
 
 	if in.ToolId != nil {
-		query = query.Where(toolhasproduct.ToolID(int(*in.ToolId)))
+		query = query.Where(toolhasproduct.ToolsID(int(*in.ToolId)))
 	}
 
 	if in.ProductsId != nil {
-		query = query.Where(toolhasproduct.ProductID(int(*in.ProductsId)))
+		query = query.Where(toolhasproduct.ProductsID(int(*in.ProductsId)))
 	}
 
 	count, err := query.Count(ctx)

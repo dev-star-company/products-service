@@ -19,7 +19,6 @@ func (c *controller) Get(ctx context.Context, in *tools_proto.GetRequest) (*tool
 	}
 
 	return &tools_proto.GetResponse{
-		RequesterId: uint32(tools.CreatedBy),
-		Name:        *tools.Name,
+		Name: *tools.Name,
 	}, nil
 }

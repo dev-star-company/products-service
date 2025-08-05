@@ -14,7 +14,6 @@ type Images struct {
 // Fields of the Images.
 func (Images) Fields() []ent.Field {
 	return []ent.Field{
-		field.Int("image_folder_path_id").Nillable(),
 		field.String("content").Nillable(),
 		field.String("path").Nillable(),
 	}
@@ -31,9 +30,9 @@ func (Images) Edges() []ent.Edge {
 	return []ent.Edge{
 		edge.From("image_folder_path", ImageFolderPath.Type).
 			Ref("images").
-			Field("image_folder_path_id").
 			Unique().
 			Required(),
+		edge.To("products", Products.Type),
 		edge.To("product_has_image", ProductHasImage.Type),
 	}
 }

@@ -30,12 +30,6 @@ func (phpu *PromotionHasProductUpdate) Where(ps ...predicate.PromotionHasProduct
 	return phpu
 }
 
-// SetUpdatedAt sets the "updated_at" field.
-func (phpu *PromotionHasProductUpdate) SetUpdatedAt(t time.Time) *PromotionHasProductUpdate {
-	phpu.mutation.SetUpdatedAt(t)
-	return phpu
-}
-
 // SetDeletedAt sets the "deleted_at" field.
 func (phpu *PromotionHasProductUpdate) SetDeletedAt(t time.Time) *PromotionHasProductUpdate {
 	phpu.mutation.SetDeletedAt(t)
@@ -56,99 +50,43 @@ func (phpu *PromotionHasProductUpdate) ClearDeletedAt() *PromotionHasProductUpda
 	return phpu
 }
 
-// SetUpdatedBy sets the "updated_by" field.
-func (phpu *PromotionHasProductUpdate) SetUpdatedBy(i int) *PromotionHasProductUpdate {
-	phpu.mutation.ResetUpdatedBy()
-	phpu.mutation.SetUpdatedBy(i)
+// SetProductsID sets the "products_id" field.
+func (phpu *PromotionHasProductUpdate) SetProductsID(i int) *PromotionHasProductUpdate {
+	phpu.mutation.SetProductsID(i)
 	return phpu
 }
 
-// SetNillableUpdatedBy sets the "updated_by" field if the given value is not nil.
-func (phpu *PromotionHasProductUpdate) SetNillableUpdatedBy(i *int) *PromotionHasProductUpdate {
+// SetNillableProductsID sets the "products_id" field if the given value is not nil.
+func (phpu *PromotionHasProductUpdate) SetNillableProductsID(i *int) *PromotionHasProductUpdate {
 	if i != nil {
-		phpu.SetUpdatedBy(*i)
+		phpu.SetProductsID(*i)
 	}
 	return phpu
 }
 
-// AddUpdatedBy adds i to the "updated_by" field.
-func (phpu *PromotionHasProductUpdate) AddUpdatedBy(i int) *PromotionHasProductUpdate {
-	phpu.mutation.AddUpdatedBy(i)
+// ClearProductsID clears the value of the "products_id" field.
+func (phpu *PromotionHasProductUpdate) ClearProductsID() *PromotionHasProductUpdate {
+	phpu.mutation.ClearProductsID()
 	return phpu
 }
 
-// SetDeletedBy sets the "deleted_by" field.
-func (phpu *PromotionHasProductUpdate) SetDeletedBy(i int) *PromotionHasProductUpdate {
-	phpu.mutation.ResetDeletedBy()
-	phpu.mutation.SetDeletedBy(i)
+// SetPromotionsID sets the "promotions_id" field.
+func (phpu *PromotionHasProductUpdate) SetPromotionsID(i int) *PromotionHasProductUpdate {
+	phpu.mutation.SetPromotionsID(i)
 	return phpu
 }
 
-// SetNillableDeletedBy sets the "deleted_by" field if the given value is not nil.
-func (phpu *PromotionHasProductUpdate) SetNillableDeletedBy(i *int) *PromotionHasProductUpdate {
+// SetNillablePromotionsID sets the "promotions_id" field if the given value is not nil.
+func (phpu *PromotionHasProductUpdate) SetNillablePromotionsID(i *int) *PromotionHasProductUpdate {
 	if i != nil {
-		phpu.SetDeletedBy(*i)
+		phpu.SetPromotionsID(*i)
 	}
 	return phpu
 }
 
-// AddDeletedBy adds i to the "deleted_by" field.
-func (phpu *PromotionHasProductUpdate) AddDeletedBy(i int) *PromotionHasProductUpdate {
-	phpu.mutation.AddDeletedBy(i)
-	return phpu
-}
-
-// ClearDeletedBy clears the value of the "deleted_by" field.
-func (phpu *PromotionHasProductUpdate) ClearDeletedBy() *PromotionHasProductUpdate {
-	phpu.mutation.ClearDeletedBy()
-	return phpu
-}
-
-// SetProductID sets the "product_id" field.
-func (phpu *PromotionHasProductUpdate) SetProductID(i int) *PromotionHasProductUpdate {
-	phpu.mutation.ResetProductID()
-	phpu.mutation.SetProductID(i)
-	return phpu
-}
-
-// SetNillableProductID sets the "product_id" field if the given value is not nil.
-func (phpu *PromotionHasProductUpdate) SetNillableProductID(i *int) *PromotionHasProductUpdate {
-	if i != nil {
-		phpu.SetProductID(*i)
-	}
-	return phpu
-}
-
-// AddProductID adds i to the "product_id" field.
-func (phpu *PromotionHasProductUpdate) AddProductID(i int) *PromotionHasProductUpdate {
-	phpu.mutation.AddProductID(i)
-	return phpu
-}
-
-// ClearProductID clears the value of the "product_id" field.
-func (phpu *PromotionHasProductUpdate) ClearProductID() *PromotionHasProductUpdate {
-	phpu.mutation.ClearProductID()
-	return phpu
-}
-
-// SetPromotionID sets the "promotion_id" field.
-func (phpu *PromotionHasProductUpdate) SetPromotionID(i int) *PromotionHasProductUpdate {
-	phpu.mutation.ResetPromotionID()
-	phpu.mutation.SetPromotionID(i)
-	return phpu
-}
-
-// SetNillablePromotionID sets the "promotion_id" field if the given value is not nil.
-func (phpu *PromotionHasProductUpdate) SetNillablePromotionID(i *int) *PromotionHasProductUpdate {
-	if i != nil {
-		phpu.SetPromotionID(*i)
-	}
-	return phpu
-}
-
-// AddPromotionID adds i to the "promotion_id" field.
-func (phpu *PromotionHasProductUpdate) AddPromotionID(i int) *PromotionHasProductUpdate {
-	phpu.mutation.AddPromotionID(i)
+// ClearPromotionsID clears the value of the "promotions_id" field.
+func (phpu *PromotionHasProductUpdate) ClearPromotionsID() *PromotionHasProductUpdate {
+	phpu.mutation.ClearPromotionsID()
 	return phpu
 }
 
@@ -173,14 +111,14 @@ func (phpu *PromotionHasProductUpdate) AddPromocionalPrice(f float64) *Promotion
 	return phpu
 }
 
-// SetProduct sets the "product" edge to the Products entity.
-func (phpu *PromotionHasProductUpdate) SetProduct(p *Products) *PromotionHasProductUpdate {
-	return phpu.SetProductID(p.ID)
+// SetProducts sets the "products" edge to the Products entity.
+func (phpu *PromotionHasProductUpdate) SetProducts(p *Products) *PromotionHasProductUpdate {
+	return phpu.SetProductsID(p.ID)
 }
 
-// SetPromotion sets the "promotion" edge to the Promotions entity.
-func (phpu *PromotionHasProductUpdate) SetPromotion(p *Promotions) *PromotionHasProductUpdate {
-	return phpu.SetPromotionID(p.ID)
+// SetPromotions sets the "promotions" edge to the Promotions entity.
+func (phpu *PromotionHasProductUpdate) SetPromotions(p *Promotions) *PromotionHasProductUpdate {
+	return phpu.SetPromotionsID(p.ID)
 }
 
 // Mutation returns the PromotionHasProductMutation object of the builder.
@@ -188,21 +126,20 @@ func (phpu *PromotionHasProductUpdate) Mutation() *PromotionHasProductMutation {
 	return phpu.mutation
 }
 
-// ClearProduct clears the "product" edge to the Products entity.
-func (phpu *PromotionHasProductUpdate) ClearProduct() *PromotionHasProductUpdate {
-	phpu.mutation.ClearProduct()
+// ClearProducts clears the "products" edge to the Products entity.
+func (phpu *PromotionHasProductUpdate) ClearProducts() *PromotionHasProductUpdate {
+	phpu.mutation.ClearProducts()
 	return phpu
 }
 
-// ClearPromotion clears the "promotion" edge to the Promotions entity.
-func (phpu *PromotionHasProductUpdate) ClearPromotion() *PromotionHasProductUpdate {
-	phpu.mutation.ClearPromotion()
+// ClearPromotions clears the "promotions" edge to the Promotions entity.
+func (phpu *PromotionHasProductUpdate) ClearPromotions() *PromotionHasProductUpdate {
+	phpu.mutation.ClearPromotions()
 	return phpu
 }
 
 // Save executes the query and returns the number of nodes affected by the update operation.
 func (phpu *PromotionHasProductUpdate) Save(ctx context.Context) (int, error) {
-	phpu.defaults()
 	return withHooks(ctx, phpu.sqlSave, phpu.mutation, phpu.hooks)
 }
 
@@ -228,34 +165,7 @@ func (phpu *PromotionHasProductUpdate) ExecX(ctx context.Context) {
 	}
 }
 
-// defaults sets the default values of the builder before save.
-func (phpu *PromotionHasProductUpdate) defaults() {
-	if _, ok := phpu.mutation.UpdatedAt(); !ok {
-		v := promotionhasproduct.UpdateDefaultUpdatedAt()
-		phpu.mutation.SetUpdatedAt(v)
-	}
-}
-
-// check runs all checks and user-defined validators on the builder.
-func (phpu *PromotionHasProductUpdate) check() error {
-	if v, ok := phpu.mutation.UpdatedBy(); ok {
-		if err := promotionhasproduct.UpdatedByValidator(v); err != nil {
-			return &ValidationError{Name: "updated_by", err: fmt.Errorf(`ent: validator failed for field "PromotionHasProduct.updated_by": %w`, err)}
-		}
-	}
-	if phpu.mutation.ProductCleared() && len(phpu.mutation.ProductIDs()) > 0 {
-		return errors.New(`ent: clearing a required unique edge "PromotionHasProduct.product"`)
-	}
-	if phpu.mutation.PromotionCleared() && len(phpu.mutation.PromotionIDs()) > 0 {
-		return errors.New(`ent: clearing a required unique edge "PromotionHasProduct.promotion"`)
-	}
-	return nil
-}
-
 func (phpu *PromotionHasProductUpdate) sqlSave(ctx context.Context) (n int, err error) {
-	if err := phpu.check(); err != nil {
-		return n, err
-	}
 	_spec := sqlgraph.NewUpdateSpec(promotionhasproduct.Table, promotionhasproduct.Columns, sqlgraph.NewFieldSpec(promotionhasproduct.FieldID, field.TypeInt))
 	if ps := phpu.mutation.predicates; len(ps) > 0 {
 		_spec.Predicate = func(selector *sql.Selector) {
@@ -264,44 +174,11 @@ func (phpu *PromotionHasProductUpdate) sqlSave(ctx context.Context) (n int, err 
 			}
 		}
 	}
-	if value, ok := phpu.mutation.UpdatedAt(); ok {
-		_spec.SetField(promotionhasproduct.FieldUpdatedAt, field.TypeTime, value)
-	}
 	if value, ok := phpu.mutation.DeletedAt(); ok {
 		_spec.SetField(promotionhasproduct.FieldDeletedAt, field.TypeTime, value)
 	}
 	if phpu.mutation.DeletedAtCleared() {
 		_spec.ClearField(promotionhasproduct.FieldDeletedAt, field.TypeTime)
-	}
-	if value, ok := phpu.mutation.UpdatedBy(); ok {
-		_spec.SetField(promotionhasproduct.FieldUpdatedBy, field.TypeInt, value)
-	}
-	if value, ok := phpu.mutation.AddedUpdatedBy(); ok {
-		_spec.AddField(promotionhasproduct.FieldUpdatedBy, field.TypeInt, value)
-	}
-	if value, ok := phpu.mutation.DeletedBy(); ok {
-		_spec.SetField(promotionhasproduct.FieldDeletedBy, field.TypeInt, value)
-	}
-	if value, ok := phpu.mutation.AddedDeletedBy(); ok {
-		_spec.AddField(promotionhasproduct.FieldDeletedBy, field.TypeInt, value)
-	}
-	if phpu.mutation.DeletedByCleared() {
-		_spec.ClearField(promotionhasproduct.FieldDeletedBy, field.TypeInt)
-	}
-	if value, ok := phpu.mutation.ProductID(); ok {
-		_spec.SetField(promotionhasproduct.FieldProductID, field.TypeInt, value)
-	}
-	if value, ok := phpu.mutation.AddedProductID(); ok {
-		_spec.AddField(promotionhasproduct.FieldProductID, field.TypeInt, value)
-	}
-	if phpu.mutation.ProductIDCleared() {
-		_spec.ClearField(promotionhasproduct.FieldProductID, field.TypeInt)
-	}
-	if value, ok := phpu.mutation.PromotionID(); ok {
-		_spec.SetField(promotionhasproduct.FieldPromotionID, field.TypeInt, value)
-	}
-	if value, ok := phpu.mutation.AddedPromotionID(); ok {
-		_spec.AddField(promotionhasproduct.FieldPromotionID, field.TypeInt, value)
 	}
 	if value, ok := phpu.mutation.PromocionalPrice(); ok {
 		_spec.SetField(promotionhasproduct.FieldPromocionalPrice, field.TypeFloat64, value)
@@ -309,12 +186,12 @@ func (phpu *PromotionHasProductUpdate) sqlSave(ctx context.Context) (n int, err 
 	if value, ok := phpu.mutation.AddedPromocionalPrice(); ok {
 		_spec.AddField(promotionhasproduct.FieldPromocionalPrice, field.TypeFloat64, value)
 	}
-	if phpu.mutation.ProductCleared() {
+	if phpu.mutation.ProductsCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2O,
 			Inverse: true,
-			Table:   promotionhasproduct.ProductTable,
-			Columns: []string{promotionhasproduct.ProductColumn},
+			Table:   promotionhasproduct.ProductsTable,
+			Columns: []string{promotionhasproduct.ProductsColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(products.FieldID, field.TypeInt),
@@ -322,12 +199,12 @@ func (phpu *PromotionHasProductUpdate) sqlSave(ctx context.Context) (n int, err 
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
-	if nodes := phpu.mutation.ProductIDs(); len(nodes) > 0 {
+	if nodes := phpu.mutation.ProductsIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2O,
 			Inverse: true,
-			Table:   promotionhasproduct.ProductTable,
-			Columns: []string{promotionhasproduct.ProductColumn},
+			Table:   promotionhasproduct.ProductsTable,
+			Columns: []string{promotionhasproduct.ProductsColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(products.FieldID, field.TypeInt),
@@ -338,12 +215,12 @@ func (phpu *PromotionHasProductUpdate) sqlSave(ctx context.Context) (n int, err 
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
-	if phpu.mutation.PromotionCleared() {
+	if phpu.mutation.PromotionsCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2O,
 			Inverse: true,
-			Table:   promotionhasproduct.PromotionTable,
-			Columns: []string{promotionhasproduct.PromotionColumn},
+			Table:   promotionhasproduct.PromotionsTable,
+			Columns: []string{promotionhasproduct.PromotionsColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(promotions.FieldID, field.TypeInt),
@@ -351,12 +228,12 @@ func (phpu *PromotionHasProductUpdate) sqlSave(ctx context.Context) (n int, err 
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
-	if nodes := phpu.mutation.PromotionIDs(); len(nodes) > 0 {
+	if nodes := phpu.mutation.PromotionsIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2O,
 			Inverse: true,
-			Table:   promotionhasproduct.PromotionTable,
-			Columns: []string{promotionhasproduct.PromotionColumn},
+			Table:   promotionhasproduct.PromotionsTable,
+			Columns: []string{promotionhasproduct.PromotionsColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(promotions.FieldID, field.TypeInt),
@@ -387,12 +264,6 @@ type PromotionHasProductUpdateOne struct {
 	mutation *PromotionHasProductMutation
 }
 
-// SetUpdatedAt sets the "updated_at" field.
-func (phpuo *PromotionHasProductUpdateOne) SetUpdatedAt(t time.Time) *PromotionHasProductUpdateOne {
-	phpuo.mutation.SetUpdatedAt(t)
-	return phpuo
-}
-
 // SetDeletedAt sets the "deleted_at" field.
 func (phpuo *PromotionHasProductUpdateOne) SetDeletedAt(t time.Time) *PromotionHasProductUpdateOne {
 	phpuo.mutation.SetDeletedAt(t)
@@ -413,99 +284,43 @@ func (phpuo *PromotionHasProductUpdateOne) ClearDeletedAt() *PromotionHasProduct
 	return phpuo
 }
 
-// SetUpdatedBy sets the "updated_by" field.
-func (phpuo *PromotionHasProductUpdateOne) SetUpdatedBy(i int) *PromotionHasProductUpdateOne {
-	phpuo.mutation.ResetUpdatedBy()
-	phpuo.mutation.SetUpdatedBy(i)
+// SetProductsID sets the "products_id" field.
+func (phpuo *PromotionHasProductUpdateOne) SetProductsID(i int) *PromotionHasProductUpdateOne {
+	phpuo.mutation.SetProductsID(i)
 	return phpuo
 }
 
-// SetNillableUpdatedBy sets the "updated_by" field if the given value is not nil.
-func (phpuo *PromotionHasProductUpdateOne) SetNillableUpdatedBy(i *int) *PromotionHasProductUpdateOne {
+// SetNillableProductsID sets the "products_id" field if the given value is not nil.
+func (phpuo *PromotionHasProductUpdateOne) SetNillableProductsID(i *int) *PromotionHasProductUpdateOne {
 	if i != nil {
-		phpuo.SetUpdatedBy(*i)
+		phpuo.SetProductsID(*i)
 	}
 	return phpuo
 }
 
-// AddUpdatedBy adds i to the "updated_by" field.
-func (phpuo *PromotionHasProductUpdateOne) AddUpdatedBy(i int) *PromotionHasProductUpdateOne {
-	phpuo.mutation.AddUpdatedBy(i)
+// ClearProductsID clears the value of the "products_id" field.
+func (phpuo *PromotionHasProductUpdateOne) ClearProductsID() *PromotionHasProductUpdateOne {
+	phpuo.mutation.ClearProductsID()
 	return phpuo
 }
 
-// SetDeletedBy sets the "deleted_by" field.
-func (phpuo *PromotionHasProductUpdateOne) SetDeletedBy(i int) *PromotionHasProductUpdateOne {
-	phpuo.mutation.ResetDeletedBy()
-	phpuo.mutation.SetDeletedBy(i)
+// SetPromotionsID sets the "promotions_id" field.
+func (phpuo *PromotionHasProductUpdateOne) SetPromotionsID(i int) *PromotionHasProductUpdateOne {
+	phpuo.mutation.SetPromotionsID(i)
 	return phpuo
 }
 
-// SetNillableDeletedBy sets the "deleted_by" field if the given value is not nil.
-func (phpuo *PromotionHasProductUpdateOne) SetNillableDeletedBy(i *int) *PromotionHasProductUpdateOne {
+// SetNillablePromotionsID sets the "promotions_id" field if the given value is not nil.
+func (phpuo *PromotionHasProductUpdateOne) SetNillablePromotionsID(i *int) *PromotionHasProductUpdateOne {
 	if i != nil {
-		phpuo.SetDeletedBy(*i)
+		phpuo.SetPromotionsID(*i)
 	}
 	return phpuo
 }
 
-// AddDeletedBy adds i to the "deleted_by" field.
-func (phpuo *PromotionHasProductUpdateOne) AddDeletedBy(i int) *PromotionHasProductUpdateOne {
-	phpuo.mutation.AddDeletedBy(i)
-	return phpuo
-}
-
-// ClearDeletedBy clears the value of the "deleted_by" field.
-func (phpuo *PromotionHasProductUpdateOne) ClearDeletedBy() *PromotionHasProductUpdateOne {
-	phpuo.mutation.ClearDeletedBy()
-	return phpuo
-}
-
-// SetProductID sets the "product_id" field.
-func (phpuo *PromotionHasProductUpdateOne) SetProductID(i int) *PromotionHasProductUpdateOne {
-	phpuo.mutation.ResetProductID()
-	phpuo.mutation.SetProductID(i)
-	return phpuo
-}
-
-// SetNillableProductID sets the "product_id" field if the given value is not nil.
-func (phpuo *PromotionHasProductUpdateOne) SetNillableProductID(i *int) *PromotionHasProductUpdateOne {
-	if i != nil {
-		phpuo.SetProductID(*i)
-	}
-	return phpuo
-}
-
-// AddProductID adds i to the "product_id" field.
-func (phpuo *PromotionHasProductUpdateOne) AddProductID(i int) *PromotionHasProductUpdateOne {
-	phpuo.mutation.AddProductID(i)
-	return phpuo
-}
-
-// ClearProductID clears the value of the "product_id" field.
-func (phpuo *PromotionHasProductUpdateOne) ClearProductID() *PromotionHasProductUpdateOne {
-	phpuo.mutation.ClearProductID()
-	return phpuo
-}
-
-// SetPromotionID sets the "promotion_id" field.
-func (phpuo *PromotionHasProductUpdateOne) SetPromotionID(i int) *PromotionHasProductUpdateOne {
-	phpuo.mutation.ResetPromotionID()
-	phpuo.mutation.SetPromotionID(i)
-	return phpuo
-}
-
-// SetNillablePromotionID sets the "promotion_id" field if the given value is not nil.
-func (phpuo *PromotionHasProductUpdateOne) SetNillablePromotionID(i *int) *PromotionHasProductUpdateOne {
-	if i != nil {
-		phpuo.SetPromotionID(*i)
-	}
-	return phpuo
-}
-
-// AddPromotionID adds i to the "promotion_id" field.
-func (phpuo *PromotionHasProductUpdateOne) AddPromotionID(i int) *PromotionHasProductUpdateOne {
-	phpuo.mutation.AddPromotionID(i)
+// ClearPromotionsID clears the value of the "promotions_id" field.
+func (phpuo *PromotionHasProductUpdateOne) ClearPromotionsID() *PromotionHasProductUpdateOne {
+	phpuo.mutation.ClearPromotionsID()
 	return phpuo
 }
 
@@ -530,14 +345,14 @@ func (phpuo *PromotionHasProductUpdateOne) AddPromocionalPrice(f float64) *Promo
 	return phpuo
 }
 
-// SetProduct sets the "product" edge to the Products entity.
-func (phpuo *PromotionHasProductUpdateOne) SetProduct(p *Products) *PromotionHasProductUpdateOne {
-	return phpuo.SetProductID(p.ID)
+// SetProducts sets the "products" edge to the Products entity.
+func (phpuo *PromotionHasProductUpdateOne) SetProducts(p *Products) *PromotionHasProductUpdateOne {
+	return phpuo.SetProductsID(p.ID)
 }
 
-// SetPromotion sets the "promotion" edge to the Promotions entity.
-func (phpuo *PromotionHasProductUpdateOne) SetPromotion(p *Promotions) *PromotionHasProductUpdateOne {
-	return phpuo.SetPromotionID(p.ID)
+// SetPromotions sets the "promotions" edge to the Promotions entity.
+func (phpuo *PromotionHasProductUpdateOne) SetPromotions(p *Promotions) *PromotionHasProductUpdateOne {
+	return phpuo.SetPromotionsID(p.ID)
 }
 
 // Mutation returns the PromotionHasProductMutation object of the builder.
@@ -545,15 +360,15 @@ func (phpuo *PromotionHasProductUpdateOne) Mutation() *PromotionHasProductMutati
 	return phpuo.mutation
 }
 
-// ClearProduct clears the "product" edge to the Products entity.
-func (phpuo *PromotionHasProductUpdateOne) ClearProduct() *PromotionHasProductUpdateOne {
-	phpuo.mutation.ClearProduct()
+// ClearProducts clears the "products" edge to the Products entity.
+func (phpuo *PromotionHasProductUpdateOne) ClearProducts() *PromotionHasProductUpdateOne {
+	phpuo.mutation.ClearProducts()
 	return phpuo
 }
 
-// ClearPromotion clears the "promotion" edge to the Promotions entity.
-func (phpuo *PromotionHasProductUpdateOne) ClearPromotion() *PromotionHasProductUpdateOne {
-	phpuo.mutation.ClearPromotion()
+// ClearPromotions clears the "promotions" edge to the Promotions entity.
+func (phpuo *PromotionHasProductUpdateOne) ClearPromotions() *PromotionHasProductUpdateOne {
+	phpuo.mutation.ClearPromotions()
 	return phpuo
 }
 
@@ -572,7 +387,6 @@ func (phpuo *PromotionHasProductUpdateOne) Select(field string, fields ...string
 
 // Save executes the query and returns the updated PromotionHasProduct entity.
 func (phpuo *PromotionHasProductUpdateOne) Save(ctx context.Context) (*PromotionHasProduct, error) {
-	phpuo.defaults()
 	return withHooks(ctx, phpuo.sqlSave, phpuo.mutation, phpuo.hooks)
 }
 
@@ -598,34 +412,7 @@ func (phpuo *PromotionHasProductUpdateOne) ExecX(ctx context.Context) {
 	}
 }
 
-// defaults sets the default values of the builder before save.
-func (phpuo *PromotionHasProductUpdateOne) defaults() {
-	if _, ok := phpuo.mutation.UpdatedAt(); !ok {
-		v := promotionhasproduct.UpdateDefaultUpdatedAt()
-		phpuo.mutation.SetUpdatedAt(v)
-	}
-}
-
-// check runs all checks and user-defined validators on the builder.
-func (phpuo *PromotionHasProductUpdateOne) check() error {
-	if v, ok := phpuo.mutation.UpdatedBy(); ok {
-		if err := promotionhasproduct.UpdatedByValidator(v); err != nil {
-			return &ValidationError{Name: "updated_by", err: fmt.Errorf(`ent: validator failed for field "PromotionHasProduct.updated_by": %w`, err)}
-		}
-	}
-	if phpuo.mutation.ProductCleared() && len(phpuo.mutation.ProductIDs()) > 0 {
-		return errors.New(`ent: clearing a required unique edge "PromotionHasProduct.product"`)
-	}
-	if phpuo.mutation.PromotionCleared() && len(phpuo.mutation.PromotionIDs()) > 0 {
-		return errors.New(`ent: clearing a required unique edge "PromotionHasProduct.promotion"`)
-	}
-	return nil
-}
-
 func (phpuo *PromotionHasProductUpdateOne) sqlSave(ctx context.Context) (_node *PromotionHasProduct, err error) {
-	if err := phpuo.check(); err != nil {
-		return _node, err
-	}
 	_spec := sqlgraph.NewUpdateSpec(promotionhasproduct.Table, promotionhasproduct.Columns, sqlgraph.NewFieldSpec(promotionhasproduct.FieldID, field.TypeInt))
 	id, ok := phpuo.mutation.ID()
 	if !ok {
@@ -651,44 +438,11 @@ func (phpuo *PromotionHasProductUpdateOne) sqlSave(ctx context.Context) (_node *
 			}
 		}
 	}
-	if value, ok := phpuo.mutation.UpdatedAt(); ok {
-		_spec.SetField(promotionhasproduct.FieldUpdatedAt, field.TypeTime, value)
-	}
 	if value, ok := phpuo.mutation.DeletedAt(); ok {
 		_spec.SetField(promotionhasproduct.FieldDeletedAt, field.TypeTime, value)
 	}
 	if phpuo.mutation.DeletedAtCleared() {
 		_spec.ClearField(promotionhasproduct.FieldDeletedAt, field.TypeTime)
-	}
-	if value, ok := phpuo.mutation.UpdatedBy(); ok {
-		_spec.SetField(promotionhasproduct.FieldUpdatedBy, field.TypeInt, value)
-	}
-	if value, ok := phpuo.mutation.AddedUpdatedBy(); ok {
-		_spec.AddField(promotionhasproduct.FieldUpdatedBy, field.TypeInt, value)
-	}
-	if value, ok := phpuo.mutation.DeletedBy(); ok {
-		_spec.SetField(promotionhasproduct.FieldDeletedBy, field.TypeInt, value)
-	}
-	if value, ok := phpuo.mutation.AddedDeletedBy(); ok {
-		_spec.AddField(promotionhasproduct.FieldDeletedBy, field.TypeInt, value)
-	}
-	if phpuo.mutation.DeletedByCleared() {
-		_spec.ClearField(promotionhasproduct.FieldDeletedBy, field.TypeInt)
-	}
-	if value, ok := phpuo.mutation.ProductID(); ok {
-		_spec.SetField(promotionhasproduct.FieldProductID, field.TypeInt, value)
-	}
-	if value, ok := phpuo.mutation.AddedProductID(); ok {
-		_spec.AddField(promotionhasproduct.FieldProductID, field.TypeInt, value)
-	}
-	if phpuo.mutation.ProductIDCleared() {
-		_spec.ClearField(promotionhasproduct.FieldProductID, field.TypeInt)
-	}
-	if value, ok := phpuo.mutation.PromotionID(); ok {
-		_spec.SetField(promotionhasproduct.FieldPromotionID, field.TypeInt, value)
-	}
-	if value, ok := phpuo.mutation.AddedPromotionID(); ok {
-		_spec.AddField(promotionhasproduct.FieldPromotionID, field.TypeInt, value)
 	}
 	if value, ok := phpuo.mutation.PromocionalPrice(); ok {
 		_spec.SetField(promotionhasproduct.FieldPromocionalPrice, field.TypeFloat64, value)
@@ -696,12 +450,12 @@ func (phpuo *PromotionHasProductUpdateOne) sqlSave(ctx context.Context) (_node *
 	if value, ok := phpuo.mutation.AddedPromocionalPrice(); ok {
 		_spec.AddField(promotionhasproduct.FieldPromocionalPrice, field.TypeFloat64, value)
 	}
-	if phpuo.mutation.ProductCleared() {
+	if phpuo.mutation.ProductsCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2O,
 			Inverse: true,
-			Table:   promotionhasproduct.ProductTable,
-			Columns: []string{promotionhasproduct.ProductColumn},
+			Table:   promotionhasproduct.ProductsTable,
+			Columns: []string{promotionhasproduct.ProductsColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(products.FieldID, field.TypeInt),
@@ -709,12 +463,12 @@ func (phpuo *PromotionHasProductUpdateOne) sqlSave(ctx context.Context) (_node *
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
-	if nodes := phpuo.mutation.ProductIDs(); len(nodes) > 0 {
+	if nodes := phpuo.mutation.ProductsIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2O,
 			Inverse: true,
-			Table:   promotionhasproduct.ProductTable,
-			Columns: []string{promotionhasproduct.ProductColumn},
+			Table:   promotionhasproduct.ProductsTable,
+			Columns: []string{promotionhasproduct.ProductsColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(products.FieldID, field.TypeInt),
@@ -725,12 +479,12 @@ func (phpuo *PromotionHasProductUpdateOne) sqlSave(ctx context.Context) (_node *
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
-	if phpuo.mutation.PromotionCleared() {
+	if phpuo.mutation.PromotionsCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2O,
 			Inverse: true,
-			Table:   promotionhasproduct.PromotionTable,
-			Columns: []string{promotionhasproduct.PromotionColumn},
+			Table:   promotionhasproduct.PromotionsTable,
+			Columns: []string{promotionhasproduct.PromotionsColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(promotions.FieldID, field.TypeInt),
@@ -738,12 +492,12 @@ func (phpuo *PromotionHasProductUpdateOne) sqlSave(ctx context.Context) (_node *
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
-	if nodes := phpuo.mutation.PromotionIDs(); len(nodes) > 0 {
+	if nodes := phpuo.mutation.PromotionsIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2O,
 			Inverse: true,
-			Table:   promotionhasproduct.PromotionTable,
-			Columns: []string{promotionhasproduct.PromotionColumn},
+			Table:   promotionhasproduct.PromotionsTable,
+			Columns: []string{promotionhasproduct.PromotionsColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(promotions.FieldID, field.TypeInt),

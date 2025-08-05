@@ -5,7 +5,6 @@ package ent
 import (
 	"fmt"
 	"products-service/internal/app/ent/productreferences"
-	"products-service/internal/app/ent/products"
 	"products-service/internal/app/ent/referencesources"
 	"strings"
 	"time"
@@ -21,34 +20,24 @@ type ProductReferences struct {
 	ID int `json:"id,omitempty"`
 	// CreatedAt holds the value of the "created_at" field.
 	CreatedAt time.Time `json:"created_at,omitempty"`
-	// UpdatedAt holds the value of the "updated_at" field.
-	UpdatedAt time.Time `json:"updated_at,omitempty"`
 	// DeletedAt holds the value of the "deleted_at" field.
 	DeletedAt *time.Time `json:"deleted_at,omitempty"`
-	// CreatedBy holds the value of the "created_by" field.
-	CreatedBy int `json:"created_by,omitempty"`
-	// UpdatedBy holds the value of the "updated_by" field.
-	UpdatedBy int `json:"updated_by,omitempty"`
-	// DeletedBy holds the value of the "deleted_by" field.
-	DeletedBy *int `json:"deleted_by,omitempty"`
 	// ReferenceSourceID holds the value of the "reference_source_id" field.
 	ReferenceSourceID *int `json:"reference_source_id,omitempty"`
 	// Value holds the value of the "value" field.
 	Value *string `json:"value,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the ProductReferencesQuery when eager-loading is set.
-	Edges                                ProductReferencesEdges `json:"edges"`
-	products_product_references          *int
-	reference_sources_product_references *int
-	selectValues                         sql.SelectValues
+	Edges        ProductReferencesEdges `json:"edges"`
+	selectValues sql.SelectValues
 }
 
 // ProductReferencesEdges holds the relations/edges for other nodes in the graph.
 type ProductReferencesEdges struct {
-	// Product holds the value of the product edge.
-	Product *Products `json:"product,omitempty"`
 	// ReferenceSources holds the value of the reference_sources edge.
 	ReferenceSources *ReferenceSources `json:"reference_sources,omitempty"`
+	// Products holds the value of the products edge.
+	Products []*Products `json:"products,omitempty"`
 	// ProductHasProductReference holds the value of the product_has_product_reference edge.
 	ProductHasProductReference []*ProductHasProductReference `json:"product_has_product_reference,omitempty"`
 	// loadedTypes holds the information for reporting if a
@@ -56,26 +45,24 @@ type ProductReferencesEdges struct {
 	loadedTypes [3]bool
 }
 
-// ProductOrErr returns the Product value or an error if the edge
-// was not loaded in eager-loading, or loaded but was not found.
-func (e ProductReferencesEdges) ProductOrErr() (*Products, error) {
-	if e.Product != nil {
-		return e.Product, nil
-	} else if e.loadedTypes[0] {
-		return nil, &NotFoundError{label: products.Label}
-	}
-	return nil, &NotLoadedError{edge: "product"}
-}
-
 // ReferenceSourcesOrErr returns the ReferenceSources value or an error if the edge
 // was not loaded in eager-loading, or loaded but was not found.
 func (e ProductReferencesEdges) ReferenceSourcesOrErr() (*ReferenceSources, error) {
 	if e.ReferenceSources != nil {
 		return e.ReferenceSources, nil
-	} else if e.loadedTypes[1] {
+	} else if e.loadedTypes[0] {
 		return nil, &NotFoundError{label: referencesources.Label}
 	}
 	return nil, &NotLoadedError{edge: "reference_sources"}
+}
+
+// ProductsOrErr returns the Products value or an error if the edge
+// was not loaded in eager-loading.
+func (e ProductReferencesEdges) ProductsOrErr() ([]*Products, error) {
+	if e.loadedTypes[1] {
+		return e.Products, nil
+	}
+	return nil, &NotLoadedError{edge: "products"}
 }
 
 // ProductHasProductReferenceOrErr returns the ProductHasProductReference value or an error if the edge
@@ -92,16 +79,12 @@ func (*ProductReferences) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case productreferences.FieldID, productreferences.FieldCreatedBy, productreferences.FieldUpdatedBy, productreferences.FieldDeletedBy, productreferences.FieldReferenceSourceID:
+		case productreferences.FieldID, productreferences.FieldReferenceSourceID:
 			values[i] = new(sql.NullInt64)
 		case productreferences.FieldValue:
 			values[i] = new(sql.NullString)
-		case productreferences.FieldCreatedAt, productreferences.FieldUpdatedAt, productreferences.FieldDeletedAt:
+		case productreferences.FieldCreatedAt, productreferences.FieldDeletedAt:
 			values[i] = new(sql.NullTime)
-		case productreferences.ForeignKeys[0]: // products_product_references
-			values[i] = new(sql.NullInt64)
-		case productreferences.ForeignKeys[1]: // reference_sources_product_references
-			values[i] = new(sql.NullInt64)
 		default:
 			values[i] = new(sql.UnknownType)
 		}
@@ -129,37 +112,12 @@ func (pr *ProductReferences) assignValues(columns []string, values []any) error 
 			} else if value.Valid {
 				pr.CreatedAt = value.Time
 			}
-		case productreferences.FieldUpdatedAt:
-			if value, ok := values[i].(*sql.NullTime); !ok {
-				return fmt.Errorf("unexpected type %T for field updated_at", values[i])
-			} else if value.Valid {
-				pr.UpdatedAt = value.Time
-			}
 		case productreferences.FieldDeletedAt:
 			if value, ok := values[i].(*sql.NullTime); !ok {
 				return fmt.Errorf("unexpected type %T for field deleted_at", values[i])
 			} else if value.Valid {
 				pr.DeletedAt = new(time.Time)
 				*pr.DeletedAt = value.Time
-			}
-		case productreferences.FieldCreatedBy:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field created_by", values[i])
-			} else if value.Valid {
-				pr.CreatedBy = int(value.Int64)
-			}
-		case productreferences.FieldUpdatedBy:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field updated_by", values[i])
-			} else if value.Valid {
-				pr.UpdatedBy = int(value.Int64)
-			}
-		case productreferences.FieldDeletedBy:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field deleted_by", values[i])
-			} else if value.Valid {
-				pr.DeletedBy = new(int)
-				*pr.DeletedBy = int(value.Int64)
 			}
 		case productreferences.FieldReferenceSourceID:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
@@ -175,20 +133,6 @@ func (pr *ProductReferences) assignValues(columns []string, values []any) error 
 				pr.Value = new(string)
 				*pr.Value = value.String
 			}
-		case productreferences.ForeignKeys[0]:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for edge-field products_product_references", value)
-			} else if value.Valid {
-				pr.products_product_references = new(int)
-				*pr.products_product_references = int(value.Int64)
-			}
-		case productreferences.ForeignKeys[1]:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for edge-field reference_sources_product_references", value)
-			} else if value.Valid {
-				pr.reference_sources_product_references = new(int)
-				*pr.reference_sources_product_references = int(value.Int64)
-			}
 		default:
 			pr.selectValues.Set(columns[i], values[i])
 		}
@@ -202,14 +146,14 @@ func (pr *ProductReferences) GetValue(name string) (ent.Value, error) {
 	return pr.selectValues.Get(name)
 }
 
-// QueryProduct queries the "product" edge of the ProductReferences entity.
-func (pr *ProductReferences) QueryProduct() *ProductsQuery {
-	return NewProductReferencesClient(pr.config).QueryProduct(pr)
-}
-
 // QueryReferenceSources queries the "reference_sources" edge of the ProductReferences entity.
 func (pr *ProductReferences) QueryReferenceSources() *ReferenceSourcesQuery {
 	return NewProductReferencesClient(pr.config).QueryReferenceSources(pr)
+}
+
+// QueryProducts queries the "products" edge of the ProductReferences entity.
+func (pr *ProductReferences) QueryProducts() *ProductsQuery {
+	return NewProductReferencesClient(pr.config).QueryProducts(pr)
 }
 
 // QueryProductHasProductReference queries the "product_has_product_reference" edge of the ProductReferences entity.
@@ -243,23 +187,9 @@ func (pr *ProductReferences) String() string {
 	builder.WriteString("created_at=")
 	builder.WriteString(pr.CreatedAt.Format(time.ANSIC))
 	builder.WriteString(", ")
-	builder.WriteString("updated_at=")
-	builder.WriteString(pr.UpdatedAt.Format(time.ANSIC))
-	builder.WriteString(", ")
 	if v := pr.DeletedAt; v != nil {
 		builder.WriteString("deleted_at=")
 		builder.WriteString(v.Format(time.ANSIC))
-	}
-	builder.WriteString(", ")
-	builder.WriteString("created_by=")
-	builder.WriteString(fmt.Sprintf("%v", pr.CreatedBy))
-	builder.WriteString(", ")
-	builder.WriteString("updated_by=")
-	builder.WriteString(fmt.Sprintf("%v", pr.UpdatedBy))
-	builder.WriteString(", ")
-	if v := pr.DeletedBy; v != nil {
-		builder.WriteString("deleted_by=")
-		builder.WriteString(fmt.Sprintf("%v", *v))
 	}
 	builder.WriteString(", ")
 	if v := pr.ReferenceSourceID; v != nil {

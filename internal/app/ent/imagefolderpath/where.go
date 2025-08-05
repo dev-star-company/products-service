@@ -60,29 +60,9 @@ func CreatedAt(v time.Time) predicate.ImageFolderPath {
 	return predicate.ImageFolderPath(sql.FieldEQ(FieldCreatedAt, v))
 }
 
-// UpdatedAt applies equality check predicate on the "updated_at" field. It's identical to UpdatedAtEQ.
-func UpdatedAt(v time.Time) predicate.ImageFolderPath {
-	return predicate.ImageFolderPath(sql.FieldEQ(FieldUpdatedAt, v))
-}
-
 // DeletedAt applies equality check predicate on the "deleted_at" field. It's identical to DeletedAtEQ.
 func DeletedAt(v time.Time) predicate.ImageFolderPath {
 	return predicate.ImageFolderPath(sql.FieldEQ(FieldDeletedAt, v))
-}
-
-// CreatedBy applies equality check predicate on the "created_by" field. It's identical to CreatedByEQ.
-func CreatedBy(v int) predicate.ImageFolderPath {
-	return predicate.ImageFolderPath(sql.FieldEQ(FieldCreatedBy, v))
-}
-
-// UpdatedBy applies equality check predicate on the "updated_by" field. It's identical to UpdatedByEQ.
-func UpdatedBy(v int) predicate.ImageFolderPath {
-	return predicate.ImageFolderPath(sql.FieldEQ(FieldUpdatedBy, v))
-}
-
-// DeletedBy applies equality check predicate on the "deleted_by" field. It's identical to DeletedByEQ.
-func DeletedBy(v int) predicate.ImageFolderPath {
-	return predicate.ImageFolderPath(sql.FieldEQ(FieldDeletedBy, v))
 }
 
 // ImageFolderSourceID applies equality check predicate on the "image_folder_source_id" field. It's identical to ImageFolderSourceIDEQ.
@@ -128,46 +108,6 @@ func CreatedAtLT(v time.Time) predicate.ImageFolderPath {
 // CreatedAtLTE applies the LTE predicate on the "created_at" field.
 func CreatedAtLTE(v time.Time) predicate.ImageFolderPath {
 	return predicate.ImageFolderPath(sql.FieldLTE(FieldCreatedAt, v))
-}
-
-// UpdatedAtEQ applies the EQ predicate on the "updated_at" field.
-func UpdatedAtEQ(v time.Time) predicate.ImageFolderPath {
-	return predicate.ImageFolderPath(sql.FieldEQ(FieldUpdatedAt, v))
-}
-
-// UpdatedAtNEQ applies the NEQ predicate on the "updated_at" field.
-func UpdatedAtNEQ(v time.Time) predicate.ImageFolderPath {
-	return predicate.ImageFolderPath(sql.FieldNEQ(FieldUpdatedAt, v))
-}
-
-// UpdatedAtIn applies the In predicate on the "updated_at" field.
-func UpdatedAtIn(vs ...time.Time) predicate.ImageFolderPath {
-	return predicate.ImageFolderPath(sql.FieldIn(FieldUpdatedAt, vs...))
-}
-
-// UpdatedAtNotIn applies the NotIn predicate on the "updated_at" field.
-func UpdatedAtNotIn(vs ...time.Time) predicate.ImageFolderPath {
-	return predicate.ImageFolderPath(sql.FieldNotIn(FieldUpdatedAt, vs...))
-}
-
-// UpdatedAtGT applies the GT predicate on the "updated_at" field.
-func UpdatedAtGT(v time.Time) predicate.ImageFolderPath {
-	return predicate.ImageFolderPath(sql.FieldGT(FieldUpdatedAt, v))
-}
-
-// UpdatedAtGTE applies the GTE predicate on the "updated_at" field.
-func UpdatedAtGTE(v time.Time) predicate.ImageFolderPath {
-	return predicate.ImageFolderPath(sql.FieldGTE(FieldUpdatedAt, v))
-}
-
-// UpdatedAtLT applies the LT predicate on the "updated_at" field.
-func UpdatedAtLT(v time.Time) predicate.ImageFolderPath {
-	return predicate.ImageFolderPath(sql.FieldLT(FieldUpdatedAt, v))
-}
-
-// UpdatedAtLTE applies the LTE predicate on the "updated_at" field.
-func UpdatedAtLTE(v time.Time) predicate.ImageFolderPath {
-	return predicate.ImageFolderPath(sql.FieldLTE(FieldUpdatedAt, v))
 }
 
 // DeletedAtEQ applies the EQ predicate on the "deleted_at" field.
@@ -218,136 +158,6 @@ func DeletedAtIsNil() predicate.ImageFolderPath {
 // DeletedAtNotNil applies the NotNil predicate on the "deleted_at" field.
 func DeletedAtNotNil() predicate.ImageFolderPath {
 	return predicate.ImageFolderPath(sql.FieldNotNull(FieldDeletedAt))
-}
-
-// CreatedByEQ applies the EQ predicate on the "created_by" field.
-func CreatedByEQ(v int) predicate.ImageFolderPath {
-	return predicate.ImageFolderPath(sql.FieldEQ(FieldCreatedBy, v))
-}
-
-// CreatedByNEQ applies the NEQ predicate on the "created_by" field.
-func CreatedByNEQ(v int) predicate.ImageFolderPath {
-	return predicate.ImageFolderPath(sql.FieldNEQ(FieldCreatedBy, v))
-}
-
-// CreatedByIn applies the In predicate on the "created_by" field.
-func CreatedByIn(vs ...int) predicate.ImageFolderPath {
-	return predicate.ImageFolderPath(sql.FieldIn(FieldCreatedBy, vs...))
-}
-
-// CreatedByNotIn applies the NotIn predicate on the "created_by" field.
-func CreatedByNotIn(vs ...int) predicate.ImageFolderPath {
-	return predicate.ImageFolderPath(sql.FieldNotIn(FieldCreatedBy, vs...))
-}
-
-// CreatedByGT applies the GT predicate on the "created_by" field.
-func CreatedByGT(v int) predicate.ImageFolderPath {
-	return predicate.ImageFolderPath(sql.FieldGT(FieldCreatedBy, v))
-}
-
-// CreatedByGTE applies the GTE predicate on the "created_by" field.
-func CreatedByGTE(v int) predicate.ImageFolderPath {
-	return predicate.ImageFolderPath(sql.FieldGTE(FieldCreatedBy, v))
-}
-
-// CreatedByLT applies the LT predicate on the "created_by" field.
-func CreatedByLT(v int) predicate.ImageFolderPath {
-	return predicate.ImageFolderPath(sql.FieldLT(FieldCreatedBy, v))
-}
-
-// CreatedByLTE applies the LTE predicate on the "created_by" field.
-func CreatedByLTE(v int) predicate.ImageFolderPath {
-	return predicate.ImageFolderPath(sql.FieldLTE(FieldCreatedBy, v))
-}
-
-// UpdatedByEQ applies the EQ predicate on the "updated_by" field.
-func UpdatedByEQ(v int) predicate.ImageFolderPath {
-	return predicate.ImageFolderPath(sql.FieldEQ(FieldUpdatedBy, v))
-}
-
-// UpdatedByNEQ applies the NEQ predicate on the "updated_by" field.
-func UpdatedByNEQ(v int) predicate.ImageFolderPath {
-	return predicate.ImageFolderPath(sql.FieldNEQ(FieldUpdatedBy, v))
-}
-
-// UpdatedByIn applies the In predicate on the "updated_by" field.
-func UpdatedByIn(vs ...int) predicate.ImageFolderPath {
-	return predicate.ImageFolderPath(sql.FieldIn(FieldUpdatedBy, vs...))
-}
-
-// UpdatedByNotIn applies the NotIn predicate on the "updated_by" field.
-func UpdatedByNotIn(vs ...int) predicate.ImageFolderPath {
-	return predicate.ImageFolderPath(sql.FieldNotIn(FieldUpdatedBy, vs...))
-}
-
-// UpdatedByGT applies the GT predicate on the "updated_by" field.
-func UpdatedByGT(v int) predicate.ImageFolderPath {
-	return predicate.ImageFolderPath(sql.FieldGT(FieldUpdatedBy, v))
-}
-
-// UpdatedByGTE applies the GTE predicate on the "updated_by" field.
-func UpdatedByGTE(v int) predicate.ImageFolderPath {
-	return predicate.ImageFolderPath(sql.FieldGTE(FieldUpdatedBy, v))
-}
-
-// UpdatedByLT applies the LT predicate on the "updated_by" field.
-func UpdatedByLT(v int) predicate.ImageFolderPath {
-	return predicate.ImageFolderPath(sql.FieldLT(FieldUpdatedBy, v))
-}
-
-// UpdatedByLTE applies the LTE predicate on the "updated_by" field.
-func UpdatedByLTE(v int) predicate.ImageFolderPath {
-	return predicate.ImageFolderPath(sql.FieldLTE(FieldUpdatedBy, v))
-}
-
-// DeletedByEQ applies the EQ predicate on the "deleted_by" field.
-func DeletedByEQ(v int) predicate.ImageFolderPath {
-	return predicate.ImageFolderPath(sql.FieldEQ(FieldDeletedBy, v))
-}
-
-// DeletedByNEQ applies the NEQ predicate on the "deleted_by" field.
-func DeletedByNEQ(v int) predicate.ImageFolderPath {
-	return predicate.ImageFolderPath(sql.FieldNEQ(FieldDeletedBy, v))
-}
-
-// DeletedByIn applies the In predicate on the "deleted_by" field.
-func DeletedByIn(vs ...int) predicate.ImageFolderPath {
-	return predicate.ImageFolderPath(sql.FieldIn(FieldDeletedBy, vs...))
-}
-
-// DeletedByNotIn applies the NotIn predicate on the "deleted_by" field.
-func DeletedByNotIn(vs ...int) predicate.ImageFolderPath {
-	return predicate.ImageFolderPath(sql.FieldNotIn(FieldDeletedBy, vs...))
-}
-
-// DeletedByGT applies the GT predicate on the "deleted_by" field.
-func DeletedByGT(v int) predicate.ImageFolderPath {
-	return predicate.ImageFolderPath(sql.FieldGT(FieldDeletedBy, v))
-}
-
-// DeletedByGTE applies the GTE predicate on the "deleted_by" field.
-func DeletedByGTE(v int) predicate.ImageFolderPath {
-	return predicate.ImageFolderPath(sql.FieldGTE(FieldDeletedBy, v))
-}
-
-// DeletedByLT applies the LT predicate on the "deleted_by" field.
-func DeletedByLT(v int) predicate.ImageFolderPath {
-	return predicate.ImageFolderPath(sql.FieldLT(FieldDeletedBy, v))
-}
-
-// DeletedByLTE applies the LTE predicate on the "deleted_by" field.
-func DeletedByLTE(v int) predicate.ImageFolderPath {
-	return predicate.ImageFolderPath(sql.FieldLTE(FieldDeletedBy, v))
-}
-
-// DeletedByIsNil applies the IsNil predicate on the "deleted_by" field.
-func DeletedByIsNil() predicate.ImageFolderPath {
-	return predicate.ImageFolderPath(sql.FieldIsNull(FieldDeletedBy))
-}
-
-// DeletedByNotNil applies the NotNil predicate on the "deleted_by" field.
-func DeletedByNotNil() predicate.ImageFolderPath {
-	return predicate.ImageFolderPath(sql.FieldNotNull(FieldDeletedBy))
 }
 
 // ImageFolderSourceIDEQ applies the EQ predicate on the "image_folder_source_id" field.

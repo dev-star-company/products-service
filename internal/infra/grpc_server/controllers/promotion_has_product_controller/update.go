@@ -9,9 +9,6 @@ import (
 )
 
 func (c *controller) Update(ctx context.Context, in *promotion_has_product_proto.UpdateRequest) (*promotion_has_product_proto.UpdateResponse, error) {
-	if in.RequesterId == 0 {
-		return nil, errs.ProductsNotFound(int(in.Id))
-	}
 
 	tx, err := c.Db.Tx(ctx)
 	if err != nil {
@@ -23,14 +20,12 @@ func (c *controller) Update(ctx context.Context, in *promotion_has_product_proto
 	promotion_has_productQ := tx.PromotionHasProduct.UpdateOneID(int(in.Id))
 
 	if in.PromotionId != nil && *in.PromotionId > 0 {
-		promotion_has_productQ.SetPromotionID(int(*in.PromotionId))
+		promotion_has_productQ.SetPromotionsID(int(*in.PromotionId))
 	}
 
 	if in.ProductsId != nil && *in.ProductsId > 0 {
-		promotion_has_productQ.SetProductID(int(*in.ProductsId))
+		promotion_has_productQ.SetProductsID(int(*in.ProductsId))
 	}
-
-	promotion_has_productQ.SetUpdatedBy(int(in.RequesterId))
 
 	promotion_has_product, err = promotion_has_productQ.Save(ctx)
 	if err != nil {
@@ -48,8 +43,8 @@ func (c *controller) Update(ctx context.Context, in *promotion_has_product_proto
 	}
 
 	return &promotion_has_product_proto.UpdateResponse{
-		RequesterId: uint32(promotion_has_product.CreatedBy),
-		PromotionId: uint32(*promotion_has_product.PromotionID),
-		ProductsId:  uint32(*promotion_has_product.ProductID),
+
+		PromotionId: uint32(*promotion_has_product.PromotionsID),
+		ProductsId:  uint32(*promotion_has_product.ProductsID),
 	}, nil
 }

@@ -19,16 +19,8 @@ type FeaturesUnitValues struct {
 	ID int `json:"id,omitempty"`
 	// CreatedAt holds the value of the "created_at" field.
 	CreatedAt time.Time `json:"created_at,omitempty"`
-	// UpdatedAt holds the value of the "updated_at" field.
-	UpdatedAt time.Time `json:"updated_at,omitempty"`
 	// DeletedAt holds the value of the "deleted_at" field.
 	DeletedAt *time.Time `json:"deleted_at,omitempty"`
-	// CreatedBy holds the value of the "created_by" field.
-	CreatedBy int `json:"created_by,omitempty"`
-	// UpdatedBy holds the value of the "updated_by" field.
-	UpdatedBy int `json:"updated_by,omitempty"`
-	// DeletedBy holds the value of the "deleted_by" field.
-	DeletedBy *int `json:"deleted_by,omitempty"`
 	// Name holds the value of the "name" field.
 	Name *string `json:"name,omitempty"`
 	// Decimals holds the value of the "decimals" field.
@@ -62,11 +54,11 @@ func (*FeaturesUnitValues) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case featuresunitvalues.FieldID, featuresunitvalues.FieldCreatedBy, featuresunitvalues.FieldUpdatedBy, featuresunitvalues.FieldDeletedBy, featuresunitvalues.FieldDecimals:
+		case featuresunitvalues.FieldID, featuresunitvalues.FieldDecimals:
 			values[i] = new(sql.NullInt64)
 		case featuresunitvalues.FieldName:
 			values[i] = new(sql.NullString)
-		case featuresunitvalues.FieldCreatedAt, featuresunitvalues.FieldUpdatedAt, featuresunitvalues.FieldDeletedAt:
+		case featuresunitvalues.FieldCreatedAt, featuresunitvalues.FieldDeletedAt:
 			values[i] = new(sql.NullTime)
 		default:
 			values[i] = new(sql.UnknownType)
@@ -95,37 +87,12 @@ func (fuv *FeaturesUnitValues) assignValues(columns []string, values []any) erro
 			} else if value.Valid {
 				fuv.CreatedAt = value.Time
 			}
-		case featuresunitvalues.FieldUpdatedAt:
-			if value, ok := values[i].(*sql.NullTime); !ok {
-				return fmt.Errorf("unexpected type %T for field updated_at", values[i])
-			} else if value.Valid {
-				fuv.UpdatedAt = value.Time
-			}
 		case featuresunitvalues.FieldDeletedAt:
 			if value, ok := values[i].(*sql.NullTime); !ok {
 				return fmt.Errorf("unexpected type %T for field deleted_at", values[i])
 			} else if value.Valid {
 				fuv.DeletedAt = new(time.Time)
 				*fuv.DeletedAt = value.Time
-			}
-		case featuresunitvalues.FieldCreatedBy:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field created_by", values[i])
-			} else if value.Valid {
-				fuv.CreatedBy = int(value.Int64)
-			}
-		case featuresunitvalues.FieldUpdatedBy:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field updated_by", values[i])
-			} else if value.Valid {
-				fuv.UpdatedBy = int(value.Int64)
-			}
-		case featuresunitvalues.FieldDeletedBy:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field deleted_by", values[i])
-			} else if value.Valid {
-				fuv.DeletedBy = new(int)
-				*fuv.DeletedBy = int(value.Int64)
 			}
 		case featuresunitvalues.FieldName:
 			if value, ok := values[i].(*sql.NullString); !ok {
@@ -185,23 +152,9 @@ func (fuv *FeaturesUnitValues) String() string {
 	builder.WriteString("created_at=")
 	builder.WriteString(fuv.CreatedAt.Format(time.ANSIC))
 	builder.WriteString(", ")
-	builder.WriteString("updated_at=")
-	builder.WriteString(fuv.UpdatedAt.Format(time.ANSIC))
-	builder.WriteString(", ")
 	if v := fuv.DeletedAt; v != nil {
 		builder.WriteString("deleted_at=")
 		builder.WriteString(v.Format(time.ANSIC))
-	}
-	builder.WriteString(", ")
-	builder.WriteString("created_by=")
-	builder.WriteString(fmt.Sprintf("%v", fuv.CreatedBy))
-	builder.WriteString(", ")
-	builder.WriteString("updated_by=")
-	builder.WriteString(fmt.Sprintf("%v", fuv.UpdatedBy))
-	builder.WriteString(", ")
-	if v := fuv.DeletedBy; v != nil {
-		builder.WriteString("deleted_by=")
-		builder.WriteString(fmt.Sprintf("%v", *v))
 	}
 	builder.WriteString(", ")
 	if v := fuv.Name; v != nil {

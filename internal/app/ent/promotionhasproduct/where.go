@@ -60,39 +60,19 @@ func CreatedAt(v time.Time) predicate.PromotionHasProduct {
 	return predicate.PromotionHasProduct(sql.FieldEQ(FieldCreatedAt, v))
 }
 
-// UpdatedAt applies equality check predicate on the "updated_at" field. It's identical to UpdatedAtEQ.
-func UpdatedAt(v time.Time) predicate.PromotionHasProduct {
-	return predicate.PromotionHasProduct(sql.FieldEQ(FieldUpdatedAt, v))
-}
-
 // DeletedAt applies equality check predicate on the "deleted_at" field. It's identical to DeletedAtEQ.
 func DeletedAt(v time.Time) predicate.PromotionHasProduct {
 	return predicate.PromotionHasProduct(sql.FieldEQ(FieldDeletedAt, v))
 }
 
-// CreatedBy applies equality check predicate on the "created_by" field. It's identical to CreatedByEQ.
-func CreatedBy(v int) predicate.PromotionHasProduct {
-	return predicate.PromotionHasProduct(sql.FieldEQ(FieldCreatedBy, v))
+// ProductsID applies equality check predicate on the "products_id" field. It's identical to ProductsIDEQ.
+func ProductsID(v int) predicate.PromotionHasProduct {
+	return predicate.PromotionHasProduct(sql.FieldEQ(FieldProductsID, v))
 }
 
-// UpdatedBy applies equality check predicate on the "updated_by" field. It's identical to UpdatedByEQ.
-func UpdatedBy(v int) predicate.PromotionHasProduct {
-	return predicate.PromotionHasProduct(sql.FieldEQ(FieldUpdatedBy, v))
-}
-
-// DeletedBy applies equality check predicate on the "deleted_by" field. It's identical to DeletedByEQ.
-func DeletedBy(v int) predicate.PromotionHasProduct {
-	return predicate.PromotionHasProduct(sql.FieldEQ(FieldDeletedBy, v))
-}
-
-// ProductID applies equality check predicate on the "product_id" field. It's identical to ProductIDEQ.
-func ProductID(v int) predicate.PromotionHasProduct {
-	return predicate.PromotionHasProduct(sql.FieldEQ(FieldProductID, v))
-}
-
-// PromotionID applies equality check predicate on the "promotion_id" field. It's identical to PromotionIDEQ.
-func PromotionID(v int) predicate.PromotionHasProduct {
-	return predicate.PromotionHasProduct(sql.FieldEQ(FieldPromotionID, v))
+// PromotionsID applies equality check predicate on the "promotions_id" field. It's identical to PromotionsIDEQ.
+func PromotionsID(v int) predicate.PromotionHasProduct {
+	return predicate.PromotionHasProduct(sql.FieldEQ(FieldPromotionsID, v))
 }
 
 // PromocionalPrice applies equality check predicate on the "promocional_price" field. It's identical to PromocionalPriceEQ.
@@ -138,46 +118,6 @@ func CreatedAtLT(v time.Time) predicate.PromotionHasProduct {
 // CreatedAtLTE applies the LTE predicate on the "created_at" field.
 func CreatedAtLTE(v time.Time) predicate.PromotionHasProduct {
 	return predicate.PromotionHasProduct(sql.FieldLTE(FieldCreatedAt, v))
-}
-
-// UpdatedAtEQ applies the EQ predicate on the "updated_at" field.
-func UpdatedAtEQ(v time.Time) predicate.PromotionHasProduct {
-	return predicate.PromotionHasProduct(sql.FieldEQ(FieldUpdatedAt, v))
-}
-
-// UpdatedAtNEQ applies the NEQ predicate on the "updated_at" field.
-func UpdatedAtNEQ(v time.Time) predicate.PromotionHasProduct {
-	return predicate.PromotionHasProduct(sql.FieldNEQ(FieldUpdatedAt, v))
-}
-
-// UpdatedAtIn applies the In predicate on the "updated_at" field.
-func UpdatedAtIn(vs ...time.Time) predicate.PromotionHasProduct {
-	return predicate.PromotionHasProduct(sql.FieldIn(FieldUpdatedAt, vs...))
-}
-
-// UpdatedAtNotIn applies the NotIn predicate on the "updated_at" field.
-func UpdatedAtNotIn(vs ...time.Time) predicate.PromotionHasProduct {
-	return predicate.PromotionHasProduct(sql.FieldNotIn(FieldUpdatedAt, vs...))
-}
-
-// UpdatedAtGT applies the GT predicate on the "updated_at" field.
-func UpdatedAtGT(v time.Time) predicate.PromotionHasProduct {
-	return predicate.PromotionHasProduct(sql.FieldGT(FieldUpdatedAt, v))
-}
-
-// UpdatedAtGTE applies the GTE predicate on the "updated_at" field.
-func UpdatedAtGTE(v time.Time) predicate.PromotionHasProduct {
-	return predicate.PromotionHasProduct(sql.FieldGTE(FieldUpdatedAt, v))
-}
-
-// UpdatedAtLT applies the LT predicate on the "updated_at" field.
-func UpdatedAtLT(v time.Time) predicate.PromotionHasProduct {
-	return predicate.PromotionHasProduct(sql.FieldLT(FieldUpdatedAt, v))
-}
-
-// UpdatedAtLTE applies the LTE predicate on the "updated_at" field.
-func UpdatedAtLTE(v time.Time) predicate.PromotionHasProduct {
-	return predicate.PromotionHasProduct(sql.FieldLTE(FieldUpdatedAt, v))
 }
 
 // DeletedAtEQ applies the EQ predicate on the "deleted_at" field.
@@ -230,224 +170,64 @@ func DeletedAtNotNil() predicate.PromotionHasProduct {
 	return predicate.PromotionHasProduct(sql.FieldNotNull(FieldDeletedAt))
 }
 
-// CreatedByEQ applies the EQ predicate on the "created_by" field.
-func CreatedByEQ(v int) predicate.PromotionHasProduct {
-	return predicate.PromotionHasProduct(sql.FieldEQ(FieldCreatedBy, v))
+// ProductsIDEQ applies the EQ predicate on the "products_id" field.
+func ProductsIDEQ(v int) predicate.PromotionHasProduct {
+	return predicate.PromotionHasProduct(sql.FieldEQ(FieldProductsID, v))
 }
 
-// CreatedByNEQ applies the NEQ predicate on the "created_by" field.
-func CreatedByNEQ(v int) predicate.PromotionHasProduct {
-	return predicate.PromotionHasProduct(sql.FieldNEQ(FieldCreatedBy, v))
+// ProductsIDNEQ applies the NEQ predicate on the "products_id" field.
+func ProductsIDNEQ(v int) predicate.PromotionHasProduct {
+	return predicate.PromotionHasProduct(sql.FieldNEQ(FieldProductsID, v))
 }
 
-// CreatedByIn applies the In predicate on the "created_by" field.
-func CreatedByIn(vs ...int) predicate.PromotionHasProduct {
-	return predicate.PromotionHasProduct(sql.FieldIn(FieldCreatedBy, vs...))
+// ProductsIDIn applies the In predicate on the "products_id" field.
+func ProductsIDIn(vs ...int) predicate.PromotionHasProduct {
+	return predicate.PromotionHasProduct(sql.FieldIn(FieldProductsID, vs...))
 }
 
-// CreatedByNotIn applies the NotIn predicate on the "created_by" field.
-func CreatedByNotIn(vs ...int) predicate.PromotionHasProduct {
-	return predicate.PromotionHasProduct(sql.FieldNotIn(FieldCreatedBy, vs...))
+// ProductsIDNotIn applies the NotIn predicate on the "products_id" field.
+func ProductsIDNotIn(vs ...int) predicate.PromotionHasProduct {
+	return predicate.PromotionHasProduct(sql.FieldNotIn(FieldProductsID, vs...))
 }
 
-// CreatedByGT applies the GT predicate on the "created_by" field.
-func CreatedByGT(v int) predicate.PromotionHasProduct {
-	return predicate.PromotionHasProduct(sql.FieldGT(FieldCreatedBy, v))
+// ProductsIDIsNil applies the IsNil predicate on the "products_id" field.
+func ProductsIDIsNil() predicate.PromotionHasProduct {
+	return predicate.PromotionHasProduct(sql.FieldIsNull(FieldProductsID))
 }
 
-// CreatedByGTE applies the GTE predicate on the "created_by" field.
-func CreatedByGTE(v int) predicate.PromotionHasProduct {
-	return predicate.PromotionHasProduct(sql.FieldGTE(FieldCreatedBy, v))
+// ProductsIDNotNil applies the NotNil predicate on the "products_id" field.
+func ProductsIDNotNil() predicate.PromotionHasProduct {
+	return predicate.PromotionHasProduct(sql.FieldNotNull(FieldProductsID))
 }
 
-// CreatedByLT applies the LT predicate on the "created_by" field.
-func CreatedByLT(v int) predicate.PromotionHasProduct {
-	return predicate.PromotionHasProduct(sql.FieldLT(FieldCreatedBy, v))
+// PromotionsIDEQ applies the EQ predicate on the "promotions_id" field.
+func PromotionsIDEQ(v int) predicate.PromotionHasProduct {
+	return predicate.PromotionHasProduct(sql.FieldEQ(FieldPromotionsID, v))
 }
 
-// CreatedByLTE applies the LTE predicate on the "created_by" field.
-func CreatedByLTE(v int) predicate.PromotionHasProduct {
-	return predicate.PromotionHasProduct(sql.FieldLTE(FieldCreatedBy, v))
+// PromotionsIDNEQ applies the NEQ predicate on the "promotions_id" field.
+func PromotionsIDNEQ(v int) predicate.PromotionHasProduct {
+	return predicate.PromotionHasProduct(sql.FieldNEQ(FieldPromotionsID, v))
 }
 
-// UpdatedByEQ applies the EQ predicate on the "updated_by" field.
-func UpdatedByEQ(v int) predicate.PromotionHasProduct {
-	return predicate.PromotionHasProduct(sql.FieldEQ(FieldUpdatedBy, v))
+// PromotionsIDIn applies the In predicate on the "promotions_id" field.
+func PromotionsIDIn(vs ...int) predicate.PromotionHasProduct {
+	return predicate.PromotionHasProduct(sql.FieldIn(FieldPromotionsID, vs...))
 }
 
-// UpdatedByNEQ applies the NEQ predicate on the "updated_by" field.
-func UpdatedByNEQ(v int) predicate.PromotionHasProduct {
-	return predicate.PromotionHasProduct(sql.FieldNEQ(FieldUpdatedBy, v))
+// PromotionsIDNotIn applies the NotIn predicate on the "promotions_id" field.
+func PromotionsIDNotIn(vs ...int) predicate.PromotionHasProduct {
+	return predicate.PromotionHasProduct(sql.FieldNotIn(FieldPromotionsID, vs...))
 }
 
-// UpdatedByIn applies the In predicate on the "updated_by" field.
-func UpdatedByIn(vs ...int) predicate.PromotionHasProduct {
-	return predicate.PromotionHasProduct(sql.FieldIn(FieldUpdatedBy, vs...))
+// PromotionsIDIsNil applies the IsNil predicate on the "promotions_id" field.
+func PromotionsIDIsNil() predicate.PromotionHasProduct {
+	return predicate.PromotionHasProduct(sql.FieldIsNull(FieldPromotionsID))
 }
 
-// UpdatedByNotIn applies the NotIn predicate on the "updated_by" field.
-func UpdatedByNotIn(vs ...int) predicate.PromotionHasProduct {
-	return predicate.PromotionHasProduct(sql.FieldNotIn(FieldUpdatedBy, vs...))
-}
-
-// UpdatedByGT applies the GT predicate on the "updated_by" field.
-func UpdatedByGT(v int) predicate.PromotionHasProduct {
-	return predicate.PromotionHasProduct(sql.FieldGT(FieldUpdatedBy, v))
-}
-
-// UpdatedByGTE applies the GTE predicate on the "updated_by" field.
-func UpdatedByGTE(v int) predicate.PromotionHasProduct {
-	return predicate.PromotionHasProduct(sql.FieldGTE(FieldUpdatedBy, v))
-}
-
-// UpdatedByLT applies the LT predicate on the "updated_by" field.
-func UpdatedByLT(v int) predicate.PromotionHasProduct {
-	return predicate.PromotionHasProduct(sql.FieldLT(FieldUpdatedBy, v))
-}
-
-// UpdatedByLTE applies the LTE predicate on the "updated_by" field.
-func UpdatedByLTE(v int) predicate.PromotionHasProduct {
-	return predicate.PromotionHasProduct(sql.FieldLTE(FieldUpdatedBy, v))
-}
-
-// DeletedByEQ applies the EQ predicate on the "deleted_by" field.
-func DeletedByEQ(v int) predicate.PromotionHasProduct {
-	return predicate.PromotionHasProduct(sql.FieldEQ(FieldDeletedBy, v))
-}
-
-// DeletedByNEQ applies the NEQ predicate on the "deleted_by" field.
-func DeletedByNEQ(v int) predicate.PromotionHasProduct {
-	return predicate.PromotionHasProduct(sql.FieldNEQ(FieldDeletedBy, v))
-}
-
-// DeletedByIn applies the In predicate on the "deleted_by" field.
-func DeletedByIn(vs ...int) predicate.PromotionHasProduct {
-	return predicate.PromotionHasProduct(sql.FieldIn(FieldDeletedBy, vs...))
-}
-
-// DeletedByNotIn applies the NotIn predicate on the "deleted_by" field.
-func DeletedByNotIn(vs ...int) predicate.PromotionHasProduct {
-	return predicate.PromotionHasProduct(sql.FieldNotIn(FieldDeletedBy, vs...))
-}
-
-// DeletedByGT applies the GT predicate on the "deleted_by" field.
-func DeletedByGT(v int) predicate.PromotionHasProduct {
-	return predicate.PromotionHasProduct(sql.FieldGT(FieldDeletedBy, v))
-}
-
-// DeletedByGTE applies the GTE predicate on the "deleted_by" field.
-func DeletedByGTE(v int) predicate.PromotionHasProduct {
-	return predicate.PromotionHasProduct(sql.FieldGTE(FieldDeletedBy, v))
-}
-
-// DeletedByLT applies the LT predicate on the "deleted_by" field.
-func DeletedByLT(v int) predicate.PromotionHasProduct {
-	return predicate.PromotionHasProduct(sql.FieldLT(FieldDeletedBy, v))
-}
-
-// DeletedByLTE applies the LTE predicate on the "deleted_by" field.
-func DeletedByLTE(v int) predicate.PromotionHasProduct {
-	return predicate.PromotionHasProduct(sql.FieldLTE(FieldDeletedBy, v))
-}
-
-// DeletedByIsNil applies the IsNil predicate on the "deleted_by" field.
-func DeletedByIsNil() predicate.PromotionHasProduct {
-	return predicate.PromotionHasProduct(sql.FieldIsNull(FieldDeletedBy))
-}
-
-// DeletedByNotNil applies the NotNil predicate on the "deleted_by" field.
-func DeletedByNotNil() predicate.PromotionHasProduct {
-	return predicate.PromotionHasProduct(sql.FieldNotNull(FieldDeletedBy))
-}
-
-// ProductIDEQ applies the EQ predicate on the "product_id" field.
-func ProductIDEQ(v int) predicate.PromotionHasProduct {
-	return predicate.PromotionHasProduct(sql.FieldEQ(FieldProductID, v))
-}
-
-// ProductIDNEQ applies the NEQ predicate on the "product_id" field.
-func ProductIDNEQ(v int) predicate.PromotionHasProduct {
-	return predicate.PromotionHasProduct(sql.FieldNEQ(FieldProductID, v))
-}
-
-// ProductIDIn applies the In predicate on the "product_id" field.
-func ProductIDIn(vs ...int) predicate.PromotionHasProduct {
-	return predicate.PromotionHasProduct(sql.FieldIn(FieldProductID, vs...))
-}
-
-// ProductIDNotIn applies the NotIn predicate on the "product_id" field.
-func ProductIDNotIn(vs ...int) predicate.PromotionHasProduct {
-	return predicate.PromotionHasProduct(sql.FieldNotIn(FieldProductID, vs...))
-}
-
-// ProductIDGT applies the GT predicate on the "product_id" field.
-func ProductIDGT(v int) predicate.PromotionHasProduct {
-	return predicate.PromotionHasProduct(sql.FieldGT(FieldProductID, v))
-}
-
-// ProductIDGTE applies the GTE predicate on the "product_id" field.
-func ProductIDGTE(v int) predicate.PromotionHasProduct {
-	return predicate.PromotionHasProduct(sql.FieldGTE(FieldProductID, v))
-}
-
-// ProductIDLT applies the LT predicate on the "product_id" field.
-func ProductIDLT(v int) predicate.PromotionHasProduct {
-	return predicate.PromotionHasProduct(sql.FieldLT(FieldProductID, v))
-}
-
-// ProductIDLTE applies the LTE predicate on the "product_id" field.
-func ProductIDLTE(v int) predicate.PromotionHasProduct {
-	return predicate.PromotionHasProduct(sql.FieldLTE(FieldProductID, v))
-}
-
-// ProductIDIsNil applies the IsNil predicate on the "product_id" field.
-func ProductIDIsNil() predicate.PromotionHasProduct {
-	return predicate.PromotionHasProduct(sql.FieldIsNull(FieldProductID))
-}
-
-// ProductIDNotNil applies the NotNil predicate on the "product_id" field.
-func ProductIDNotNil() predicate.PromotionHasProduct {
-	return predicate.PromotionHasProduct(sql.FieldNotNull(FieldProductID))
-}
-
-// PromotionIDEQ applies the EQ predicate on the "promotion_id" field.
-func PromotionIDEQ(v int) predicate.PromotionHasProduct {
-	return predicate.PromotionHasProduct(sql.FieldEQ(FieldPromotionID, v))
-}
-
-// PromotionIDNEQ applies the NEQ predicate on the "promotion_id" field.
-func PromotionIDNEQ(v int) predicate.PromotionHasProduct {
-	return predicate.PromotionHasProduct(sql.FieldNEQ(FieldPromotionID, v))
-}
-
-// PromotionIDIn applies the In predicate on the "promotion_id" field.
-func PromotionIDIn(vs ...int) predicate.PromotionHasProduct {
-	return predicate.PromotionHasProduct(sql.FieldIn(FieldPromotionID, vs...))
-}
-
-// PromotionIDNotIn applies the NotIn predicate on the "promotion_id" field.
-func PromotionIDNotIn(vs ...int) predicate.PromotionHasProduct {
-	return predicate.PromotionHasProduct(sql.FieldNotIn(FieldPromotionID, vs...))
-}
-
-// PromotionIDGT applies the GT predicate on the "promotion_id" field.
-func PromotionIDGT(v int) predicate.PromotionHasProduct {
-	return predicate.PromotionHasProduct(sql.FieldGT(FieldPromotionID, v))
-}
-
-// PromotionIDGTE applies the GTE predicate on the "promotion_id" field.
-func PromotionIDGTE(v int) predicate.PromotionHasProduct {
-	return predicate.PromotionHasProduct(sql.FieldGTE(FieldPromotionID, v))
-}
-
-// PromotionIDLT applies the LT predicate on the "promotion_id" field.
-func PromotionIDLT(v int) predicate.PromotionHasProduct {
-	return predicate.PromotionHasProduct(sql.FieldLT(FieldPromotionID, v))
-}
-
-// PromotionIDLTE applies the LTE predicate on the "promotion_id" field.
-func PromotionIDLTE(v int) predicate.PromotionHasProduct {
-	return predicate.PromotionHasProduct(sql.FieldLTE(FieldPromotionID, v))
+// PromotionsIDNotNil applies the NotNil predicate on the "promotions_id" field.
+func PromotionsIDNotNil() predicate.PromotionHasProduct {
+	return predicate.PromotionHasProduct(sql.FieldNotNull(FieldPromotionsID))
 }
 
 // PromocionalPriceEQ applies the EQ predicate on the "promocional_price" field.
@@ -490,21 +270,21 @@ func PromocionalPriceLTE(v float64) predicate.PromotionHasProduct {
 	return predicate.PromotionHasProduct(sql.FieldLTE(FieldPromocionalPrice, v))
 }
 
-// HasProduct applies the HasEdge predicate on the "product" edge.
-func HasProduct() predicate.PromotionHasProduct {
+// HasProducts applies the HasEdge predicate on the "products" edge.
+func HasProducts() predicate.PromotionHasProduct {
 	return predicate.PromotionHasProduct(func(s *sql.Selector) {
 		step := sqlgraph.NewStep(
 			sqlgraph.From(Table, FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, true, ProductTable, ProductColumn),
+			sqlgraph.Edge(sqlgraph.M2O, true, ProductsTable, ProductsColumn),
 		)
 		sqlgraph.HasNeighbors(s, step)
 	})
 }
 
-// HasProductWith applies the HasEdge predicate on the "product" edge with a given conditions (other predicates).
-func HasProductWith(preds ...predicate.Products) predicate.PromotionHasProduct {
+// HasProductsWith applies the HasEdge predicate on the "products" edge with a given conditions (other predicates).
+func HasProductsWith(preds ...predicate.Products) predicate.PromotionHasProduct {
 	return predicate.PromotionHasProduct(func(s *sql.Selector) {
-		step := newProductStep()
+		step := newProductsStep()
 		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
 			for _, p := range preds {
 				p(s)
@@ -513,21 +293,21 @@ func HasProductWith(preds ...predicate.Products) predicate.PromotionHasProduct {
 	})
 }
 
-// HasPromotion applies the HasEdge predicate on the "promotion" edge.
-func HasPromotion() predicate.PromotionHasProduct {
+// HasPromotions applies the HasEdge predicate on the "promotions" edge.
+func HasPromotions() predicate.PromotionHasProduct {
 	return predicate.PromotionHasProduct(func(s *sql.Selector) {
 		step := sqlgraph.NewStep(
 			sqlgraph.From(Table, FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, true, PromotionTable, PromotionColumn),
+			sqlgraph.Edge(sqlgraph.M2O, true, PromotionsTable, PromotionsColumn),
 		)
 		sqlgraph.HasNeighbors(s, step)
 	})
 }
 
-// HasPromotionWith applies the HasEdge predicate on the "promotion" edge with a given conditions (other predicates).
-func HasPromotionWith(preds ...predicate.Promotions) predicate.PromotionHasProduct {
+// HasPromotionsWith applies the HasEdge predicate on the "promotions" edge with a given conditions (other predicates).
+func HasPromotionsWith(preds ...predicate.Promotions) predicate.PromotionHasProduct {
 	return predicate.PromotionHasProduct(func(s *sql.Selector) {
-		step := newPromotionStep()
+		step := newPromotionsStep()
 		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
 			for _, p := range preds {
 				p(s)

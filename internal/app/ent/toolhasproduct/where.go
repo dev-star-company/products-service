@@ -60,39 +60,19 @@ func CreatedAt(v time.Time) predicate.ToolHasProduct {
 	return predicate.ToolHasProduct(sql.FieldEQ(FieldCreatedAt, v))
 }
 
-// UpdatedAt applies equality check predicate on the "updated_at" field. It's identical to UpdatedAtEQ.
-func UpdatedAt(v time.Time) predicate.ToolHasProduct {
-	return predicate.ToolHasProduct(sql.FieldEQ(FieldUpdatedAt, v))
-}
-
 // DeletedAt applies equality check predicate on the "deleted_at" field. It's identical to DeletedAtEQ.
 func DeletedAt(v time.Time) predicate.ToolHasProduct {
 	return predicate.ToolHasProduct(sql.FieldEQ(FieldDeletedAt, v))
 }
 
-// CreatedBy applies equality check predicate on the "created_by" field. It's identical to CreatedByEQ.
-func CreatedBy(v int) predicate.ToolHasProduct {
-	return predicate.ToolHasProduct(sql.FieldEQ(FieldCreatedBy, v))
+// ProductsID applies equality check predicate on the "products_id" field. It's identical to ProductsIDEQ.
+func ProductsID(v int) predicate.ToolHasProduct {
+	return predicate.ToolHasProduct(sql.FieldEQ(FieldProductsID, v))
 }
 
-// UpdatedBy applies equality check predicate on the "updated_by" field. It's identical to UpdatedByEQ.
-func UpdatedBy(v int) predicate.ToolHasProduct {
-	return predicate.ToolHasProduct(sql.FieldEQ(FieldUpdatedBy, v))
-}
-
-// DeletedBy applies equality check predicate on the "deleted_by" field. It's identical to DeletedByEQ.
-func DeletedBy(v int) predicate.ToolHasProduct {
-	return predicate.ToolHasProduct(sql.FieldEQ(FieldDeletedBy, v))
-}
-
-// ToolID applies equality check predicate on the "tool_id" field. It's identical to ToolIDEQ.
-func ToolID(v int) predicate.ToolHasProduct {
-	return predicate.ToolHasProduct(sql.FieldEQ(FieldToolID, v))
-}
-
-// ProductID applies equality check predicate on the "product_id" field. It's identical to ProductIDEQ.
-func ProductID(v int) predicate.ToolHasProduct {
-	return predicate.ToolHasProduct(sql.FieldEQ(FieldProductID, v))
+// ToolsID applies equality check predicate on the "tools_id" field. It's identical to ToolsIDEQ.
+func ToolsID(v int) predicate.ToolHasProduct {
+	return predicate.ToolHasProduct(sql.FieldEQ(FieldToolsID, v))
 }
 
 // CreatedAtEQ applies the EQ predicate on the "created_at" field.
@@ -133,46 +113,6 @@ func CreatedAtLT(v time.Time) predicate.ToolHasProduct {
 // CreatedAtLTE applies the LTE predicate on the "created_at" field.
 func CreatedAtLTE(v time.Time) predicate.ToolHasProduct {
 	return predicate.ToolHasProduct(sql.FieldLTE(FieldCreatedAt, v))
-}
-
-// UpdatedAtEQ applies the EQ predicate on the "updated_at" field.
-func UpdatedAtEQ(v time.Time) predicate.ToolHasProduct {
-	return predicate.ToolHasProduct(sql.FieldEQ(FieldUpdatedAt, v))
-}
-
-// UpdatedAtNEQ applies the NEQ predicate on the "updated_at" field.
-func UpdatedAtNEQ(v time.Time) predicate.ToolHasProduct {
-	return predicate.ToolHasProduct(sql.FieldNEQ(FieldUpdatedAt, v))
-}
-
-// UpdatedAtIn applies the In predicate on the "updated_at" field.
-func UpdatedAtIn(vs ...time.Time) predicate.ToolHasProduct {
-	return predicate.ToolHasProduct(sql.FieldIn(FieldUpdatedAt, vs...))
-}
-
-// UpdatedAtNotIn applies the NotIn predicate on the "updated_at" field.
-func UpdatedAtNotIn(vs ...time.Time) predicate.ToolHasProduct {
-	return predicate.ToolHasProduct(sql.FieldNotIn(FieldUpdatedAt, vs...))
-}
-
-// UpdatedAtGT applies the GT predicate on the "updated_at" field.
-func UpdatedAtGT(v time.Time) predicate.ToolHasProduct {
-	return predicate.ToolHasProduct(sql.FieldGT(FieldUpdatedAt, v))
-}
-
-// UpdatedAtGTE applies the GTE predicate on the "updated_at" field.
-func UpdatedAtGTE(v time.Time) predicate.ToolHasProduct {
-	return predicate.ToolHasProduct(sql.FieldGTE(FieldUpdatedAt, v))
-}
-
-// UpdatedAtLT applies the LT predicate on the "updated_at" field.
-func UpdatedAtLT(v time.Time) predicate.ToolHasProduct {
-	return predicate.ToolHasProduct(sql.FieldLT(FieldUpdatedAt, v))
-}
-
-// UpdatedAtLTE applies the LTE predicate on the "updated_at" field.
-func UpdatedAtLTE(v time.Time) predicate.ToolHasProduct {
-	return predicate.ToolHasProduct(sql.FieldLTE(FieldUpdatedAt, v))
 }
 
 // DeletedAtEQ applies the EQ predicate on the "deleted_at" field.
@@ -225,241 +165,81 @@ func DeletedAtNotNil() predicate.ToolHasProduct {
 	return predicate.ToolHasProduct(sql.FieldNotNull(FieldDeletedAt))
 }
 
-// CreatedByEQ applies the EQ predicate on the "created_by" field.
-func CreatedByEQ(v int) predicate.ToolHasProduct {
-	return predicate.ToolHasProduct(sql.FieldEQ(FieldCreatedBy, v))
+// ProductsIDEQ applies the EQ predicate on the "products_id" field.
+func ProductsIDEQ(v int) predicate.ToolHasProduct {
+	return predicate.ToolHasProduct(sql.FieldEQ(FieldProductsID, v))
 }
 
-// CreatedByNEQ applies the NEQ predicate on the "created_by" field.
-func CreatedByNEQ(v int) predicate.ToolHasProduct {
-	return predicate.ToolHasProduct(sql.FieldNEQ(FieldCreatedBy, v))
+// ProductsIDNEQ applies the NEQ predicate on the "products_id" field.
+func ProductsIDNEQ(v int) predicate.ToolHasProduct {
+	return predicate.ToolHasProduct(sql.FieldNEQ(FieldProductsID, v))
 }
 
-// CreatedByIn applies the In predicate on the "created_by" field.
-func CreatedByIn(vs ...int) predicate.ToolHasProduct {
-	return predicate.ToolHasProduct(sql.FieldIn(FieldCreatedBy, vs...))
+// ProductsIDIn applies the In predicate on the "products_id" field.
+func ProductsIDIn(vs ...int) predicate.ToolHasProduct {
+	return predicate.ToolHasProduct(sql.FieldIn(FieldProductsID, vs...))
 }
 
-// CreatedByNotIn applies the NotIn predicate on the "created_by" field.
-func CreatedByNotIn(vs ...int) predicate.ToolHasProduct {
-	return predicate.ToolHasProduct(sql.FieldNotIn(FieldCreatedBy, vs...))
+// ProductsIDNotIn applies the NotIn predicate on the "products_id" field.
+func ProductsIDNotIn(vs ...int) predicate.ToolHasProduct {
+	return predicate.ToolHasProduct(sql.FieldNotIn(FieldProductsID, vs...))
 }
 
-// CreatedByGT applies the GT predicate on the "created_by" field.
-func CreatedByGT(v int) predicate.ToolHasProduct {
-	return predicate.ToolHasProduct(sql.FieldGT(FieldCreatedBy, v))
+// ProductsIDIsNil applies the IsNil predicate on the "products_id" field.
+func ProductsIDIsNil() predicate.ToolHasProduct {
+	return predicate.ToolHasProduct(sql.FieldIsNull(FieldProductsID))
 }
 
-// CreatedByGTE applies the GTE predicate on the "created_by" field.
-func CreatedByGTE(v int) predicate.ToolHasProduct {
-	return predicate.ToolHasProduct(sql.FieldGTE(FieldCreatedBy, v))
+// ProductsIDNotNil applies the NotNil predicate on the "products_id" field.
+func ProductsIDNotNil() predicate.ToolHasProduct {
+	return predicate.ToolHasProduct(sql.FieldNotNull(FieldProductsID))
 }
 
-// CreatedByLT applies the LT predicate on the "created_by" field.
-func CreatedByLT(v int) predicate.ToolHasProduct {
-	return predicate.ToolHasProduct(sql.FieldLT(FieldCreatedBy, v))
+// ToolsIDEQ applies the EQ predicate on the "tools_id" field.
+func ToolsIDEQ(v int) predicate.ToolHasProduct {
+	return predicate.ToolHasProduct(sql.FieldEQ(FieldToolsID, v))
 }
 
-// CreatedByLTE applies the LTE predicate on the "created_by" field.
-func CreatedByLTE(v int) predicate.ToolHasProduct {
-	return predicate.ToolHasProduct(sql.FieldLTE(FieldCreatedBy, v))
+// ToolsIDNEQ applies the NEQ predicate on the "tools_id" field.
+func ToolsIDNEQ(v int) predicate.ToolHasProduct {
+	return predicate.ToolHasProduct(sql.FieldNEQ(FieldToolsID, v))
 }
 
-// UpdatedByEQ applies the EQ predicate on the "updated_by" field.
-func UpdatedByEQ(v int) predicate.ToolHasProduct {
-	return predicate.ToolHasProduct(sql.FieldEQ(FieldUpdatedBy, v))
+// ToolsIDIn applies the In predicate on the "tools_id" field.
+func ToolsIDIn(vs ...int) predicate.ToolHasProduct {
+	return predicate.ToolHasProduct(sql.FieldIn(FieldToolsID, vs...))
 }
 
-// UpdatedByNEQ applies the NEQ predicate on the "updated_by" field.
-func UpdatedByNEQ(v int) predicate.ToolHasProduct {
-	return predicate.ToolHasProduct(sql.FieldNEQ(FieldUpdatedBy, v))
+// ToolsIDNotIn applies the NotIn predicate on the "tools_id" field.
+func ToolsIDNotIn(vs ...int) predicate.ToolHasProduct {
+	return predicate.ToolHasProduct(sql.FieldNotIn(FieldToolsID, vs...))
 }
 
-// UpdatedByIn applies the In predicate on the "updated_by" field.
-func UpdatedByIn(vs ...int) predicate.ToolHasProduct {
-	return predicate.ToolHasProduct(sql.FieldIn(FieldUpdatedBy, vs...))
+// ToolsIDIsNil applies the IsNil predicate on the "tools_id" field.
+func ToolsIDIsNil() predicate.ToolHasProduct {
+	return predicate.ToolHasProduct(sql.FieldIsNull(FieldToolsID))
 }
 
-// UpdatedByNotIn applies the NotIn predicate on the "updated_by" field.
-func UpdatedByNotIn(vs ...int) predicate.ToolHasProduct {
-	return predicate.ToolHasProduct(sql.FieldNotIn(FieldUpdatedBy, vs...))
+// ToolsIDNotNil applies the NotNil predicate on the "tools_id" field.
+func ToolsIDNotNil() predicate.ToolHasProduct {
+	return predicate.ToolHasProduct(sql.FieldNotNull(FieldToolsID))
 }
 
-// UpdatedByGT applies the GT predicate on the "updated_by" field.
-func UpdatedByGT(v int) predicate.ToolHasProduct {
-	return predicate.ToolHasProduct(sql.FieldGT(FieldUpdatedBy, v))
-}
-
-// UpdatedByGTE applies the GTE predicate on the "updated_by" field.
-func UpdatedByGTE(v int) predicate.ToolHasProduct {
-	return predicate.ToolHasProduct(sql.FieldGTE(FieldUpdatedBy, v))
-}
-
-// UpdatedByLT applies the LT predicate on the "updated_by" field.
-func UpdatedByLT(v int) predicate.ToolHasProduct {
-	return predicate.ToolHasProduct(sql.FieldLT(FieldUpdatedBy, v))
-}
-
-// UpdatedByLTE applies the LTE predicate on the "updated_by" field.
-func UpdatedByLTE(v int) predicate.ToolHasProduct {
-	return predicate.ToolHasProduct(sql.FieldLTE(FieldUpdatedBy, v))
-}
-
-// DeletedByEQ applies the EQ predicate on the "deleted_by" field.
-func DeletedByEQ(v int) predicate.ToolHasProduct {
-	return predicate.ToolHasProduct(sql.FieldEQ(FieldDeletedBy, v))
-}
-
-// DeletedByNEQ applies the NEQ predicate on the "deleted_by" field.
-func DeletedByNEQ(v int) predicate.ToolHasProduct {
-	return predicate.ToolHasProduct(sql.FieldNEQ(FieldDeletedBy, v))
-}
-
-// DeletedByIn applies the In predicate on the "deleted_by" field.
-func DeletedByIn(vs ...int) predicate.ToolHasProduct {
-	return predicate.ToolHasProduct(sql.FieldIn(FieldDeletedBy, vs...))
-}
-
-// DeletedByNotIn applies the NotIn predicate on the "deleted_by" field.
-func DeletedByNotIn(vs ...int) predicate.ToolHasProduct {
-	return predicate.ToolHasProduct(sql.FieldNotIn(FieldDeletedBy, vs...))
-}
-
-// DeletedByGT applies the GT predicate on the "deleted_by" field.
-func DeletedByGT(v int) predicate.ToolHasProduct {
-	return predicate.ToolHasProduct(sql.FieldGT(FieldDeletedBy, v))
-}
-
-// DeletedByGTE applies the GTE predicate on the "deleted_by" field.
-func DeletedByGTE(v int) predicate.ToolHasProduct {
-	return predicate.ToolHasProduct(sql.FieldGTE(FieldDeletedBy, v))
-}
-
-// DeletedByLT applies the LT predicate on the "deleted_by" field.
-func DeletedByLT(v int) predicate.ToolHasProduct {
-	return predicate.ToolHasProduct(sql.FieldLT(FieldDeletedBy, v))
-}
-
-// DeletedByLTE applies the LTE predicate on the "deleted_by" field.
-func DeletedByLTE(v int) predicate.ToolHasProduct {
-	return predicate.ToolHasProduct(sql.FieldLTE(FieldDeletedBy, v))
-}
-
-// DeletedByIsNil applies the IsNil predicate on the "deleted_by" field.
-func DeletedByIsNil() predicate.ToolHasProduct {
-	return predicate.ToolHasProduct(sql.FieldIsNull(FieldDeletedBy))
-}
-
-// DeletedByNotNil applies the NotNil predicate on the "deleted_by" field.
-func DeletedByNotNil() predicate.ToolHasProduct {
-	return predicate.ToolHasProduct(sql.FieldNotNull(FieldDeletedBy))
-}
-
-// ToolIDEQ applies the EQ predicate on the "tool_id" field.
-func ToolIDEQ(v int) predicate.ToolHasProduct {
-	return predicate.ToolHasProduct(sql.FieldEQ(FieldToolID, v))
-}
-
-// ToolIDNEQ applies the NEQ predicate on the "tool_id" field.
-func ToolIDNEQ(v int) predicate.ToolHasProduct {
-	return predicate.ToolHasProduct(sql.FieldNEQ(FieldToolID, v))
-}
-
-// ToolIDIn applies the In predicate on the "tool_id" field.
-func ToolIDIn(vs ...int) predicate.ToolHasProduct {
-	return predicate.ToolHasProduct(sql.FieldIn(FieldToolID, vs...))
-}
-
-// ToolIDNotIn applies the NotIn predicate on the "tool_id" field.
-func ToolIDNotIn(vs ...int) predicate.ToolHasProduct {
-	return predicate.ToolHasProduct(sql.FieldNotIn(FieldToolID, vs...))
-}
-
-// ToolIDGT applies the GT predicate on the "tool_id" field.
-func ToolIDGT(v int) predicate.ToolHasProduct {
-	return predicate.ToolHasProduct(sql.FieldGT(FieldToolID, v))
-}
-
-// ToolIDGTE applies the GTE predicate on the "tool_id" field.
-func ToolIDGTE(v int) predicate.ToolHasProduct {
-	return predicate.ToolHasProduct(sql.FieldGTE(FieldToolID, v))
-}
-
-// ToolIDLT applies the LT predicate on the "tool_id" field.
-func ToolIDLT(v int) predicate.ToolHasProduct {
-	return predicate.ToolHasProduct(sql.FieldLT(FieldToolID, v))
-}
-
-// ToolIDLTE applies the LTE predicate on the "tool_id" field.
-func ToolIDLTE(v int) predicate.ToolHasProduct {
-	return predicate.ToolHasProduct(sql.FieldLTE(FieldToolID, v))
-}
-
-// ProductIDEQ applies the EQ predicate on the "product_id" field.
-func ProductIDEQ(v int) predicate.ToolHasProduct {
-	return predicate.ToolHasProduct(sql.FieldEQ(FieldProductID, v))
-}
-
-// ProductIDNEQ applies the NEQ predicate on the "product_id" field.
-func ProductIDNEQ(v int) predicate.ToolHasProduct {
-	return predicate.ToolHasProduct(sql.FieldNEQ(FieldProductID, v))
-}
-
-// ProductIDIn applies the In predicate on the "product_id" field.
-func ProductIDIn(vs ...int) predicate.ToolHasProduct {
-	return predicate.ToolHasProduct(sql.FieldIn(FieldProductID, vs...))
-}
-
-// ProductIDNotIn applies the NotIn predicate on the "product_id" field.
-func ProductIDNotIn(vs ...int) predicate.ToolHasProduct {
-	return predicate.ToolHasProduct(sql.FieldNotIn(FieldProductID, vs...))
-}
-
-// ProductIDGT applies the GT predicate on the "product_id" field.
-func ProductIDGT(v int) predicate.ToolHasProduct {
-	return predicate.ToolHasProduct(sql.FieldGT(FieldProductID, v))
-}
-
-// ProductIDGTE applies the GTE predicate on the "product_id" field.
-func ProductIDGTE(v int) predicate.ToolHasProduct {
-	return predicate.ToolHasProduct(sql.FieldGTE(FieldProductID, v))
-}
-
-// ProductIDLT applies the LT predicate on the "product_id" field.
-func ProductIDLT(v int) predicate.ToolHasProduct {
-	return predicate.ToolHasProduct(sql.FieldLT(FieldProductID, v))
-}
-
-// ProductIDLTE applies the LTE predicate on the "product_id" field.
-func ProductIDLTE(v int) predicate.ToolHasProduct {
-	return predicate.ToolHasProduct(sql.FieldLTE(FieldProductID, v))
-}
-
-// ProductIDIsNil applies the IsNil predicate on the "product_id" field.
-func ProductIDIsNil() predicate.ToolHasProduct {
-	return predicate.ToolHasProduct(sql.FieldIsNull(FieldProductID))
-}
-
-// ProductIDNotNil applies the NotNil predicate on the "product_id" field.
-func ProductIDNotNil() predicate.ToolHasProduct {
-	return predicate.ToolHasProduct(sql.FieldNotNull(FieldProductID))
-}
-
-// HasProduct applies the HasEdge predicate on the "product" edge.
-func HasProduct() predicate.ToolHasProduct {
+// HasProducts applies the HasEdge predicate on the "products" edge.
+func HasProducts() predicate.ToolHasProduct {
 	return predicate.ToolHasProduct(func(s *sql.Selector) {
 		step := sqlgraph.NewStep(
 			sqlgraph.From(Table, FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, true, ProductTable, ProductColumn),
+			sqlgraph.Edge(sqlgraph.M2O, true, ProductsTable, ProductsColumn),
 		)
 		sqlgraph.HasNeighbors(s, step)
 	})
 }
 
-// HasProductWith applies the HasEdge predicate on the "product" edge with a given conditions (other predicates).
-func HasProductWith(preds ...predicate.Products) predicate.ToolHasProduct {
+// HasProductsWith applies the HasEdge predicate on the "products" edge with a given conditions (other predicates).
+func HasProductsWith(preds ...predicate.Products) predicate.ToolHasProduct {
 	return predicate.ToolHasProduct(func(s *sql.Selector) {
-		step := newProductStep()
+		step := newProductsStep()
 		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
 			for _, p := range preds {
 				p(s)
@@ -468,21 +248,21 @@ func HasProductWith(preds ...predicate.Products) predicate.ToolHasProduct {
 	})
 }
 
-// HasTool applies the HasEdge predicate on the "tool" edge.
-func HasTool() predicate.ToolHasProduct {
+// HasTools applies the HasEdge predicate on the "tools" edge.
+func HasTools() predicate.ToolHasProduct {
 	return predicate.ToolHasProduct(func(s *sql.Selector) {
 		step := sqlgraph.NewStep(
 			sqlgraph.From(Table, FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, true, ToolTable, ToolColumn),
+			sqlgraph.Edge(sqlgraph.M2O, true, ToolsTable, ToolsColumn),
 		)
 		sqlgraph.HasNeighbors(s, step)
 	})
 }
 
-// HasToolWith applies the HasEdge predicate on the "tool" edge with a given conditions (other predicates).
-func HasToolWith(preds ...predicate.Tools) predicate.ToolHasProduct {
+// HasToolsWith applies the HasEdge predicate on the "tools" edge with a given conditions (other predicates).
+func HasToolsWith(preds ...predicate.Tools) predicate.ToolHasProduct {
 	return predicate.ToolHasProduct(func(s *sql.Selector) {
-		step := newToolStep()
+		step := newToolsStep()
 		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
 			for _, p := range preds {
 				p(s)

@@ -35,20 +35,6 @@ func (ifsc *ImageFolderSourceCreate) SetNillableCreatedAt(t *time.Time) *ImageFo
 	return ifsc
 }
 
-// SetUpdatedAt sets the "updated_at" field.
-func (ifsc *ImageFolderSourceCreate) SetUpdatedAt(t time.Time) *ImageFolderSourceCreate {
-	ifsc.mutation.SetUpdatedAt(t)
-	return ifsc
-}
-
-// SetNillableUpdatedAt sets the "updated_at" field if the given value is not nil.
-func (ifsc *ImageFolderSourceCreate) SetNillableUpdatedAt(t *time.Time) *ImageFolderSourceCreate {
-	if t != nil {
-		ifsc.SetUpdatedAt(*t)
-	}
-	return ifsc
-}
-
 // SetDeletedAt sets the "deleted_at" field.
 func (ifsc *ImageFolderSourceCreate) SetDeletedAt(t time.Time) *ImageFolderSourceCreate {
 	ifsc.mutation.SetDeletedAt(t)
@@ -59,32 +45,6 @@ func (ifsc *ImageFolderSourceCreate) SetDeletedAt(t time.Time) *ImageFolderSourc
 func (ifsc *ImageFolderSourceCreate) SetNillableDeletedAt(t *time.Time) *ImageFolderSourceCreate {
 	if t != nil {
 		ifsc.SetDeletedAt(*t)
-	}
-	return ifsc
-}
-
-// SetCreatedBy sets the "created_by" field.
-func (ifsc *ImageFolderSourceCreate) SetCreatedBy(i int) *ImageFolderSourceCreate {
-	ifsc.mutation.SetCreatedBy(i)
-	return ifsc
-}
-
-// SetUpdatedBy sets the "updated_by" field.
-func (ifsc *ImageFolderSourceCreate) SetUpdatedBy(i int) *ImageFolderSourceCreate {
-	ifsc.mutation.SetUpdatedBy(i)
-	return ifsc
-}
-
-// SetDeletedBy sets the "deleted_by" field.
-func (ifsc *ImageFolderSourceCreate) SetDeletedBy(i int) *ImageFolderSourceCreate {
-	ifsc.mutation.SetDeletedBy(i)
-	return ifsc
-}
-
-// SetNillableDeletedBy sets the "deleted_by" field if the given value is not nil.
-func (ifsc *ImageFolderSourceCreate) SetNillableDeletedBy(i *int) *ImageFolderSourceCreate {
-	if i != nil {
-		ifsc.SetDeletedBy(*i)
 	}
 	return ifsc
 }
@@ -183,35 +143,12 @@ func (ifsc *ImageFolderSourceCreate) defaults() {
 		v := imagefoldersource.DefaultCreatedAt()
 		ifsc.mutation.SetCreatedAt(v)
 	}
-	if _, ok := ifsc.mutation.UpdatedAt(); !ok {
-		v := imagefoldersource.DefaultUpdatedAt()
-		ifsc.mutation.SetUpdatedAt(v)
-	}
 }
 
 // check runs all checks and user-defined validators on the builder.
 func (ifsc *ImageFolderSourceCreate) check() error {
 	if _, ok := ifsc.mutation.CreatedAt(); !ok {
 		return &ValidationError{Name: "created_at", err: errors.New(`ent: missing required field "ImageFolderSource.created_at"`)}
-	}
-	if _, ok := ifsc.mutation.UpdatedAt(); !ok {
-		return &ValidationError{Name: "updated_at", err: errors.New(`ent: missing required field "ImageFolderSource.updated_at"`)}
-	}
-	if _, ok := ifsc.mutation.CreatedBy(); !ok {
-		return &ValidationError{Name: "created_by", err: errors.New(`ent: missing required field "ImageFolderSource.created_by"`)}
-	}
-	if v, ok := ifsc.mutation.CreatedBy(); ok {
-		if err := imagefoldersource.CreatedByValidator(v); err != nil {
-			return &ValidationError{Name: "created_by", err: fmt.Errorf(`ent: validator failed for field "ImageFolderSource.created_by": %w`, err)}
-		}
-	}
-	if _, ok := ifsc.mutation.UpdatedBy(); !ok {
-		return &ValidationError{Name: "updated_by", err: errors.New(`ent: missing required field "ImageFolderSource.updated_by"`)}
-	}
-	if v, ok := ifsc.mutation.UpdatedBy(); ok {
-		if err := imagefoldersource.UpdatedByValidator(v); err != nil {
-			return &ValidationError{Name: "updated_by", err: fmt.Errorf(`ent: validator failed for field "ImageFolderSource.updated_by": %w`, err)}
-		}
 	}
 	if _, ok := ifsc.mutation.Name(); !ok {
 		return &ValidationError{Name: "name", err: errors.New(`ent: missing required field "ImageFolderSource.name"`)}
@@ -249,25 +186,9 @@ func (ifsc *ImageFolderSourceCreate) createSpec() (*ImageFolderSource, *sqlgraph
 		_spec.SetField(imagefoldersource.FieldCreatedAt, field.TypeTime, value)
 		_node.CreatedAt = value
 	}
-	if value, ok := ifsc.mutation.UpdatedAt(); ok {
-		_spec.SetField(imagefoldersource.FieldUpdatedAt, field.TypeTime, value)
-		_node.UpdatedAt = value
-	}
 	if value, ok := ifsc.mutation.DeletedAt(); ok {
 		_spec.SetField(imagefoldersource.FieldDeletedAt, field.TypeTime, value)
 		_node.DeletedAt = &value
-	}
-	if value, ok := ifsc.mutation.CreatedBy(); ok {
-		_spec.SetField(imagefoldersource.FieldCreatedBy, field.TypeInt, value)
-		_node.CreatedBy = value
-	}
-	if value, ok := ifsc.mutation.UpdatedBy(); ok {
-		_spec.SetField(imagefoldersource.FieldUpdatedBy, field.TypeInt, value)
-		_node.UpdatedBy = value
-	}
-	if value, ok := ifsc.mutation.DeletedBy(); ok {
-		_spec.SetField(imagefoldersource.FieldDeletedBy, field.TypeInt, value)
-		_node.DeletedBy = &value
 	}
 	if value, ok := ifsc.mutation.Name(); ok {
 		_spec.SetField(imagefoldersource.FieldName, field.TypeString, value)

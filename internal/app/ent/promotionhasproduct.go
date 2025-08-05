@@ -21,61 +21,51 @@ type PromotionHasProduct struct {
 	ID int `json:"id,omitempty"`
 	// CreatedAt holds the value of the "created_at" field.
 	CreatedAt time.Time `json:"created_at,omitempty"`
-	// UpdatedAt holds the value of the "updated_at" field.
-	UpdatedAt time.Time `json:"updated_at,omitempty"`
 	// DeletedAt holds the value of the "deleted_at" field.
 	DeletedAt *time.Time `json:"deleted_at,omitempty"`
-	// CreatedBy holds the value of the "created_by" field.
-	CreatedBy int `json:"created_by,omitempty"`
-	// UpdatedBy holds the value of the "updated_by" field.
-	UpdatedBy int `json:"updated_by,omitempty"`
-	// DeletedBy holds the value of the "deleted_by" field.
-	DeletedBy *int `json:"deleted_by,omitempty"`
-	// ProductID holds the value of the "product_id" field.
-	ProductID *int `json:"product_id,omitempty"`
-	// PromotionID holds the value of the "promotion_id" field.
-	PromotionID *int `json:"promotion_id,omitempty"`
+	// ProductsID holds the value of the "products_id" field.
+	ProductsID *int `json:"products_id,omitempty"`
+	// PromotionsID holds the value of the "promotions_id" field.
+	PromotionsID *int `json:"promotions_id,omitempty"`
 	// PromocionalPrice holds the value of the "promocional_price" field.
 	PromocionalPrice *float64 `json:"promocional_price,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the PromotionHasProductQuery when eager-loading is set.
-	Edges                            PromotionHasProductEdges `json:"edges"`
-	products_promotion_has_product   *int
-	promotions_promotion_has_product *int
-	selectValues                     sql.SelectValues
+	Edges        PromotionHasProductEdges `json:"edges"`
+	selectValues sql.SelectValues
 }
 
 // PromotionHasProductEdges holds the relations/edges for other nodes in the graph.
 type PromotionHasProductEdges struct {
-	// Product holds the value of the product edge.
-	Product *Products `json:"product,omitempty"`
-	// Promotion holds the value of the promotion edge.
-	Promotion *Promotions `json:"promotion,omitempty"`
+	// Products holds the value of the products edge.
+	Products *Products `json:"products,omitempty"`
+	// Promotions holds the value of the promotions edge.
+	Promotions *Promotions `json:"promotions,omitempty"`
 	// loadedTypes holds the information for reporting if a
 	// type was loaded (or requested) in eager-loading or not.
 	loadedTypes [2]bool
 }
 
-// ProductOrErr returns the Product value or an error if the edge
+// ProductsOrErr returns the Products value or an error if the edge
 // was not loaded in eager-loading, or loaded but was not found.
-func (e PromotionHasProductEdges) ProductOrErr() (*Products, error) {
-	if e.Product != nil {
-		return e.Product, nil
+func (e PromotionHasProductEdges) ProductsOrErr() (*Products, error) {
+	if e.Products != nil {
+		return e.Products, nil
 	} else if e.loadedTypes[0] {
 		return nil, &NotFoundError{label: products.Label}
 	}
-	return nil, &NotLoadedError{edge: "product"}
+	return nil, &NotLoadedError{edge: "products"}
 }
 
-// PromotionOrErr returns the Promotion value or an error if the edge
+// PromotionsOrErr returns the Promotions value or an error if the edge
 // was not loaded in eager-loading, or loaded but was not found.
-func (e PromotionHasProductEdges) PromotionOrErr() (*Promotions, error) {
-	if e.Promotion != nil {
-		return e.Promotion, nil
+func (e PromotionHasProductEdges) PromotionsOrErr() (*Promotions, error) {
+	if e.Promotions != nil {
+		return e.Promotions, nil
 	} else if e.loadedTypes[1] {
 		return nil, &NotFoundError{label: promotions.Label}
 	}
-	return nil, &NotLoadedError{edge: "promotion"}
+	return nil, &NotLoadedError{edge: "promotions"}
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -85,14 +75,10 @@ func (*PromotionHasProduct) scanValues(columns []string) ([]any, error) {
 		switch columns[i] {
 		case promotionhasproduct.FieldPromocionalPrice:
 			values[i] = new(sql.NullFloat64)
-		case promotionhasproduct.FieldID, promotionhasproduct.FieldCreatedBy, promotionhasproduct.FieldUpdatedBy, promotionhasproduct.FieldDeletedBy, promotionhasproduct.FieldProductID, promotionhasproduct.FieldPromotionID:
+		case promotionhasproduct.FieldID, promotionhasproduct.FieldProductsID, promotionhasproduct.FieldPromotionsID:
 			values[i] = new(sql.NullInt64)
-		case promotionhasproduct.FieldCreatedAt, promotionhasproduct.FieldUpdatedAt, promotionhasproduct.FieldDeletedAt:
+		case promotionhasproduct.FieldCreatedAt, promotionhasproduct.FieldDeletedAt:
 			values[i] = new(sql.NullTime)
-		case promotionhasproduct.ForeignKeys[0]: // products_promotion_has_product
-			values[i] = new(sql.NullInt64)
-		case promotionhasproduct.ForeignKeys[1]: // promotions_promotion_has_product
-			values[i] = new(sql.NullInt64)
 		default:
 			values[i] = new(sql.UnknownType)
 		}
@@ -120,12 +106,6 @@ func (php *PromotionHasProduct) assignValues(columns []string, values []any) err
 			} else if value.Valid {
 				php.CreatedAt = value.Time
 			}
-		case promotionhasproduct.FieldUpdatedAt:
-			if value, ok := values[i].(*sql.NullTime); !ok {
-				return fmt.Errorf("unexpected type %T for field updated_at", values[i])
-			} else if value.Valid {
-				php.UpdatedAt = value.Time
-			}
 		case promotionhasproduct.FieldDeletedAt:
 			if value, ok := values[i].(*sql.NullTime); !ok {
 				return fmt.Errorf("unexpected type %T for field deleted_at", values[i])
@@ -133,38 +113,19 @@ func (php *PromotionHasProduct) assignValues(columns []string, values []any) err
 				php.DeletedAt = new(time.Time)
 				*php.DeletedAt = value.Time
 			}
-		case promotionhasproduct.FieldCreatedBy:
+		case promotionhasproduct.FieldProductsID:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field created_by", values[i])
+				return fmt.Errorf("unexpected type %T for field products_id", values[i])
 			} else if value.Valid {
-				php.CreatedBy = int(value.Int64)
+				php.ProductsID = new(int)
+				*php.ProductsID = int(value.Int64)
 			}
-		case promotionhasproduct.FieldUpdatedBy:
+		case promotionhasproduct.FieldPromotionsID:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field updated_by", values[i])
+				return fmt.Errorf("unexpected type %T for field promotions_id", values[i])
 			} else if value.Valid {
-				php.UpdatedBy = int(value.Int64)
-			}
-		case promotionhasproduct.FieldDeletedBy:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field deleted_by", values[i])
-			} else if value.Valid {
-				php.DeletedBy = new(int)
-				*php.DeletedBy = int(value.Int64)
-			}
-		case promotionhasproduct.FieldProductID:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field product_id", values[i])
-			} else if value.Valid {
-				php.ProductID = new(int)
-				*php.ProductID = int(value.Int64)
-			}
-		case promotionhasproduct.FieldPromotionID:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field promotion_id", values[i])
-			} else if value.Valid {
-				php.PromotionID = new(int)
-				*php.PromotionID = int(value.Int64)
+				php.PromotionsID = new(int)
+				*php.PromotionsID = int(value.Int64)
 			}
 		case promotionhasproduct.FieldPromocionalPrice:
 			if value, ok := values[i].(*sql.NullFloat64); !ok {
@@ -172,20 +133,6 @@ func (php *PromotionHasProduct) assignValues(columns []string, values []any) err
 			} else if value.Valid {
 				php.PromocionalPrice = new(float64)
 				*php.PromocionalPrice = value.Float64
-			}
-		case promotionhasproduct.ForeignKeys[0]:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for edge-field products_promotion_has_product", value)
-			} else if value.Valid {
-				php.products_promotion_has_product = new(int)
-				*php.products_promotion_has_product = int(value.Int64)
-			}
-		case promotionhasproduct.ForeignKeys[1]:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for edge-field promotions_promotion_has_product", value)
-			} else if value.Valid {
-				php.promotions_promotion_has_product = new(int)
-				*php.promotions_promotion_has_product = int(value.Int64)
 			}
 		default:
 			php.selectValues.Set(columns[i], values[i])
@@ -200,14 +147,14 @@ func (php *PromotionHasProduct) Value(name string) (ent.Value, error) {
 	return php.selectValues.Get(name)
 }
 
-// QueryProduct queries the "product" edge of the PromotionHasProduct entity.
-func (php *PromotionHasProduct) QueryProduct() *ProductsQuery {
-	return NewPromotionHasProductClient(php.config).QueryProduct(php)
+// QueryProducts queries the "products" edge of the PromotionHasProduct entity.
+func (php *PromotionHasProduct) QueryProducts() *ProductsQuery {
+	return NewPromotionHasProductClient(php.config).QueryProducts(php)
 }
 
-// QueryPromotion queries the "promotion" edge of the PromotionHasProduct entity.
-func (php *PromotionHasProduct) QueryPromotion() *PromotionsQuery {
-	return NewPromotionHasProductClient(php.config).QueryPromotion(php)
+// QueryPromotions queries the "promotions" edge of the PromotionHasProduct entity.
+func (php *PromotionHasProduct) QueryPromotions() *PromotionsQuery {
+	return NewPromotionHasProductClient(php.config).QueryPromotions(php)
 }
 
 // Update returns a builder for updating this PromotionHasProduct.
@@ -236,32 +183,18 @@ func (php *PromotionHasProduct) String() string {
 	builder.WriteString("created_at=")
 	builder.WriteString(php.CreatedAt.Format(time.ANSIC))
 	builder.WriteString(", ")
-	builder.WriteString("updated_at=")
-	builder.WriteString(php.UpdatedAt.Format(time.ANSIC))
-	builder.WriteString(", ")
 	if v := php.DeletedAt; v != nil {
 		builder.WriteString("deleted_at=")
 		builder.WriteString(v.Format(time.ANSIC))
 	}
 	builder.WriteString(", ")
-	builder.WriteString("created_by=")
-	builder.WriteString(fmt.Sprintf("%v", php.CreatedBy))
-	builder.WriteString(", ")
-	builder.WriteString("updated_by=")
-	builder.WriteString(fmt.Sprintf("%v", php.UpdatedBy))
-	builder.WriteString(", ")
-	if v := php.DeletedBy; v != nil {
-		builder.WriteString("deleted_by=")
+	if v := php.ProductsID; v != nil {
+		builder.WriteString("products_id=")
 		builder.WriteString(fmt.Sprintf("%v", *v))
 	}
 	builder.WriteString(", ")
-	if v := php.ProductID; v != nil {
-		builder.WriteString("product_id=")
-		builder.WriteString(fmt.Sprintf("%v", *v))
-	}
-	builder.WriteString(", ")
-	if v := php.PromotionID; v != nil {
-		builder.WriteString("promotion_id=")
+	if v := php.PromotionsID; v != nil {
+		builder.WriteString("promotions_id=")
 		builder.WriteString(fmt.Sprintf("%v", *v))
 	}
 	builder.WriteString(", ")

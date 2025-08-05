@@ -36,20 +36,6 @@ func (fvtc *FeaturesValuesTypesCreate) SetNillableCreatedAt(t *time.Time) *Featu
 	return fvtc
 }
 
-// SetUpdatedAt sets the "updated_at" field.
-func (fvtc *FeaturesValuesTypesCreate) SetUpdatedAt(t time.Time) *FeaturesValuesTypesCreate {
-	fvtc.mutation.SetUpdatedAt(t)
-	return fvtc
-}
-
-// SetNillableUpdatedAt sets the "updated_at" field if the given value is not nil.
-func (fvtc *FeaturesValuesTypesCreate) SetNillableUpdatedAt(t *time.Time) *FeaturesValuesTypesCreate {
-	if t != nil {
-		fvtc.SetUpdatedAt(*t)
-	}
-	return fvtc
-}
-
 // SetDeletedAt sets the "deleted_at" field.
 func (fvtc *FeaturesValuesTypesCreate) SetDeletedAt(t time.Time) *FeaturesValuesTypesCreate {
 	fvtc.mutation.SetDeletedAt(t)
@@ -60,32 +46,6 @@ func (fvtc *FeaturesValuesTypesCreate) SetDeletedAt(t time.Time) *FeaturesValues
 func (fvtc *FeaturesValuesTypesCreate) SetNillableDeletedAt(t *time.Time) *FeaturesValuesTypesCreate {
 	if t != nil {
 		fvtc.SetDeletedAt(*t)
-	}
-	return fvtc
-}
-
-// SetCreatedBy sets the "created_by" field.
-func (fvtc *FeaturesValuesTypesCreate) SetCreatedBy(i int) *FeaturesValuesTypesCreate {
-	fvtc.mutation.SetCreatedBy(i)
-	return fvtc
-}
-
-// SetUpdatedBy sets the "updated_by" field.
-func (fvtc *FeaturesValuesTypesCreate) SetUpdatedBy(i int) *FeaturesValuesTypesCreate {
-	fvtc.mutation.SetUpdatedBy(i)
-	return fvtc
-}
-
-// SetDeletedBy sets the "deleted_by" field.
-func (fvtc *FeaturesValuesTypesCreate) SetDeletedBy(i int) *FeaturesValuesTypesCreate {
-	fvtc.mutation.SetDeletedBy(i)
-	return fvtc
-}
-
-// SetNillableDeletedBy sets the "deleted_by" field if the given value is not nil.
-func (fvtc *FeaturesValuesTypesCreate) SetNillableDeletedBy(i *int) *FeaturesValuesTypesCreate {
-	if i != nil {
-		fvtc.SetDeletedBy(*i)
 	}
 	return fvtc
 }
@@ -165,35 +125,12 @@ func (fvtc *FeaturesValuesTypesCreate) defaults() {
 		v := featuresvaluestypes.DefaultCreatedAt()
 		fvtc.mutation.SetCreatedAt(v)
 	}
-	if _, ok := fvtc.mutation.UpdatedAt(); !ok {
-		v := featuresvaluestypes.DefaultUpdatedAt()
-		fvtc.mutation.SetUpdatedAt(v)
-	}
 }
 
 // check runs all checks and user-defined validators on the builder.
 func (fvtc *FeaturesValuesTypesCreate) check() error {
 	if _, ok := fvtc.mutation.CreatedAt(); !ok {
 		return &ValidationError{Name: "created_at", err: errors.New(`ent: missing required field "FeaturesValuesTypes.created_at"`)}
-	}
-	if _, ok := fvtc.mutation.UpdatedAt(); !ok {
-		return &ValidationError{Name: "updated_at", err: errors.New(`ent: missing required field "FeaturesValuesTypes.updated_at"`)}
-	}
-	if _, ok := fvtc.mutation.CreatedBy(); !ok {
-		return &ValidationError{Name: "created_by", err: errors.New(`ent: missing required field "FeaturesValuesTypes.created_by"`)}
-	}
-	if v, ok := fvtc.mutation.CreatedBy(); ok {
-		if err := featuresvaluestypes.CreatedByValidator(v); err != nil {
-			return &ValidationError{Name: "created_by", err: fmt.Errorf(`ent: validator failed for field "FeaturesValuesTypes.created_by": %w`, err)}
-		}
-	}
-	if _, ok := fvtc.mutation.UpdatedBy(); !ok {
-		return &ValidationError{Name: "updated_by", err: errors.New(`ent: missing required field "FeaturesValuesTypes.updated_by"`)}
-	}
-	if v, ok := fvtc.mutation.UpdatedBy(); ok {
-		if err := featuresvaluestypes.UpdatedByValidator(v); err != nil {
-			return &ValidationError{Name: "updated_by", err: fmt.Errorf(`ent: validator failed for field "FeaturesValuesTypes.updated_by": %w`, err)}
-		}
 	}
 	if _, ok := fvtc.mutation.Name(); !ok {
 		return &ValidationError{Name: "name", err: errors.New(`ent: missing required field "FeaturesValuesTypes.name"`)}
@@ -228,25 +165,9 @@ func (fvtc *FeaturesValuesTypesCreate) createSpec() (*FeaturesValuesTypes, *sqlg
 		_spec.SetField(featuresvaluestypes.FieldCreatedAt, field.TypeTime, value)
 		_node.CreatedAt = value
 	}
-	if value, ok := fvtc.mutation.UpdatedAt(); ok {
-		_spec.SetField(featuresvaluestypes.FieldUpdatedAt, field.TypeTime, value)
-		_node.UpdatedAt = value
-	}
 	if value, ok := fvtc.mutation.DeletedAt(); ok {
 		_spec.SetField(featuresvaluestypes.FieldDeletedAt, field.TypeTime, value)
 		_node.DeletedAt = &value
-	}
-	if value, ok := fvtc.mutation.CreatedBy(); ok {
-		_spec.SetField(featuresvaluestypes.FieldCreatedBy, field.TypeInt, value)
-		_node.CreatedBy = value
-	}
-	if value, ok := fvtc.mutation.UpdatedBy(); ok {
-		_spec.SetField(featuresvaluestypes.FieldUpdatedBy, field.TypeInt, value)
-		_node.UpdatedBy = value
-	}
-	if value, ok := fvtc.mutation.DeletedBy(); ok {
-		_spec.SetField(featuresvaluestypes.FieldDeletedBy, field.TypeInt, value)
-		_node.DeletedBy = &value
 	}
 	if value, ok := fvtc.mutation.Name(); ok {
 		_spec.SetField(featuresvaluestypes.FieldName, field.TypeString, value)

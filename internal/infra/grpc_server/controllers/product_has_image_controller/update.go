@@ -9,9 +9,6 @@ import (
 )
 
 func (c *controller) Update(ctx context.Context, in *product_has_image_proto.UpdateRequest) (*product_has_image_proto.UpdateResponse, error) {
-	if in.RequesterId == 0 {
-		return nil, errs.ProductsNotFound(int(in.Id))
-	}
 
 	tx, err := c.Db.Tx(ctx)
 	if err != nil {
@@ -34,8 +31,6 @@ func (c *controller) Update(ctx context.Context, in *product_has_image_proto.Upd
 		product_has_imageQ.SetPriority(int(*in.Priority))
 	}
 
-	product_has_imageQ.SetUpdatedBy(int(in.RequesterId))
-
 	product_has_image, err = product_has_imageQ.Save(ctx)
 	if err != nil {
 		if ent.IsNotFound(err) {
@@ -52,9 +47,9 @@ func (c *controller) Update(ctx context.Context, in *product_has_image_proto.Upd
 	}
 
 	return &product_has_image_proto.UpdateResponse{
-		RequesterId: uint32(product_has_image.CreatedBy),
-		ProductsId:  uint32(*product_has_image.ProductID),
-		ImagesId:    uint32(*product_has_image.ImageID),
-		Priority:    uint32(product_has_image.Priority),
+
+		ProductsId: uint32(*product_has_image.ProductID),
+		ImagesId:   uint32(*product_has_image.ImageID),
+		Priority:   uint32(product_has_image.Priority),
 	}, nil
 }

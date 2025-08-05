@@ -9,10 +9,6 @@ import (
 
 func (c *controller) Create(ctx context.Context, in *images_proto.CreateRequest) (*images_proto.CreateResponse, error) {
 
-	if in.RequesterId == 0 {
-		return nil, errs.RequesterIdRequired()
-	}
-
 	tx, err := c.Db.Tx(ctx)
 	if err != nil {
 		return nil, errs.StartProductsError(err)
@@ -22,8 +18,6 @@ func (c *controller) Create(ctx context.Context, in *images_proto.CreateRequest)
 		SetImageFolderPathID(int(in.ImageFolderPathId)).
 		SetContent(in.Content).
 		SetPath(in.Path).
-		SetCreatedBy(int(in.RequesterId)).
-		SetUpdatedBy(int(in.RequesterId)).
 		Save(ctx)
 
 	if err != nil {
@@ -35,7 +29,6 @@ func (c *controller) Create(ctx context.Context, in *images_proto.CreateRequest)
 	}
 
 	return &images_proto.CreateResponse{
-		ImageFolderPathId: uint32(*create.ImageFolderPathID),
 		Content:           string(*create.Content),
 		Path:              string(*create.Path),
 	}, nil

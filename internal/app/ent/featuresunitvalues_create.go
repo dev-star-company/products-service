@@ -35,20 +35,6 @@ func (fuvc *FeaturesUnitValuesCreate) SetNillableCreatedAt(t *time.Time) *Featur
 	return fuvc
 }
 
-// SetUpdatedAt sets the "updated_at" field.
-func (fuvc *FeaturesUnitValuesCreate) SetUpdatedAt(t time.Time) *FeaturesUnitValuesCreate {
-	fuvc.mutation.SetUpdatedAt(t)
-	return fuvc
-}
-
-// SetNillableUpdatedAt sets the "updated_at" field if the given value is not nil.
-func (fuvc *FeaturesUnitValuesCreate) SetNillableUpdatedAt(t *time.Time) *FeaturesUnitValuesCreate {
-	if t != nil {
-		fuvc.SetUpdatedAt(*t)
-	}
-	return fuvc
-}
-
 // SetDeletedAt sets the "deleted_at" field.
 func (fuvc *FeaturesUnitValuesCreate) SetDeletedAt(t time.Time) *FeaturesUnitValuesCreate {
 	fuvc.mutation.SetDeletedAt(t)
@@ -59,32 +45,6 @@ func (fuvc *FeaturesUnitValuesCreate) SetDeletedAt(t time.Time) *FeaturesUnitVal
 func (fuvc *FeaturesUnitValuesCreate) SetNillableDeletedAt(t *time.Time) *FeaturesUnitValuesCreate {
 	if t != nil {
 		fuvc.SetDeletedAt(*t)
-	}
-	return fuvc
-}
-
-// SetCreatedBy sets the "created_by" field.
-func (fuvc *FeaturesUnitValuesCreate) SetCreatedBy(i int) *FeaturesUnitValuesCreate {
-	fuvc.mutation.SetCreatedBy(i)
-	return fuvc
-}
-
-// SetUpdatedBy sets the "updated_by" field.
-func (fuvc *FeaturesUnitValuesCreate) SetUpdatedBy(i int) *FeaturesUnitValuesCreate {
-	fuvc.mutation.SetUpdatedBy(i)
-	return fuvc
-}
-
-// SetDeletedBy sets the "deleted_by" field.
-func (fuvc *FeaturesUnitValuesCreate) SetDeletedBy(i int) *FeaturesUnitValuesCreate {
-	fuvc.mutation.SetDeletedBy(i)
-	return fuvc
-}
-
-// SetNillableDeletedBy sets the "deleted_by" field if the given value is not nil.
-func (fuvc *FeaturesUnitValuesCreate) SetNillableDeletedBy(i *int) *FeaturesUnitValuesCreate {
-	if i != nil {
-		fuvc.SetDeletedBy(*i)
 	}
 	return fuvc
 }
@@ -163,35 +123,12 @@ func (fuvc *FeaturesUnitValuesCreate) defaults() {
 		v := featuresunitvalues.DefaultCreatedAt()
 		fuvc.mutation.SetCreatedAt(v)
 	}
-	if _, ok := fuvc.mutation.UpdatedAt(); !ok {
-		v := featuresunitvalues.DefaultUpdatedAt()
-		fuvc.mutation.SetUpdatedAt(v)
-	}
 }
 
 // check runs all checks and user-defined validators on the builder.
 func (fuvc *FeaturesUnitValuesCreate) check() error {
 	if _, ok := fuvc.mutation.CreatedAt(); !ok {
 		return &ValidationError{Name: "created_at", err: errors.New(`ent: missing required field "FeaturesUnitValues.created_at"`)}
-	}
-	if _, ok := fuvc.mutation.UpdatedAt(); !ok {
-		return &ValidationError{Name: "updated_at", err: errors.New(`ent: missing required field "FeaturesUnitValues.updated_at"`)}
-	}
-	if _, ok := fuvc.mutation.CreatedBy(); !ok {
-		return &ValidationError{Name: "created_by", err: errors.New(`ent: missing required field "FeaturesUnitValues.created_by"`)}
-	}
-	if v, ok := fuvc.mutation.CreatedBy(); ok {
-		if err := featuresunitvalues.CreatedByValidator(v); err != nil {
-			return &ValidationError{Name: "created_by", err: fmt.Errorf(`ent: validator failed for field "FeaturesUnitValues.created_by": %w`, err)}
-		}
-	}
-	if _, ok := fuvc.mutation.UpdatedBy(); !ok {
-		return &ValidationError{Name: "updated_by", err: errors.New(`ent: missing required field "FeaturesUnitValues.updated_by"`)}
-	}
-	if v, ok := fuvc.mutation.UpdatedBy(); ok {
-		if err := featuresunitvalues.UpdatedByValidator(v); err != nil {
-			return &ValidationError{Name: "updated_by", err: fmt.Errorf(`ent: validator failed for field "FeaturesUnitValues.updated_by": %w`, err)}
-		}
 	}
 	if _, ok := fuvc.mutation.Name(); !ok {
 		return &ValidationError{Name: "name", err: errors.New(`ent: missing required field "FeaturesUnitValues.name"`)}
@@ -226,25 +163,9 @@ func (fuvc *FeaturesUnitValuesCreate) createSpec() (*FeaturesUnitValues, *sqlgra
 		_spec.SetField(featuresunitvalues.FieldCreatedAt, field.TypeTime, value)
 		_node.CreatedAt = value
 	}
-	if value, ok := fuvc.mutation.UpdatedAt(); ok {
-		_spec.SetField(featuresunitvalues.FieldUpdatedAt, field.TypeTime, value)
-		_node.UpdatedAt = value
-	}
 	if value, ok := fuvc.mutation.DeletedAt(); ok {
 		_spec.SetField(featuresunitvalues.FieldDeletedAt, field.TypeTime, value)
 		_node.DeletedAt = &value
-	}
-	if value, ok := fuvc.mutation.CreatedBy(); ok {
-		_spec.SetField(featuresunitvalues.FieldCreatedBy, field.TypeInt, value)
-		_node.CreatedBy = value
-	}
-	if value, ok := fuvc.mutation.UpdatedBy(); ok {
-		_spec.SetField(featuresunitvalues.FieldUpdatedBy, field.TypeInt, value)
-		_node.UpdatedBy = value
-	}
-	if value, ok := fuvc.mutation.DeletedBy(); ok {
-		_spec.SetField(featuresunitvalues.FieldDeletedBy, field.TypeInt, value)
-		_node.DeletedBy = &value
 	}
 	if value, ok := fuvc.mutation.Name(); ok {
 		_spec.SetField(featuresunitvalues.FieldName, field.TypeString, value)

@@ -40,12 +40,6 @@ func (pu *ProductsUpdate) Where(ps ...predicate.Products) *ProductsUpdate {
 	return pu
 }
 
-// SetUpdatedAt sets the "updated_at" field.
-func (pu *ProductsUpdate) SetUpdatedAt(t time.Time) *ProductsUpdate {
-	pu.mutation.SetUpdatedAt(t)
-	return pu
-}
-
 // SetDeletedAt sets the "deleted_at" field.
 func (pu *ProductsUpdate) SetDeletedAt(t time.Time) *ProductsUpdate {
 	pu.mutation.SetDeletedAt(t)
@@ -66,57 +60,8 @@ func (pu *ProductsUpdate) ClearDeletedAt() *ProductsUpdate {
 	return pu
 }
 
-// SetUpdatedBy sets the "updated_by" field.
-func (pu *ProductsUpdate) SetUpdatedBy(i int) *ProductsUpdate {
-	pu.mutation.ResetUpdatedBy()
-	pu.mutation.SetUpdatedBy(i)
-	return pu
-}
-
-// SetNillableUpdatedBy sets the "updated_by" field if the given value is not nil.
-func (pu *ProductsUpdate) SetNillableUpdatedBy(i *int) *ProductsUpdate {
-	if i != nil {
-		pu.SetUpdatedBy(*i)
-	}
-	return pu
-}
-
-// AddUpdatedBy adds i to the "updated_by" field.
-func (pu *ProductsUpdate) AddUpdatedBy(i int) *ProductsUpdate {
-	pu.mutation.AddUpdatedBy(i)
-	return pu
-}
-
-// SetDeletedBy sets the "deleted_by" field.
-func (pu *ProductsUpdate) SetDeletedBy(i int) *ProductsUpdate {
-	pu.mutation.ResetDeletedBy()
-	pu.mutation.SetDeletedBy(i)
-	return pu
-}
-
-// SetNillableDeletedBy sets the "deleted_by" field if the given value is not nil.
-func (pu *ProductsUpdate) SetNillableDeletedBy(i *int) *ProductsUpdate {
-	if i != nil {
-		pu.SetDeletedBy(*i)
-	}
-	return pu
-}
-
-// AddDeletedBy adds i to the "deleted_by" field.
-func (pu *ProductsUpdate) AddDeletedBy(i int) *ProductsUpdate {
-	pu.mutation.AddDeletedBy(i)
-	return pu
-}
-
-// ClearDeletedBy clears the value of the "deleted_by" field.
-func (pu *ProductsUpdate) ClearDeletedBy() *ProductsUpdate {
-	pu.mutation.ClearDeletedBy()
-	return pu
-}
-
 // SetCategoryID sets the "category_id" field.
 func (pu *ProductsUpdate) SetCategoryID(i int) *ProductsUpdate {
-	pu.mutation.ResetCategoryID()
 	pu.mutation.SetCategoryID(i)
 	return pu
 }
@@ -129,12 +74,6 @@ func (pu *ProductsUpdate) SetNillableCategoryID(i *int) *ProductsUpdate {
 	return pu
 }
 
-// AddCategoryID adds i to the "category_id" field.
-func (pu *ProductsUpdate) AddCategoryID(i int) *ProductsUpdate {
-	pu.mutation.AddCategoryID(i)
-	return pu
-}
-
 // ClearCategoryID clears the value of the "category_id" field.
 func (pu *ProductsUpdate) ClearCategoryID() *ProductsUpdate {
 	pu.mutation.ClearCategoryID()
@@ -143,7 +82,6 @@ func (pu *ProductsUpdate) ClearCategoryID() *ProductsUpdate {
 
 // SetBrandID sets the "brand_id" field.
 func (pu *ProductsUpdate) SetBrandID(i int) *ProductsUpdate {
-	pu.mutation.ResetBrandID()
 	pu.mutation.SetBrandID(i)
 	return pu
 }
@@ -156,12 +94,6 @@ func (pu *ProductsUpdate) SetNillableBrandID(i *int) *ProductsUpdate {
 	return pu
 }
 
-// AddBrandID adds i to the "brand_id" field.
-func (pu *ProductsUpdate) AddBrandID(i int) *ProductsUpdate {
-	pu.mutation.AddBrandID(i)
-	return pu
-}
-
 // ClearBrandID clears the value of the "brand_id" field.
 func (pu *ProductsUpdate) ClearBrandID() *ProductsUpdate {
 	pu.mutation.ClearBrandID()
@@ -170,7 +102,6 @@ func (pu *ProductsUpdate) ClearBrandID() *ProductsUpdate {
 
 // SetVariantTypeID sets the "variant_type_id" field.
 func (pu *ProductsUpdate) SetVariantTypeID(i int) *ProductsUpdate {
-	pu.mutation.ResetVariantTypeID()
 	pu.mutation.SetVariantTypeID(i)
 	return pu
 }
@@ -183,12 +114,6 @@ func (pu *ProductsUpdate) SetNillableVariantTypeID(i *int) *ProductsUpdate {
 	return pu
 }
 
-// AddVariantTypeID adds i to the "variant_type_id" field.
-func (pu *ProductsUpdate) AddVariantTypeID(i int) *ProductsUpdate {
-	pu.mutation.AddVariantTypeID(i)
-	return pu
-}
-
 // ClearVariantTypeID clears the value of the "variant_type_id" field.
 func (pu *ProductsUpdate) ClearVariantTypeID() *ProductsUpdate {
 	pu.mutation.ClearVariantTypeID()
@@ -197,7 +122,6 @@ func (pu *ProductsUpdate) ClearVariantTypeID() *ProductsUpdate {
 
 // SetProductReferencesID sets the "product_references_id" field.
 func (pu *ProductsUpdate) SetProductReferencesID(i int) *ProductsUpdate {
-	pu.mutation.ResetProductReferencesID()
 	pu.mutation.SetProductReferencesID(i)
 	return pu
 }
@@ -210,36 +134,29 @@ func (pu *ProductsUpdate) SetNillableProductReferencesID(i *int) *ProductsUpdate
 	return pu
 }
 
-// AddProductReferencesID adds i to the "product_references_id" field.
-func (pu *ProductsUpdate) AddProductReferencesID(i int) *ProductsUpdate {
-	pu.mutation.AddProductReferencesID(i)
-	return pu
-}
-
 // ClearProductReferencesID clears the value of the "product_references_id" field.
 func (pu *ProductsUpdate) ClearProductReferencesID() *ProductsUpdate {
 	pu.mutation.ClearProductReferencesID()
 	return pu
 }
 
-// SetImageID sets the "image_id" field.
-func (pu *ProductsUpdate) SetImageID(i int) *ProductsUpdate {
-	pu.mutation.ResetImageID()
-	pu.mutation.SetImageID(i)
+// SetImagesID sets the "images_id" field.
+func (pu *ProductsUpdate) SetImagesID(i int) *ProductsUpdate {
+	pu.mutation.SetImagesID(i)
 	return pu
 }
 
-// SetNillableImageID sets the "image_id" field if the given value is not nil.
-func (pu *ProductsUpdate) SetNillableImageID(i *int) *ProductsUpdate {
+// SetNillableImagesID sets the "images_id" field if the given value is not nil.
+func (pu *ProductsUpdate) SetNillableImagesID(i *int) *ProductsUpdate {
 	if i != nil {
-		pu.SetImageID(*i)
+		pu.SetImagesID(*i)
 	}
 	return pu
 }
 
-// AddImageID adds i to the "image_id" field.
-func (pu *ProductsUpdate) AddImageID(i int) *ProductsUpdate {
-	pu.mutation.AddImageID(i)
+// ClearImagesID clears the value of the "images_id" field.
+func (pu *ProductsUpdate) ClearImagesID() *ProductsUpdate {
+	pu.mutation.ClearImagesID()
 	return pu
 }
 
@@ -293,34 +210,14 @@ func (pu *ProductsUpdate) SetVariantType(v *VariantType) *ProductsUpdate {
 	return pu.SetVariantTypeID(v.ID)
 }
 
-// AddProductReferenceIDs adds the "product_references" edge to the ProductReferences entity by IDs.
-func (pu *ProductsUpdate) AddProductReferenceIDs(ids ...int) *ProductsUpdate {
-	pu.mutation.AddProductReferenceIDs(ids...)
-	return pu
+// SetProductReferences sets the "product_references" edge to the ProductReferences entity.
+func (pu *ProductsUpdate) SetProductReferences(p *ProductReferences) *ProductsUpdate {
+	return pu.SetProductReferencesID(p.ID)
 }
 
-// AddProductReferences adds the "product_references" edges to the ProductReferences entity.
-func (pu *ProductsUpdate) AddProductReferences(p ...*ProductReferences) *ProductsUpdate {
-	ids := make([]int, len(p))
-	for i := range p {
-		ids[i] = p[i].ID
-	}
-	return pu.AddProductReferenceIDs(ids...)
-}
-
-// AddImageIDs adds the "images" edge to the Images entity by IDs.
-func (pu *ProductsUpdate) AddImageIDs(ids ...int) *ProductsUpdate {
-	pu.mutation.AddImageIDs(ids...)
-	return pu
-}
-
-// AddImages adds the "images" edges to the Images entity.
-func (pu *ProductsUpdate) AddImages(i ...*Images) *ProductsUpdate {
-	ids := make([]int, len(i))
-	for j := range i {
-		ids[j] = i[j].ID
-	}
-	return pu.AddImageIDs(ids...)
+// SetImages sets the "images" edge to the Images entity.
+func (pu *ProductsUpdate) SetImages(i *Images) *ProductsUpdate {
+	return pu.SetImagesID(i.ID)
 }
 
 // AddProductHasImageIDs adds the "product_has_image" edge to the ProductHasImage entity by IDs.
@@ -451,46 +348,16 @@ func (pu *ProductsUpdate) ClearVariantType() *ProductsUpdate {
 	return pu
 }
 
-// ClearProductReferences clears all "product_references" edges to the ProductReferences entity.
+// ClearProductReferences clears the "product_references" edge to the ProductReferences entity.
 func (pu *ProductsUpdate) ClearProductReferences() *ProductsUpdate {
 	pu.mutation.ClearProductReferences()
 	return pu
 }
 
-// RemoveProductReferenceIDs removes the "product_references" edge to ProductReferences entities by IDs.
-func (pu *ProductsUpdate) RemoveProductReferenceIDs(ids ...int) *ProductsUpdate {
-	pu.mutation.RemoveProductReferenceIDs(ids...)
-	return pu
-}
-
-// RemoveProductReferences removes "product_references" edges to ProductReferences entities.
-func (pu *ProductsUpdate) RemoveProductReferences(p ...*ProductReferences) *ProductsUpdate {
-	ids := make([]int, len(p))
-	for i := range p {
-		ids[i] = p[i].ID
-	}
-	return pu.RemoveProductReferenceIDs(ids...)
-}
-
-// ClearImages clears all "images" edges to the Images entity.
+// ClearImages clears the "images" edge to the Images entity.
 func (pu *ProductsUpdate) ClearImages() *ProductsUpdate {
 	pu.mutation.ClearImages()
 	return pu
-}
-
-// RemoveImageIDs removes the "images" edge to Images entities by IDs.
-func (pu *ProductsUpdate) RemoveImageIDs(ids ...int) *ProductsUpdate {
-	pu.mutation.RemoveImageIDs(ids...)
-	return pu
-}
-
-// RemoveImages removes "images" edges to Images entities.
-func (pu *ProductsUpdate) RemoveImages(i ...*Images) *ProductsUpdate {
-	ids := make([]int, len(i))
-	for j := range i {
-		ids[j] = i[j].ID
-	}
-	return pu.RemoveImageIDs(ids...)
 }
 
 // ClearProductHasImage clears all "product_has_image" edges to the ProductHasImage entity.
@@ -642,7 +509,6 @@ func (pu *ProductsUpdate) RemoveProductPrices(p ...*ProductPrices) *ProductsUpda
 
 // Save executes the query and returns the number of nodes affected by the update operation.
 func (pu *ProductsUpdate) Save(ctx context.Context) (int, error) {
-	pu.defaults()
 	return withHooks(ctx, pu.sqlSave, pu.mutation, pu.hooks)
 }
 
@@ -668,28 +534,7 @@ func (pu *ProductsUpdate) ExecX(ctx context.Context) {
 	}
 }
 
-// defaults sets the default values of the builder before save.
-func (pu *ProductsUpdate) defaults() {
-	if _, ok := pu.mutation.UpdatedAt(); !ok {
-		v := products.UpdateDefaultUpdatedAt()
-		pu.mutation.SetUpdatedAt(v)
-	}
-}
-
-// check runs all checks and user-defined validators on the builder.
-func (pu *ProductsUpdate) check() error {
-	if v, ok := pu.mutation.UpdatedBy(); ok {
-		if err := products.UpdatedByValidator(v); err != nil {
-			return &ValidationError{Name: "updated_by", err: fmt.Errorf(`ent: validator failed for field "Products.updated_by": %w`, err)}
-		}
-	}
-	return nil
-}
-
 func (pu *ProductsUpdate) sqlSave(ctx context.Context) (n int, err error) {
-	if err := pu.check(); err != nil {
-		return n, err
-	}
 	_spec := sqlgraph.NewUpdateSpec(products.Table, products.Columns, sqlgraph.NewFieldSpec(products.FieldID, field.TypeInt))
 	if ps := pu.mutation.predicates; len(ps) > 0 {
 		_spec.Predicate = func(selector *sql.Selector) {
@@ -698,71 +543,11 @@ func (pu *ProductsUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			}
 		}
 	}
-	if value, ok := pu.mutation.UpdatedAt(); ok {
-		_spec.SetField(products.FieldUpdatedAt, field.TypeTime, value)
-	}
 	if value, ok := pu.mutation.DeletedAt(); ok {
 		_spec.SetField(products.FieldDeletedAt, field.TypeTime, value)
 	}
 	if pu.mutation.DeletedAtCleared() {
 		_spec.ClearField(products.FieldDeletedAt, field.TypeTime)
-	}
-	if value, ok := pu.mutation.UpdatedBy(); ok {
-		_spec.SetField(products.FieldUpdatedBy, field.TypeInt, value)
-	}
-	if value, ok := pu.mutation.AddedUpdatedBy(); ok {
-		_spec.AddField(products.FieldUpdatedBy, field.TypeInt, value)
-	}
-	if value, ok := pu.mutation.DeletedBy(); ok {
-		_spec.SetField(products.FieldDeletedBy, field.TypeInt, value)
-	}
-	if value, ok := pu.mutation.AddedDeletedBy(); ok {
-		_spec.AddField(products.FieldDeletedBy, field.TypeInt, value)
-	}
-	if pu.mutation.DeletedByCleared() {
-		_spec.ClearField(products.FieldDeletedBy, field.TypeInt)
-	}
-	if value, ok := pu.mutation.CategoryID(); ok {
-		_spec.SetField(products.FieldCategoryID, field.TypeInt, value)
-	}
-	if value, ok := pu.mutation.AddedCategoryID(); ok {
-		_spec.AddField(products.FieldCategoryID, field.TypeInt, value)
-	}
-	if pu.mutation.CategoryIDCleared() {
-		_spec.ClearField(products.FieldCategoryID, field.TypeInt)
-	}
-	if value, ok := pu.mutation.BrandID(); ok {
-		_spec.SetField(products.FieldBrandID, field.TypeInt, value)
-	}
-	if value, ok := pu.mutation.AddedBrandID(); ok {
-		_spec.AddField(products.FieldBrandID, field.TypeInt, value)
-	}
-	if pu.mutation.BrandIDCleared() {
-		_spec.ClearField(products.FieldBrandID, field.TypeInt)
-	}
-	if value, ok := pu.mutation.VariantTypeID(); ok {
-		_spec.SetField(products.FieldVariantTypeID, field.TypeInt, value)
-	}
-	if value, ok := pu.mutation.AddedVariantTypeID(); ok {
-		_spec.AddField(products.FieldVariantTypeID, field.TypeInt, value)
-	}
-	if pu.mutation.VariantTypeIDCleared() {
-		_spec.ClearField(products.FieldVariantTypeID, field.TypeInt)
-	}
-	if value, ok := pu.mutation.ProductReferencesID(); ok {
-		_spec.SetField(products.FieldProductReferencesID, field.TypeInt, value)
-	}
-	if value, ok := pu.mutation.AddedProductReferencesID(); ok {
-		_spec.AddField(products.FieldProductReferencesID, field.TypeInt, value)
-	}
-	if pu.mutation.ProductReferencesIDCleared() {
-		_spec.ClearField(products.FieldProductReferencesID, field.TypeInt)
-	}
-	if value, ok := pu.mutation.ImageID(); ok {
-		_spec.SetField(products.FieldImageID, field.TypeInt, value)
-	}
-	if value, ok := pu.mutation.AddedImageID(); ok {
-		_spec.AddField(products.FieldImageID, field.TypeInt, value)
 	}
 	if value, ok := pu.mutation.Name(); ok {
 		_spec.SetField(products.FieldName, field.TypeString, value)
@@ -862,37 +647,21 @@ func (pu *ProductsUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if pu.mutation.ProductReferencesCleared() {
 		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
 			Table:   products.ProductReferencesTable,
 			Columns: []string{products.ProductReferencesColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(productreferences.FieldID, field.TypeInt),
 			},
-		}
-		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
-	}
-	if nodes := pu.mutation.RemovedProductReferencesIDs(); len(nodes) > 0 && !pu.mutation.ProductReferencesCleared() {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
-			Table:   products.ProductReferencesTable,
-			Columns: []string{products.ProductReferencesColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(productreferences.FieldID, field.TypeInt),
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
 	if nodes := pu.mutation.ProductReferencesIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
 			Table:   products.ProductReferencesTable,
 			Columns: []string{products.ProductReferencesColumn},
 			Bidi:    false,
@@ -907,37 +676,21 @@ func (pu *ProductsUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if pu.mutation.ImagesCleared() {
 		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
 			Table:   products.ImagesTable,
 			Columns: []string{products.ImagesColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(images.FieldID, field.TypeInt),
 			},
-		}
-		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
-	}
-	if nodes := pu.mutation.RemovedImagesIDs(); len(nodes) > 0 && !pu.mutation.ImagesCleared() {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
-			Table:   products.ImagesTable,
-			Columns: []string{products.ImagesColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(images.FieldID, field.TypeInt),
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
 	if nodes := pu.mutation.ImagesIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
 			Table:   products.ImagesTable,
 			Columns: []string{products.ImagesColumn},
 			Bidi:    false,
@@ -1285,12 +1038,6 @@ type ProductsUpdateOne struct {
 	mutation *ProductsMutation
 }
 
-// SetUpdatedAt sets the "updated_at" field.
-func (puo *ProductsUpdateOne) SetUpdatedAt(t time.Time) *ProductsUpdateOne {
-	puo.mutation.SetUpdatedAt(t)
-	return puo
-}
-
 // SetDeletedAt sets the "deleted_at" field.
 func (puo *ProductsUpdateOne) SetDeletedAt(t time.Time) *ProductsUpdateOne {
 	puo.mutation.SetDeletedAt(t)
@@ -1311,57 +1058,8 @@ func (puo *ProductsUpdateOne) ClearDeletedAt() *ProductsUpdateOne {
 	return puo
 }
 
-// SetUpdatedBy sets the "updated_by" field.
-func (puo *ProductsUpdateOne) SetUpdatedBy(i int) *ProductsUpdateOne {
-	puo.mutation.ResetUpdatedBy()
-	puo.mutation.SetUpdatedBy(i)
-	return puo
-}
-
-// SetNillableUpdatedBy sets the "updated_by" field if the given value is not nil.
-func (puo *ProductsUpdateOne) SetNillableUpdatedBy(i *int) *ProductsUpdateOne {
-	if i != nil {
-		puo.SetUpdatedBy(*i)
-	}
-	return puo
-}
-
-// AddUpdatedBy adds i to the "updated_by" field.
-func (puo *ProductsUpdateOne) AddUpdatedBy(i int) *ProductsUpdateOne {
-	puo.mutation.AddUpdatedBy(i)
-	return puo
-}
-
-// SetDeletedBy sets the "deleted_by" field.
-func (puo *ProductsUpdateOne) SetDeletedBy(i int) *ProductsUpdateOne {
-	puo.mutation.ResetDeletedBy()
-	puo.mutation.SetDeletedBy(i)
-	return puo
-}
-
-// SetNillableDeletedBy sets the "deleted_by" field if the given value is not nil.
-func (puo *ProductsUpdateOne) SetNillableDeletedBy(i *int) *ProductsUpdateOne {
-	if i != nil {
-		puo.SetDeletedBy(*i)
-	}
-	return puo
-}
-
-// AddDeletedBy adds i to the "deleted_by" field.
-func (puo *ProductsUpdateOne) AddDeletedBy(i int) *ProductsUpdateOne {
-	puo.mutation.AddDeletedBy(i)
-	return puo
-}
-
-// ClearDeletedBy clears the value of the "deleted_by" field.
-func (puo *ProductsUpdateOne) ClearDeletedBy() *ProductsUpdateOne {
-	puo.mutation.ClearDeletedBy()
-	return puo
-}
-
 // SetCategoryID sets the "category_id" field.
 func (puo *ProductsUpdateOne) SetCategoryID(i int) *ProductsUpdateOne {
-	puo.mutation.ResetCategoryID()
 	puo.mutation.SetCategoryID(i)
 	return puo
 }
@@ -1374,12 +1072,6 @@ func (puo *ProductsUpdateOne) SetNillableCategoryID(i *int) *ProductsUpdateOne {
 	return puo
 }
 
-// AddCategoryID adds i to the "category_id" field.
-func (puo *ProductsUpdateOne) AddCategoryID(i int) *ProductsUpdateOne {
-	puo.mutation.AddCategoryID(i)
-	return puo
-}
-
 // ClearCategoryID clears the value of the "category_id" field.
 func (puo *ProductsUpdateOne) ClearCategoryID() *ProductsUpdateOne {
 	puo.mutation.ClearCategoryID()
@@ -1388,7 +1080,6 @@ func (puo *ProductsUpdateOne) ClearCategoryID() *ProductsUpdateOne {
 
 // SetBrandID sets the "brand_id" field.
 func (puo *ProductsUpdateOne) SetBrandID(i int) *ProductsUpdateOne {
-	puo.mutation.ResetBrandID()
 	puo.mutation.SetBrandID(i)
 	return puo
 }
@@ -1401,12 +1092,6 @@ func (puo *ProductsUpdateOne) SetNillableBrandID(i *int) *ProductsUpdateOne {
 	return puo
 }
 
-// AddBrandID adds i to the "brand_id" field.
-func (puo *ProductsUpdateOne) AddBrandID(i int) *ProductsUpdateOne {
-	puo.mutation.AddBrandID(i)
-	return puo
-}
-
 // ClearBrandID clears the value of the "brand_id" field.
 func (puo *ProductsUpdateOne) ClearBrandID() *ProductsUpdateOne {
 	puo.mutation.ClearBrandID()
@@ -1415,7 +1100,6 @@ func (puo *ProductsUpdateOne) ClearBrandID() *ProductsUpdateOne {
 
 // SetVariantTypeID sets the "variant_type_id" field.
 func (puo *ProductsUpdateOne) SetVariantTypeID(i int) *ProductsUpdateOne {
-	puo.mutation.ResetVariantTypeID()
 	puo.mutation.SetVariantTypeID(i)
 	return puo
 }
@@ -1428,12 +1112,6 @@ func (puo *ProductsUpdateOne) SetNillableVariantTypeID(i *int) *ProductsUpdateOn
 	return puo
 }
 
-// AddVariantTypeID adds i to the "variant_type_id" field.
-func (puo *ProductsUpdateOne) AddVariantTypeID(i int) *ProductsUpdateOne {
-	puo.mutation.AddVariantTypeID(i)
-	return puo
-}
-
 // ClearVariantTypeID clears the value of the "variant_type_id" field.
 func (puo *ProductsUpdateOne) ClearVariantTypeID() *ProductsUpdateOne {
 	puo.mutation.ClearVariantTypeID()
@@ -1442,7 +1120,6 @@ func (puo *ProductsUpdateOne) ClearVariantTypeID() *ProductsUpdateOne {
 
 // SetProductReferencesID sets the "product_references_id" field.
 func (puo *ProductsUpdateOne) SetProductReferencesID(i int) *ProductsUpdateOne {
-	puo.mutation.ResetProductReferencesID()
 	puo.mutation.SetProductReferencesID(i)
 	return puo
 }
@@ -1455,36 +1132,29 @@ func (puo *ProductsUpdateOne) SetNillableProductReferencesID(i *int) *ProductsUp
 	return puo
 }
 
-// AddProductReferencesID adds i to the "product_references_id" field.
-func (puo *ProductsUpdateOne) AddProductReferencesID(i int) *ProductsUpdateOne {
-	puo.mutation.AddProductReferencesID(i)
-	return puo
-}
-
 // ClearProductReferencesID clears the value of the "product_references_id" field.
 func (puo *ProductsUpdateOne) ClearProductReferencesID() *ProductsUpdateOne {
 	puo.mutation.ClearProductReferencesID()
 	return puo
 }
 
-// SetImageID sets the "image_id" field.
-func (puo *ProductsUpdateOne) SetImageID(i int) *ProductsUpdateOne {
-	puo.mutation.ResetImageID()
-	puo.mutation.SetImageID(i)
+// SetImagesID sets the "images_id" field.
+func (puo *ProductsUpdateOne) SetImagesID(i int) *ProductsUpdateOne {
+	puo.mutation.SetImagesID(i)
 	return puo
 }
 
-// SetNillableImageID sets the "image_id" field if the given value is not nil.
-func (puo *ProductsUpdateOne) SetNillableImageID(i *int) *ProductsUpdateOne {
+// SetNillableImagesID sets the "images_id" field if the given value is not nil.
+func (puo *ProductsUpdateOne) SetNillableImagesID(i *int) *ProductsUpdateOne {
 	if i != nil {
-		puo.SetImageID(*i)
+		puo.SetImagesID(*i)
 	}
 	return puo
 }
 
-// AddImageID adds i to the "image_id" field.
-func (puo *ProductsUpdateOne) AddImageID(i int) *ProductsUpdateOne {
-	puo.mutation.AddImageID(i)
+// ClearImagesID clears the value of the "images_id" field.
+func (puo *ProductsUpdateOne) ClearImagesID() *ProductsUpdateOne {
+	puo.mutation.ClearImagesID()
 	return puo
 }
 
@@ -1538,34 +1208,14 @@ func (puo *ProductsUpdateOne) SetVariantType(v *VariantType) *ProductsUpdateOne 
 	return puo.SetVariantTypeID(v.ID)
 }
 
-// AddProductReferenceIDs adds the "product_references" edge to the ProductReferences entity by IDs.
-func (puo *ProductsUpdateOne) AddProductReferenceIDs(ids ...int) *ProductsUpdateOne {
-	puo.mutation.AddProductReferenceIDs(ids...)
-	return puo
+// SetProductReferences sets the "product_references" edge to the ProductReferences entity.
+func (puo *ProductsUpdateOne) SetProductReferences(p *ProductReferences) *ProductsUpdateOne {
+	return puo.SetProductReferencesID(p.ID)
 }
 
-// AddProductReferences adds the "product_references" edges to the ProductReferences entity.
-func (puo *ProductsUpdateOne) AddProductReferences(p ...*ProductReferences) *ProductsUpdateOne {
-	ids := make([]int, len(p))
-	for i := range p {
-		ids[i] = p[i].ID
-	}
-	return puo.AddProductReferenceIDs(ids...)
-}
-
-// AddImageIDs adds the "images" edge to the Images entity by IDs.
-func (puo *ProductsUpdateOne) AddImageIDs(ids ...int) *ProductsUpdateOne {
-	puo.mutation.AddImageIDs(ids...)
-	return puo
-}
-
-// AddImages adds the "images" edges to the Images entity.
-func (puo *ProductsUpdateOne) AddImages(i ...*Images) *ProductsUpdateOne {
-	ids := make([]int, len(i))
-	for j := range i {
-		ids[j] = i[j].ID
-	}
-	return puo.AddImageIDs(ids...)
+// SetImages sets the "images" edge to the Images entity.
+func (puo *ProductsUpdateOne) SetImages(i *Images) *ProductsUpdateOne {
+	return puo.SetImagesID(i.ID)
 }
 
 // AddProductHasImageIDs adds the "product_has_image" edge to the ProductHasImage entity by IDs.
@@ -1696,46 +1346,16 @@ func (puo *ProductsUpdateOne) ClearVariantType() *ProductsUpdateOne {
 	return puo
 }
 
-// ClearProductReferences clears all "product_references" edges to the ProductReferences entity.
+// ClearProductReferences clears the "product_references" edge to the ProductReferences entity.
 func (puo *ProductsUpdateOne) ClearProductReferences() *ProductsUpdateOne {
 	puo.mutation.ClearProductReferences()
 	return puo
 }
 
-// RemoveProductReferenceIDs removes the "product_references" edge to ProductReferences entities by IDs.
-func (puo *ProductsUpdateOne) RemoveProductReferenceIDs(ids ...int) *ProductsUpdateOne {
-	puo.mutation.RemoveProductReferenceIDs(ids...)
-	return puo
-}
-
-// RemoveProductReferences removes "product_references" edges to ProductReferences entities.
-func (puo *ProductsUpdateOne) RemoveProductReferences(p ...*ProductReferences) *ProductsUpdateOne {
-	ids := make([]int, len(p))
-	for i := range p {
-		ids[i] = p[i].ID
-	}
-	return puo.RemoveProductReferenceIDs(ids...)
-}
-
-// ClearImages clears all "images" edges to the Images entity.
+// ClearImages clears the "images" edge to the Images entity.
 func (puo *ProductsUpdateOne) ClearImages() *ProductsUpdateOne {
 	puo.mutation.ClearImages()
 	return puo
-}
-
-// RemoveImageIDs removes the "images" edge to Images entities by IDs.
-func (puo *ProductsUpdateOne) RemoveImageIDs(ids ...int) *ProductsUpdateOne {
-	puo.mutation.RemoveImageIDs(ids...)
-	return puo
-}
-
-// RemoveImages removes "images" edges to Images entities.
-func (puo *ProductsUpdateOne) RemoveImages(i ...*Images) *ProductsUpdateOne {
-	ids := make([]int, len(i))
-	for j := range i {
-		ids[j] = i[j].ID
-	}
-	return puo.RemoveImageIDs(ids...)
 }
 
 // ClearProductHasImage clears all "product_has_image" edges to the ProductHasImage entity.
@@ -1900,7 +1520,6 @@ func (puo *ProductsUpdateOne) Select(field string, fields ...string) *ProductsUp
 
 // Save executes the query and returns the updated Products entity.
 func (puo *ProductsUpdateOne) Save(ctx context.Context) (*Products, error) {
-	puo.defaults()
 	return withHooks(ctx, puo.sqlSave, puo.mutation, puo.hooks)
 }
 
@@ -1926,28 +1545,7 @@ func (puo *ProductsUpdateOne) ExecX(ctx context.Context) {
 	}
 }
 
-// defaults sets the default values of the builder before save.
-func (puo *ProductsUpdateOne) defaults() {
-	if _, ok := puo.mutation.UpdatedAt(); !ok {
-		v := products.UpdateDefaultUpdatedAt()
-		puo.mutation.SetUpdatedAt(v)
-	}
-}
-
-// check runs all checks and user-defined validators on the builder.
-func (puo *ProductsUpdateOne) check() error {
-	if v, ok := puo.mutation.UpdatedBy(); ok {
-		if err := products.UpdatedByValidator(v); err != nil {
-			return &ValidationError{Name: "updated_by", err: fmt.Errorf(`ent: validator failed for field "Products.updated_by": %w`, err)}
-		}
-	}
-	return nil
-}
-
 func (puo *ProductsUpdateOne) sqlSave(ctx context.Context) (_node *Products, err error) {
-	if err := puo.check(); err != nil {
-		return _node, err
-	}
 	_spec := sqlgraph.NewUpdateSpec(products.Table, products.Columns, sqlgraph.NewFieldSpec(products.FieldID, field.TypeInt))
 	id, ok := puo.mutation.ID()
 	if !ok {
@@ -1973,71 +1571,11 @@ func (puo *ProductsUpdateOne) sqlSave(ctx context.Context) (_node *Products, err
 			}
 		}
 	}
-	if value, ok := puo.mutation.UpdatedAt(); ok {
-		_spec.SetField(products.FieldUpdatedAt, field.TypeTime, value)
-	}
 	if value, ok := puo.mutation.DeletedAt(); ok {
 		_spec.SetField(products.FieldDeletedAt, field.TypeTime, value)
 	}
 	if puo.mutation.DeletedAtCleared() {
 		_spec.ClearField(products.FieldDeletedAt, field.TypeTime)
-	}
-	if value, ok := puo.mutation.UpdatedBy(); ok {
-		_spec.SetField(products.FieldUpdatedBy, field.TypeInt, value)
-	}
-	if value, ok := puo.mutation.AddedUpdatedBy(); ok {
-		_spec.AddField(products.FieldUpdatedBy, field.TypeInt, value)
-	}
-	if value, ok := puo.mutation.DeletedBy(); ok {
-		_spec.SetField(products.FieldDeletedBy, field.TypeInt, value)
-	}
-	if value, ok := puo.mutation.AddedDeletedBy(); ok {
-		_spec.AddField(products.FieldDeletedBy, field.TypeInt, value)
-	}
-	if puo.mutation.DeletedByCleared() {
-		_spec.ClearField(products.FieldDeletedBy, field.TypeInt)
-	}
-	if value, ok := puo.mutation.CategoryID(); ok {
-		_spec.SetField(products.FieldCategoryID, field.TypeInt, value)
-	}
-	if value, ok := puo.mutation.AddedCategoryID(); ok {
-		_spec.AddField(products.FieldCategoryID, field.TypeInt, value)
-	}
-	if puo.mutation.CategoryIDCleared() {
-		_spec.ClearField(products.FieldCategoryID, field.TypeInt)
-	}
-	if value, ok := puo.mutation.BrandID(); ok {
-		_spec.SetField(products.FieldBrandID, field.TypeInt, value)
-	}
-	if value, ok := puo.mutation.AddedBrandID(); ok {
-		_spec.AddField(products.FieldBrandID, field.TypeInt, value)
-	}
-	if puo.mutation.BrandIDCleared() {
-		_spec.ClearField(products.FieldBrandID, field.TypeInt)
-	}
-	if value, ok := puo.mutation.VariantTypeID(); ok {
-		_spec.SetField(products.FieldVariantTypeID, field.TypeInt, value)
-	}
-	if value, ok := puo.mutation.AddedVariantTypeID(); ok {
-		_spec.AddField(products.FieldVariantTypeID, field.TypeInt, value)
-	}
-	if puo.mutation.VariantTypeIDCleared() {
-		_spec.ClearField(products.FieldVariantTypeID, field.TypeInt)
-	}
-	if value, ok := puo.mutation.ProductReferencesID(); ok {
-		_spec.SetField(products.FieldProductReferencesID, field.TypeInt, value)
-	}
-	if value, ok := puo.mutation.AddedProductReferencesID(); ok {
-		_spec.AddField(products.FieldProductReferencesID, field.TypeInt, value)
-	}
-	if puo.mutation.ProductReferencesIDCleared() {
-		_spec.ClearField(products.FieldProductReferencesID, field.TypeInt)
-	}
-	if value, ok := puo.mutation.ImageID(); ok {
-		_spec.SetField(products.FieldImageID, field.TypeInt, value)
-	}
-	if value, ok := puo.mutation.AddedImageID(); ok {
-		_spec.AddField(products.FieldImageID, field.TypeInt, value)
 	}
 	if value, ok := puo.mutation.Name(); ok {
 		_spec.SetField(products.FieldName, field.TypeString, value)
@@ -2137,37 +1675,21 @@ func (puo *ProductsUpdateOne) sqlSave(ctx context.Context) (_node *Products, err
 	}
 	if puo.mutation.ProductReferencesCleared() {
 		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
 			Table:   products.ProductReferencesTable,
 			Columns: []string{products.ProductReferencesColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(productreferences.FieldID, field.TypeInt),
 			},
-		}
-		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
-	}
-	if nodes := puo.mutation.RemovedProductReferencesIDs(); len(nodes) > 0 && !puo.mutation.ProductReferencesCleared() {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
-			Table:   products.ProductReferencesTable,
-			Columns: []string{products.ProductReferencesColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(productreferences.FieldID, field.TypeInt),
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
 	if nodes := puo.mutation.ProductReferencesIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
 			Table:   products.ProductReferencesTable,
 			Columns: []string{products.ProductReferencesColumn},
 			Bidi:    false,
@@ -2182,37 +1704,21 @@ func (puo *ProductsUpdateOne) sqlSave(ctx context.Context) (_node *Products, err
 	}
 	if puo.mutation.ImagesCleared() {
 		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
 			Table:   products.ImagesTable,
 			Columns: []string{products.ImagesColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(images.FieldID, field.TypeInt),
 			},
-		}
-		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
-	}
-	if nodes := puo.mutation.RemovedImagesIDs(); len(nodes) > 0 && !puo.mutation.ImagesCleared() {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
-			Table:   products.ImagesTable,
-			Columns: []string{products.ImagesColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(images.FieldID, field.TypeInt),
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
 	if nodes := puo.mutation.ImagesIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
 			Table:   products.ImagesTable,
 			Columns: []string{products.ImagesColumn},
 			Bidi:    false,

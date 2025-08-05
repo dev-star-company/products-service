@@ -9,10 +9,6 @@ import (
 
 func (c *controller) Create(ctx context.Context, in *product_prices_proto.CreateRequest) (*product_prices_proto.CreateResponse, error) {
 
-	if in.RequesterId == 0 {
-		return nil, errs.RequesterIdRequired()
-	}
-
 	tx, err := c.Db.Tx(ctx)
 	if err != nil {
 		return nil, errs.StartProductsError(err)
@@ -24,8 +20,6 @@ func (c *controller) Create(ctx context.Context, in *product_prices_proto.Create
 		SetDefaultValue(float64(in.DefaultValue)).
 		SetMinValue(float64(*in.MinValue)).
 		SetProductID(int(in.ProductsId)).
-		SetCreatedBy(int(in.RequesterId)).
-		SetUpdatedBy(int(in.RequesterId)).
 		Save(ctx)
 
 	if err != nil {

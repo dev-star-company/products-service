@@ -164,7 +164,7 @@ func (pq *ProductsQuery) QueryProductReferences() *ProductReferencesQuery {
 		step := sqlgraph.NewStep(
 			sqlgraph.From(products.Table, products.FieldID, selector),
 			sqlgraph.To(productreferences.Table, productreferences.FieldID),
-			sqlgraph.Edge(sqlgraph.O2M, false, products.ProductReferencesTable, products.ProductReferencesColumn),
+			sqlgraph.Edge(sqlgraph.M2O, true, products.ProductReferencesTable, products.ProductReferencesColumn),
 		)
 		fromU = sqlgraph.SetNeighbors(pq.driver.Dialect(), step)
 		return fromU, nil
@@ -186,7 +186,7 @@ func (pq *ProductsQuery) QueryImages() *ImagesQuery {
 		step := sqlgraph.NewStep(
 			sqlgraph.From(products.Table, products.FieldID, selector),
 			sqlgraph.To(images.Table, images.FieldID),
-			sqlgraph.Edge(sqlgraph.O2M, false, products.ImagesTable, products.ImagesColumn),
+			sqlgraph.Edge(sqlgraph.M2O, true, products.ImagesTable, products.ImagesColumn),
 		)
 		fromU = sqlgraph.SetNeighbors(pq.driver.Dialect(), step)
 		return fromU, nil
@@ -784,9 +784,6 @@ func (pq *ProductsQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Pro
 			pq.withProductPrices != nil,
 		}
 	)
-	if pq.withCategory != nil || pq.withBrand != nil || pq.withVariantType != nil {
-		withFKs = true
-	}
 	if withFKs {
 		_spec.Node.Columns = append(_spec.Node.Columns, products.ForeignKeys...)
 	}
@@ -827,18 +824,14 @@ func (pq *ProductsQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Pro
 		}
 	}
 	if query := pq.withProductReferences; query != nil {
-		if err := pq.loadProductReferences(ctx, query, nodes,
-			func(n *Products) { n.Edges.ProductReferences = []*ProductReferences{} },
-			func(n *Products, e *ProductReferences) {
-				n.Edges.ProductReferences = append(n.Edges.ProductReferences, e)
-			}); err != nil {
+		if err := pq.loadProductReferences(ctx, query, nodes, nil,
+			func(n *Products, e *ProductReferences) { n.Edges.ProductReferences = e }); err != nil {
 			return nil, err
 		}
 	}
 	if query := pq.withImages; query != nil {
-		if err := pq.loadImages(ctx, query, nodes,
-			func(n *Products) { n.Edges.Images = []*Images{} },
-			func(n *Products, e *Images) { n.Edges.Images = append(n.Edges.Images, e) }); err != nil {
+		if err := pq.loadImages(ctx, query, nodes, nil,
+			func(n *Products, e *Images) { n.Edges.Images = e }); err != nil {
 			return nil, err
 		}
 	}
@@ -904,10 +897,10 @@ func (pq *ProductsQuery) loadCategory(ctx context.Context, query *CategoryQuery,
 	ids := make([]int, 0, len(nodes))
 	nodeids := make(map[int][]*Products)
 	for i := range nodes {
-		if nodes[i].category_products == nil {
+		if nodes[i].CategoryID == nil {
 			continue
 		}
-		fk := *nodes[i].category_products
+		fk := *nodes[i].CategoryID
 		if _, ok := nodeids[fk]; !ok {
 			ids = append(ids, fk)
 		}
@@ -924,7 +917,7 @@ func (pq *ProductsQuery) loadCategory(ctx context.Context, query *CategoryQuery,
 	for _, n := range neighbors {
 		nodes, ok := nodeids[n.ID]
 		if !ok {
-			return fmt.Errorf(`unexpected foreign-key "category_products" returned %v`, n.ID)
+			return fmt.Errorf(`unexpected foreign-key "category_id" returned %v`, n.ID)
 		}
 		for i := range nodes {
 			assign(nodes[i], n)
@@ -936,10 +929,10 @@ func (pq *ProductsQuery) loadBrand(ctx context.Context, query *BrandQuery, nodes
 	ids := make([]int, 0, len(nodes))
 	nodeids := make(map[int][]*Products)
 	for i := range nodes {
-		if nodes[i].brand_products == nil {
+		if nodes[i].BrandID == nil {
 			continue
 		}
-		fk := *nodes[i].brand_products
+		fk := *nodes[i].BrandID
 		if _, ok := nodeids[fk]; !ok {
 			ids = append(ids, fk)
 		}
@@ -956,7 +949,7 @@ func (pq *ProductsQuery) loadBrand(ctx context.Context, query *BrandQuery, nodes
 	for _, n := range neighbors {
 		nodes, ok := nodeids[n.ID]
 		if !ok {
-			return fmt.Errorf(`unexpected foreign-key "brand_products" returned %v`, n.ID)
+			return fmt.Errorf(`unexpected foreign-key "brand_id" returned %v`, n.ID)
 		}
 		for i := range nodes {
 			assign(nodes[i], n)
@@ -968,10 +961,10 @@ func (pq *ProductsQuery) loadVariantType(ctx context.Context, query *VariantType
 	ids := make([]int, 0, len(nodes))
 	nodeids := make(map[int][]*Products)
 	for i := range nodes {
-		if nodes[i].variant_type_products == nil {
+		if nodes[i].VariantTypeID == nil {
 			continue
 		}
-		fk := *nodes[i].variant_type_products
+		fk := *nodes[i].VariantTypeID
 		if _, ok := nodeids[fk]; !ok {
 			ids = append(ids, fk)
 		}
@@ -988,7 +981,7 @@ func (pq *ProductsQuery) loadVariantType(ctx context.Context, query *VariantType
 	for _, n := range neighbors {
 		nodes, ok := nodeids[n.ID]
 		if !ok {
-			return fmt.Errorf(`unexpected foreign-key "variant_type_products" returned %v`, n.ID)
+			return fmt.Errorf(`unexpected foreign-key "variant_type_id" returned %v`, n.ID)
 		}
 		for i := range nodes {
 			assign(nodes[i], n)
@@ -997,64 +990,66 @@ func (pq *ProductsQuery) loadVariantType(ctx context.Context, query *VariantType
 	return nil
 }
 func (pq *ProductsQuery) loadProductReferences(ctx context.Context, query *ProductReferencesQuery, nodes []*Products, init func(*Products), assign func(*Products, *ProductReferences)) error {
-	fks := make([]driver.Value, 0, len(nodes))
-	nodeids := make(map[int]*Products)
+	ids := make([]int, 0, len(nodes))
+	nodeids := make(map[int][]*Products)
 	for i := range nodes {
-		fks = append(fks, nodes[i].ID)
-		nodeids[nodes[i].ID] = nodes[i]
-		if init != nil {
-			init(nodes[i])
+		if nodes[i].ProductReferencesID == nil {
+			continue
 		}
+		fk := *nodes[i].ProductReferencesID
+		if _, ok := nodeids[fk]; !ok {
+			ids = append(ids, fk)
+		}
+		nodeids[fk] = append(nodeids[fk], nodes[i])
 	}
-	query.withFKs = true
-	query.Where(predicate.ProductReferences(func(s *sql.Selector) {
-		s.Where(sql.InValues(s.C(products.ProductReferencesColumn), fks...))
-	}))
+	if len(ids) == 0 {
+		return nil
+	}
+	query.Where(productreferences.IDIn(ids...))
 	neighbors, err := query.All(ctx)
 	if err != nil {
 		return err
 	}
 	for _, n := range neighbors {
-		fk := n.products_product_references
-		if fk == nil {
-			return fmt.Errorf(`foreign-key "products_product_references" is nil for node %v`, n.ID)
-		}
-		node, ok := nodeids[*fk]
+		nodes, ok := nodeids[n.ID]
 		if !ok {
-			return fmt.Errorf(`unexpected referenced foreign-key "products_product_references" returned %v for node %v`, *fk, n.ID)
+			return fmt.Errorf(`unexpected foreign-key "product_references_id" returned %v`, n.ID)
 		}
-		assign(node, n)
+		for i := range nodes {
+			assign(nodes[i], n)
+		}
 	}
 	return nil
 }
 func (pq *ProductsQuery) loadImages(ctx context.Context, query *ImagesQuery, nodes []*Products, init func(*Products), assign func(*Products, *Images)) error {
-	fks := make([]driver.Value, 0, len(nodes))
-	nodeids := make(map[int]*Products)
+	ids := make([]int, 0, len(nodes))
+	nodeids := make(map[int][]*Products)
 	for i := range nodes {
-		fks = append(fks, nodes[i].ID)
-		nodeids[nodes[i].ID] = nodes[i]
-		if init != nil {
-			init(nodes[i])
+		if nodes[i].ImagesID == nil {
+			continue
 		}
+		fk := *nodes[i].ImagesID
+		if _, ok := nodeids[fk]; !ok {
+			ids = append(ids, fk)
+		}
+		nodeids[fk] = append(nodeids[fk], nodes[i])
 	}
-	query.withFKs = true
-	query.Where(predicate.Images(func(s *sql.Selector) {
-		s.Where(sql.InValues(s.C(products.ImagesColumn), fks...))
-	}))
+	if len(ids) == 0 {
+		return nil
+	}
+	query.Where(images.IDIn(ids...))
 	neighbors, err := query.All(ctx)
 	if err != nil {
 		return err
 	}
 	for _, n := range neighbors {
-		fk := n.products_images
-		if fk == nil {
-			return fmt.Errorf(`foreign-key "products_images" is nil for node %v`, n.ID)
-		}
-		node, ok := nodeids[*fk]
+		nodes, ok := nodeids[n.ID]
 		if !ok {
-			return fmt.Errorf(`unexpected referenced foreign-key "products_images" returned %v for node %v`, *fk, n.ID)
+			return fmt.Errorf(`unexpected foreign-key "images_id" returned %v`, n.ID)
 		}
-		assign(node, n)
+		for i := range nodes {
+			assign(nodes[i], n)
+		}
 	}
 	return nil
 }
@@ -1101,7 +1096,9 @@ func (pq *ProductsQuery) loadPromotionHasProduct(ctx context.Context, query *Pro
 			init(nodes[i])
 		}
 	}
-	query.withFKs = true
+	if len(query.ctx.Fields) > 0 {
+		query.ctx.AppendFieldOnce(promotionhasproduct.FieldProductsID)
+	}
 	query.Where(predicate.PromotionHasProduct(func(s *sql.Selector) {
 		s.Where(sql.InValues(s.C(products.PromotionHasProductColumn), fks...))
 	}))
@@ -1110,13 +1107,13 @@ func (pq *ProductsQuery) loadPromotionHasProduct(ctx context.Context, query *Pro
 		return err
 	}
 	for _, n := range neighbors {
-		fk := n.products_promotion_has_product
+		fk := n.ProductsID
 		if fk == nil {
-			return fmt.Errorf(`foreign-key "products_promotion_has_product" is nil for node %v`, n.ID)
+			return fmt.Errorf(`foreign-key "products_id" is nil for node %v`, n.ID)
 		}
 		node, ok := nodeids[*fk]
 		if !ok {
-			return fmt.Errorf(`unexpected referenced foreign-key "products_promotion_has_product" returned %v for node %v`, *fk, n.ID)
+			return fmt.Errorf(`unexpected referenced foreign-key "products_id" returned %v for node %v`, *fk, n.ID)
 		}
 		assign(node, n)
 	}
@@ -1132,7 +1129,9 @@ func (pq *ProductsQuery) loadToolHasProduct(ctx context.Context, query *ToolHasP
 			init(nodes[i])
 		}
 	}
-	query.withFKs = true
+	if len(query.ctx.Fields) > 0 {
+		query.ctx.AppendFieldOnce(toolhasproduct.FieldProductsID)
+	}
 	query.Where(predicate.ToolHasProduct(func(s *sql.Selector) {
 		s.Where(sql.InValues(s.C(products.ToolHasProductColumn), fks...))
 	}))
@@ -1141,13 +1140,13 @@ func (pq *ProductsQuery) loadToolHasProduct(ctx context.Context, query *ToolHasP
 		return err
 	}
 	for _, n := range neighbors {
-		fk := n.products_tool_has_product
+		fk := n.ProductsID
 		if fk == nil {
-			return fmt.Errorf(`foreign-key "products_tool_has_product" is nil for node %v`, n.ID)
+			return fmt.Errorf(`foreign-key "products_id" is nil for node %v`, n.ID)
 		}
 		node, ok := nodeids[*fk]
 		if !ok {
-			return fmt.Errorf(`unexpected referenced foreign-key "products_tool_has_product" returned %v for node %v`, *fk, n.ID)
+			return fmt.Errorf(`unexpected referenced foreign-key "products_id" returned %v for node %v`, *fk, n.ID)
 		}
 		assign(node, n)
 	}
@@ -1311,6 +1310,21 @@ func (pq *ProductsQuery) querySpec() *sqlgraph.QuerySpec {
 			if fields[i] != products.FieldID {
 				_spec.Node.Columns = append(_spec.Node.Columns, fields[i])
 			}
+		}
+		if pq.withCategory != nil {
+			_spec.Node.AddColumnOnce(products.FieldCategoryID)
+		}
+		if pq.withBrand != nil {
+			_spec.Node.AddColumnOnce(products.FieldBrandID)
+		}
+		if pq.withVariantType != nil {
+			_spec.Node.AddColumnOnce(products.FieldVariantTypeID)
+		}
+		if pq.withProductReferences != nil {
+			_spec.Node.AddColumnOnce(products.FieldProductReferencesID)
+		}
+		if pq.withImages != nil {
+			_spec.Node.AddColumnOnce(products.FieldImagesID)
 		}
 	}
 	if ps := pq.predicates; len(ps) > 0 {

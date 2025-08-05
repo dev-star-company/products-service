@@ -37,20 +37,6 @@ func (prc *ProductReferencesCreate) SetNillableCreatedAt(t *time.Time) *ProductR
 	return prc
 }
 
-// SetUpdatedAt sets the "updated_at" field.
-func (prc *ProductReferencesCreate) SetUpdatedAt(t time.Time) *ProductReferencesCreate {
-	prc.mutation.SetUpdatedAt(t)
-	return prc
-}
-
-// SetNillableUpdatedAt sets the "updated_at" field if the given value is not nil.
-func (prc *ProductReferencesCreate) SetNillableUpdatedAt(t *time.Time) *ProductReferencesCreate {
-	if t != nil {
-		prc.SetUpdatedAt(*t)
-	}
-	return prc
-}
-
 // SetDeletedAt sets the "deleted_at" field.
 func (prc *ProductReferencesCreate) SetDeletedAt(t time.Time) *ProductReferencesCreate {
 	prc.mutation.SetDeletedAt(t)
@@ -65,35 +51,17 @@ func (prc *ProductReferencesCreate) SetNillableDeletedAt(t *time.Time) *ProductR
 	return prc
 }
 
-// SetCreatedBy sets the "created_by" field.
-func (prc *ProductReferencesCreate) SetCreatedBy(i int) *ProductReferencesCreate {
-	prc.mutation.SetCreatedBy(i)
-	return prc
-}
-
-// SetUpdatedBy sets the "updated_by" field.
-func (prc *ProductReferencesCreate) SetUpdatedBy(i int) *ProductReferencesCreate {
-	prc.mutation.SetUpdatedBy(i)
-	return prc
-}
-
-// SetDeletedBy sets the "deleted_by" field.
-func (prc *ProductReferencesCreate) SetDeletedBy(i int) *ProductReferencesCreate {
-	prc.mutation.SetDeletedBy(i)
-	return prc
-}
-
-// SetNillableDeletedBy sets the "deleted_by" field if the given value is not nil.
-func (prc *ProductReferencesCreate) SetNillableDeletedBy(i *int) *ProductReferencesCreate {
-	if i != nil {
-		prc.SetDeletedBy(*i)
-	}
-	return prc
-}
-
 // SetReferenceSourceID sets the "reference_source_id" field.
 func (prc *ProductReferencesCreate) SetReferenceSourceID(i int) *ProductReferencesCreate {
 	prc.mutation.SetReferenceSourceID(i)
+	return prc
+}
+
+// SetNillableReferenceSourceID sets the "reference_source_id" field if the given value is not nil.
+func (prc *ProductReferencesCreate) SetNillableReferenceSourceID(i *int) *ProductReferencesCreate {
+	if i != nil {
+		prc.SetReferenceSourceID(*i)
+	}
 	return prc
 }
 
@@ -103,26 +71,38 @@ func (prc *ProductReferencesCreate) SetValue(s string) *ProductReferencesCreate 
 	return prc
 }
 
-// SetProductID sets the "product" edge to the Products entity by ID.
-func (prc *ProductReferencesCreate) SetProductID(id int) *ProductReferencesCreate {
-	prc.mutation.SetProductID(id)
-	return prc
-}
-
-// SetProduct sets the "product" edge to the Products entity.
-func (prc *ProductReferencesCreate) SetProduct(p *Products) *ProductReferencesCreate {
-	return prc.SetProductID(p.ID)
-}
-
 // SetReferenceSourcesID sets the "reference_sources" edge to the ReferenceSources entity by ID.
 func (prc *ProductReferencesCreate) SetReferenceSourcesID(id int) *ProductReferencesCreate {
 	prc.mutation.SetReferenceSourcesID(id)
 	return prc
 }
 
+// SetNillableReferenceSourcesID sets the "reference_sources" edge to the ReferenceSources entity by ID if the given value is not nil.
+func (prc *ProductReferencesCreate) SetNillableReferenceSourcesID(id *int) *ProductReferencesCreate {
+	if id != nil {
+		prc = prc.SetReferenceSourcesID(*id)
+	}
+	return prc
+}
+
 // SetReferenceSources sets the "reference_sources" edge to the ReferenceSources entity.
 func (prc *ProductReferencesCreate) SetReferenceSources(r *ReferenceSources) *ProductReferencesCreate {
 	return prc.SetReferenceSourcesID(r.ID)
+}
+
+// AddProductIDs adds the "products" edge to the Products entity by IDs.
+func (prc *ProductReferencesCreate) AddProductIDs(ids ...int) *ProductReferencesCreate {
+	prc.mutation.AddProductIDs(ids...)
+	return prc
+}
+
+// AddProducts adds the "products" edges to the Products entity.
+func (prc *ProductReferencesCreate) AddProducts(p ...*Products) *ProductReferencesCreate {
+	ids := make([]int, len(p))
+	for i := range p {
+		ids[i] = p[i].ID
+	}
+	return prc.AddProductIDs(ids...)
 }
 
 // AddProductHasProductReferenceIDs adds the "product_has_product_reference" edge to the ProductHasProductReference entity by IDs.
@@ -179,10 +159,6 @@ func (prc *ProductReferencesCreate) defaults() {
 		v := productreferences.DefaultCreatedAt()
 		prc.mutation.SetCreatedAt(v)
 	}
-	if _, ok := prc.mutation.UpdatedAt(); !ok {
-		v := productreferences.DefaultUpdatedAt()
-		prc.mutation.SetUpdatedAt(v)
-	}
 }
 
 // check runs all checks and user-defined validators on the builder.
@@ -190,36 +166,8 @@ func (prc *ProductReferencesCreate) check() error {
 	if _, ok := prc.mutation.CreatedAt(); !ok {
 		return &ValidationError{Name: "created_at", err: errors.New(`ent: missing required field "ProductReferences.created_at"`)}
 	}
-	if _, ok := prc.mutation.UpdatedAt(); !ok {
-		return &ValidationError{Name: "updated_at", err: errors.New(`ent: missing required field "ProductReferences.updated_at"`)}
-	}
-	if _, ok := prc.mutation.CreatedBy(); !ok {
-		return &ValidationError{Name: "created_by", err: errors.New(`ent: missing required field "ProductReferences.created_by"`)}
-	}
-	if v, ok := prc.mutation.CreatedBy(); ok {
-		if err := productreferences.CreatedByValidator(v); err != nil {
-			return &ValidationError{Name: "created_by", err: fmt.Errorf(`ent: validator failed for field "ProductReferences.created_by": %w`, err)}
-		}
-	}
-	if _, ok := prc.mutation.UpdatedBy(); !ok {
-		return &ValidationError{Name: "updated_by", err: errors.New(`ent: missing required field "ProductReferences.updated_by"`)}
-	}
-	if v, ok := prc.mutation.UpdatedBy(); ok {
-		if err := productreferences.UpdatedByValidator(v); err != nil {
-			return &ValidationError{Name: "updated_by", err: fmt.Errorf(`ent: validator failed for field "ProductReferences.updated_by": %w`, err)}
-		}
-	}
-	if _, ok := prc.mutation.ReferenceSourceID(); !ok {
-		return &ValidationError{Name: "reference_source_id", err: errors.New(`ent: missing required field "ProductReferences.reference_source_id"`)}
-	}
 	if _, ok := prc.mutation.Value(); !ok {
 		return &ValidationError{Name: "value", err: errors.New(`ent: missing required field "ProductReferences.value"`)}
-	}
-	if len(prc.mutation.ProductIDs()) == 0 {
-		return &ValidationError{Name: "product", err: errors.New(`ent: missing required edge "ProductReferences.product"`)}
-	}
-	if len(prc.mutation.ReferenceSourcesIDs()) == 0 {
-		return &ValidationError{Name: "reference_sources", err: errors.New(`ent: missing required edge "ProductReferences.reference_sources"`)}
 	}
 	return nil
 }
@@ -251,50 +199,13 @@ func (prc *ProductReferencesCreate) createSpec() (*ProductReferences, *sqlgraph.
 		_spec.SetField(productreferences.FieldCreatedAt, field.TypeTime, value)
 		_node.CreatedAt = value
 	}
-	if value, ok := prc.mutation.UpdatedAt(); ok {
-		_spec.SetField(productreferences.FieldUpdatedAt, field.TypeTime, value)
-		_node.UpdatedAt = value
-	}
 	if value, ok := prc.mutation.DeletedAt(); ok {
 		_spec.SetField(productreferences.FieldDeletedAt, field.TypeTime, value)
 		_node.DeletedAt = &value
 	}
-	if value, ok := prc.mutation.CreatedBy(); ok {
-		_spec.SetField(productreferences.FieldCreatedBy, field.TypeInt, value)
-		_node.CreatedBy = value
-	}
-	if value, ok := prc.mutation.UpdatedBy(); ok {
-		_spec.SetField(productreferences.FieldUpdatedBy, field.TypeInt, value)
-		_node.UpdatedBy = value
-	}
-	if value, ok := prc.mutation.DeletedBy(); ok {
-		_spec.SetField(productreferences.FieldDeletedBy, field.TypeInt, value)
-		_node.DeletedBy = &value
-	}
-	if value, ok := prc.mutation.ReferenceSourceID(); ok {
-		_spec.SetField(productreferences.FieldReferenceSourceID, field.TypeInt, value)
-		_node.ReferenceSourceID = &value
-	}
 	if value, ok := prc.mutation.Value(); ok {
 		_spec.SetField(productreferences.FieldValue, field.TypeString, value)
 		_node.Value = &value
-	}
-	if nodes := prc.mutation.ProductIDs(); len(nodes) > 0 {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.M2O,
-			Inverse: true,
-			Table:   productreferences.ProductTable,
-			Columns: []string{productreferences.ProductColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(products.FieldID, field.TypeInt),
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_node.products_product_references = &nodes[0]
-		_spec.Edges = append(_spec.Edges, edge)
 	}
 	if nodes := prc.mutation.ReferenceSourcesIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
@@ -310,7 +221,23 @@ func (prc *ProductReferencesCreate) createSpec() (*ProductReferences, *sqlgraph.
 		for _, k := range nodes {
 			edge.Target.Nodes = append(edge.Target.Nodes, k)
 		}
-		_node.reference_sources_product_references = &nodes[0]
+		_node.ReferenceSourceID = &nodes[0]
+		_spec.Edges = append(_spec.Edges, edge)
+	}
+	if nodes := prc.mutation.ProductsIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   productreferences.ProductsTable,
+			Columns: []string{productreferences.ProductsColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(products.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
 		_spec.Edges = append(_spec.Edges, edge)
 	}
 	if nodes := prc.mutation.ProductHasProductReferenceIDs(); len(nodes) > 0 {

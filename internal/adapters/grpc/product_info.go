@@ -14,20 +14,12 @@ func ProductInfoToProto(product_info *ent.ProductInfo) *product_info_proto.Produ
 		Id:         uint32(product_info.ID),
 		InfoTypeId: uint32(*product_info.InfoTypesID),
 		Value:      *product_info.Value,
-		CreatedBy:  uint32(product_info.CreatedBy),
-		UpdatedBy:  uint32(product_info.UpdatedBy),
 		CreatedAt:  product_info.CreatedAt.Format("2006-01-02 15:04:05"),
-		UpdatedAt:  product_info.UpdatedAt.Format("2006-01-02 15:04:05"),
 	}
 
 	if product_info.DeletedAt != nil {
 		x := product_info.DeletedAt.Format("2006-01-02 15:04:05")
 		cur.DeletedAt = &x
-	}
-
-	if product_info.DeletedBy != nil {
-		x := uint32(*product_info.DeletedBy)
-		cur.DeletedBy = &x
 	}
 
 	return cur

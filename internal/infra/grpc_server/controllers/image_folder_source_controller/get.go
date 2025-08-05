@@ -19,10 +19,10 @@ func (c *controller) Get(ctx context.Context, in *image_folder_source_proto.GetR
 	}
 
 	return &image_folder_source_proto.GetResponse{
-		RequesterId: uint32(image_folder_source.CreatedBy),
-		Name:        *image_folder_source.Name,
-		BaseUrl:     *image_folder_source.BaseURL,
-		AcessKey:    *image_folder_source.AccessKey,
-		SecretKey:   *image_folder_source.SecretKey,
+
+		Name:      *image_folder_source.Name,
+		BaseUrl:   *image_folder_source.BaseURL,
+		AcessKey:  *image_folder_source.AccessKey,
+		SecretKey: *image_folder_source.SecretKey,
 	}, nil
 }

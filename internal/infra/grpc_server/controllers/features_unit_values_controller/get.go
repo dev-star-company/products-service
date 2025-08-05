@@ -19,8 +19,8 @@ func (c *controller) Get(ctx context.Context, in *features_unit_values_proto.Get
 	}
 
 	return &features_unit_values_proto.GetResponse{
-		RequesterId: uint32(features_unit_values.CreatedBy),
-		Decimals:    float32(*features_unit_values.Decimals),
-		Name:        *features_unit_values.Name,
+
+		Decimals: float32(*features_unit_values.Decimals),
+		Name:     *features_unit_values.Name,
 	}, nil
 }

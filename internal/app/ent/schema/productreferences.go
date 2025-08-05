@@ -14,7 +14,7 @@ type ProductReferences struct {
 // Fields of the ProductReferences.
 func (ProductReferences) Fields() []ent.Field {
 	return []ent.Field{
-		field.Int("reference_source_id").Nillable(),
+		field.Int("reference_source_id").Nillable().Optional(),
 		field.String("value").Nillable(),
 	}
 }
@@ -28,16 +28,12 @@ func (ProductReferences) Mixin() []ent.Mixin {
 // Edges of the ProductReferences.
 func (ProductReferences) Edges() []ent.Edge {
 	return []ent.Edge{
-		edge.From("product", Products.Type).
-			Ref("product_references").
-			Unique().
-			Required(),
-
 		edge.From("reference_sources", ReferenceSources.Type).
 			Ref("product_references").
-			Unique().
-			Required(),
+			Field("reference_source_id").
+			Unique(),
 
+		edge.To("products", Products.Type),
 		edge.To("product_has_product_reference", ProductHasProductReference.Type),
 	}
 }

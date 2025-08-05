@@ -6,6 +6,8 @@ import (
 	"fmt"
 	"products-service/internal/app/ent/brand"
 	"products-service/internal/app/ent/category"
+	"products-service/internal/app/ent/images"
+	"products-service/internal/app/ent/productreferences"
 	"products-service/internal/app/ent/products"
 	"products-service/internal/app/ent/varianttype"
 	"strings"
@@ -22,16 +24,8 @@ type Products struct {
 	ID int `json:"id,omitempty"`
 	// CreatedAt holds the value of the "created_at" field.
 	CreatedAt time.Time `json:"created_at,omitempty"`
-	// UpdatedAt holds the value of the "updated_at" field.
-	UpdatedAt time.Time `json:"updated_at,omitempty"`
 	// DeletedAt holds the value of the "deleted_at" field.
 	DeletedAt *time.Time `json:"deleted_at,omitempty"`
-	// CreatedBy holds the value of the "created_by" field.
-	CreatedBy int `json:"created_by,omitempty"`
-	// UpdatedBy holds the value of the "updated_by" field.
-	UpdatedBy int `json:"updated_by,omitempty"`
-	// DeletedBy holds the value of the "deleted_by" field.
-	DeletedBy *int `json:"deleted_by,omitempty"`
 	// CategoryID holds the value of the "category_id" field.
 	CategoryID *int `json:"category_id,omitempty"`
 	// BrandID holds the value of the "brand_id" field.
@@ -40,8 +34,8 @@ type Products struct {
 	VariantTypeID *int `json:"variant_type_id,omitempty"`
 	// ProductReferencesID holds the value of the "product_references_id" field.
 	ProductReferencesID *int `json:"product_references_id,omitempty"`
-	// ImageID holds the value of the "image_id" field.
-	ImageID *int `json:"image_id,omitempty"`
+	// ImagesID holds the value of the "images_id" field.
+	ImagesID *int `json:"images_id,omitempty"`
 	// Name holds the value of the "name" field.
 	Name *string `json:"name,omitempty"`
 	// Stock holds the value of the "stock" field.
@@ -49,13 +43,10 @@ type Products struct {
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the ProductsQuery when eager-loading is set.
 	Edges                 ProductsEdges `json:"edges"`
-	brand_products        *int
-	category_products     *int
 	user_products         *int
 	user_created_products *int
 	user_updated_products *int
 	user_deleted_products *int
-	variant_type_products *int
 	selectValues          sql.SelectValues
 }
 
@@ -68,9 +59,9 @@ type ProductsEdges struct {
 	// VariantType holds the value of the variant_type edge.
 	VariantType *VariantType `json:"variant_type,omitempty"`
 	// ProductReferences holds the value of the product_references edge.
-	ProductReferences []*ProductReferences `json:"product_references,omitempty"`
+	ProductReferences *ProductReferences `json:"product_references,omitempty"`
 	// Images holds the value of the images edge.
-	Images []*Images `json:"images,omitempty"`
+	Images *Images `json:"images,omitempty"`
 	// ProductHasImage holds the value of the product_has_image edge.
 	ProductHasImage []*ProductHasImage `json:"product_has_image,omitempty"`
 	// PromotionHasProduct holds the value of the promotion_has_product edge.
@@ -124,19 +115,23 @@ func (e ProductsEdges) VariantTypeOrErr() (*VariantType, error) {
 }
 
 // ProductReferencesOrErr returns the ProductReferences value or an error if the edge
-// was not loaded in eager-loading.
-func (e ProductsEdges) ProductReferencesOrErr() ([]*ProductReferences, error) {
-	if e.loadedTypes[3] {
+// was not loaded in eager-loading, or loaded but was not found.
+func (e ProductsEdges) ProductReferencesOrErr() (*ProductReferences, error) {
+	if e.ProductReferences != nil {
 		return e.ProductReferences, nil
+	} else if e.loadedTypes[3] {
+		return nil, &NotFoundError{label: productreferences.Label}
 	}
 	return nil, &NotLoadedError{edge: "product_references"}
 }
 
 // ImagesOrErr returns the Images value or an error if the edge
-// was not loaded in eager-loading.
-func (e ProductsEdges) ImagesOrErr() ([]*Images, error) {
-	if e.loadedTypes[4] {
+// was not loaded in eager-loading, or loaded but was not found.
+func (e ProductsEdges) ImagesOrErr() (*Images, error) {
+	if e.Images != nil {
 		return e.Images, nil
+	} else if e.loadedTypes[4] {
+		return nil, &NotFoundError{label: images.Label}
 	}
 	return nil, &NotLoadedError{edge: "images"}
 }
@@ -209,25 +204,19 @@ func (*Products) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case products.FieldID, products.FieldCreatedBy, products.FieldUpdatedBy, products.FieldDeletedBy, products.FieldCategoryID, products.FieldBrandID, products.FieldVariantTypeID, products.FieldProductReferencesID, products.FieldImageID, products.FieldStock:
+		case products.FieldID, products.FieldCategoryID, products.FieldBrandID, products.FieldVariantTypeID, products.FieldProductReferencesID, products.FieldImagesID, products.FieldStock:
 			values[i] = new(sql.NullInt64)
 		case products.FieldName:
 			values[i] = new(sql.NullString)
-		case products.FieldCreatedAt, products.FieldUpdatedAt, products.FieldDeletedAt:
+		case products.FieldCreatedAt, products.FieldDeletedAt:
 			values[i] = new(sql.NullTime)
-		case products.ForeignKeys[0]: // brand_products
+		case products.ForeignKeys[0]: // user_products
 			values[i] = new(sql.NullInt64)
-		case products.ForeignKeys[1]: // category_products
+		case products.ForeignKeys[1]: // user_created_products
 			values[i] = new(sql.NullInt64)
-		case products.ForeignKeys[2]: // user_products
+		case products.ForeignKeys[2]: // user_updated_products
 			values[i] = new(sql.NullInt64)
-		case products.ForeignKeys[3]: // user_created_products
-			values[i] = new(sql.NullInt64)
-		case products.ForeignKeys[4]: // user_updated_products
-			values[i] = new(sql.NullInt64)
-		case products.ForeignKeys[5]: // user_deleted_products
-			values[i] = new(sql.NullInt64)
-		case products.ForeignKeys[6]: // variant_type_products
+		case products.ForeignKeys[3]: // user_deleted_products
 			values[i] = new(sql.NullInt64)
 		default:
 			values[i] = new(sql.UnknownType)
@@ -256,37 +245,12 @@ func (pr *Products) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				pr.CreatedAt = value.Time
 			}
-		case products.FieldUpdatedAt:
-			if value, ok := values[i].(*sql.NullTime); !ok {
-				return fmt.Errorf("unexpected type %T for field updated_at", values[i])
-			} else if value.Valid {
-				pr.UpdatedAt = value.Time
-			}
 		case products.FieldDeletedAt:
 			if value, ok := values[i].(*sql.NullTime); !ok {
 				return fmt.Errorf("unexpected type %T for field deleted_at", values[i])
 			} else if value.Valid {
 				pr.DeletedAt = new(time.Time)
 				*pr.DeletedAt = value.Time
-			}
-		case products.FieldCreatedBy:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field created_by", values[i])
-			} else if value.Valid {
-				pr.CreatedBy = int(value.Int64)
-			}
-		case products.FieldUpdatedBy:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field updated_by", values[i])
-			} else if value.Valid {
-				pr.UpdatedBy = int(value.Int64)
-			}
-		case products.FieldDeletedBy:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field deleted_by", values[i])
-			} else if value.Valid {
-				pr.DeletedBy = new(int)
-				*pr.DeletedBy = int(value.Int64)
 			}
 		case products.FieldCategoryID:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
@@ -316,12 +280,12 @@ func (pr *Products) assignValues(columns []string, values []any) error {
 				pr.ProductReferencesID = new(int)
 				*pr.ProductReferencesID = int(value.Int64)
 			}
-		case products.FieldImageID:
+		case products.FieldImagesID:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field image_id", values[i])
+				return fmt.Errorf("unexpected type %T for field images_id", values[i])
 			} else if value.Valid {
-				pr.ImageID = new(int)
-				*pr.ImageID = int(value.Int64)
+				pr.ImagesID = new(int)
+				*pr.ImagesID = int(value.Int64)
 			}
 		case products.FieldName:
 			if value, ok := values[i].(*sql.NullString); !ok {
@@ -338,52 +302,31 @@ func (pr *Products) assignValues(columns []string, values []any) error {
 			}
 		case products.ForeignKeys[0]:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for edge-field brand_products", value)
-			} else if value.Valid {
-				pr.brand_products = new(int)
-				*pr.brand_products = int(value.Int64)
-			}
-		case products.ForeignKeys[1]:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for edge-field category_products", value)
-			} else if value.Valid {
-				pr.category_products = new(int)
-				*pr.category_products = int(value.Int64)
-			}
-		case products.ForeignKeys[2]:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for edge-field user_products", value)
 			} else if value.Valid {
 				pr.user_products = new(int)
 				*pr.user_products = int(value.Int64)
 			}
-		case products.ForeignKeys[3]:
+		case products.ForeignKeys[1]:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for edge-field user_created_products", value)
 			} else if value.Valid {
 				pr.user_created_products = new(int)
 				*pr.user_created_products = int(value.Int64)
 			}
-		case products.ForeignKeys[4]:
+		case products.ForeignKeys[2]:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for edge-field user_updated_products", value)
 			} else if value.Valid {
 				pr.user_updated_products = new(int)
 				*pr.user_updated_products = int(value.Int64)
 			}
-		case products.ForeignKeys[5]:
+		case products.ForeignKeys[3]:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for edge-field user_deleted_products", value)
 			} else if value.Valid {
 				pr.user_deleted_products = new(int)
 				*pr.user_deleted_products = int(value.Int64)
-			}
-		case products.ForeignKeys[6]:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for edge-field variant_type_products", value)
-			} else if value.Valid {
-				pr.variant_type_products = new(int)
-				*pr.variant_type_products = int(value.Int64)
 			}
 		default:
 			pr.selectValues.Set(columns[i], values[i])
@@ -484,23 +427,9 @@ func (pr *Products) String() string {
 	builder.WriteString("created_at=")
 	builder.WriteString(pr.CreatedAt.Format(time.ANSIC))
 	builder.WriteString(", ")
-	builder.WriteString("updated_at=")
-	builder.WriteString(pr.UpdatedAt.Format(time.ANSIC))
-	builder.WriteString(", ")
 	if v := pr.DeletedAt; v != nil {
 		builder.WriteString("deleted_at=")
 		builder.WriteString(v.Format(time.ANSIC))
-	}
-	builder.WriteString(", ")
-	builder.WriteString("created_by=")
-	builder.WriteString(fmt.Sprintf("%v", pr.CreatedBy))
-	builder.WriteString(", ")
-	builder.WriteString("updated_by=")
-	builder.WriteString(fmt.Sprintf("%v", pr.UpdatedBy))
-	builder.WriteString(", ")
-	if v := pr.DeletedBy; v != nil {
-		builder.WriteString("deleted_by=")
-		builder.WriteString(fmt.Sprintf("%v", *v))
 	}
 	builder.WriteString(", ")
 	if v := pr.CategoryID; v != nil {
@@ -523,8 +452,8 @@ func (pr *Products) String() string {
 		builder.WriteString(fmt.Sprintf("%v", *v))
 	}
 	builder.WriteString(", ")
-	if v := pr.ImageID; v != nil {
-		builder.WriteString("image_id=")
+	if v := pr.ImagesID; v != nil {
+		builder.WriteString("images_id=")
 		builder.WriteString(fmt.Sprintf("%v", *v))
 	}
 	builder.WriteString(", ")

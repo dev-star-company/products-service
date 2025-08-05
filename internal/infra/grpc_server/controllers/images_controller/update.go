@@ -9,9 +9,6 @@ import (
 )
 
 func (c *controller) Update(ctx context.Context, in *images_proto.UpdateRequest) (*images_proto.UpdateResponse, error) {
-	if in.RequesterId == 0 {
-		return nil, errs.ProductsNotFound(int(in.Id))
-	}
 
 	tx, err := c.Db.Tx(ctx)
 	if err != nil {
@@ -34,8 +31,6 @@ func (c *controller) Update(ctx context.Context, in *images_proto.UpdateRequest)
 		imagesQ.SetPath(string(*in.Path))
 	}
 
-	imagesQ.SetUpdatedBy(int(in.RequesterId))
-
 	images, err = imagesQ.Save(ctx)
 	if err != nil {
 		if ent.IsNotFound(err) {
@@ -52,8 +47,7 @@ func (c *controller) Update(ctx context.Context, in *images_proto.UpdateRequest)
 	}
 
 	return &images_proto.UpdateResponse{
-		RequesterId:       uint32(images.CreatedBy),
-		ImageFolderPathId: uint32(*images.ImageFolderPathID),
+
 		Content:           string(*images.Content),
 		Path:              string(*images.Path),
 	}, nil

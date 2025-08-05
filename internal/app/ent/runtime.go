@@ -46,20 +46,6 @@ func init() {
 	brandDescCreatedAt := brandMixinFields0[0].Descriptor()
 	// brand.DefaultCreatedAt holds the default value on creation for the created_at field.
 	brand.DefaultCreatedAt = brandDescCreatedAt.Default.(func() time.Time)
-	// brandDescUpdatedAt is the schema descriptor for updated_at field.
-	brandDescUpdatedAt := brandMixinFields0[1].Descriptor()
-	// brand.DefaultUpdatedAt holds the default value on creation for the updated_at field.
-	brand.DefaultUpdatedAt = brandDescUpdatedAt.Default.(func() time.Time)
-	// brand.UpdateDefaultUpdatedAt holds the default value on update for the updated_at field.
-	brand.UpdateDefaultUpdatedAt = brandDescUpdatedAt.UpdateDefault.(func() time.Time)
-	// brandDescCreatedBy is the schema descriptor for created_by field.
-	brandDescCreatedBy := brandMixinFields0[3].Descriptor()
-	// brand.CreatedByValidator is a validator for the "created_by" field. It is called by the builders before save.
-	brand.CreatedByValidator = brandDescCreatedBy.Validators[0].(func(int) error)
-	// brandDescUpdatedBy is the schema descriptor for updated_by field.
-	brandDescUpdatedBy := brandMixinFields0[4].Descriptor()
-	// brand.UpdatedByValidator is a validator for the "updated_by" field. It is called by the builders before save.
-	brand.UpdatedByValidator = brandDescUpdatedBy.Validators[0].(func(int) error)
 	categoryMixin := schema.Category{}.Mixin()
 	categoryMixinFields0 := categoryMixin[0].Fields()
 	_ = categoryMixinFields0
@@ -69,20 +55,6 @@ func init() {
 	categoryDescCreatedAt := categoryMixinFields0[0].Descriptor()
 	// category.DefaultCreatedAt holds the default value on creation for the created_at field.
 	category.DefaultCreatedAt = categoryDescCreatedAt.Default.(func() time.Time)
-	// categoryDescUpdatedAt is the schema descriptor for updated_at field.
-	categoryDescUpdatedAt := categoryMixinFields0[1].Descriptor()
-	// category.DefaultUpdatedAt holds the default value on creation for the updated_at field.
-	category.DefaultUpdatedAt = categoryDescUpdatedAt.Default.(func() time.Time)
-	// category.UpdateDefaultUpdatedAt holds the default value on update for the updated_at field.
-	category.UpdateDefaultUpdatedAt = categoryDescUpdatedAt.UpdateDefault.(func() time.Time)
-	// categoryDescCreatedBy is the schema descriptor for created_by field.
-	categoryDescCreatedBy := categoryMixinFields0[3].Descriptor()
-	// category.CreatedByValidator is a validator for the "created_by" field. It is called by the builders before save.
-	category.CreatedByValidator = categoryDescCreatedBy.Validators[0].(func(int) error)
-	// categoryDescUpdatedBy is the schema descriptor for updated_by field.
-	categoryDescUpdatedBy := categoryMixinFields0[4].Descriptor()
-	// category.UpdatedByValidator is a validator for the "updated_by" field. It is called by the builders before save.
-	category.UpdatedByValidator = categoryDescUpdatedBy.Validators[0].(func(int) error)
 	featuresMixin := schema.Features{}.Mixin()
 	featuresMixinFields0 := featuresMixin[0].Fields()
 	_ = featuresMixinFields0
@@ -92,20 +64,6 @@ func init() {
 	featuresDescCreatedAt := featuresMixinFields0[0].Descriptor()
 	// features.DefaultCreatedAt holds the default value on creation for the created_at field.
 	features.DefaultCreatedAt = featuresDescCreatedAt.Default.(func() time.Time)
-	// featuresDescUpdatedAt is the schema descriptor for updated_at field.
-	featuresDescUpdatedAt := featuresMixinFields0[1].Descriptor()
-	// features.DefaultUpdatedAt holds the default value on creation for the updated_at field.
-	features.DefaultUpdatedAt = featuresDescUpdatedAt.Default.(func() time.Time)
-	// features.UpdateDefaultUpdatedAt holds the default value on update for the updated_at field.
-	features.UpdateDefaultUpdatedAt = featuresDescUpdatedAt.UpdateDefault.(func() time.Time)
-	// featuresDescCreatedBy is the schema descriptor for created_by field.
-	featuresDescCreatedBy := featuresMixinFields0[3].Descriptor()
-	// features.CreatedByValidator is a validator for the "created_by" field. It is called by the builders before save.
-	features.CreatedByValidator = featuresDescCreatedBy.Validators[0].(func(int) error)
-	// featuresDescUpdatedBy is the schema descriptor for updated_by field.
-	featuresDescUpdatedBy := featuresMixinFields0[4].Descriptor()
-	// features.UpdatedByValidator is a validator for the "updated_by" field. It is called by the builders before save.
-	features.UpdatedByValidator = featuresDescUpdatedBy.Validators[0].(func(int) error)
 	featuresunitvaluesMixin := schema.FeaturesUnitValues{}.Mixin()
 	featuresunitvaluesMixinFields0 := featuresunitvaluesMixin[0].Fields()
 	_ = featuresunitvaluesMixinFields0
@@ -115,20 +73,6 @@ func init() {
 	featuresunitvaluesDescCreatedAt := featuresunitvaluesMixinFields0[0].Descriptor()
 	// featuresunitvalues.DefaultCreatedAt holds the default value on creation for the created_at field.
 	featuresunitvalues.DefaultCreatedAt = featuresunitvaluesDescCreatedAt.Default.(func() time.Time)
-	// featuresunitvaluesDescUpdatedAt is the schema descriptor for updated_at field.
-	featuresunitvaluesDescUpdatedAt := featuresunitvaluesMixinFields0[1].Descriptor()
-	// featuresunitvalues.DefaultUpdatedAt holds the default value on creation for the updated_at field.
-	featuresunitvalues.DefaultUpdatedAt = featuresunitvaluesDescUpdatedAt.Default.(func() time.Time)
-	// featuresunitvalues.UpdateDefaultUpdatedAt holds the default value on update for the updated_at field.
-	featuresunitvalues.UpdateDefaultUpdatedAt = featuresunitvaluesDescUpdatedAt.UpdateDefault.(func() time.Time)
-	// featuresunitvaluesDescCreatedBy is the schema descriptor for created_by field.
-	featuresunitvaluesDescCreatedBy := featuresunitvaluesMixinFields0[3].Descriptor()
-	// featuresunitvalues.CreatedByValidator is a validator for the "created_by" field. It is called by the builders before save.
-	featuresunitvalues.CreatedByValidator = featuresunitvaluesDescCreatedBy.Validators[0].(func(int) error)
-	// featuresunitvaluesDescUpdatedBy is the schema descriptor for updated_by field.
-	featuresunitvaluesDescUpdatedBy := featuresunitvaluesMixinFields0[4].Descriptor()
-	// featuresunitvalues.UpdatedByValidator is a validator for the "updated_by" field. It is called by the builders before save.
-	featuresunitvalues.UpdatedByValidator = featuresunitvaluesDescUpdatedBy.Validators[0].(func(int) error)
 	featuresvaluesMixin := schema.FeaturesValues{}.Mixin()
 	featuresvaluesMixinFields0 := featuresvaluesMixin[0].Fields()
 	_ = featuresvaluesMixinFields0
@@ -138,20 +82,6 @@ func init() {
 	featuresvaluesDescCreatedAt := featuresvaluesMixinFields0[0].Descriptor()
 	// featuresvalues.DefaultCreatedAt holds the default value on creation for the created_at field.
 	featuresvalues.DefaultCreatedAt = featuresvaluesDescCreatedAt.Default.(func() time.Time)
-	// featuresvaluesDescUpdatedAt is the schema descriptor for updated_at field.
-	featuresvaluesDescUpdatedAt := featuresvaluesMixinFields0[1].Descriptor()
-	// featuresvalues.DefaultUpdatedAt holds the default value on creation for the updated_at field.
-	featuresvalues.DefaultUpdatedAt = featuresvaluesDescUpdatedAt.Default.(func() time.Time)
-	// featuresvalues.UpdateDefaultUpdatedAt holds the default value on update for the updated_at field.
-	featuresvalues.UpdateDefaultUpdatedAt = featuresvaluesDescUpdatedAt.UpdateDefault.(func() time.Time)
-	// featuresvaluesDescCreatedBy is the schema descriptor for created_by field.
-	featuresvaluesDescCreatedBy := featuresvaluesMixinFields0[3].Descriptor()
-	// featuresvalues.CreatedByValidator is a validator for the "created_by" field. It is called by the builders before save.
-	featuresvalues.CreatedByValidator = featuresvaluesDescCreatedBy.Validators[0].(func(int) error)
-	// featuresvaluesDescUpdatedBy is the schema descriptor for updated_by field.
-	featuresvaluesDescUpdatedBy := featuresvaluesMixinFields0[4].Descriptor()
-	// featuresvalues.UpdatedByValidator is a validator for the "updated_by" field. It is called by the builders before save.
-	featuresvalues.UpdatedByValidator = featuresvaluesDescUpdatedBy.Validators[0].(func(int) error)
 	featuresvaluestypesMixin := schema.FeaturesValuesTypes{}.Mixin()
 	featuresvaluestypesMixinFields0 := featuresvaluestypesMixin[0].Fields()
 	_ = featuresvaluestypesMixinFields0
@@ -161,20 +91,6 @@ func init() {
 	featuresvaluestypesDescCreatedAt := featuresvaluestypesMixinFields0[0].Descriptor()
 	// featuresvaluestypes.DefaultCreatedAt holds the default value on creation for the created_at field.
 	featuresvaluestypes.DefaultCreatedAt = featuresvaluestypesDescCreatedAt.Default.(func() time.Time)
-	// featuresvaluestypesDescUpdatedAt is the schema descriptor for updated_at field.
-	featuresvaluestypesDescUpdatedAt := featuresvaluestypesMixinFields0[1].Descriptor()
-	// featuresvaluestypes.DefaultUpdatedAt holds the default value on creation for the updated_at field.
-	featuresvaluestypes.DefaultUpdatedAt = featuresvaluestypesDescUpdatedAt.Default.(func() time.Time)
-	// featuresvaluestypes.UpdateDefaultUpdatedAt holds the default value on update for the updated_at field.
-	featuresvaluestypes.UpdateDefaultUpdatedAt = featuresvaluestypesDescUpdatedAt.UpdateDefault.(func() time.Time)
-	// featuresvaluestypesDescCreatedBy is the schema descriptor for created_by field.
-	featuresvaluestypesDescCreatedBy := featuresvaluestypesMixinFields0[3].Descriptor()
-	// featuresvaluestypes.CreatedByValidator is a validator for the "created_by" field. It is called by the builders before save.
-	featuresvaluestypes.CreatedByValidator = featuresvaluestypesDescCreatedBy.Validators[0].(func(int) error)
-	// featuresvaluestypesDescUpdatedBy is the schema descriptor for updated_by field.
-	featuresvaluestypesDescUpdatedBy := featuresvaluestypesMixinFields0[4].Descriptor()
-	// featuresvaluestypes.UpdatedByValidator is a validator for the "updated_by" field. It is called by the builders before save.
-	featuresvaluestypes.UpdatedByValidator = featuresvaluestypesDescUpdatedBy.Validators[0].(func(int) error)
 	imagefolderpathMixin := schema.ImageFolderPath{}.Mixin()
 	imagefolderpathMixinFields0 := imagefolderpathMixin[0].Fields()
 	_ = imagefolderpathMixinFields0
@@ -184,20 +100,6 @@ func init() {
 	imagefolderpathDescCreatedAt := imagefolderpathMixinFields0[0].Descriptor()
 	// imagefolderpath.DefaultCreatedAt holds the default value on creation for the created_at field.
 	imagefolderpath.DefaultCreatedAt = imagefolderpathDescCreatedAt.Default.(func() time.Time)
-	// imagefolderpathDescUpdatedAt is the schema descriptor for updated_at field.
-	imagefolderpathDescUpdatedAt := imagefolderpathMixinFields0[1].Descriptor()
-	// imagefolderpath.DefaultUpdatedAt holds the default value on creation for the updated_at field.
-	imagefolderpath.DefaultUpdatedAt = imagefolderpathDescUpdatedAt.Default.(func() time.Time)
-	// imagefolderpath.UpdateDefaultUpdatedAt holds the default value on update for the updated_at field.
-	imagefolderpath.UpdateDefaultUpdatedAt = imagefolderpathDescUpdatedAt.UpdateDefault.(func() time.Time)
-	// imagefolderpathDescCreatedBy is the schema descriptor for created_by field.
-	imagefolderpathDescCreatedBy := imagefolderpathMixinFields0[3].Descriptor()
-	// imagefolderpath.CreatedByValidator is a validator for the "created_by" field. It is called by the builders before save.
-	imagefolderpath.CreatedByValidator = imagefolderpathDescCreatedBy.Validators[0].(func(int) error)
-	// imagefolderpathDescUpdatedBy is the schema descriptor for updated_by field.
-	imagefolderpathDescUpdatedBy := imagefolderpathMixinFields0[4].Descriptor()
-	// imagefolderpath.UpdatedByValidator is a validator for the "updated_by" field. It is called by the builders before save.
-	imagefolderpath.UpdatedByValidator = imagefolderpathDescUpdatedBy.Validators[0].(func(int) error)
 	imagefoldersourceMixin := schema.ImageFolderSource{}.Mixin()
 	imagefoldersourceMixinFields0 := imagefoldersourceMixin[0].Fields()
 	_ = imagefoldersourceMixinFields0
@@ -207,20 +109,6 @@ func init() {
 	imagefoldersourceDescCreatedAt := imagefoldersourceMixinFields0[0].Descriptor()
 	// imagefoldersource.DefaultCreatedAt holds the default value on creation for the created_at field.
 	imagefoldersource.DefaultCreatedAt = imagefoldersourceDescCreatedAt.Default.(func() time.Time)
-	// imagefoldersourceDescUpdatedAt is the schema descriptor for updated_at field.
-	imagefoldersourceDescUpdatedAt := imagefoldersourceMixinFields0[1].Descriptor()
-	// imagefoldersource.DefaultUpdatedAt holds the default value on creation for the updated_at field.
-	imagefoldersource.DefaultUpdatedAt = imagefoldersourceDescUpdatedAt.Default.(func() time.Time)
-	// imagefoldersource.UpdateDefaultUpdatedAt holds the default value on update for the updated_at field.
-	imagefoldersource.UpdateDefaultUpdatedAt = imagefoldersourceDescUpdatedAt.UpdateDefault.(func() time.Time)
-	// imagefoldersourceDescCreatedBy is the schema descriptor for created_by field.
-	imagefoldersourceDescCreatedBy := imagefoldersourceMixinFields0[3].Descriptor()
-	// imagefoldersource.CreatedByValidator is a validator for the "created_by" field. It is called by the builders before save.
-	imagefoldersource.CreatedByValidator = imagefoldersourceDescCreatedBy.Validators[0].(func(int) error)
-	// imagefoldersourceDescUpdatedBy is the schema descriptor for updated_by field.
-	imagefoldersourceDescUpdatedBy := imagefoldersourceMixinFields0[4].Descriptor()
-	// imagefoldersource.UpdatedByValidator is a validator for the "updated_by" field. It is called by the builders before save.
-	imagefoldersource.UpdatedByValidator = imagefoldersourceDescUpdatedBy.Validators[0].(func(int) error)
 	imagesMixin := schema.Images{}.Mixin()
 	imagesMixinFields0 := imagesMixin[0].Fields()
 	_ = imagesMixinFields0
@@ -230,20 +118,6 @@ func init() {
 	imagesDescCreatedAt := imagesMixinFields0[0].Descriptor()
 	// images.DefaultCreatedAt holds the default value on creation for the created_at field.
 	images.DefaultCreatedAt = imagesDescCreatedAt.Default.(func() time.Time)
-	// imagesDescUpdatedAt is the schema descriptor for updated_at field.
-	imagesDescUpdatedAt := imagesMixinFields0[1].Descriptor()
-	// images.DefaultUpdatedAt holds the default value on creation for the updated_at field.
-	images.DefaultUpdatedAt = imagesDescUpdatedAt.Default.(func() time.Time)
-	// images.UpdateDefaultUpdatedAt holds the default value on update for the updated_at field.
-	images.UpdateDefaultUpdatedAt = imagesDescUpdatedAt.UpdateDefault.(func() time.Time)
-	// imagesDescCreatedBy is the schema descriptor for created_by field.
-	imagesDescCreatedBy := imagesMixinFields0[3].Descriptor()
-	// images.CreatedByValidator is a validator for the "created_by" field. It is called by the builders before save.
-	images.CreatedByValidator = imagesDescCreatedBy.Validators[0].(func(int) error)
-	// imagesDescUpdatedBy is the schema descriptor for updated_by field.
-	imagesDescUpdatedBy := imagesMixinFields0[4].Descriptor()
-	// images.UpdatedByValidator is a validator for the "updated_by" field. It is called by the builders before save.
-	images.UpdatedByValidator = imagesDescUpdatedBy.Validators[0].(func(int) error)
 	infotypesMixin := schema.InfoTypes{}.Mixin()
 	infotypesMixinFields0 := infotypesMixin[0].Fields()
 	_ = infotypesMixinFields0
@@ -253,20 +127,6 @@ func init() {
 	infotypesDescCreatedAt := infotypesMixinFields0[0].Descriptor()
 	// infotypes.DefaultCreatedAt holds the default value on creation for the created_at field.
 	infotypes.DefaultCreatedAt = infotypesDescCreatedAt.Default.(func() time.Time)
-	// infotypesDescUpdatedAt is the schema descriptor for updated_at field.
-	infotypesDescUpdatedAt := infotypesMixinFields0[1].Descriptor()
-	// infotypes.DefaultUpdatedAt holds the default value on creation for the updated_at field.
-	infotypes.DefaultUpdatedAt = infotypesDescUpdatedAt.Default.(func() time.Time)
-	// infotypes.UpdateDefaultUpdatedAt holds the default value on update for the updated_at field.
-	infotypes.UpdateDefaultUpdatedAt = infotypesDescUpdatedAt.UpdateDefault.(func() time.Time)
-	// infotypesDescCreatedBy is the schema descriptor for created_by field.
-	infotypesDescCreatedBy := infotypesMixinFields0[3].Descriptor()
-	// infotypes.CreatedByValidator is a validator for the "created_by" field. It is called by the builders before save.
-	infotypes.CreatedByValidator = infotypesDescCreatedBy.Validators[0].(func(int) error)
-	// infotypesDescUpdatedBy is the schema descriptor for updated_by field.
-	infotypesDescUpdatedBy := infotypesMixinFields0[4].Descriptor()
-	// infotypes.UpdatedByValidator is a validator for the "updated_by" field. It is called by the builders before save.
-	infotypes.UpdatedByValidator = infotypesDescUpdatedBy.Validators[0].(func(int) error)
 	pricetypeMixin := schema.PriceType{}.Mixin()
 	pricetypeMixinFields0 := pricetypeMixin[0].Fields()
 	_ = pricetypeMixinFields0
@@ -276,20 +136,6 @@ func init() {
 	pricetypeDescCreatedAt := pricetypeMixinFields0[0].Descriptor()
 	// pricetype.DefaultCreatedAt holds the default value on creation for the created_at field.
 	pricetype.DefaultCreatedAt = pricetypeDescCreatedAt.Default.(func() time.Time)
-	// pricetypeDescUpdatedAt is the schema descriptor for updated_at field.
-	pricetypeDescUpdatedAt := pricetypeMixinFields0[1].Descriptor()
-	// pricetype.DefaultUpdatedAt holds the default value on creation for the updated_at field.
-	pricetype.DefaultUpdatedAt = pricetypeDescUpdatedAt.Default.(func() time.Time)
-	// pricetype.UpdateDefaultUpdatedAt holds the default value on update for the updated_at field.
-	pricetype.UpdateDefaultUpdatedAt = pricetypeDescUpdatedAt.UpdateDefault.(func() time.Time)
-	// pricetypeDescCreatedBy is the schema descriptor for created_by field.
-	pricetypeDescCreatedBy := pricetypeMixinFields0[3].Descriptor()
-	// pricetype.CreatedByValidator is a validator for the "created_by" field. It is called by the builders before save.
-	pricetype.CreatedByValidator = pricetypeDescCreatedBy.Validators[0].(func(int) error)
-	// pricetypeDescUpdatedBy is the schema descriptor for updated_by field.
-	pricetypeDescUpdatedBy := pricetypeMixinFields0[4].Descriptor()
-	// pricetype.UpdatedByValidator is a validator for the "updated_by" field. It is called by the builders before save.
-	pricetype.UpdatedByValidator = pricetypeDescUpdatedBy.Validators[0].(func(int) error)
 	producthasfeatureMixin := schema.ProductHasFeature{}.Mixin()
 	producthasfeatureMixinFields0 := producthasfeatureMixin[0].Fields()
 	_ = producthasfeatureMixinFields0
@@ -299,20 +145,6 @@ func init() {
 	producthasfeatureDescCreatedAt := producthasfeatureMixinFields0[0].Descriptor()
 	// producthasfeature.DefaultCreatedAt holds the default value on creation for the created_at field.
 	producthasfeature.DefaultCreatedAt = producthasfeatureDescCreatedAt.Default.(func() time.Time)
-	// producthasfeatureDescUpdatedAt is the schema descriptor for updated_at field.
-	producthasfeatureDescUpdatedAt := producthasfeatureMixinFields0[1].Descriptor()
-	// producthasfeature.DefaultUpdatedAt holds the default value on creation for the updated_at field.
-	producthasfeature.DefaultUpdatedAt = producthasfeatureDescUpdatedAt.Default.(func() time.Time)
-	// producthasfeature.UpdateDefaultUpdatedAt holds the default value on update for the updated_at field.
-	producthasfeature.UpdateDefaultUpdatedAt = producthasfeatureDescUpdatedAt.UpdateDefault.(func() time.Time)
-	// producthasfeatureDescCreatedBy is the schema descriptor for created_by field.
-	producthasfeatureDescCreatedBy := producthasfeatureMixinFields0[3].Descriptor()
-	// producthasfeature.CreatedByValidator is a validator for the "created_by" field. It is called by the builders before save.
-	producthasfeature.CreatedByValidator = producthasfeatureDescCreatedBy.Validators[0].(func(int) error)
-	// producthasfeatureDescUpdatedBy is the schema descriptor for updated_by field.
-	producthasfeatureDescUpdatedBy := producthasfeatureMixinFields0[4].Descriptor()
-	// producthasfeature.UpdatedByValidator is a validator for the "updated_by" field. It is called by the builders before save.
-	producthasfeature.UpdatedByValidator = producthasfeatureDescUpdatedBy.Validators[0].(func(int) error)
 	producthasimageMixin := schema.ProductHasImage{}.Mixin()
 	producthasimageMixinFields0 := producthasimageMixin[0].Fields()
 	_ = producthasimageMixinFields0
@@ -322,20 +154,6 @@ func init() {
 	producthasimageDescCreatedAt := producthasimageMixinFields0[0].Descriptor()
 	// producthasimage.DefaultCreatedAt holds the default value on creation for the created_at field.
 	producthasimage.DefaultCreatedAt = producthasimageDescCreatedAt.Default.(func() time.Time)
-	// producthasimageDescUpdatedAt is the schema descriptor for updated_at field.
-	producthasimageDescUpdatedAt := producthasimageMixinFields0[1].Descriptor()
-	// producthasimage.DefaultUpdatedAt holds the default value on creation for the updated_at field.
-	producthasimage.DefaultUpdatedAt = producthasimageDescUpdatedAt.Default.(func() time.Time)
-	// producthasimage.UpdateDefaultUpdatedAt holds the default value on update for the updated_at field.
-	producthasimage.UpdateDefaultUpdatedAt = producthasimageDescUpdatedAt.UpdateDefault.(func() time.Time)
-	// producthasimageDescCreatedBy is the schema descriptor for created_by field.
-	producthasimageDescCreatedBy := producthasimageMixinFields0[3].Descriptor()
-	// producthasimage.CreatedByValidator is a validator for the "created_by" field. It is called by the builders before save.
-	producthasimage.CreatedByValidator = producthasimageDescCreatedBy.Validators[0].(func(int) error)
-	// producthasimageDescUpdatedBy is the schema descriptor for updated_by field.
-	producthasimageDescUpdatedBy := producthasimageMixinFields0[4].Descriptor()
-	// producthasimage.UpdatedByValidator is a validator for the "updated_by" field. It is called by the builders before save.
-	producthasimage.UpdatedByValidator = producthasimageDescUpdatedBy.Validators[0].(func(int) error)
 	producthasinfoMixin := schema.ProductHasInfo{}.Mixin()
 	producthasinfoMixinFields0 := producthasinfoMixin[0].Fields()
 	_ = producthasinfoMixinFields0
@@ -345,20 +163,6 @@ func init() {
 	producthasinfoDescCreatedAt := producthasinfoMixinFields0[0].Descriptor()
 	// producthasinfo.DefaultCreatedAt holds the default value on creation for the created_at field.
 	producthasinfo.DefaultCreatedAt = producthasinfoDescCreatedAt.Default.(func() time.Time)
-	// producthasinfoDescUpdatedAt is the schema descriptor for updated_at field.
-	producthasinfoDescUpdatedAt := producthasinfoMixinFields0[1].Descriptor()
-	// producthasinfo.DefaultUpdatedAt holds the default value on creation for the updated_at field.
-	producthasinfo.DefaultUpdatedAt = producthasinfoDescUpdatedAt.Default.(func() time.Time)
-	// producthasinfo.UpdateDefaultUpdatedAt holds the default value on update for the updated_at field.
-	producthasinfo.UpdateDefaultUpdatedAt = producthasinfoDescUpdatedAt.UpdateDefault.(func() time.Time)
-	// producthasinfoDescCreatedBy is the schema descriptor for created_by field.
-	producthasinfoDescCreatedBy := producthasinfoMixinFields0[3].Descriptor()
-	// producthasinfo.CreatedByValidator is a validator for the "created_by" field. It is called by the builders before save.
-	producthasinfo.CreatedByValidator = producthasinfoDescCreatedBy.Validators[0].(func(int) error)
-	// producthasinfoDescUpdatedBy is the schema descriptor for updated_by field.
-	producthasinfoDescUpdatedBy := producthasinfoMixinFields0[4].Descriptor()
-	// producthasinfo.UpdatedByValidator is a validator for the "updated_by" field. It is called by the builders before save.
-	producthasinfo.UpdatedByValidator = producthasinfoDescUpdatedBy.Validators[0].(func(int) error)
 	producthasproductreferenceMixin := schema.ProductHasProductReference{}.Mixin()
 	producthasproductreferenceMixinFields0 := producthasproductreferenceMixin[0].Fields()
 	_ = producthasproductreferenceMixinFields0
@@ -368,20 +172,6 @@ func init() {
 	producthasproductreferenceDescCreatedAt := producthasproductreferenceMixinFields0[0].Descriptor()
 	// producthasproductreference.DefaultCreatedAt holds the default value on creation for the created_at field.
 	producthasproductreference.DefaultCreatedAt = producthasproductreferenceDescCreatedAt.Default.(func() time.Time)
-	// producthasproductreferenceDescUpdatedAt is the schema descriptor for updated_at field.
-	producthasproductreferenceDescUpdatedAt := producthasproductreferenceMixinFields0[1].Descriptor()
-	// producthasproductreference.DefaultUpdatedAt holds the default value on creation for the updated_at field.
-	producthasproductreference.DefaultUpdatedAt = producthasproductreferenceDescUpdatedAt.Default.(func() time.Time)
-	// producthasproductreference.UpdateDefaultUpdatedAt holds the default value on update for the updated_at field.
-	producthasproductreference.UpdateDefaultUpdatedAt = producthasproductreferenceDescUpdatedAt.UpdateDefault.(func() time.Time)
-	// producthasproductreferenceDescCreatedBy is the schema descriptor for created_by field.
-	producthasproductreferenceDescCreatedBy := producthasproductreferenceMixinFields0[3].Descriptor()
-	// producthasproductreference.CreatedByValidator is a validator for the "created_by" field. It is called by the builders before save.
-	producthasproductreference.CreatedByValidator = producthasproductreferenceDescCreatedBy.Validators[0].(func(int) error)
-	// producthasproductreferenceDescUpdatedBy is the schema descriptor for updated_by field.
-	producthasproductreferenceDescUpdatedBy := producthasproductreferenceMixinFields0[4].Descriptor()
-	// producthasproductreference.UpdatedByValidator is a validator for the "updated_by" field. It is called by the builders before save.
-	producthasproductreference.UpdatedByValidator = producthasproductreferenceDescUpdatedBy.Validators[0].(func(int) error)
 	productinfoMixin := schema.ProductInfo{}.Mixin()
 	productinfoMixinFields0 := productinfoMixin[0].Fields()
 	_ = productinfoMixinFields0
@@ -391,20 +181,6 @@ func init() {
 	productinfoDescCreatedAt := productinfoMixinFields0[0].Descriptor()
 	// productinfo.DefaultCreatedAt holds the default value on creation for the created_at field.
 	productinfo.DefaultCreatedAt = productinfoDescCreatedAt.Default.(func() time.Time)
-	// productinfoDescUpdatedAt is the schema descriptor for updated_at field.
-	productinfoDescUpdatedAt := productinfoMixinFields0[1].Descriptor()
-	// productinfo.DefaultUpdatedAt holds the default value on creation for the updated_at field.
-	productinfo.DefaultUpdatedAt = productinfoDescUpdatedAt.Default.(func() time.Time)
-	// productinfo.UpdateDefaultUpdatedAt holds the default value on update for the updated_at field.
-	productinfo.UpdateDefaultUpdatedAt = productinfoDescUpdatedAt.UpdateDefault.(func() time.Time)
-	// productinfoDescCreatedBy is the schema descriptor for created_by field.
-	productinfoDescCreatedBy := productinfoMixinFields0[3].Descriptor()
-	// productinfo.CreatedByValidator is a validator for the "created_by" field. It is called by the builders before save.
-	productinfo.CreatedByValidator = productinfoDescCreatedBy.Validators[0].(func(int) error)
-	// productinfoDescUpdatedBy is the schema descriptor for updated_by field.
-	productinfoDescUpdatedBy := productinfoMixinFields0[4].Descriptor()
-	// productinfo.UpdatedByValidator is a validator for the "updated_by" field. It is called by the builders before save.
-	productinfo.UpdatedByValidator = productinfoDescUpdatedBy.Validators[0].(func(int) error)
 	productpricesMixin := schema.ProductPrices{}.Mixin()
 	productpricesMixinFields0 := productpricesMixin[0].Fields()
 	_ = productpricesMixinFields0
@@ -414,20 +190,6 @@ func init() {
 	productpricesDescCreatedAt := productpricesMixinFields0[0].Descriptor()
 	// productprices.DefaultCreatedAt holds the default value on creation for the created_at field.
 	productprices.DefaultCreatedAt = productpricesDescCreatedAt.Default.(func() time.Time)
-	// productpricesDescUpdatedAt is the schema descriptor for updated_at field.
-	productpricesDescUpdatedAt := productpricesMixinFields0[1].Descriptor()
-	// productprices.DefaultUpdatedAt holds the default value on creation for the updated_at field.
-	productprices.DefaultUpdatedAt = productpricesDescUpdatedAt.Default.(func() time.Time)
-	// productprices.UpdateDefaultUpdatedAt holds the default value on update for the updated_at field.
-	productprices.UpdateDefaultUpdatedAt = productpricesDescUpdatedAt.UpdateDefault.(func() time.Time)
-	// productpricesDescCreatedBy is the schema descriptor for created_by field.
-	productpricesDescCreatedBy := productpricesMixinFields0[3].Descriptor()
-	// productprices.CreatedByValidator is a validator for the "created_by" field. It is called by the builders before save.
-	productprices.CreatedByValidator = productpricesDescCreatedBy.Validators[0].(func(int) error)
-	// productpricesDescUpdatedBy is the schema descriptor for updated_by field.
-	productpricesDescUpdatedBy := productpricesMixinFields0[4].Descriptor()
-	// productprices.UpdatedByValidator is a validator for the "updated_by" field. It is called by the builders before save.
-	productprices.UpdatedByValidator = productpricesDescUpdatedBy.Validators[0].(func(int) error)
 	productreferencesMixin := schema.ProductReferences{}.Mixin()
 	productreferencesMixinFields0 := productreferencesMixin[0].Fields()
 	_ = productreferencesMixinFields0
@@ -437,20 +199,6 @@ func init() {
 	productreferencesDescCreatedAt := productreferencesMixinFields0[0].Descriptor()
 	// productreferences.DefaultCreatedAt holds the default value on creation for the created_at field.
 	productreferences.DefaultCreatedAt = productreferencesDescCreatedAt.Default.(func() time.Time)
-	// productreferencesDescUpdatedAt is the schema descriptor for updated_at field.
-	productreferencesDescUpdatedAt := productreferencesMixinFields0[1].Descriptor()
-	// productreferences.DefaultUpdatedAt holds the default value on creation for the updated_at field.
-	productreferences.DefaultUpdatedAt = productreferencesDescUpdatedAt.Default.(func() time.Time)
-	// productreferences.UpdateDefaultUpdatedAt holds the default value on update for the updated_at field.
-	productreferences.UpdateDefaultUpdatedAt = productreferencesDescUpdatedAt.UpdateDefault.(func() time.Time)
-	// productreferencesDescCreatedBy is the schema descriptor for created_by field.
-	productreferencesDescCreatedBy := productreferencesMixinFields0[3].Descriptor()
-	// productreferences.CreatedByValidator is a validator for the "created_by" field. It is called by the builders before save.
-	productreferences.CreatedByValidator = productreferencesDescCreatedBy.Validators[0].(func(int) error)
-	// productreferencesDescUpdatedBy is the schema descriptor for updated_by field.
-	productreferencesDescUpdatedBy := productreferencesMixinFields0[4].Descriptor()
-	// productreferences.UpdatedByValidator is a validator for the "updated_by" field. It is called by the builders before save.
-	productreferences.UpdatedByValidator = productreferencesDescUpdatedBy.Validators[0].(func(int) error)
 	productsMixin := schema.Products{}.Mixin()
 	productsMixinFields0 := productsMixin[0].Fields()
 	_ = productsMixinFields0
@@ -460,20 +208,6 @@ func init() {
 	productsDescCreatedAt := productsMixinFields0[0].Descriptor()
 	// products.DefaultCreatedAt holds the default value on creation for the created_at field.
 	products.DefaultCreatedAt = productsDescCreatedAt.Default.(func() time.Time)
-	// productsDescUpdatedAt is the schema descriptor for updated_at field.
-	productsDescUpdatedAt := productsMixinFields0[1].Descriptor()
-	// products.DefaultUpdatedAt holds the default value on creation for the updated_at field.
-	products.DefaultUpdatedAt = productsDescUpdatedAt.Default.(func() time.Time)
-	// products.UpdateDefaultUpdatedAt holds the default value on update for the updated_at field.
-	products.UpdateDefaultUpdatedAt = productsDescUpdatedAt.UpdateDefault.(func() time.Time)
-	// productsDescCreatedBy is the schema descriptor for created_by field.
-	productsDescCreatedBy := productsMixinFields0[3].Descriptor()
-	// products.CreatedByValidator is a validator for the "created_by" field. It is called by the builders before save.
-	products.CreatedByValidator = productsDescCreatedBy.Validators[0].(func(int) error)
-	// productsDescUpdatedBy is the schema descriptor for updated_by field.
-	productsDescUpdatedBy := productsMixinFields0[4].Descriptor()
-	// products.UpdatedByValidator is a validator for the "updated_by" field. It is called by the builders before save.
-	products.UpdatedByValidator = productsDescUpdatedBy.Validators[0].(func(int) error)
 	promotionhasproductMixin := schema.PromotionHasProduct{}.Mixin()
 	promotionhasproductMixinFields0 := promotionhasproductMixin[0].Fields()
 	_ = promotionhasproductMixinFields0
@@ -483,20 +217,6 @@ func init() {
 	promotionhasproductDescCreatedAt := promotionhasproductMixinFields0[0].Descriptor()
 	// promotionhasproduct.DefaultCreatedAt holds the default value on creation for the created_at field.
 	promotionhasproduct.DefaultCreatedAt = promotionhasproductDescCreatedAt.Default.(func() time.Time)
-	// promotionhasproductDescUpdatedAt is the schema descriptor for updated_at field.
-	promotionhasproductDescUpdatedAt := promotionhasproductMixinFields0[1].Descriptor()
-	// promotionhasproduct.DefaultUpdatedAt holds the default value on creation for the updated_at field.
-	promotionhasproduct.DefaultUpdatedAt = promotionhasproductDescUpdatedAt.Default.(func() time.Time)
-	// promotionhasproduct.UpdateDefaultUpdatedAt holds the default value on update for the updated_at field.
-	promotionhasproduct.UpdateDefaultUpdatedAt = promotionhasproductDescUpdatedAt.UpdateDefault.(func() time.Time)
-	// promotionhasproductDescCreatedBy is the schema descriptor for created_by field.
-	promotionhasproductDescCreatedBy := promotionhasproductMixinFields0[3].Descriptor()
-	// promotionhasproduct.CreatedByValidator is a validator for the "created_by" field. It is called by the builders before save.
-	promotionhasproduct.CreatedByValidator = promotionhasproductDescCreatedBy.Validators[0].(func(int) error)
-	// promotionhasproductDescUpdatedBy is the schema descriptor for updated_by field.
-	promotionhasproductDescUpdatedBy := promotionhasproductMixinFields0[4].Descriptor()
-	// promotionhasproduct.UpdatedByValidator is a validator for the "updated_by" field. It is called by the builders before save.
-	promotionhasproduct.UpdatedByValidator = promotionhasproductDescUpdatedBy.Validators[0].(func(int) error)
 	promotionsMixin := schema.Promotions{}.Mixin()
 	promotionsMixinFields0 := promotionsMixin[0].Fields()
 	_ = promotionsMixinFields0
@@ -506,20 +226,6 @@ func init() {
 	promotionsDescCreatedAt := promotionsMixinFields0[0].Descriptor()
 	// promotions.DefaultCreatedAt holds the default value on creation for the created_at field.
 	promotions.DefaultCreatedAt = promotionsDescCreatedAt.Default.(func() time.Time)
-	// promotionsDescUpdatedAt is the schema descriptor for updated_at field.
-	promotionsDescUpdatedAt := promotionsMixinFields0[1].Descriptor()
-	// promotions.DefaultUpdatedAt holds the default value on creation for the updated_at field.
-	promotions.DefaultUpdatedAt = promotionsDescUpdatedAt.Default.(func() time.Time)
-	// promotions.UpdateDefaultUpdatedAt holds the default value on update for the updated_at field.
-	promotions.UpdateDefaultUpdatedAt = promotionsDescUpdatedAt.UpdateDefault.(func() time.Time)
-	// promotionsDescCreatedBy is the schema descriptor for created_by field.
-	promotionsDescCreatedBy := promotionsMixinFields0[3].Descriptor()
-	// promotions.CreatedByValidator is a validator for the "created_by" field. It is called by the builders before save.
-	promotions.CreatedByValidator = promotionsDescCreatedBy.Validators[0].(func(int) error)
-	// promotionsDescUpdatedBy is the schema descriptor for updated_by field.
-	promotionsDescUpdatedBy := promotionsMixinFields0[4].Descriptor()
-	// promotions.UpdatedByValidator is a validator for the "updated_by" field. It is called by the builders before save.
-	promotions.UpdatedByValidator = promotionsDescUpdatedBy.Validators[0].(func(int) error)
 	referencesourcesMixin := schema.ReferenceSources{}.Mixin()
 	referencesourcesMixinFields0 := referencesourcesMixin[0].Fields()
 	_ = referencesourcesMixinFields0
@@ -529,20 +235,6 @@ func init() {
 	referencesourcesDescCreatedAt := referencesourcesMixinFields0[0].Descriptor()
 	// referencesources.DefaultCreatedAt holds the default value on creation for the created_at field.
 	referencesources.DefaultCreatedAt = referencesourcesDescCreatedAt.Default.(func() time.Time)
-	// referencesourcesDescUpdatedAt is the schema descriptor for updated_at field.
-	referencesourcesDescUpdatedAt := referencesourcesMixinFields0[1].Descriptor()
-	// referencesources.DefaultUpdatedAt holds the default value on creation for the updated_at field.
-	referencesources.DefaultUpdatedAt = referencesourcesDescUpdatedAt.Default.(func() time.Time)
-	// referencesources.UpdateDefaultUpdatedAt holds the default value on update for the updated_at field.
-	referencesources.UpdateDefaultUpdatedAt = referencesourcesDescUpdatedAt.UpdateDefault.(func() time.Time)
-	// referencesourcesDescCreatedBy is the schema descriptor for created_by field.
-	referencesourcesDescCreatedBy := referencesourcesMixinFields0[3].Descriptor()
-	// referencesources.CreatedByValidator is a validator for the "created_by" field. It is called by the builders before save.
-	referencesources.CreatedByValidator = referencesourcesDescCreatedBy.Validators[0].(func(int) error)
-	// referencesourcesDescUpdatedBy is the schema descriptor for updated_by field.
-	referencesourcesDescUpdatedBy := referencesourcesMixinFields0[4].Descriptor()
-	// referencesources.UpdatedByValidator is a validator for the "updated_by" field. It is called by the builders before save.
-	referencesources.UpdatedByValidator = referencesourcesDescUpdatedBy.Validators[0].(func(int) error)
 	toolhasproductMixin := schema.ToolHasProduct{}.Mixin()
 	toolhasproductMixinFields0 := toolhasproductMixin[0].Fields()
 	_ = toolhasproductMixinFields0
@@ -552,20 +244,6 @@ func init() {
 	toolhasproductDescCreatedAt := toolhasproductMixinFields0[0].Descriptor()
 	// toolhasproduct.DefaultCreatedAt holds the default value on creation for the created_at field.
 	toolhasproduct.DefaultCreatedAt = toolhasproductDescCreatedAt.Default.(func() time.Time)
-	// toolhasproductDescUpdatedAt is the schema descriptor for updated_at field.
-	toolhasproductDescUpdatedAt := toolhasproductMixinFields0[1].Descriptor()
-	// toolhasproduct.DefaultUpdatedAt holds the default value on creation for the updated_at field.
-	toolhasproduct.DefaultUpdatedAt = toolhasproductDescUpdatedAt.Default.(func() time.Time)
-	// toolhasproduct.UpdateDefaultUpdatedAt holds the default value on update for the updated_at field.
-	toolhasproduct.UpdateDefaultUpdatedAt = toolhasproductDescUpdatedAt.UpdateDefault.(func() time.Time)
-	// toolhasproductDescCreatedBy is the schema descriptor for created_by field.
-	toolhasproductDescCreatedBy := toolhasproductMixinFields0[3].Descriptor()
-	// toolhasproduct.CreatedByValidator is a validator for the "created_by" field. It is called by the builders before save.
-	toolhasproduct.CreatedByValidator = toolhasproductDescCreatedBy.Validators[0].(func(int) error)
-	// toolhasproductDescUpdatedBy is the schema descriptor for updated_by field.
-	toolhasproductDescUpdatedBy := toolhasproductMixinFields0[4].Descriptor()
-	// toolhasproduct.UpdatedByValidator is a validator for the "updated_by" field. It is called by the builders before save.
-	toolhasproduct.UpdatedByValidator = toolhasproductDescUpdatedBy.Validators[0].(func(int) error)
 	toolsMixin := schema.Tools{}.Mixin()
 	toolsMixinFields0 := toolsMixin[0].Fields()
 	_ = toolsMixinFields0
@@ -575,20 +253,6 @@ func init() {
 	toolsDescCreatedAt := toolsMixinFields0[0].Descriptor()
 	// tools.DefaultCreatedAt holds the default value on creation for the created_at field.
 	tools.DefaultCreatedAt = toolsDescCreatedAt.Default.(func() time.Time)
-	// toolsDescUpdatedAt is the schema descriptor for updated_at field.
-	toolsDescUpdatedAt := toolsMixinFields0[1].Descriptor()
-	// tools.DefaultUpdatedAt holds the default value on creation for the updated_at field.
-	tools.DefaultUpdatedAt = toolsDescUpdatedAt.Default.(func() time.Time)
-	// tools.UpdateDefaultUpdatedAt holds the default value on update for the updated_at field.
-	tools.UpdateDefaultUpdatedAt = toolsDescUpdatedAt.UpdateDefault.(func() time.Time)
-	// toolsDescCreatedBy is the schema descriptor for created_by field.
-	toolsDescCreatedBy := toolsMixinFields0[3].Descriptor()
-	// tools.CreatedByValidator is a validator for the "created_by" field. It is called by the builders before save.
-	tools.CreatedByValidator = toolsDescCreatedBy.Validators[0].(func(int) error)
-	// toolsDescUpdatedBy is the schema descriptor for updated_by field.
-	toolsDescUpdatedBy := toolsMixinFields0[4].Descriptor()
-	// tools.UpdatedByValidator is a validator for the "updated_by" field. It is called by the builders before save.
-	tools.UpdatedByValidator = toolsDescUpdatedBy.Validators[0].(func(int) error)
 	userMixin := schema.User{}.Mixin()
 	userMixinFields0 := userMixin[0].Fields()
 	_ = userMixinFields0
@@ -598,20 +262,6 @@ func init() {
 	userDescCreatedAt := userMixinFields0[0].Descriptor()
 	// user.DefaultCreatedAt holds the default value on creation for the created_at field.
 	user.DefaultCreatedAt = userDescCreatedAt.Default.(func() time.Time)
-	// userDescUpdatedAt is the schema descriptor for updated_at field.
-	userDescUpdatedAt := userMixinFields0[1].Descriptor()
-	// user.DefaultUpdatedAt holds the default value on creation for the updated_at field.
-	user.DefaultUpdatedAt = userDescUpdatedAt.Default.(func() time.Time)
-	// user.UpdateDefaultUpdatedAt holds the default value on update for the updated_at field.
-	user.UpdateDefaultUpdatedAt = userDescUpdatedAt.UpdateDefault.(func() time.Time)
-	// userDescCreatedBy is the schema descriptor for created_by field.
-	userDescCreatedBy := userMixinFields0[3].Descriptor()
-	// user.CreatedByValidator is a validator for the "created_by" field. It is called by the builders before save.
-	user.CreatedByValidator = userDescCreatedBy.Validators[0].(func(int) error)
-	// userDescUpdatedBy is the schema descriptor for updated_by field.
-	userDescUpdatedBy := userMixinFields0[4].Descriptor()
-	// user.UpdatedByValidator is a validator for the "updated_by" field. It is called by the builders before save.
-	user.UpdatedByValidator = userDescUpdatedBy.Validators[0].(func(int) error)
 	// userDescName is the schema descriptor for name field.
 	userDescName := userFields[0].Descriptor()
 	// user.NameValidator is a validator for the "name" field. It is called by the builders before save.
@@ -629,18 +279,4 @@ func init() {
 	varianttypeDescCreatedAt := varianttypeMixinFields0[0].Descriptor()
 	// varianttype.DefaultCreatedAt holds the default value on creation for the created_at field.
 	varianttype.DefaultCreatedAt = varianttypeDescCreatedAt.Default.(func() time.Time)
-	// varianttypeDescUpdatedAt is the schema descriptor for updated_at field.
-	varianttypeDescUpdatedAt := varianttypeMixinFields0[1].Descriptor()
-	// varianttype.DefaultUpdatedAt holds the default value on creation for the updated_at field.
-	varianttype.DefaultUpdatedAt = varianttypeDescUpdatedAt.Default.(func() time.Time)
-	// varianttype.UpdateDefaultUpdatedAt holds the default value on update for the updated_at field.
-	varianttype.UpdateDefaultUpdatedAt = varianttypeDescUpdatedAt.UpdateDefault.(func() time.Time)
-	// varianttypeDescCreatedBy is the schema descriptor for created_by field.
-	varianttypeDescCreatedBy := varianttypeMixinFields0[3].Descriptor()
-	// varianttype.CreatedByValidator is a validator for the "created_by" field. It is called by the builders before save.
-	varianttype.CreatedByValidator = varianttypeDescCreatedBy.Validators[0].(func(int) error)
-	// varianttypeDescUpdatedBy is the schema descriptor for updated_by field.
-	varianttypeDescUpdatedBy := varianttypeMixinFields0[4].Descriptor()
-	// varianttype.UpdatedByValidator is a validator for the "updated_by" field. It is called by the builders before save.
-	varianttype.UpdatedByValidator = varianttypeDescUpdatedBy.Validators[0].(func(int) error)
 }

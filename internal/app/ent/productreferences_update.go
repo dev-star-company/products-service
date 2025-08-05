@@ -31,12 +31,6 @@ func (pru *ProductReferencesUpdate) Where(ps ...predicate.ProductReferences) *Pr
 	return pru
 }
 
-// SetUpdatedAt sets the "updated_at" field.
-func (pru *ProductReferencesUpdate) SetUpdatedAt(t time.Time) *ProductReferencesUpdate {
-	pru.mutation.SetUpdatedAt(t)
-	return pru
-}
-
 // SetDeletedAt sets the "deleted_at" field.
 func (pru *ProductReferencesUpdate) SetDeletedAt(t time.Time) *ProductReferencesUpdate {
 	pru.mutation.SetDeletedAt(t)
@@ -57,57 +51,8 @@ func (pru *ProductReferencesUpdate) ClearDeletedAt() *ProductReferencesUpdate {
 	return pru
 }
 
-// SetUpdatedBy sets the "updated_by" field.
-func (pru *ProductReferencesUpdate) SetUpdatedBy(i int) *ProductReferencesUpdate {
-	pru.mutation.ResetUpdatedBy()
-	pru.mutation.SetUpdatedBy(i)
-	return pru
-}
-
-// SetNillableUpdatedBy sets the "updated_by" field if the given value is not nil.
-func (pru *ProductReferencesUpdate) SetNillableUpdatedBy(i *int) *ProductReferencesUpdate {
-	if i != nil {
-		pru.SetUpdatedBy(*i)
-	}
-	return pru
-}
-
-// AddUpdatedBy adds i to the "updated_by" field.
-func (pru *ProductReferencesUpdate) AddUpdatedBy(i int) *ProductReferencesUpdate {
-	pru.mutation.AddUpdatedBy(i)
-	return pru
-}
-
-// SetDeletedBy sets the "deleted_by" field.
-func (pru *ProductReferencesUpdate) SetDeletedBy(i int) *ProductReferencesUpdate {
-	pru.mutation.ResetDeletedBy()
-	pru.mutation.SetDeletedBy(i)
-	return pru
-}
-
-// SetNillableDeletedBy sets the "deleted_by" field if the given value is not nil.
-func (pru *ProductReferencesUpdate) SetNillableDeletedBy(i *int) *ProductReferencesUpdate {
-	if i != nil {
-		pru.SetDeletedBy(*i)
-	}
-	return pru
-}
-
-// AddDeletedBy adds i to the "deleted_by" field.
-func (pru *ProductReferencesUpdate) AddDeletedBy(i int) *ProductReferencesUpdate {
-	pru.mutation.AddDeletedBy(i)
-	return pru
-}
-
-// ClearDeletedBy clears the value of the "deleted_by" field.
-func (pru *ProductReferencesUpdate) ClearDeletedBy() *ProductReferencesUpdate {
-	pru.mutation.ClearDeletedBy()
-	return pru
-}
-
 // SetReferenceSourceID sets the "reference_source_id" field.
 func (pru *ProductReferencesUpdate) SetReferenceSourceID(i int) *ProductReferencesUpdate {
-	pru.mutation.ResetReferenceSourceID()
 	pru.mutation.SetReferenceSourceID(i)
 	return pru
 }
@@ -120,9 +65,9 @@ func (pru *ProductReferencesUpdate) SetNillableReferenceSourceID(i *int) *Produc
 	return pru
 }
 
-// AddReferenceSourceID adds i to the "reference_source_id" field.
-func (pru *ProductReferencesUpdate) AddReferenceSourceID(i int) *ProductReferencesUpdate {
-	pru.mutation.AddReferenceSourceID(i)
+// ClearReferenceSourceID clears the value of the "reference_source_id" field.
+func (pru *ProductReferencesUpdate) ClearReferenceSourceID() *ProductReferencesUpdate {
+	pru.mutation.ClearReferenceSourceID()
 	return pru
 }
 
@@ -140,26 +85,38 @@ func (pru *ProductReferencesUpdate) SetNillableValue(s *string) *ProductReferenc
 	return pru
 }
 
-// SetProductID sets the "product" edge to the Products entity by ID.
-func (pru *ProductReferencesUpdate) SetProductID(id int) *ProductReferencesUpdate {
-	pru.mutation.SetProductID(id)
-	return pru
-}
-
-// SetProduct sets the "product" edge to the Products entity.
-func (pru *ProductReferencesUpdate) SetProduct(p *Products) *ProductReferencesUpdate {
-	return pru.SetProductID(p.ID)
-}
-
 // SetReferenceSourcesID sets the "reference_sources" edge to the ReferenceSources entity by ID.
 func (pru *ProductReferencesUpdate) SetReferenceSourcesID(id int) *ProductReferencesUpdate {
 	pru.mutation.SetReferenceSourcesID(id)
 	return pru
 }
 
+// SetNillableReferenceSourcesID sets the "reference_sources" edge to the ReferenceSources entity by ID if the given value is not nil.
+func (pru *ProductReferencesUpdate) SetNillableReferenceSourcesID(id *int) *ProductReferencesUpdate {
+	if id != nil {
+		pru = pru.SetReferenceSourcesID(*id)
+	}
+	return pru
+}
+
 // SetReferenceSources sets the "reference_sources" edge to the ReferenceSources entity.
 func (pru *ProductReferencesUpdate) SetReferenceSources(r *ReferenceSources) *ProductReferencesUpdate {
 	return pru.SetReferenceSourcesID(r.ID)
+}
+
+// AddProductIDs adds the "products" edge to the Products entity by IDs.
+func (pru *ProductReferencesUpdate) AddProductIDs(ids ...int) *ProductReferencesUpdate {
+	pru.mutation.AddProductIDs(ids...)
+	return pru
+}
+
+// AddProducts adds the "products" edges to the Products entity.
+func (pru *ProductReferencesUpdate) AddProducts(p ...*Products) *ProductReferencesUpdate {
+	ids := make([]int, len(p))
+	for i := range p {
+		ids[i] = p[i].ID
+	}
+	return pru.AddProductIDs(ids...)
 }
 
 // AddProductHasProductReferenceIDs adds the "product_has_product_reference" edge to the ProductHasProductReference entity by IDs.
@@ -182,16 +139,31 @@ func (pru *ProductReferencesUpdate) Mutation() *ProductReferencesMutation {
 	return pru.mutation
 }
 
-// ClearProduct clears the "product" edge to the Products entity.
-func (pru *ProductReferencesUpdate) ClearProduct() *ProductReferencesUpdate {
-	pru.mutation.ClearProduct()
-	return pru
-}
-
 // ClearReferenceSources clears the "reference_sources" edge to the ReferenceSources entity.
 func (pru *ProductReferencesUpdate) ClearReferenceSources() *ProductReferencesUpdate {
 	pru.mutation.ClearReferenceSources()
 	return pru
+}
+
+// ClearProducts clears all "products" edges to the Products entity.
+func (pru *ProductReferencesUpdate) ClearProducts() *ProductReferencesUpdate {
+	pru.mutation.ClearProducts()
+	return pru
+}
+
+// RemoveProductIDs removes the "products" edge to Products entities by IDs.
+func (pru *ProductReferencesUpdate) RemoveProductIDs(ids ...int) *ProductReferencesUpdate {
+	pru.mutation.RemoveProductIDs(ids...)
+	return pru
+}
+
+// RemoveProducts removes "products" edges to Products entities.
+func (pru *ProductReferencesUpdate) RemoveProducts(p ...*Products) *ProductReferencesUpdate {
+	ids := make([]int, len(p))
+	for i := range p {
+		ids[i] = p[i].ID
+	}
+	return pru.RemoveProductIDs(ids...)
 }
 
 // ClearProductHasProductReference clears all "product_has_product_reference" edges to the ProductHasProductReference entity.
@@ -217,7 +189,6 @@ func (pru *ProductReferencesUpdate) RemoveProductHasProductReference(p ...*Produ
 
 // Save executes the query and returns the number of nodes affected by the update operation.
 func (pru *ProductReferencesUpdate) Save(ctx context.Context) (int, error) {
-	pru.defaults()
 	return withHooks(ctx, pru.sqlSave, pru.mutation, pru.hooks)
 }
 
@@ -243,34 +214,7 @@ func (pru *ProductReferencesUpdate) ExecX(ctx context.Context) {
 	}
 }
 
-// defaults sets the default values of the builder before save.
-func (pru *ProductReferencesUpdate) defaults() {
-	if _, ok := pru.mutation.UpdatedAt(); !ok {
-		v := productreferences.UpdateDefaultUpdatedAt()
-		pru.mutation.SetUpdatedAt(v)
-	}
-}
-
-// check runs all checks and user-defined validators on the builder.
-func (pru *ProductReferencesUpdate) check() error {
-	if v, ok := pru.mutation.UpdatedBy(); ok {
-		if err := productreferences.UpdatedByValidator(v); err != nil {
-			return &ValidationError{Name: "updated_by", err: fmt.Errorf(`ent: validator failed for field "ProductReferences.updated_by": %w`, err)}
-		}
-	}
-	if pru.mutation.ProductCleared() && len(pru.mutation.ProductIDs()) > 0 {
-		return errors.New(`ent: clearing a required unique edge "ProductReferences.product"`)
-	}
-	if pru.mutation.ReferenceSourcesCleared() && len(pru.mutation.ReferenceSourcesIDs()) > 0 {
-		return errors.New(`ent: clearing a required unique edge "ProductReferences.reference_sources"`)
-	}
-	return nil
-}
-
 func (pru *ProductReferencesUpdate) sqlSave(ctx context.Context) (n int, err error) {
-	if err := pru.check(); err != nil {
-		return n, err
-	}
 	_spec := sqlgraph.NewUpdateSpec(productreferences.Table, productreferences.Columns, sqlgraph.NewFieldSpec(productreferences.FieldID, field.TypeInt))
 	if ps := pru.mutation.predicates; len(ps) > 0 {
 		_spec.Predicate = func(selector *sql.Selector) {
@@ -279,67 +223,14 @@ func (pru *ProductReferencesUpdate) sqlSave(ctx context.Context) (n int, err err
 			}
 		}
 	}
-	if value, ok := pru.mutation.UpdatedAt(); ok {
-		_spec.SetField(productreferences.FieldUpdatedAt, field.TypeTime, value)
-	}
 	if value, ok := pru.mutation.DeletedAt(); ok {
 		_spec.SetField(productreferences.FieldDeletedAt, field.TypeTime, value)
 	}
 	if pru.mutation.DeletedAtCleared() {
 		_spec.ClearField(productreferences.FieldDeletedAt, field.TypeTime)
 	}
-	if value, ok := pru.mutation.UpdatedBy(); ok {
-		_spec.SetField(productreferences.FieldUpdatedBy, field.TypeInt, value)
-	}
-	if value, ok := pru.mutation.AddedUpdatedBy(); ok {
-		_spec.AddField(productreferences.FieldUpdatedBy, field.TypeInt, value)
-	}
-	if value, ok := pru.mutation.DeletedBy(); ok {
-		_spec.SetField(productreferences.FieldDeletedBy, field.TypeInt, value)
-	}
-	if value, ok := pru.mutation.AddedDeletedBy(); ok {
-		_spec.AddField(productreferences.FieldDeletedBy, field.TypeInt, value)
-	}
-	if pru.mutation.DeletedByCleared() {
-		_spec.ClearField(productreferences.FieldDeletedBy, field.TypeInt)
-	}
-	if value, ok := pru.mutation.ReferenceSourceID(); ok {
-		_spec.SetField(productreferences.FieldReferenceSourceID, field.TypeInt, value)
-	}
-	if value, ok := pru.mutation.AddedReferenceSourceID(); ok {
-		_spec.AddField(productreferences.FieldReferenceSourceID, field.TypeInt, value)
-	}
 	if value, ok := pru.mutation.Value(); ok {
 		_spec.SetField(productreferences.FieldValue, field.TypeString, value)
-	}
-	if pru.mutation.ProductCleared() {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.M2O,
-			Inverse: true,
-			Table:   productreferences.ProductTable,
-			Columns: []string{productreferences.ProductColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(products.FieldID, field.TypeInt),
-			},
-		}
-		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
-	}
-	if nodes := pru.mutation.ProductIDs(); len(nodes) > 0 {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.M2O,
-			Inverse: true,
-			Table:   productreferences.ProductTable,
-			Columns: []string{productreferences.ProductColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(products.FieldID, field.TypeInt),
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
 	if pru.mutation.ReferenceSourcesCleared() {
 		edge := &sqlgraph.EdgeSpec{
@@ -363,6 +254,51 @@ func (pru *ProductReferencesUpdate) sqlSave(ctx context.Context) (n int, err err
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(referencesources.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if pru.mutation.ProductsCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   productreferences.ProductsTable,
+			Columns: []string{productreferences.ProductsColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(products.FieldID, field.TypeInt),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := pru.mutation.RemovedProductsIDs(); len(nodes) > 0 && !pru.mutation.ProductsCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   productreferences.ProductsTable,
+			Columns: []string{productreferences.ProductsColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(products.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := pru.mutation.ProductsIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   productreferences.ProductsTable,
+			Columns: []string{productreferences.ProductsColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(products.FieldID, field.TypeInt),
 			},
 		}
 		for _, k := range nodes {
@@ -435,12 +371,6 @@ type ProductReferencesUpdateOne struct {
 	mutation *ProductReferencesMutation
 }
 
-// SetUpdatedAt sets the "updated_at" field.
-func (pruo *ProductReferencesUpdateOne) SetUpdatedAt(t time.Time) *ProductReferencesUpdateOne {
-	pruo.mutation.SetUpdatedAt(t)
-	return pruo
-}
-
 // SetDeletedAt sets the "deleted_at" field.
 func (pruo *ProductReferencesUpdateOne) SetDeletedAt(t time.Time) *ProductReferencesUpdateOne {
 	pruo.mutation.SetDeletedAt(t)
@@ -461,57 +391,8 @@ func (pruo *ProductReferencesUpdateOne) ClearDeletedAt() *ProductReferencesUpdat
 	return pruo
 }
 
-// SetUpdatedBy sets the "updated_by" field.
-func (pruo *ProductReferencesUpdateOne) SetUpdatedBy(i int) *ProductReferencesUpdateOne {
-	pruo.mutation.ResetUpdatedBy()
-	pruo.mutation.SetUpdatedBy(i)
-	return pruo
-}
-
-// SetNillableUpdatedBy sets the "updated_by" field if the given value is not nil.
-func (pruo *ProductReferencesUpdateOne) SetNillableUpdatedBy(i *int) *ProductReferencesUpdateOne {
-	if i != nil {
-		pruo.SetUpdatedBy(*i)
-	}
-	return pruo
-}
-
-// AddUpdatedBy adds i to the "updated_by" field.
-func (pruo *ProductReferencesUpdateOne) AddUpdatedBy(i int) *ProductReferencesUpdateOne {
-	pruo.mutation.AddUpdatedBy(i)
-	return pruo
-}
-
-// SetDeletedBy sets the "deleted_by" field.
-func (pruo *ProductReferencesUpdateOne) SetDeletedBy(i int) *ProductReferencesUpdateOne {
-	pruo.mutation.ResetDeletedBy()
-	pruo.mutation.SetDeletedBy(i)
-	return pruo
-}
-
-// SetNillableDeletedBy sets the "deleted_by" field if the given value is not nil.
-func (pruo *ProductReferencesUpdateOne) SetNillableDeletedBy(i *int) *ProductReferencesUpdateOne {
-	if i != nil {
-		pruo.SetDeletedBy(*i)
-	}
-	return pruo
-}
-
-// AddDeletedBy adds i to the "deleted_by" field.
-func (pruo *ProductReferencesUpdateOne) AddDeletedBy(i int) *ProductReferencesUpdateOne {
-	pruo.mutation.AddDeletedBy(i)
-	return pruo
-}
-
-// ClearDeletedBy clears the value of the "deleted_by" field.
-func (pruo *ProductReferencesUpdateOne) ClearDeletedBy() *ProductReferencesUpdateOne {
-	pruo.mutation.ClearDeletedBy()
-	return pruo
-}
-
 // SetReferenceSourceID sets the "reference_source_id" field.
 func (pruo *ProductReferencesUpdateOne) SetReferenceSourceID(i int) *ProductReferencesUpdateOne {
-	pruo.mutation.ResetReferenceSourceID()
 	pruo.mutation.SetReferenceSourceID(i)
 	return pruo
 }
@@ -524,9 +405,9 @@ func (pruo *ProductReferencesUpdateOne) SetNillableReferenceSourceID(i *int) *Pr
 	return pruo
 }
 
-// AddReferenceSourceID adds i to the "reference_source_id" field.
-func (pruo *ProductReferencesUpdateOne) AddReferenceSourceID(i int) *ProductReferencesUpdateOne {
-	pruo.mutation.AddReferenceSourceID(i)
+// ClearReferenceSourceID clears the value of the "reference_source_id" field.
+func (pruo *ProductReferencesUpdateOne) ClearReferenceSourceID() *ProductReferencesUpdateOne {
+	pruo.mutation.ClearReferenceSourceID()
 	return pruo
 }
 
@@ -544,26 +425,38 @@ func (pruo *ProductReferencesUpdateOne) SetNillableValue(s *string) *ProductRefe
 	return pruo
 }
 
-// SetProductID sets the "product" edge to the Products entity by ID.
-func (pruo *ProductReferencesUpdateOne) SetProductID(id int) *ProductReferencesUpdateOne {
-	pruo.mutation.SetProductID(id)
-	return pruo
-}
-
-// SetProduct sets the "product" edge to the Products entity.
-func (pruo *ProductReferencesUpdateOne) SetProduct(p *Products) *ProductReferencesUpdateOne {
-	return pruo.SetProductID(p.ID)
-}
-
 // SetReferenceSourcesID sets the "reference_sources" edge to the ReferenceSources entity by ID.
 func (pruo *ProductReferencesUpdateOne) SetReferenceSourcesID(id int) *ProductReferencesUpdateOne {
 	pruo.mutation.SetReferenceSourcesID(id)
 	return pruo
 }
 
+// SetNillableReferenceSourcesID sets the "reference_sources" edge to the ReferenceSources entity by ID if the given value is not nil.
+func (pruo *ProductReferencesUpdateOne) SetNillableReferenceSourcesID(id *int) *ProductReferencesUpdateOne {
+	if id != nil {
+		pruo = pruo.SetReferenceSourcesID(*id)
+	}
+	return pruo
+}
+
 // SetReferenceSources sets the "reference_sources" edge to the ReferenceSources entity.
 func (pruo *ProductReferencesUpdateOne) SetReferenceSources(r *ReferenceSources) *ProductReferencesUpdateOne {
 	return pruo.SetReferenceSourcesID(r.ID)
+}
+
+// AddProductIDs adds the "products" edge to the Products entity by IDs.
+func (pruo *ProductReferencesUpdateOne) AddProductIDs(ids ...int) *ProductReferencesUpdateOne {
+	pruo.mutation.AddProductIDs(ids...)
+	return pruo
+}
+
+// AddProducts adds the "products" edges to the Products entity.
+func (pruo *ProductReferencesUpdateOne) AddProducts(p ...*Products) *ProductReferencesUpdateOne {
+	ids := make([]int, len(p))
+	for i := range p {
+		ids[i] = p[i].ID
+	}
+	return pruo.AddProductIDs(ids...)
 }
 
 // AddProductHasProductReferenceIDs adds the "product_has_product_reference" edge to the ProductHasProductReference entity by IDs.
@@ -586,16 +479,31 @@ func (pruo *ProductReferencesUpdateOne) Mutation() *ProductReferencesMutation {
 	return pruo.mutation
 }
 
-// ClearProduct clears the "product" edge to the Products entity.
-func (pruo *ProductReferencesUpdateOne) ClearProduct() *ProductReferencesUpdateOne {
-	pruo.mutation.ClearProduct()
-	return pruo
-}
-
 // ClearReferenceSources clears the "reference_sources" edge to the ReferenceSources entity.
 func (pruo *ProductReferencesUpdateOne) ClearReferenceSources() *ProductReferencesUpdateOne {
 	pruo.mutation.ClearReferenceSources()
 	return pruo
+}
+
+// ClearProducts clears all "products" edges to the Products entity.
+func (pruo *ProductReferencesUpdateOne) ClearProducts() *ProductReferencesUpdateOne {
+	pruo.mutation.ClearProducts()
+	return pruo
+}
+
+// RemoveProductIDs removes the "products" edge to Products entities by IDs.
+func (pruo *ProductReferencesUpdateOne) RemoveProductIDs(ids ...int) *ProductReferencesUpdateOne {
+	pruo.mutation.RemoveProductIDs(ids...)
+	return pruo
+}
+
+// RemoveProducts removes "products" edges to Products entities.
+func (pruo *ProductReferencesUpdateOne) RemoveProducts(p ...*Products) *ProductReferencesUpdateOne {
+	ids := make([]int, len(p))
+	for i := range p {
+		ids[i] = p[i].ID
+	}
+	return pruo.RemoveProductIDs(ids...)
 }
 
 // ClearProductHasProductReference clears all "product_has_product_reference" edges to the ProductHasProductReference entity.
@@ -634,7 +542,6 @@ func (pruo *ProductReferencesUpdateOne) Select(field string, fields ...string) *
 
 // Save executes the query and returns the updated ProductReferences entity.
 func (pruo *ProductReferencesUpdateOne) Save(ctx context.Context) (*ProductReferences, error) {
-	pruo.defaults()
 	return withHooks(ctx, pruo.sqlSave, pruo.mutation, pruo.hooks)
 }
 
@@ -660,34 +567,7 @@ func (pruo *ProductReferencesUpdateOne) ExecX(ctx context.Context) {
 	}
 }
 
-// defaults sets the default values of the builder before save.
-func (pruo *ProductReferencesUpdateOne) defaults() {
-	if _, ok := pruo.mutation.UpdatedAt(); !ok {
-		v := productreferences.UpdateDefaultUpdatedAt()
-		pruo.mutation.SetUpdatedAt(v)
-	}
-}
-
-// check runs all checks and user-defined validators on the builder.
-func (pruo *ProductReferencesUpdateOne) check() error {
-	if v, ok := pruo.mutation.UpdatedBy(); ok {
-		if err := productreferences.UpdatedByValidator(v); err != nil {
-			return &ValidationError{Name: "updated_by", err: fmt.Errorf(`ent: validator failed for field "ProductReferences.updated_by": %w`, err)}
-		}
-	}
-	if pruo.mutation.ProductCleared() && len(pruo.mutation.ProductIDs()) > 0 {
-		return errors.New(`ent: clearing a required unique edge "ProductReferences.product"`)
-	}
-	if pruo.mutation.ReferenceSourcesCleared() && len(pruo.mutation.ReferenceSourcesIDs()) > 0 {
-		return errors.New(`ent: clearing a required unique edge "ProductReferences.reference_sources"`)
-	}
-	return nil
-}
-
 func (pruo *ProductReferencesUpdateOne) sqlSave(ctx context.Context) (_node *ProductReferences, err error) {
-	if err := pruo.check(); err != nil {
-		return _node, err
-	}
 	_spec := sqlgraph.NewUpdateSpec(productreferences.Table, productreferences.Columns, sqlgraph.NewFieldSpec(productreferences.FieldID, field.TypeInt))
 	id, ok := pruo.mutation.ID()
 	if !ok {
@@ -713,67 +593,14 @@ func (pruo *ProductReferencesUpdateOne) sqlSave(ctx context.Context) (_node *Pro
 			}
 		}
 	}
-	if value, ok := pruo.mutation.UpdatedAt(); ok {
-		_spec.SetField(productreferences.FieldUpdatedAt, field.TypeTime, value)
-	}
 	if value, ok := pruo.mutation.DeletedAt(); ok {
 		_spec.SetField(productreferences.FieldDeletedAt, field.TypeTime, value)
 	}
 	if pruo.mutation.DeletedAtCleared() {
 		_spec.ClearField(productreferences.FieldDeletedAt, field.TypeTime)
 	}
-	if value, ok := pruo.mutation.UpdatedBy(); ok {
-		_spec.SetField(productreferences.FieldUpdatedBy, field.TypeInt, value)
-	}
-	if value, ok := pruo.mutation.AddedUpdatedBy(); ok {
-		_spec.AddField(productreferences.FieldUpdatedBy, field.TypeInt, value)
-	}
-	if value, ok := pruo.mutation.DeletedBy(); ok {
-		_spec.SetField(productreferences.FieldDeletedBy, field.TypeInt, value)
-	}
-	if value, ok := pruo.mutation.AddedDeletedBy(); ok {
-		_spec.AddField(productreferences.FieldDeletedBy, field.TypeInt, value)
-	}
-	if pruo.mutation.DeletedByCleared() {
-		_spec.ClearField(productreferences.FieldDeletedBy, field.TypeInt)
-	}
-	if value, ok := pruo.mutation.ReferenceSourceID(); ok {
-		_spec.SetField(productreferences.FieldReferenceSourceID, field.TypeInt, value)
-	}
-	if value, ok := pruo.mutation.AddedReferenceSourceID(); ok {
-		_spec.AddField(productreferences.FieldReferenceSourceID, field.TypeInt, value)
-	}
 	if value, ok := pruo.mutation.Value(); ok {
 		_spec.SetField(productreferences.FieldValue, field.TypeString, value)
-	}
-	if pruo.mutation.ProductCleared() {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.M2O,
-			Inverse: true,
-			Table:   productreferences.ProductTable,
-			Columns: []string{productreferences.ProductColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(products.FieldID, field.TypeInt),
-			},
-		}
-		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
-	}
-	if nodes := pruo.mutation.ProductIDs(); len(nodes) > 0 {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.M2O,
-			Inverse: true,
-			Table:   productreferences.ProductTable,
-			Columns: []string{productreferences.ProductColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(products.FieldID, field.TypeInt),
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
 	if pruo.mutation.ReferenceSourcesCleared() {
 		edge := &sqlgraph.EdgeSpec{
@@ -797,6 +624,51 @@ func (pruo *ProductReferencesUpdateOne) sqlSave(ctx context.Context) (_node *Pro
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(referencesources.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if pruo.mutation.ProductsCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   productreferences.ProductsTable,
+			Columns: []string{productreferences.ProductsColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(products.FieldID, field.TypeInt),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := pruo.mutation.RemovedProductsIDs(); len(nodes) > 0 && !pruo.mutation.ProductsCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   productreferences.ProductsTable,
+			Columns: []string{productreferences.ProductsColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(products.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := pruo.mutation.ProductsIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   productreferences.ProductsTable,
+			Columns: []string{productreferences.ProductsColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(products.FieldID, field.TypeInt),
 			},
 		}
 		for _, k := range nodes {

@@ -29,12 +29,6 @@ func (vtu *VariantTypeUpdate) Where(ps ...predicate.VariantType) *VariantTypeUpd
 	return vtu
 }
 
-// SetUpdatedAt sets the "updated_at" field.
-func (vtu *VariantTypeUpdate) SetUpdatedAt(t time.Time) *VariantTypeUpdate {
-	vtu.mutation.SetUpdatedAt(t)
-	return vtu
-}
-
 // SetDeletedAt sets the "deleted_at" field.
 func (vtu *VariantTypeUpdate) SetDeletedAt(t time.Time) *VariantTypeUpdate {
 	vtu.mutation.SetDeletedAt(t)
@@ -52,54 +46,6 @@ func (vtu *VariantTypeUpdate) SetNillableDeletedAt(t *time.Time) *VariantTypeUpd
 // ClearDeletedAt clears the value of the "deleted_at" field.
 func (vtu *VariantTypeUpdate) ClearDeletedAt() *VariantTypeUpdate {
 	vtu.mutation.ClearDeletedAt()
-	return vtu
-}
-
-// SetUpdatedBy sets the "updated_by" field.
-func (vtu *VariantTypeUpdate) SetUpdatedBy(i int) *VariantTypeUpdate {
-	vtu.mutation.ResetUpdatedBy()
-	vtu.mutation.SetUpdatedBy(i)
-	return vtu
-}
-
-// SetNillableUpdatedBy sets the "updated_by" field if the given value is not nil.
-func (vtu *VariantTypeUpdate) SetNillableUpdatedBy(i *int) *VariantTypeUpdate {
-	if i != nil {
-		vtu.SetUpdatedBy(*i)
-	}
-	return vtu
-}
-
-// AddUpdatedBy adds i to the "updated_by" field.
-func (vtu *VariantTypeUpdate) AddUpdatedBy(i int) *VariantTypeUpdate {
-	vtu.mutation.AddUpdatedBy(i)
-	return vtu
-}
-
-// SetDeletedBy sets the "deleted_by" field.
-func (vtu *VariantTypeUpdate) SetDeletedBy(i int) *VariantTypeUpdate {
-	vtu.mutation.ResetDeletedBy()
-	vtu.mutation.SetDeletedBy(i)
-	return vtu
-}
-
-// SetNillableDeletedBy sets the "deleted_by" field if the given value is not nil.
-func (vtu *VariantTypeUpdate) SetNillableDeletedBy(i *int) *VariantTypeUpdate {
-	if i != nil {
-		vtu.SetDeletedBy(*i)
-	}
-	return vtu
-}
-
-// AddDeletedBy adds i to the "deleted_by" field.
-func (vtu *VariantTypeUpdate) AddDeletedBy(i int) *VariantTypeUpdate {
-	vtu.mutation.AddDeletedBy(i)
-	return vtu
-}
-
-// ClearDeletedBy clears the value of the "deleted_by" field.
-func (vtu *VariantTypeUpdate) ClearDeletedBy() *VariantTypeUpdate {
-	vtu.mutation.ClearDeletedBy()
 	return vtu
 }
 
@@ -160,7 +106,6 @@ func (vtu *VariantTypeUpdate) RemoveProducts(p ...*Products) *VariantTypeUpdate 
 
 // Save executes the query and returns the number of nodes affected by the update operation.
 func (vtu *VariantTypeUpdate) Save(ctx context.Context) (int, error) {
-	vtu.defaults()
 	return withHooks(ctx, vtu.sqlSave, vtu.mutation, vtu.hooks)
 }
 
@@ -186,28 +131,7 @@ func (vtu *VariantTypeUpdate) ExecX(ctx context.Context) {
 	}
 }
 
-// defaults sets the default values of the builder before save.
-func (vtu *VariantTypeUpdate) defaults() {
-	if _, ok := vtu.mutation.UpdatedAt(); !ok {
-		v := varianttype.UpdateDefaultUpdatedAt()
-		vtu.mutation.SetUpdatedAt(v)
-	}
-}
-
-// check runs all checks and user-defined validators on the builder.
-func (vtu *VariantTypeUpdate) check() error {
-	if v, ok := vtu.mutation.UpdatedBy(); ok {
-		if err := varianttype.UpdatedByValidator(v); err != nil {
-			return &ValidationError{Name: "updated_by", err: fmt.Errorf(`ent: validator failed for field "VariantType.updated_by": %w`, err)}
-		}
-	}
-	return nil
-}
-
 func (vtu *VariantTypeUpdate) sqlSave(ctx context.Context) (n int, err error) {
-	if err := vtu.check(); err != nil {
-		return n, err
-	}
 	_spec := sqlgraph.NewUpdateSpec(varianttype.Table, varianttype.Columns, sqlgraph.NewFieldSpec(varianttype.FieldID, field.TypeInt))
 	if ps := vtu.mutation.predicates; len(ps) > 0 {
 		_spec.Predicate = func(selector *sql.Selector) {
@@ -216,29 +140,11 @@ func (vtu *VariantTypeUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			}
 		}
 	}
-	if value, ok := vtu.mutation.UpdatedAt(); ok {
-		_spec.SetField(varianttype.FieldUpdatedAt, field.TypeTime, value)
-	}
 	if value, ok := vtu.mutation.DeletedAt(); ok {
 		_spec.SetField(varianttype.FieldDeletedAt, field.TypeTime, value)
 	}
 	if vtu.mutation.DeletedAtCleared() {
 		_spec.ClearField(varianttype.FieldDeletedAt, field.TypeTime)
-	}
-	if value, ok := vtu.mutation.UpdatedBy(); ok {
-		_spec.SetField(varianttype.FieldUpdatedBy, field.TypeInt, value)
-	}
-	if value, ok := vtu.mutation.AddedUpdatedBy(); ok {
-		_spec.AddField(varianttype.FieldUpdatedBy, field.TypeInt, value)
-	}
-	if value, ok := vtu.mutation.DeletedBy(); ok {
-		_spec.SetField(varianttype.FieldDeletedBy, field.TypeInt, value)
-	}
-	if value, ok := vtu.mutation.AddedDeletedBy(); ok {
-		_spec.AddField(varianttype.FieldDeletedBy, field.TypeInt, value)
-	}
-	if vtu.mutation.DeletedByCleared() {
-		_spec.ClearField(varianttype.FieldDeletedBy, field.TypeInt)
 	}
 	if value, ok := vtu.mutation.Name(); ok {
 		_spec.SetField(varianttype.FieldName, field.TypeString, value)
@@ -308,12 +214,6 @@ type VariantTypeUpdateOne struct {
 	mutation *VariantTypeMutation
 }
 
-// SetUpdatedAt sets the "updated_at" field.
-func (vtuo *VariantTypeUpdateOne) SetUpdatedAt(t time.Time) *VariantTypeUpdateOne {
-	vtuo.mutation.SetUpdatedAt(t)
-	return vtuo
-}
-
 // SetDeletedAt sets the "deleted_at" field.
 func (vtuo *VariantTypeUpdateOne) SetDeletedAt(t time.Time) *VariantTypeUpdateOne {
 	vtuo.mutation.SetDeletedAt(t)
@@ -331,54 +231,6 @@ func (vtuo *VariantTypeUpdateOne) SetNillableDeletedAt(t *time.Time) *VariantTyp
 // ClearDeletedAt clears the value of the "deleted_at" field.
 func (vtuo *VariantTypeUpdateOne) ClearDeletedAt() *VariantTypeUpdateOne {
 	vtuo.mutation.ClearDeletedAt()
-	return vtuo
-}
-
-// SetUpdatedBy sets the "updated_by" field.
-func (vtuo *VariantTypeUpdateOne) SetUpdatedBy(i int) *VariantTypeUpdateOne {
-	vtuo.mutation.ResetUpdatedBy()
-	vtuo.mutation.SetUpdatedBy(i)
-	return vtuo
-}
-
-// SetNillableUpdatedBy sets the "updated_by" field if the given value is not nil.
-func (vtuo *VariantTypeUpdateOne) SetNillableUpdatedBy(i *int) *VariantTypeUpdateOne {
-	if i != nil {
-		vtuo.SetUpdatedBy(*i)
-	}
-	return vtuo
-}
-
-// AddUpdatedBy adds i to the "updated_by" field.
-func (vtuo *VariantTypeUpdateOne) AddUpdatedBy(i int) *VariantTypeUpdateOne {
-	vtuo.mutation.AddUpdatedBy(i)
-	return vtuo
-}
-
-// SetDeletedBy sets the "deleted_by" field.
-func (vtuo *VariantTypeUpdateOne) SetDeletedBy(i int) *VariantTypeUpdateOne {
-	vtuo.mutation.ResetDeletedBy()
-	vtuo.mutation.SetDeletedBy(i)
-	return vtuo
-}
-
-// SetNillableDeletedBy sets the "deleted_by" field if the given value is not nil.
-func (vtuo *VariantTypeUpdateOne) SetNillableDeletedBy(i *int) *VariantTypeUpdateOne {
-	if i != nil {
-		vtuo.SetDeletedBy(*i)
-	}
-	return vtuo
-}
-
-// AddDeletedBy adds i to the "deleted_by" field.
-func (vtuo *VariantTypeUpdateOne) AddDeletedBy(i int) *VariantTypeUpdateOne {
-	vtuo.mutation.AddDeletedBy(i)
-	return vtuo
-}
-
-// ClearDeletedBy clears the value of the "deleted_by" field.
-func (vtuo *VariantTypeUpdateOne) ClearDeletedBy() *VariantTypeUpdateOne {
-	vtuo.mutation.ClearDeletedBy()
 	return vtuo
 }
 
@@ -452,7 +304,6 @@ func (vtuo *VariantTypeUpdateOne) Select(field string, fields ...string) *Varian
 
 // Save executes the query and returns the updated VariantType entity.
 func (vtuo *VariantTypeUpdateOne) Save(ctx context.Context) (*VariantType, error) {
-	vtuo.defaults()
 	return withHooks(ctx, vtuo.sqlSave, vtuo.mutation, vtuo.hooks)
 }
 
@@ -478,28 +329,7 @@ func (vtuo *VariantTypeUpdateOne) ExecX(ctx context.Context) {
 	}
 }
 
-// defaults sets the default values of the builder before save.
-func (vtuo *VariantTypeUpdateOne) defaults() {
-	if _, ok := vtuo.mutation.UpdatedAt(); !ok {
-		v := varianttype.UpdateDefaultUpdatedAt()
-		vtuo.mutation.SetUpdatedAt(v)
-	}
-}
-
-// check runs all checks and user-defined validators on the builder.
-func (vtuo *VariantTypeUpdateOne) check() error {
-	if v, ok := vtuo.mutation.UpdatedBy(); ok {
-		if err := varianttype.UpdatedByValidator(v); err != nil {
-			return &ValidationError{Name: "updated_by", err: fmt.Errorf(`ent: validator failed for field "VariantType.updated_by": %w`, err)}
-		}
-	}
-	return nil
-}
-
 func (vtuo *VariantTypeUpdateOne) sqlSave(ctx context.Context) (_node *VariantType, err error) {
-	if err := vtuo.check(); err != nil {
-		return _node, err
-	}
 	_spec := sqlgraph.NewUpdateSpec(varianttype.Table, varianttype.Columns, sqlgraph.NewFieldSpec(varianttype.FieldID, field.TypeInt))
 	id, ok := vtuo.mutation.ID()
 	if !ok {
@@ -525,29 +355,11 @@ func (vtuo *VariantTypeUpdateOne) sqlSave(ctx context.Context) (_node *VariantTy
 			}
 		}
 	}
-	if value, ok := vtuo.mutation.UpdatedAt(); ok {
-		_spec.SetField(varianttype.FieldUpdatedAt, field.TypeTime, value)
-	}
 	if value, ok := vtuo.mutation.DeletedAt(); ok {
 		_spec.SetField(varianttype.FieldDeletedAt, field.TypeTime, value)
 	}
 	if vtuo.mutation.DeletedAtCleared() {
 		_spec.ClearField(varianttype.FieldDeletedAt, field.TypeTime)
-	}
-	if value, ok := vtuo.mutation.UpdatedBy(); ok {
-		_spec.SetField(varianttype.FieldUpdatedBy, field.TypeInt, value)
-	}
-	if value, ok := vtuo.mutation.AddedUpdatedBy(); ok {
-		_spec.AddField(varianttype.FieldUpdatedBy, field.TypeInt, value)
-	}
-	if value, ok := vtuo.mutation.DeletedBy(); ok {
-		_spec.SetField(varianttype.FieldDeletedBy, field.TypeInt, value)
-	}
-	if value, ok := vtuo.mutation.AddedDeletedBy(); ok {
-		_spec.AddField(varianttype.FieldDeletedBy, field.TypeInt, value)
-	}
-	if vtuo.mutation.DeletedByCleared() {
-		_spec.ClearField(varianttype.FieldDeletedBy, field.TypeInt)
 	}
 	if value, ok := vtuo.mutation.Name(); ok {
 		_spec.SetField(varianttype.FieldName, field.TypeString, value)

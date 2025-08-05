@@ -16,42 +16,34 @@ const (
 	FieldID = "id"
 	// FieldCreatedAt holds the string denoting the created_at field in the database.
 	FieldCreatedAt = "created_at"
-	// FieldUpdatedAt holds the string denoting the updated_at field in the database.
-	FieldUpdatedAt = "updated_at"
 	// FieldDeletedAt holds the string denoting the deleted_at field in the database.
 	FieldDeletedAt = "deleted_at"
-	// FieldCreatedBy holds the string denoting the created_by field in the database.
-	FieldCreatedBy = "created_by"
-	// FieldUpdatedBy holds the string denoting the updated_by field in the database.
-	FieldUpdatedBy = "updated_by"
-	// FieldDeletedBy holds the string denoting the deleted_by field in the database.
-	FieldDeletedBy = "deleted_by"
 	// FieldReferenceSourceID holds the string denoting the reference_source_id field in the database.
 	FieldReferenceSourceID = "reference_source_id"
 	// FieldValue holds the string denoting the value field in the database.
 	FieldValue = "value"
-	// EdgeProduct holds the string denoting the product edge name in mutations.
-	EdgeProduct = "product"
 	// EdgeReferenceSources holds the string denoting the reference_sources edge name in mutations.
 	EdgeReferenceSources = "reference_sources"
+	// EdgeProducts holds the string denoting the products edge name in mutations.
+	EdgeProducts = "products"
 	// EdgeProductHasProductReference holds the string denoting the product_has_product_reference edge name in mutations.
 	EdgeProductHasProductReference = "product_has_product_reference"
 	// Table holds the table name of the productreferences in the database.
 	Table = "product_references"
-	// ProductTable is the table that holds the product relation/edge.
-	ProductTable = "product_references"
-	// ProductInverseTable is the table name for the Products entity.
-	// It exists in this package in order to avoid circular dependency with the "products" package.
-	ProductInverseTable = "products"
-	// ProductColumn is the table column denoting the product relation/edge.
-	ProductColumn = "products_product_references"
 	// ReferenceSourcesTable is the table that holds the reference_sources relation/edge.
 	ReferenceSourcesTable = "product_references"
 	// ReferenceSourcesInverseTable is the table name for the ReferenceSources entity.
 	// It exists in this package in order to avoid circular dependency with the "referencesources" package.
 	ReferenceSourcesInverseTable = "reference_sources"
 	// ReferenceSourcesColumn is the table column denoting the reference_sources relation/edge.
-	ReferenceSourcesColumn = "reference_sources_product_references"
+	ReferenceSourcesColumn = "reference_source_id"
+	// ProductsTable is the table that holds the products relation/edge.
+	ProductsTable = "products"
+	// ProductsInverseTable is the table name for the Products entity.
+	// It exists in this package in order to avoid circular dependency with the "products" package.
+	ProductsInverseTable = "products"
+	// ProductsColumn is the table column denoting the products relation/edge.
+	ProductsColumn = "product_references_id"
 	// ProductHasProductReferenceTable is the table that holds the product_has_product_reference relation/edge.
 	ProductHasProductReferenceTable = "product_has_product_references"
 	// ProductHasProductReferenceInverseTable is the table name for the ProductHasProductReference entity.
@@ -65,20 +57,9 @@ const (
 var Columns = []string{
 	FieldID,
 	FieldCreatedAt,
-	FieldUpdatedAt,
 	FieldDeletedAt,
-	FieldCreatedBy,
-	FieldUpdatedBy,
-	FieldDeletedBy,
 	FieldReferenceSourceID,
 	FieldValue,
-}
-
-// ForeignKeys holds the SQL foreign-keys that are owned by the "product_references"
-// table and are not defined as standalone fields in the schema.
-var ForeignKeys = []string{
-	"products_product_references",
-	"reference_sources_product_references",
 }
 
 // ValidColumn reports if the column name is valid (part of the table columns).
@@ -88,25 +69,12 @@ func ValidColumn(column string) bool {
 			return true
 		}
 	}
-	for i := range ForeignKeys {
-		if column == ForeignKeys[i] {
-			return true
-		}
-	}
 	return false
 }
 
 var (
 	// DefaultCreatedAt holds the default value on creation for the "created_at" field.
 	DefaultCreatedAt func() time.Time
-	// DefaultUpdatedAt holds the default value on creation for the "updated_at" field.
-	DefaultUpdatedAt func() time.Time
-	// UpdateDefaultUpdatedAt holds the default value on update for the "updated_at" field.
-	UpdateDefaultUpdatedAt func() time.Time
-	// CreatedByValidator is a validator for the "created_by" field. It is called by the builders before save.
-	CreatedByValidator func(int) error
-	// UpdatedByValidator is a validator for the "updated_by" field. It is called by the builders before save.
-	UpdatedByValidator func(int) error
 )
 
 // OrderOption defines the ordering options for the ProductReferences queries.
@@ -122,29 +90,9 @@ func ByCreatedAt(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldCreatedAt, opts...).ToFunc()
 }
 
-// ByUpdatedAt orders the results by the updated_at field.
-func ByUpdatedAt(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldUpdatedAt, opts...).ToFunc()
-}
-
 // ByDeletedAt orders the results by the deleted_at field.
 func ByDeletedAt(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldDeletedAt, opts...).ToFunc()
-}
-
-// ByCreatedBy orders the results by the created_by field.
-func ByCreatedBy(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldCreatedBy, opts...).ToFunc()
-}
-
-// ByUpdatedBy orders the results by the updated_by field.
-func ByUpdatedBy(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldUpdatedBy, opts...).ToFunc()
-}
-
-// ByDeletedBy orders the results by the deleted_by field.
-func ByDeletedBy(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldDeletedBy, opts...).ToFunc()
 }
 
 // ByReferenceSourceID orders the results by the reference_source_id field.
@@ -157,17 +105,24 @@ func ByValue(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldValue, opts...).ToFunc()
 }
 
-// ByProductField orders the results by product field.
-func ByProductField(field string, opts ...sql.OrderTermOption) OrderOption {
-	return func(s *sql.Selector) {
-		sqlgraph.OrderByNeighborTerms(s, newProductStep(), sql.OrderByField(field, opts...))
-	}
-}
-
 // ByReferenceSourcesField orders the results by reference_sources field.
 func ByReferenceSourcesField(field string, opts ...sql.OrderTermOption) OrderOption {
 	return func(s *sql.Selector) {
 		sqlgraph.OrderByNeighborTerms(s, newReferenceSourcesStep(), sql.OrderByField(field, opts...))
+	}
+}
+
+// ByProductsCount orders the results by products count.
+func ByProductsCount(opts ...sql.OrderTermOption) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborsCount(s, newProductsStep(), opts...)
+	}
+}
+
+// ByProducts orders the results by products terms.
+func ByProducts(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborTerms(s, newProductsStep(), append([]sql.OrderTerm{term}, terms...)...)
 	}
 }
 
@@ -184,18 +139,18 @@ func ByProductHasProductReference(term sql.OrderTerm, terms ...sql.OrderTerm) Or
 		sqlgraph.OrderByNeighborTerms(s, newProductHasProductReferenceStep(), append([]sql.OrderTerm{term}, terms...)...)
 	}
 }
-func newProductStep() *sqlgraph.Step {
-	return sqlgraph.NewStep(
-		sqlgraph.From(Table, FieldID),
-		sqlgraph.To(ProductInverseTable, FieldID),
-		sqlgraph.Edge(sqlgraph.M2O, true, ProductTable, ProductColumn),
-	)
-}
 func newReferenceSourcesStep() *sqlgraph.Step {
 	return sqlgraph.NewStep(
 		sqlgraph.From(Table, FieldID),
 		sqlgraph.To(ReferenceSourcesInverseTable, FieldID),
 		sqlgraph.Edge(sqlgraph.M2O, true, ReferenceSourcesTable, ReferenceSourcesColumn),
+	)
+}
+func newProductsStep() *sqlgraph.Step {
+	return sqlgraph.NewStep(
+		sqlgraph.From(Table, FieldID),
+		sqlgraph.To(ProductsInverseTable, FieldID),
+		sqlgraph.Edge(sqlgraph.O2M, false, ProductsTable, ProductsColumn),
 	)
 }
 func newProductHasProductReferenceStep() *sqlgraph.Step {

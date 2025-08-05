@@ -27,14 +27,14 @@ message Promotions {
 }
 
 message CreateRequest {
-  uint32 requester_id = 1;
+  
   string name = 2;
   string starting_datetime = 3;
   string ending_datetime = 4;
 }
 
 message CreateResponse {
-  uint32 requester_id = 1;
+  
   string name = 2;
   string starting_datetime = 3;
   string ending_datetime = 4;
@@ -51,7 +51,7 @@ message GetRequest {
 }
 
 message GetResponse {
-  uint32 requester_id = 1;
+  
   string name = 2;
   string starting_datetime = 3;
   string ending_datetime = 4;
@@ -65,14 +65,14 @@ message GetResponse {
 
 message UpdateRequest {
   uint32 id = 1;
-  uint32 requester_id = 2;
+  
   optional string name = 3;
   optional string starting_datetime = 4;
   optional string ending_datetime = 5;
 }
 
 message UpdateResponse {
-  uint32 requester_id = 1;
+  
   string name = 2;
   string starting_datetime = 3;
   string ending_datetime = 4;
@@ -86,7 +86,7 @@ message UpdateResponse {
 
 message DeleteRequest {
   uint32 id = 1;
-  uint32 requester_id = 2;
+  
 }
 
 message DeleteResponse {

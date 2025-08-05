@@ -16,63 +16,44 @@ const (
 	FieldID = "id"
 	// FieldCreatedAt holds the string denoting the created_at field in the database.
 	FieldCreatedAt = "created_at"
-	// FieldUpdatedAt holds the string denoting the updated_at field in the database.
-	FieldUpdatedAt = "updated_at"
 	// FieldDeletedAt holds the string denoting the deleted_at field in the database.
 	FieldDeletedAt = "deleted_at"
-	// FieldCreatedBy holds the string denoting the created_by field in the database.
-	FieldCreatedBy = "created_by"
-	// FieldUpdatedBy holds the string denoting the updated_by field in the database.
-	FieldUpdatedBy = "updated_by"
-	// FieldDeletedBy holds the string denoting the deleted_by field in the database.
-	FieldDeletedBy = "deleted_by"
-	// FieldProductID holds the string denoting the product_id field in the database.
-	FieldProductID = "product_id"
-	// FieldPromotionID holds the string denoting the promotion_id field in the database.
-	FieldPromotionID = "promotion_id"
+	// FieldProductsID holds the string denoting the products_id field in the database.
+	FieldProductsID = "products_id"
+	// FieldPromotionsID holds the string denoting the promotions_id field in the database.
+	FieldPromotionsID = "promotions_id"
 	// FieldPromocionalPrice holds the string denoting the promocional_price field in the database.
 	FieldPromocionalPrice = "promocional_price"
-	// EdgeProduct holds the string denoting the product edge name in mutations.
-	EdgeProduct = "product"
-	// EdgePromotion holds the string denoting the promotion edge name in mutations.
-	EdgePromotion = "promotion"
+	// EdgeProducts holds the string denoting the products edge name in mutations.
+	EdgeProducts = "products"
+	// EdgePromotions holds the string denoting the promotions edge name in mutations.
+	EdgePromotions = "promotions"
 	// Table holds the table name of the promotionhasproduct in the database.
 	Table = "promotion_has_products"
-	// ProductTable is the table that holds the product relation/edge.
-	ProductTable = "promotion_has_products"
-	// ProductInverseTable is the table name for the Products entity.
+	// ProductsTable is the table that holds the products relation/edge.
+	ProductsTable = "promotion_has_products"
+	// ProductsInverseTable is the table name for the Products entity.
 	// It exists in this package in order to avoid circular dependency with the "products" package.
-	ProductInverseTable = "products"
-	// ProductColumn is the table column denoting the product relation/edge.
-	ProductColumn = "products_promotion_has_product"
-	// PromotionTable is the table that holds the promotion relation/edge.
-	PromotionTable = "promotion_has_products"
-	// PromotionInverseTable is the table name for the Promotions entity.
+	ProductsInverseTable = "products"
+	// ProductsColumn is the table column denoting the products relation/edge.
+	ProductsColumn = "products_id"
+	// PromotionsTable is the table that holds the promotions relation/edge.
+	PromotionsTable = "promotion_has_products"
+	// PromotionsInverseTable is the table name for the Promotions entity.
 	// It exists in this package in order to avoid circular dependency with the "promotions" package.
-	PromotionInverseTable = "promotions"
-	// PromotionColumn is the table column denoting the promotion relation/edge.
-	PromotionColumn = "promotions_promotion_has_product"
+	PromotionsInverseTable = "promotions"
+	// PromotionsColumn is the table column denoting the promotions relation/edge.
+	PromotionsColumn = "promotions_id"
 )
 
 // Columns holds all SQL columns for promotionhasproduct fields.
 var Columns = []string{
 	FieldID,
 	FieldCreatedAt,
-	FieldUpdatedAt,
 	FieldDeletedAt,
-	FieldCreatedBy,
-	FieldUpdatedBy,
-	FieldDeletedBy,
-	FieldProductID,
-	FieldPromotionID,
+	FieldProductsID,
+	FieldPromotionsID,
 	FieldPromocionalPrice,
-}
-
-// ForeignKeys holds the SQL foreign-keys that are owned by the "promotion_has_products"
-// table and are not defined as standalone fields in the schema.
-var ForeignKeys = []string{
-	"products_promotion_has_product",
-	"promotions_promotion_has_product",
 }
 
 // ValidColumn reports if the column name is valid (part of the table columns).
@@ -82,25 +63,12 @@ func ValidColumn(column string) bool {
 			return true
 		}
 	}
-	for i := range ForeignKeys {
-		if column == ForeignKeys[i] {
-			return true
-		}
-	}
 	return false
 }
 
 var (
 	// DefaultCreatedAt holds the default value on creation for the "created_at" field.
 	DefaultCreatedAt func() time.Time
-	// DefaultUpdatedAt holds the default value on creation for the "updated_at" field.
-	DefaultUpdatedAt func() time.Time
-	// UpdateDefaultUpdatedAt holds the default value on update for the "updated_at" field.
-	UpdateDefaultUpdatedAt func() time.Time
-	// CreatedByValidator is a validator for the "created_by" field. It is called by the builders before save.
-	CreatedByValidator func(int) error
-	// UpdatedByValidator is a validator for the "updated_by" field. It is called by the builders before save.
-	UpdatedByValidator func(int) error
 )
 
 // OrderOption defines the ordering options for the PromotionHasProduct queries.
@@ -116,39 +84,19 @@ func ByCreatedAt(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldCreatedAt, opts...).ToFunc()
 }
 
-// ByUpdatedAt orders the results by the updated_at field.
-func ByUpdatedAt(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldUpdatedAt, opts...).ToFunc()
-}
-
 // ByDeletedAt orders the results by the deleted_at field.
 func ByDeletedAt(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldDeletedAt, opts...).ToFunc()
 }
 
-// ByCreatedBy orders the results by the created_by field.
-func ByCreatedBy(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldCreatedBy, opts...).ToFunc()
+// ByProductsID orders the results by the products_id field.
+func ByProductsID(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldProductsID, opts...).ToFunc()
 }
 
-// ByUpdatedBy orders the results by the updated_by field.
-func ByUpdatedBy(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldUpdatedBy, opts...).ToFunc()
-}
-
-// ByDeletedBy orders the results by the deleted_by field.
-func ByDeletedBy(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldDeletedBy, opts...).ToFunc()
-}
-
-// ByProductID orders the results by the product_id field.
-func ByProductID(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldProductID, opts...).ToFunc()
-}
-
-// ByPromotionID orders the results by the promotion_id field.
-func ByPromotionID(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldPromotionID, opts...).ToFunc()
+// ByPromotionsID orders the results by the promotions_id field.
+func ByPromotionsID(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldPromotionsID, opts...).ToFunc()
 }
 
 // ByPromocionalPrice orders the results by the promocional_price field.
@@ -156,30 +104,30 @@ func ByPromocionalPrice(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldPromocionalPrice, opts...).ToFunc()
 }
 
-// ByProductField orders the results by product field.
-func ByProductField(field string, opts ...sql.OrderTermOption) OrderOption {
+// ByProductsField orders the results by products field.
+func ByProductsField(field string, opts ...sql.OrderTermOption) OrderOption {
 	return func(s *sql.Selector) {
-		sqlgraph.OrderByNeighborTerms(s, newProductStep(), sql.OrderByField(field, opts...))
+		sqlgraph.OrderByNeighborTerms(s, newProductsStep(), sql.OrderByField(field, opts...))
 	}
 }
 
-// ByPromotionField orders the results by promotion field.
-func ByPromotionField(field string, opts ...sql.OrderTermOption) OrderOption {
+// ByPromotionsField orders the results by promotions field.
+func ByPromotionsField(field string, opts ...sql.OrderTermOption) OrderOption {
 	return func(s *sql.Selector) {
-		sqlgraph.OrderByNeighborTerms(s, newPromotionStep(), sql.OrderByField(field, opts...))
+		sqlgraph.OrderByNeighborTerms(s, newPromotionsStep(), sql.OrderByField(field, opts...))
 	}
 }
-func newProductStep() *sqlgraph.Step {
+func newProductsStep() *sqlgraph.Step {
 	return sqlgraph.NewStep(
 		sqlgraph.From(Table, FieldID),
-		sqlgraph.To(ProductInverseTable, FieldID),
-		sqlgraph.Edge(sqlgraph.M2O, true, ProductTable, ProductColumn),
+		sqlgraph.To(ProductsInverseTable, FieldID),
+		sqlgraph.Edge(sqlgraph.M2O, true, ProductsTable, ProductsColumn),
 	)
 }
-func newPromotionStep() *sqlgraph.Step {
+func newPromotionsStep() *sqlgraph.Step {
 	return sqlgraph.NewStep(
 		sqlgraph.From(Table, FieldID),
-		sqlgraph.To(PromotionInverseTable, FieldID),
-		sqlgraph.Edge(sqlgraph.M2O, true, PromotionTable, PromotionColumn),
+		sqlgraph.To(PromotionsInverseTable, FieldID),
+		sqlgraph.Edge(sqlgraph.M2O, true, PromotionsTable, PromotionsColumn),
 	)
 }

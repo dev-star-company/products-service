@@ -24,13 +24,13 @@ message FeaturesValuesTypes {
 }
 
 message CreateRequest {
-  uint32 requester_id = 1;
+  
   string name = 2;
   
 }
 
 message CreateResponse {
-  uint32 requester_id = 1;
+  
   string name = 2;
   string created_at = 3;
   string updated_at = 4;
@@ -45,7 +45,7 @@ message GetRequest {
 }
 
 message GetResponse {
-  uint32 requester_id = 1;
+  
   string name = 2;
   string created_at = 3;
   string updated_at = 4;
@@ -57,12 +57,12 @@ message GetResponse {
 
 message UpdateRequest {
   uint32 id = 1;
-  uint32 requester_id = 2;
+  
   optional string name = 3;
 }
 
 message UpdateResponse {
-  uint32 requester_id = 1;
+  
   string name = 2;
   string created_at = 3;
   string updated_at = 4;
@@ -74,7 +74,7 @@ message UpdateResponse {
 
 message DeleteRequest {
   uint32 id = 1;
-  uint32 requester_id = 2;
+  
 }
 
 message DeleteResponse {

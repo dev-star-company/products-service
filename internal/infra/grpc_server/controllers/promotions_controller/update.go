@@ -10,9 +10,6 @@ import (
 )
 
 func (c *controller) Update(ctx context.Context, in *promotions_proto.UpdateRequest) (*promotions_proto.UpdateResponse, error) {
-	if in.RequesterId == 0 {
-		return nil, errs.ProductsNotFound(int(in.Id))
-	}
 
 	tx, err := c.Db.Tx(ctx)
 	if err != nil {
@@ -43,8 +40,6 @@ func (c *controller) Update(ctx context.Context, in *promotions_proto.UpdateRequ
 		promotionsQ.SetEndingDatetime(parsedTime)
 	}
 
-	promotionsQ.SetUpdatedBy(int(in.RequesterId))
-
 	promotions, err = promotionsQ.Save(ctx)
 	if err != nil {
 		if ent.IsNotFound(err) {
@@ -61,7 +56,7 @@ func (c *controller) Update(ctx context.Context, in *promotions_proto.UpdateRequ
 	}
 
 	return &promotions_proto.UpdateResponse{
-		RequesterId: uint32(promotions.CreatedBy),
-		Name:        string(*promotions.Name),
+
+		Name: string(*promotions.Name),
 	}, nil
 }

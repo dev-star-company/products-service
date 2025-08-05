@@ -20,13 +20,12 @@ import (
 // ToolHasProductQuery is the builder for querying ToolHasProduct entities.
 type ToolHasProductQuery struct {
 	config
-	ctx         *QueryContext
-	order       []toolhasproduct.OrderOption
-	inters      []Interceptor
-	predicates  []predicate.ToolHasProduct
-	withProduct *ProductsQuery
-	withTool    *ToolsQuery
-	withFKs     bool
+	ctx          *QueryContext
+	order        []toolhasproduct.OrderOption
+	inters       []Interceptor
+	predicates   []predicate.ToolHasProduct
+	withProducts *ProductsQuery
+	withTools    *ToolsQuery
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
 	path func(context.Context) (*sql.Selector, error)
@@ -63,8 +62,8 @@ func (thpq *ToolHasProductQuery) Order(o ...toolhasproduct.OrderOption) *ToolHas
 	return thpq
 }
 
-// QueryProduct chains the current query on the "product" edge.
-func (thpq *ToolHasProductQuery) QueryProduct() *ProductsQuery {
+// QueryProducts chains the current query on the "products" edge.
+func (thpq *ToolHasProductQuery) QueryProducts() *ProductsQuery {
 	query := (&ProductsClient{config: thpq.config}).Query()
 	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
 		if err := thpq.prepareQuery(ctx); err != nil {
@@ -77,7 +76,7 @@ func (thpq *ToolHasProductQuery) QueryProduct() *ProductsQuery {
 		step := sqlgraph.NewStep(
 			sqlgraph.From(toolhasproduct.Table, toolhasproduct.FieldID, selector),
 			sqlgraph.To(products.Table, products.FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, true, toolhasproduct.ProductTable, toolhasproduct.ProductColumn),
+			sqlgraph.Edge(sqlgraph.M2O, true, toolhasproduct.ProductsTable, toolhasproduct.ProductsColumn),
 		)
 		fromU = sqlgraph.SetNeighbors(thpq.driver.Dialect(), step)
 		return fromU, nil
@@ -85,8 +84,8 @@ func (thpq *ToolHasProductQuery) QueryProduct() *ProductsQuery {
 	return query
 }
 
-// QueryTool chains the current query on the "tool" edge.
-func (thpq *ToolHasProductQuery) QueryTool() *ToolsQuery {
+// QueryTools chains the current query on the "tools" edge.
+func (thpq *ToolHasProductQuery) QueryTools() *ToolsQuery {
 	query := (&ToolsClient{config: thpq.config}).Query()
 	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
 		if err := thpq.prepareQuery(ctx); err != nil {
@@ -99,7 +98,7 @@ func (thpq *ToolHasProductQuery) QueryTool() *ToolsQuery {
 		step := sqlgraph.NewStep(
 			sqlgraph.From(toolhasproduct.Table, toolhasproduct.FieldID, selector),
 			sqlgraph.To(tools.Table, tools.FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, true, toolhasproduct.ToolTable, toolhasproduct.ToolColumn),
+			sqlgraph.Edge(sqlgraph.M2O, true, toolhasproduct.ToolsTable, toolhasproduct.ToolsColumn),
 		)
 		fromU = sqlgraph.SetNeighbors(thpq.driver.Dialect(), step)
 		return fromU, nil
@@ -294,38 +293,38 @@ func (thpq *ToolHasProductQuery) Clone() *ToolHasProductQuery {
 		return nil
 	}
 	return &ToolHasProductQuery{
-		config:      thpq.config,
-		ctx:         thpq.ctx.Clone(),
-		order:       append([]toolhasproduct.OrderOption{}, thpq.order...),
-		inters:      append([]Interceptor{}, thpq.inters...),
-		predicates:  append([]predicate.ToolHasProduct{}, thpq.predicates...),
-		withProduct: thpq.withProduct.Clone(),
-		withTool:    thpq.withTool.Clone(),
+		config:       thpq.config,
+		ctx:          thpq.ctx.Clone(),
+		order:        append([]toolhasproduct.OrderOption{}, thpq.order...),
+		inters:       append([]Interceptor{}, thpq.inters...),
+		predicates:   append([]predicate.ToolHasProduct{}, thpq.predicates...),
+		withProducts: thpq.withProducts.Clone(),
+		withTools:    thpq.withTools.Clone(),
 		// clone intermediate query.
 		sql:  thpq.sql.Clone(),
 		path: thpq.path,
 	}
 }
 
-// WithProduct tells the query-builder to eager-load the nodes that are connected to
-// the "product" edge. The optional arguments are used to configure the query builder of the edge.
-func (thpq *ToolHasProductQuery) WithProduct(opts ...func(*ProductsQuery)) *ToolHasProductQuery {
+// WithProducts tells the query-builder to eager-load the nodes that are connected to
+// the "products" edge. The optional arguments are used to configure the query builder of the edge.
+func (thpq *ToolHasProductQuery) WithProducts(opts ...func(*ProductsQuery)) *ToolHasProductQuery {
 	query := (&ProductsClient{config: thpq.config}).Query()
 	for _, opt := range opts {
 		opt(query)
 	}
-	thpq.withProduct = query
+	thpq.withProducts = query
 	return thpq
 }
 
-// WithTool tells the query-builder to eager-load the nodes that are connected to
-// the "tool" edge. The optional arguments are used to configure the query builder of the edge.
-func (thpq *ToolHasProductQuery) WithTool(opts ...func(*ToolsQuery)) *ToolHasProductQuery {
+// WithTools tells the query-builder to eager-load the nodes that are connected to
+// the "tools" edge. The optional arguments are used to configure the query builder of the edge.
+func (thpq *ToolHasProductQuery) WithTools(opts ...func(*ToolsQuery)) *ToolHasProductQuery {
 	query := (&ToolsClient{config: thpq.config}).Query()
 	for _, opt := range opts {
 		opt(query)
 	}
-	thpq.withTool = query
+	thpq.withTools = query
 	return thpq
 }
 
@@ -406,19 +405,12 @@ func (thpq *ToolHasProductQuery) prepareQuery(ctx context.Context) error {
 func (thpq *ToolHasProductQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*ToolHasProduct, error) {
 	var (
 		nodes       = []*ToolHasProduct{}
-		withFKs     = thpq.withFKs
 		_spec       = thpq.querySpec()
 		loadedTypes = [2]bool{
-			thpq.withProduct != nil,
-			thpq.withTool != nil,
+			thpq.withProducts != nil,
+			thpq.withTools != nil,
 		}
 	)
-	if thpq.withProduct != nil || thpq.withTool != nil {
-		withFKs = true
-	}
-	if withFKs {
-		_spec.Node.Columns = append(_spec.Node.Columns, toolhasproduct.ForeignKeys...)
-	}
 	_spec.ScanValues = func(columns []string) ([]any, error) {
 		return (*ToolHasProduct).scanValues(nil, columns)
 	}
@@ -437,29 +429,29 @@ func (thpq *ToolHasProductQuery) sqlAll(ctx context.Context, hooks ...queryHook)
 	if len(nodes) == 0 {
 		return nodes, nil
 	}
-	if query := thpq.withProduct; query != nil {
-		if err := thpq.loadProduct(ctx, query, nodes, nil,
-			func(n *ToolHasProduct, e *Products) { n.Edges.Product = e }); err != nil {
+	if query := thpq.withProducts; query != nil {
+		if err := thpq.loadProducts(ctx, query, nodes, nil,
+			func(n *ToolHasProduct, e *Products) { n.Edges.Products = e }); err != nil {
 			return nil, err
 		}
 	}
-	if query := thpq.withTool; query != nil {
-		if err := thpq.loadTool(ctx, query, nodes, nil,
-			func(n *ToolHasProduct, e *Tools) { n.Edges.Tool = e }); err != nil {
+	if query := thpq.withTools; query != nil {
+		if err := thpq.loadTools(ctx, query, nodes, nil,
+			func(n *ToolHasProduct, e *Tools) { n.Edges.Tools = e }); err != nil {
 			return nil, err
 		}
 	}
 	return nodes, nil
 }
 
-func (thpq *ToolHasProductQuery) loadProduct(ctx context.Context, query *ProductsQuery, nodes []*ToolHasProduct, init func(*ToolHasProduct), assign func(*ToolHasProduct, *Products)) error {
+func (thpq *ToolHasProductQuery) loadProducts(ctx context.Context, query *ProductsQuery, nodes []*ToolHasProduct, init func(*ToolHasProduct), assign func(*ToolHasProduct, *Products)) error {
 	ids := make([]int, 0, len(nodes))
 	nodeids := make(map[int][]*ToolHasProduct)
 	for i := range nodes {
-		if nodes[i].products_tool_has_product == nil {
+		if nodes[i].ProductsID == nil {
 			continue
 		}
-		fk := *nodes[i].products_tool_has_product
+		fk := *nodes[i].ProductsID
 		if _, ok := nodeids[fk]; !ok {
 			ids = append(ids, fk)
 		}
@@ -476,7 +468,7 @@ func (thpq *ToolHasProductQuery) loadProduct(ctx context.Context, query *Product
 	for _, n := range neighbors {
 		nodes, ok := nodeids[n.ID]
 		if !ok {
-			return fmt.Errorf(`unexpected foreign-key "products_tool_has_product" returned %v`, n.ID)
+			return fmt.Errorf(`unexpected foreign-key "products_id" returned %v`, n.ID)
 		}
 		for i := range nodes {
 			assign(nodes[i], n)
@@ -484,14 +476,14 @@ func (thpq *ToolHasProductQuery) loadProduct(ctx context.Context, query *Product
 	}
 	return nil
 }
-func (thpq *ToolHasProductQuery) loadTool(ctx context.Context, query *ToolsQuery, nodes []*ToolHasProduct, init func(*ToolHasProduct), assign func(*ToolHasProduct, *Tools)) error {
+func (thpq *ToolHasProductQuery) loadTools(ctx context.Context, query *ToolsQuery, nodes []*ToolHasProduct, init func(*ToolHasProduct), assign func(*ToolHasProduct, *Tools)) error {
 	ids := make([]int, 0, len(nodes))
 	nodeids := make(map[int][]*ToolHasProduct)
 	for i := range nodes {
-		if nodes[i].tools_tool_has_product == nil {
+		if nodes[i].ToolsID == nil {
 			continue
 		}
-		fk := *nodes[i].tools_tool_has_product
+		fk := *nodes[i].ToolsID
 		if _, ok := nodeids[fk]; !ok {
 			ids = append(ids, fk)
 		}
@@ -508,7 +500,7 @@ func (thpq *ToolHasProductQuery) loadTool(ctx context.Context, query *ToolsQuery
 	for _, n := range neighbors {
 		nodes, ok := nodeids[n.ID]
 		if !ok {
-			return fmt.Errorf(`unexpected foreign-key "tools_tool_has_product" returned %v`, n.ID)
+			return fmt.Errorf(`unexpected foreign-key "tools_id" returned %v`, n.ID)
 		}
 		for i := range nodes {
 			assign(nodes[i], n)
@@ -541,6 +533,12 @@ func (thpq *ToolHasProductQuery) querySpec() *sqlgraph.QuerySpec {
 			if fields[i] != toolhasproduct.FieldID {
 				_spec.Node.Columns = append(_spec.Node.Columns, fields[i])
 			}
+		}
+		if thpq.withProducts != nil {
+			_spec.Node.AddColumnOnce(toolhasproduct.FieldProductsID)
+		}
+		if thpq.withTools != nil {
+			_spec.Node.AddColumnOnce(toolhasproduct.FieldToolsID)
 		}
 	}
 	if ps := thpq.predicates; len(ps) > 0 {

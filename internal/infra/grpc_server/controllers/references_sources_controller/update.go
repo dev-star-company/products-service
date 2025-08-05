@@ -9,9 +9,6 @@ import (
 )
 
 func (c *controller) Update(ctx context.Context, in *references_sources_proto.UpdateRequest) (*references_sources_proto.UpdateResponse, error) {
-	if in.RequesterId == 0 {
-		return nil, errs.ProductsNotFound(int(in.Id))
-	}
 
 	tx, err := c.Db.Tx(ctx)
 	if err != nil {
@@ -25,8 +22,6 @@ func (c *controller) Update(ctx context.Context, in *references_sources_proto.Up
 	if in.Name != nil && *in.Name != "" {
 		references_sourcesQ.SetName(string(*in.Name))
 	}
-
-	references_sourcesQ.SetUpdatedBy(int(in.RequesterId))
 
 	references_sources, err = references_sourcesQ.Save(ctx)
 	if err != nil {
@@ -44,7 +39,6 @@ func (c *controller) Update(ctx context.Context, in *references_sources_proto.Up
 	}
 
 	return &references_sources_proto.UpdateResponse{
-		RequesterId: uint32(references_sources.CreatedBy),
-		Name:        string(*references_sources.Name),
+		Name: string(*references_sources.Name),
 	}, nil
 }

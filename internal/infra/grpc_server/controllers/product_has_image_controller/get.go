@@ -19,9 +19,9 @@ func (c *controller) Get(ctx context.Context, in *product_has_image_proto.GetReq
 	}
 
 	return &product_has_image_proto.GetResponse{
-		RequesterId: uint32(product_has_image.CreatedBy),
-		ProductsId:  uint32(*product_has_image.ProductID),
-		ImagesId:    uint32(*product_has_image.ImageID),
-		Priority:    uint32(product_has_image.Priority),
+
+		ProductsId: uint32(*product_has_image.ProductID),
+		ImagesId:   uint32(*product_has_image.ImageID),
+		Priority:   uint32(product_has_image.Priority),
 	}, nil
 }

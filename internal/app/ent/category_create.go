@@ -35,20 +35,6 @@ func (cc *CategoryCreate) SetNillableCreatedAt(t *time.Time) *CategoryCreate {
 	return cc
 }
 
-// SetUpdatedAt sets the "updated_at" field.
-func (cc *CategoryCreate) SetUpdatedAt(t time.Time) *CategoryCreate {
-	cc.mutation.SetUpdatedAt(t)
-	return cc
-}
-
-// SetNillableUpdatedAt sets the "updated_at" field if the given value is not nil.
-func (cc *CategoryCreate) SetNillableUpdatedAt(t *time.Time) *CategoryCreate {
-	if t != nil {
-		cc.SetUpdatedAt(*t)
-	}
-	return cc
-}
-
 // SetDeletedAt sets the "deleted_at" field.
 func (cc *CategoryCreate) SetDeletedAt(t time.Time) *CategoryCreate {
 	cc.mutation.SetDeletedAt(t)
@@ -59,32 +45,6 @@ func (cc *CategoryCreate) SetDeletedAt(t time.Time) *CategoryCreate {
 func (cc *CategoryCreate) SetNillableDeletedAt(t *time.Time) *CategoryCreate {
 	if t != nil {
 		cc.SetDeletedAt(*t)
-	}
-	return cc
-}
-
-// SetCreatedBy sets the "created_by" field.
-func (cc *CategoryCreate) SetCreatedBy(i int) *CategoryCreate {
-	cc.mutation.SetCreatedBy(i)
-	return cc
-}
-
-// SetUpdatedBy sets the "updated_by" field.
-func (cc *CategoryCreate) SetUpdatedBy(i int) *CategoryCreate {
-	cc.mutation.SetUpdatedBy(i)
-	return cc
-}
-
-// SetDeletedBy sets the "deleted_by" field.
-func (cc *CategoryCreate) SetDeletedBy(i int) *CategoryCreate {
-	cc.mutation.SetDeletedBy(i)
-	return cc
-}
-
-// SetNillableDeletedBy sets the "deleted_by" field if the given value is not nil.
-func (cc *CategoryCreate) SetNillableDeletedBy(i *int) *CategoryCreate {
-	if i != nil {
-		cc.SetDeletedBy(*i)
 	}
 	return cc
 }
@@ -197,35 +157,12 @@ func (cc *CategoryCreate) defaults() {
 		v := category.DefaultCreatedAt()
 		cc.mutation.SetCreatedAt(v)
 	}
-	if _, ok := cc.mutation.UpdatedAt(); !ok {
-		v := category.DefaultUpdatedAt()
-		cc.mutation.SetUpdatedAt(v)
-	}
 }
 
 // check runs all checks and user-defined validators on the builder.
 func (cc *CategoryCreate) check() error {
 	if _, ok := cc.mutation.CreatedAt(); !ok {
 		return &ValidationError{Name: "created_at", err: errors.New(`ent: missing required field "Category.created_at"`)}
-	}
-	if _, ok := cc.mutation.UpdatedAt(); !ok {
-		return &ValidationError{Name: "updated_at", err: errors.New(`ent: missing required field "Category.updated_at"`)}
-	}
-	if _, ok := cc.mutation.CreatedBy(); !ok {
-		return &ValidationError{Name: "created_by", err: errors.New(`ent: missing required field "Category.created_by"`)}
-	}
-	if v, ok := cc.mutation.CreatedBy(); ok {
-		if err := category.CreatedByValidator(v); err != nil {
-			return &ValidationError{Name: "created_by", err: fmt.Errorf(`ent: validator failed for field "Category.created_by": %w`, err)}
-		}
-	}
-	if _, ok := cc.mutation.UpdatedBy(); !ok {
-		return &ValidationError{Name: "updated_by", err: errors.New(`ent: missing required field "Category.updated_by"`)}
-	}
-	if v, ok := cc.mutation.UpdatedBy(); ok {
-		if err := category.UpdatedByValidator(v); err != nil {
-			return &ValidationError{Name: "updated_by", err: fmt.Errorf(`ent: validator failed for field "Category.updated_by": %w`, err)}
-		}
 	}
 	if _, ok := cc.mutation.Name(); !ok {
 		return &ValidationError{Name: "name", err: errors.New(`ent: missing required field "Category.name"`)}
@@ -260,25 +197,9 @@ func (cc *CategoryCreate) createSpec() (*Category, *sqlgraph.CreateSpec) {
 		_spec.SetField(category.FieldCreatedAt, field.TypeTime, value)
 		_node.CreatedAt = value
 	}
-	if value, ok := cc.mutation.UpdatedAt(); ok {
-		_spec.SetField(category.FieldUpdatedAt, field.TypeTime, value)
-		_node.UpdatedAt = value
-	}
 	if value, ok := cc.mutation.DeletedAt(); ok {
 		_spec.SetField(category.FieldDeletedAt, field.TypeTime, value)
 		_node.DeletedAt = &value
-	}
-	if value, ok := cc.mutation.CreatedBy(); ok {
-		_spec.SetField(category.FieldCreatedBy, field.TypeInt, value)
-		_node.CreatedBy = value
-	}
-	if value, ok := cc.mutation.UpdatedBy(); ok {
-		_spec.SetField(category.FieldUpdatedBy, field.TypeInt, value)
-		_node.UpdatedBy = value
-	}
-	if value, ok := cc.mutation.DeletedBy(); ok {
-		_spec.SetField(category.FieldDeletedBy, field.TypeInt, value)
-		_node.DeletedBy = &value
 	}
 	if value, ok := cc.mutation.CategoryID(); ok {
 		_spec.SetField(category.FieldCategoryID, field.TypeInt, value)

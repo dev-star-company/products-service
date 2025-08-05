@@ -19,7 +19,6 @@ func (c *controller) Get(ctx context.Context, in *variant_type_proto.GetRequest)
 	}
 
 	return &variant_type_proto.GetResponse{
-		RequesterId: uint32(variant_type.CreatedBy),
-		Name:        *variant_type.Name,
+		Name: *variant_type.Name,
 	}, nil
 }

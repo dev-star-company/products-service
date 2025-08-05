@@ -35,20 +35,6 @@ func (vtc *VariantTypeCreate) SetNillableCreatedAt(t *time.Time) *VariantTypeCre
 	return vtc
 }
 
-// SetUpdatedAt sets the "updated_at" field.
-func (vtc *VariantTypeCreate) SetUpdatedAt(t time.Time) *VariantTypeCreate {
-	vtc.mutation.SetUpdatedAt(t)
-	return vtc
-}
-
-// SetNillableUpdatedAt sets the "updated_at" field if the given value is not nil.
-func (vtc *VariantTypeCreate) SetNillableUpdatedAt(t *time.Time) *VariantTypeCreate {
-	if t != nil {
-		vtc.SetUpdatedAt(*t)
-	}
-	return vtc
-}
-
 // SetDeletedAt sets the "deleted_at" field.
 func (vtc *VariantTypeCreate) SetDeletedAt(t time.Time) *VariantTypeCreate {
 	vtc.mutation.SetDeletedAt(t)
@@ -59,32 +45,6 @@ func (vtc *VariantTypeCreate) SetDeletedAt(t time.Time) *VariantTypeCreate {
 func (vtc *VariantTypeCreate) SetNillableDeletedAt(t *time.Time) *VariantTypeCreate {
 	if t != nil {
 		vtc.SetDeletedAt(*t)
-	}
-	return vtc
-}
-
-// SetCreatedBy sets the "created_by" field.
-func (vtc *VariantTypeCreate) SetCreatedBy(i int) *VariantTypeCreate {
-	vtc.mutation.SetCreatedBy(i)
-	return vtc
-}
-
-// SetUpdatedBy sets the "updated_by" field.
-func (vtc *VariantTypeCreate) SetUpdatedBy(i int) *VariantTypeCreate {
-	vtc.mutation.SetUpdatedBy(i)
-	return vtc
-}
-
-// SetDeletedBy sets the "deleted_by" field.
-func (vtc *VariantTypeCreate) SetDeletedBy(i int) *VariantTypeCreate {
-	vtc.mutation.SetDeletedBy(i)
-	return vtc
-}
-
-// SetNillableDeletedBy sets the "deleted_by" field if the given value is not nil.
-func (vtc *VariantTypeCreate) SetNillableDeletedBy(i *int) *VariantTypeCreate {
-	if i != nil {
-		vtc.SetDeletedBy(*i)
 	}
 	return vtc
 }
@@ -149,35 +109,12 @@ func (vtc *VariantTypeCreate) defaults() {
 		v := varianttype.DefaultCreatedAt()
 		vtc.mutation.SetCreatedAt(v)
 	}
-	if _, ok := vtc.mutation.UpdatedAt(); !ok {
-		v := varianttype.DefaultUpdatedAt()
-		vtc.mutation.SetUpdatedAt(v)
-	}
 }
 
 // check runs all checks and user-defined validators on the builder.
 func (vtc *VariantTypeCreate) check() error {
 	if _, ok := vtc.mutation.CreatedAt(); !ok {
 		return &ValidationError{Name: "created_at", err: errors.New(`ent: missing required field "VariantType.created_at"`)}
-	}
-	if _, ok := vtc.mutation.UpdatedAt(); !ok {
-		return &ValidationError{Name: "updated_at", err: errors.New(`ent: missing required field "VariantType.updated_at"`)}
-	}
-	if _, ok := vtc.mutation.CreatedBy(); !ok {
-		return &ValidationError{Name: "created_by", err: errors.New(`ent: missing required field "VariantType.created_by"`)}
-	}
-	if v, ok := vtc.mutation.CreatedBy(); ok {
-		if err := varianttype.CreatedByValidator(v); err != nil {
-			return &ValidationError{Name: "created_by", err: fmt.Errorf(`ent: validator failed for field "VariantType.created_by": %w`, err)}
-		}
-	}
-	if _, ok := vtc.mutation.UpdatedBy(); !ok {
-		return &ValidationError{Name: "updated_by", err: errors.New(`ent: missing required field "VariantType.updated_by"`)}
-	}
-	if v, ok := vtc.mutation.UpdatedBy(); ok {
-		if err := varianttype.UpdatedByValidator(v); err != nil {
-			return &ValidationError{Name: "updated_by", err: fmt.Errorf(`ent: validator failed for field "VariantType.updated_by": %w`, err)}
-		}
 	}
 	if _, ok := vtc.mutation.Name(); !ok {
 		return &ValidationError{Name: "name", err: errors.New(`ent: missing required field "VariantType.name"`)}
@@ -212,25 +149,9 @@ func (vtc *VariantTypeCreate) createSpec() (*VariantType, *sqlgraph.CreateSpec) 
 		_spec.SetField(varianttype.FieldCreatedAt, field.TypeTime, value)
 		_node.CreatedAt = value
 	}
-	if value, ok := vtc.mutation.UpdatedAt(); ok {
-		_spec.SetField(varianttype.FieldUpdatedAt, field.TypeTime, value)
-		_node.UpdatedAt = value
-	}
 	if value, ok := vtc.mutation.DeletedAt(); ok {
 		_spec.SetField(varianttype.FieldDeletedAt, field.TypeTime, value)
 		_node.DeletedAt = &value
-	}
-	if value, ok := vtc.mutation.CreatedBy(); ok {
-		_spec.SetField(varianttype.FieldCreatedBy, field.TypeInt, value)
-		_node.CreatedBy = value
-	}
-	if value, ok := vtc.mutation.UpdatedBy(); ok {
-		_spec.SetField(varianttype.FieldUpdatedBy, field.TypeInt, value)
-		_node.UpdatedBy = value
-	}
-	if value, ok := vtc.mutation.DeletedBy(); ok {
-		_spec.SetField(varianttype.FieldDeletedBy, field.TypeInt, value)
-		_node.DeletedBy = &value
 	}
 	if value, ok := vtc.mutation.Name(); ok {
 		_spec.SetField(varianttype.FieldName, field.TypeString, value)

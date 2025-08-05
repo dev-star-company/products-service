@@ -36,20 +36,6 @@ func (ppc *ProductPricesCreate) SetNillableCreatedAt(t *time.Time) *ProductPrice
 	return ppc
 }
 
-// SetUpdatedAt sets the "updated_at" field.
-func (ppc *ProductPricesCreate) SetUpdatedAt(t time.Time) *ProductPricesCreate {
-	ppc.mutation.SetUpdatedAt(t)
-	return ppc
-}
-
-// SetNillableUpdatedAt sets the "updated_at" field if the given value is not nil.
-func (ppc *ProductPricesCreate) SetNillableUpdatedAt(t *time.Time) *ProductPricesCreate {
-	if t != nil {
-		ppc.SetUpdatedAt(*t)
-	}
-	return ppc
-}
-
 // SetDeletedAt sets the "deleted_at" field.
 func (ppc *ProductPricesCreate) SetDeletedAt(t time.Time) *ProductPricesCreate {
 	ppc.mutation.SetDeletedAt(t)
@@ -60,32 +46,6 @@ func (ppc *ProductPricesCreate) SetDeletedAt(t time.Time) *ProductPricesCreate {
 func (ppc *ProductPricesCreate) SetNillableDeletedAt(t *time.Time) *ProductPricesCreate {
 	if t != nil {
 		ppc.SetDeletedAt(*t)
-	}
-	return ppc
-}
-
-// SetCreatedBy sets the "created_by" field.
-func (ppc *ProductPricesCreate) SetCreatedBy(i int) *ProductPricesCreate {
-	ppc.mutation.SetCreatedBy(i)
-	return ppc
-}
-
-// SetUpdatedBy sets the "updated_by" field.
-func (ppc *ProductPricesCreate) SetUpdatedBy(i int) *ProductPricesCreate {
-	ppc.mutation.SetUpdatedBy(i)
-	return ppc
-}
-
-// SetDeletedBy sets the "deleted_by" field.
-func (ppc *ProductPricesCreate) SetDeletedBy(i int) *ProductPricesCreate {
-	ppc.mutation.SetDeletedBy(i)
-	return ppc
-}
-
-// SetNillableDeletedBy sets the "deleted_by" field if the given value is not nil.
-func (ppc *ProductPricesCreate) SetNillableDeletedBy(i *int) *ProductPricesCreate {
-	if i != nil {
-		ppc.SetDeletedBy(*i)
 	}
 	return ppc
 }
@@ -179,35 +139,12 @@ func (ppc *ProductPricesCreate) defaults() {
 		v := productprices.DefaultCreatedAt()
 		ppc.mutation.SetCreatedAt(v)
 	}
-	if _, ok := ppc.mutation.UpdatedAt(); !ok {
-		v := productprices.DefaultUpdatedAt()
-		ppc.mutation.SetUpdatedAt(v)
-	}
 }
 
 // check runs all checks and user-defined validators on the builder.
 func (ppc *ProductPricesCreate) check() error {
 	if _, ok := ppc.mutation.CreatedAt(); !ok {
 		return &ValidationError{Name: "created_at", err: errors.New(`ent: missing required field "ProductPrices.created_at"`)}
-	}
-	if _, ok := ppc.mutation.UpdatedAt(); !ok {
-		return &ValidationError{Name: "updated_at", err: errors.New(`ent: missing required field "ProductPrices.updated_at"`)}
-	}
-	if _, ok := ppc.mutation.CreatedBy(); !ok {
-		return &ValidationError{Name: "created_by", err: errors.New(`ent: missing required field "ProductPrices.created_by"`)}
-	}
-	if v, ok := ppc.mutation.CreatedBy(); ok {
-		if err := productprices.CreatedByValidator(v); err != nil {
-			return &ValidationError{Name: "created_by", err: fmt.Errorf(`ent: validator failed for field "ProductPrices.created_by": %w`, err)}
-		}
-	}
-	if _, ok := ppc.mutation.UpdatedBy(); !ok {
-		return &ValidationError{Name: "updated_by", err: errors.New(`ent: missing required field "ProductPrices.updated_by"`)}
-	}
-	if v, ok := ppc.mutation.UpdatedBy(); ok {
-		if err := productprices.UpdatedByValidator(v); err != nil {
-			return &ValidationError{Name: "updated_by", err: fmt.Errorf(`ent: validator failed for field "ProductPrices.updated_by": %w`, err)}
-		}
 	}
 	if _, ok := ppc.mutation.PriceTypeID(); !ok {
 		return &ValidationError{Name: "price_type_id", err: errors.New(`ent: missing required field "ProductPrices.price_type_id"`)}
@@ -248,25 +185,9 @@ func (ppc *ProductPricesCreate) createSpec() (*ProductPrices, *sqlgraph.CreateSp
 		_spec.SetField(productprices.FieldCreatedAt, field.TypeTime, value)
 		_node.CreatedAt = value
 	}
-	if value, ok := ppc.mutation.UpdatedAt(); ok {
-		_spec.SetField(productprices.FieldUpdatedAt, field.TypeTime, value)
-		_node.UpdatedAt = value
-	}
 	if value, ok := ppc.mutation.DeletedAt(); ok {
 		_spec.SetField(productprices.FieldDeletedAt, field.TypeTime, value)
 		_node.DeletedAt = &value
-	}
-	if value, ok := ppc.mutation.CreatedBy(); ok {
-		_spec.SetField(productprices.FieldCreatedBy, field.TypeInt, value)
-		_node.CreatedBy = value
-	}
-	if value, ok := ppc.mutation.UpdatedBy(); ok {
-		_spec.SetField(productprices.FieldUpdatedBy, field.TypeInt, value)
-		_node.UpdatedBy = value
-	}
-	if value, ok := ppc.mutation.DeletedBy(); ok {
-		_spec.SetField(productprices.FieldDeletedBy, field.TypeInt, value)
-		_node.DeletedBy = &value
 	}
 	if value, ok := ppc.mutation.DefaultValue(); ok {
 		_spec.SetField(productprices.FieldDefaultValue, field.TypeFloat64, value)

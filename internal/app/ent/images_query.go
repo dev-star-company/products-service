@@ -11,6 +11,7 @@ import (
 	"products-service/internal/app/ent/images"
 	"products-service/internal/app/ent/predicate"
 	"products-service/internal/app/ent/producthasimage"
+	"products-service/internal/app/ent/products"
 
 	"entgo.io/ent"
 	"entgo.io/ent/dialect/sql"
@@ -26,6 +27,7 @@ type ImagesQuery struct {
 	inters              []Interceptor
 	predicates          []predicate.Images
 	withImageFolderPath *ImageFolderPathQuery
+	withProducts        *ProductsQuery
 	withProductHasImage *ProductHasImageQuery
 	withFKs             bool
 	// intermediate query (i.e. traversal path).
@@ -79,6 +81,28 @@ func (iq *ImagesQuery) QueryImageFolderPath() *ImageFolderPathQuery {
 			sqlgraph.From(images.Table, images.FieldID, selector),
 			sqlgraph.To(imagefolderpath.Table, imagefolderpath.FieldID),
 			sqlgraph.Edge(sqlgraph.M2O, true, images.ImageFolderPathTable, images.ImageFolderPathColumn),
+		)
+		fromU = sqlgraph.SetNeighbors(iq.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
+}
+
+// QueryProducts chains the current query on the "products" edge.
+func (iq *ImagesQuery) QueryProducts() *ProductsQuery {
+	query := (&ProductsClient{config: iq.config}).Query()
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := iq.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		selector := iq.sqlQuery(ctx)
+		if err := selector.Err(); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(images.Table, images.FieldID, selector),
+			sqlgraph.To(products.Table, products.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, images.ProductsTable, images.ProductsColumn),
 		)
 		fromU = sqlgraph.SetNeighbors(iq.driver.Dialect(), step)
 		return fromU, nil
@@ -301,6 +325,7 @@ func (iq *ImagesQuery) Clone() *ImagesQuery {
 		inters:              append([]Interceptor{}, iq.inters...),
 		predicates:          append([]predicate.Images{}, iq.predicates...),
 		withImageFolderPath: iq.withImageFolderPath.Clone(),
+		withProducts:        iq.withProducts.Clone(),
 		withProductHasImage: iq.withProductHasImage.Clone(),
 		// clone intermediate query.
 		sql:  iq.sql.Clone(),
@@ -316,6 +341,17 @@ func (iq *ImagesQuery) WithImageFolderPath(opts ...func(*ImageFolderPathQuery)) 
 		opt(query)
 	}
 	iq.withImageFolderPath = query
+	return iq
+}
+
+// WithProducts tells the query-builder to eager-load the nodes that are connected to
+// the "products" edge. The optional arguments are used to configure the query builder of the edge.
+func (iq *ImagesQuery) WithProducts(opts ...func(*ProductsQuery)) *ImagesQuery {
+	query := (&ProductsClient{config: iq.config}).Query()
+	for _, opt := range opts {
+		opt(query)
+	}
+	iq.withProducts = query
 	return iq
 }
 
@@ -409,11 +445,15 @@ func (iq *ImagesQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Image
 		nodes       = []*Images{}
 		withFKs     = iq.withFKs
 		_spec       = iq.querySpec()
-		loadedTypes = [2]bool{
+		loadedTypes = [3]bool{
 			iq.withImageFolderPath != nil,
+			iq.withProducts != nil,
 			iq.withProductHasImage != nil,
 		}
 	)
+	if iq.withImageFolderPath != nil {
+		withFKs = true
+	}
 	if withFKs {
 		_spec.Node.Columns = append(_spec.Node.Columns, images.ForeignKeys...)
 	}
@@ -441,6 +481,13 @@ func (iq *ImagesQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Image
 			return nil, err
 		}
 	}
+	if query := iq.withProducts; query != nil {
+		if err := iq.loadProducts(ctx, query, nodes,
+			func(n *Images) { n.Edges.Products = []*Products{} },
+			func(n *Images, e *Products) { n.Edges.Products = append(n.Edges.Products, e) }); err != nil {
+			return nil, err
+		}
+	}
 	if query := iq.withProductHasImage; query != nil {
 		if err := iq.loadProductHasImage(ctx, query, nodes,
 			func(n *Images) { n.Edges.ProductHasImage = []*ProductHasImage{} },
@@ -455,10 +502,10 @@ func (iq *ImagesQuery) loadImageFolderPath(ctx context.Context, query *ImageFold
 	ids := make([]int, 0, len(nodes))
 	nodeids := make(map[int][]*Images)
 	for i := range nodes {
-		if nodes[i].ImageFolderPathID == nil {
+		if nodes[i].image_folder_path_images == nil {
 			continue
 		}
-		fk := *nodes[i].ImageFolderPathID
+		fk := *nodes[i].image_folder_path_images
 		if _, ok := nodeids[fk]; !ok {
 			ids = append(ids, fk)
 		}
@@ -475,11 +522,45 @@ func (iq *ImagesQuery) loadImageFolderPath(ctx context.Context, query *ImageFold
 	for _, n := range neighbors {
 		nodes, ok := nodeids[n.ID]
 		if !ok {
-			return fmt.Errorf(`unexpected foreign-key "image_folder_path_id" returned %v`, n.ID)
+			return fmt.Errorf(`unexpected foreign-key "image_folder_path_images" returned %v`, n.ID)
 		}
 		for i := range nodes {
 			assign(nodes[i], n)
 		}
+	}
+	return nil
+}
+func (iq *ImagesQuery) loadProducts(ctx context.Context, query *ProductsQuery, nodes []*Images, init func(*Images), assign func(*Images, *Products)) error {
+	fks := make([]driver.Value, 0, len(nodes))
+	nodeids := make(map[int]*Images)
+	for i := range nodes {
+		fks = append(fks, nodes[i].ID)
+		nodeids[nodes[i].ID] = nodes[i]
+		if init != nil {
+			init(nodes[i])
+		}
+	}
+	query.withFKs = true
+	if len(query.ctx.Fields) > 0 {
+		query.ctx.AppendFieldOnce(products.FieldImagesID)
+	}
+	query.Where(predicate.Products(func(s *sql.Selector) {
+		s.Where(sql.InValues(s.C(images.ProductsColumn), fks...))
+	}))
+	neighbors, err := query.All(ctx)
+	if err != nil {
+		return err
+	}
+	for _, n := range neighbors {
+		fk := n.ImagesID
+		if fk == nil {
+			return fmt.Errorf(`foreign-key "images_id" is nil for node %v`, n.ID)
+		}
+		node, ok := nodeids[*fk]
+		if !ok {
+			return fmt.Errorf(`unexpected referenced foreign-key "images_id" returned %v for node %v`, *fk, n.ID)
+		}
+		assign(node, n)
 	}
 	return nil
 }
@@ -541,9 +622,6 @@ func (iq *ImagesQuery) querySpec() *sqlgraph.QuerySpec {
 			if fields[i] != images.FieldID {
 				_spec.Node.Columns = append(_spec.Node.Columns, fields[i])
 			}
-		}
-		if iq.withImageFolderPath != nil {
-			_spec.Node.AddColumnOnce(images.FieldImageFolderPathID)
 		}
 	}
 	if ps := iq.predicates; len(ps) > 0 {

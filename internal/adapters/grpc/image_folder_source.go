@@ -16,20 +16,12 @@ func ImageFolderSourceToProto(image_folder_source *ent.ImageFolderSource) *image
 		BaseUrl:   *image_folder_source.BaseURL,
 		AcessKey:  image_folder_source.AccessKey,
 		SecretKey: image_folder_source.SecretKey,
-		CreatedBy: uint32(image_folder_source.CreatedBy),
-		UpdatedBy: uint32(image_folder_source.UpdatedBy),
 		CreatedAt: image_folder_source.CreatedAt.Format("2006-01-02 15:04:05"),
-		UpdatedAt: image_folder_source.UpdatedAt.Format("2006-01-02 15:04:05"),
 	}
 
 	if image_folder_source.DeletedAt != nil {
 		x := image_folder_source.DeletedAt.Format("2006-01-02 15:04:05")
 		cur.DeletedAt = &x
-	}
-
-	if image_folder_source.DeletedBy != nil {
-		x := uint32(*image_folder_source.DeletedBy)
-		cur.DeletedBy = &x
 	}
 
 	return cur

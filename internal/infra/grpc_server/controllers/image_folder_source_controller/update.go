@@ -9,9 +9,6 @@ import (
 )
 
 func (c *controller) Update(ctx context.Context, in *image_folder_source_proto.UpdateRequest) (*image_folder_source_proto.UpdateResponse, error) {
-	if in.RequesterId == 0 {
-		return nil, errs.ProductsNotFound(int(in.Id))
-	}
 
 	tx, err := c.Db.Tx(ctx)
 	if err != nil {
@@ -25,8 +22,6 @@ func (c *controller) Update(ctx context.Context, in *image_folder_source_proto.U
 	if in.Name != nil && *in.Name != "" {
 		image_folder_sourceQ.SetName(string(*in.Name))
 	}
-
-	image_folder_sourceQ.SetUpdatedBy(int(in.RequesterId))
 
 	image_folder_source, err = image_folder_sourceQ.Save(ctx)
 	if err != nil {
@@ -44,10 +39,10 @@ func (c *controller) Update(ctx context.Context, in *image_folder_source_proto.U
 	}
 
 	return &image_folder_source_proto.UpdateResponse{
-		RequesterId: uint32(image_folder_source.CreatedBy),
-		Name:        *image_folder_source.Name,
-		BaseUrl:     *image_folder_source.BaseURL,
-		AcessKey:    *image_folder_source.AccessKey,
-		SecretKey:   *image_folder_source.SecretKey,
+
+		Name:      *image_folder_source.Name,
+		BaseUrl:   *image_folder_source.BaseURL,
+		AcessKey:  *image_folder_source.AccessKey,
+		SecretKey: *image_folder_source.SecretKey,
 	}, nil
 }

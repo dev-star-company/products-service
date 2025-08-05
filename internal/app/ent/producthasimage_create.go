@@ -36,20 +36,6 @@ func (phic *ProductHasImageCreate) SetNillableCreatedAt(t *time.Time) *ProductHa
 	return phic
 }
 
-// SetUpdatedAt sets the "updated_at" field.
-func (phic *ProductHasImageCreate) SetUpdatedAt(t time.Time) *ProductHasImageCreate {
-	phic.mutation.SetUpdatedAt(t)
-	return phic
-}
-
-// SetNillableUpdatedAt sets the "updated_at" field if the given value is not nil.
-func (phic *ProductHasImageCreate) SetNillableUpdatedAt(t *time.Time) *ProductHasImageCreate {
-	if t != nil {
-		phic.SetUpdatedAt(*t)
-	}
-	return phic
-}
-
 // SetDeletedAt sets the "deleted_at" field.
 func (phic *ProductHasImageCreate) SetDeletedAt(t time.Time) *ProductHasImageCreate {
 	phic.mutation.SetDeletedAt(t)
@@ -60,32 +46,6 @@ func (phic *ProductHasImageCreate) SetDeletedAt(t time.Time) *ProductHasImageCre
 func (phic *ProductHasImageCreate) SetNillableDeletedAt(t *time.Time) *ProductHasImageCreate {
 	if t != nil {
 		phic.SetDeletedAt(*t)
-	}
-	return phic
-}
-
-// SetCreatedBy sets the "created_by" field.
-func (phic *ProductHasImageCreate) SetCreatedBy(i int) *ProductHasImageCreate {
-	phic.mutation.SetCreatedBy(i)
-	return phic
-}
-
-// SetUpdatedBy sets the "updated_by" field.
-func (phic *ProductHasImageCreate) SetUpdatedBy(i int) *ProductHasImageCreate {
-	phic.mutation.SetUpdatedBy(i)
-	return phic
-}
-
-// SetDeletedBy sets the "deleted_by" field.
-func (phic *ProductHasImageCreate) SetDeletedBy(i int) *ProductHasImageCreate {
-	phic.mutation.SetDeletedBy(i)
-	return phic
-}
-
-// SetNillableDeletedBy sets the "deleted_by" field if the given value is not nil.
-func (phic *ProductHasImageCreate) SetNillableDeletedBy(i *int) *ProductHasImageCreate {
-	if i != nil {
-		phic.SetDeletedBy(*i)
 	}
 	return phic
 }
@@ -165,35 +125,12 @@ func (phic *ProductHasImageCreate) defaults() {
 		v := producthasimage.DefaultCreatedAt()
 		phic.mutation.SetCreatedAt(v)
 	}
-	if _, ok := phic.mutation.UpdatedAt(); !ok {
-		v := producthasimage.DefaultUpdatedAt()
-		phic.mutation.SetUpdatedAt(v)
-	}
 }
 
 // check runs all checks and user-defined validators on the builder.
 func (phic *ProductHasImageCreate) check() error {
 	if _, ok := phic.mutation.CreatedAt(); !ok {
 		return &ValidationError{Name: "created_at", err: errors.New(`ent: missing required field "ProductHasImage.created_at"`)}
-	}
-	if _, ok := phic.mutation.UpdatedAt(); !ok {
-		return &ValidationError{Name: "updated_at", err: errors.New(`ent: missing required field "ProductHasImage.updated_at"`)}
-	}
-	if _, ok := phic.mutation.CreatedBy(); !ok {
-		return &ValidationError{Name: "created_by", err: errors.New(`ent: missing required field "ProductHasImage.created_by"`)}
-	}
-	if v, ok := phic.mutation.CreatedBy(); ok {
-		if err := producthasimage.CreatedByValidator(v); err != nil {
-			return &ValidationError{Name: "created_by", err: fmt.Errorf(`ent: validator failed for field "ProductHasImage.created_by": %w`, err)}
-		}
-	}
-	if _, ok := phic.mutation.UpdatedBy(); !ok {
-		return &ValidationError{Name: "updated_by", err: errors.New(`ent: missing required field "ProductHasImage.updated_by"`)}
-	}
-	if v, ok := phic.mutation.UpdatedBy(); ok {
-		if err := producthasimage.UpdatedByValidator(v); err != nil {
-			return &ValidationError{Name: "updated_by", err: fmt.Errorf(`ent: validator failed for field "ProductHasImage.updated_by": %w`, err)}
-		}
 	}
 	if _, ok := phic.mutation.ImageID(); !ok {
 		return &ValidationError{Name: "image_id", err: errors.New(`ent: missing required field "ProductHasImage.image_id"`)}
@@ -234,25 +171,9 @@ func (phic *ProductHasImageCreate) createSpec() (*ProductHasImage, *sqlgraph.Cre
 		_spec.SetField(producthasimage.FieldCreatedAt, field.TypeTime, value)
 		_node.CreatedAt = value
 	}
-	if value, ok := phic.mutation.UpdatedAt(); ok {
-		_spec.SetField(producthasimage.FieldUpdatedAt, field.TypeTime, value)
-		_node.UpdatedAt = value
-	}
 	if value, ok := phic.mutation.DeletedAt(); ok {
 		_spec.SetField(producthasimage.FieldDeletedAt, field.TypeTime, value)
 		_node.DeletedAt = &value
-	}
-	if value, ok := phic.mutation.CreatedBy(); ok {
-		_spec.SetField(producthasimage.FieldCreatedBy, field.TypeInt, value)
-		_node.CreatedBy = value
-	}
-	if value, ok := phic.mutation.UpdatedBy(); ok {
-		_spec.SetField(producthasimage.FieldUpdatedBy, field.TypeInt, value)
-		_node.UpdatedBy = value
-	}
-	if value, ok := phic.mutation.DeletedBy(); ok {
-		_spec.SetField(producthasimage.FieldDeletedBy, field.TypeInt, value)
-		_node.DeletedBy = &value
 	}
 	if value, ok := phic.mutation.Priority(); ok {
 		_spec.SetField(producthasimage.FieldPriority, field.TypeInt, value)

@@ -12,8 +12,8 @@ func (c *controller) Get(ctx context.Context, in *tool_has_product_proto.GetRequ
 	tool_has_product, err := c.Db.ToolHasProduct.
 		Query().
 		Where(toolhasproduct.ID(int(in.Id))).
-		WithTool().
-		WithProduct().
+		WithTools().
+		WithProducts().
 		Only(ctx)
 
 	if ent.IsNotFound(err) {
@@ -21,8 +21,7 @@ func (c *controller) Get(ctx context.Context, in *tool_has_product_proto.GetRequ
 	}
 
 	return &tool_has_product_proto.GetResponse{
-		RequesterId: uint32(tool_has_product.CreatedBy),
-		ToolId:      uint32(*tool_has_product.ToolID),
-		ProductsId:  uint32(*tool_has_product.ProductID),
+		ToolId:     uint32(*tool_has_product.ToolsID),
+		ProductsId: uint32(*tool_has_product.ProductsID),
 	}, nil
 }

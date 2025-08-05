@@ -1828,6 +1828,22 @@ func (c *ImagesClient) QueryImageFolderPath(i *Images) *ImageFolderPathQuery {
 	return query
 }
 
+// QueryProducts queries the products edge of a Images.
+func (c *ImagesClient) QueryProducts(i *Images) *ProductsQuery {
+	query := (&ProductsClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := i.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(images.Table, images.FieldID, id),
+			sqlgraph.To(products.Table, products.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, images.ProductsTable, images.ProductsColumn),
+		)
+		fromV = sqlgraph.Neighbors(i.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
 // QueryProductHasImage queries the product_has_image edge of a Images.
 func (c *ImagesClient) QueryProductHasImage(i *Images) *ProductHasImageQuery {
 	query := (&ProductHasImageClient{config: c.config}).Query()
@@ -3281,22 +3297,6 @@ func (c *ProductReferencesClient) GetX(ctx context.Context, id int) *ProductRefe
 	return obj
 }
 
-// QueryProduct queries the product edge of a ProductReferences.
-func (c *ProductReferencesClient) QueryProduct(pr *ProductReferences) *ProductsQuery {
-	query := (&ProductsClient{config: c.config}).Query()
-	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
-		id := pr.ID
-		step := sqlgraph.NewStep(
-			sqlgraph.From(productreferences.Table, productreferences.FieldID, id),
-			sqlgraph.To(products.Table, products.FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, true, productreferences.ProductTable, productreferences.ProductColumn),
-		)
-		fromV = sqlgraph.Neighbors(pr.driver.Dialect(), step)
-		return fromV, nil
-	}
-	return query
-}
-
 // QueryReferenceSources queries the reference_sources edge of a ProductReferences.
 func (c *ProductReferencesClient) QueryReferenceSources(pr *ProductReferences) *ReferenceSourcesQuery {
 	query := (&ReferenceSourcesClient{config: c.config}).Query()
@@ -3306,6 +3306,22 @@ func (c *ProductReferencesClient) QueryReferenceSources(pr *ProductReferences) *
 			sqlgraph.From(productreferences.Table, productreferences.FieldID, id),
 			sqlgraph.To(referencesources.Table, referencesources.FieldID),
 			sqlgraph.Edge(sqlgraph.M2O, true, productreferences.ReferenceSourcesTable, productreferences.ReferenceSourcesColumn),
+		)
+		fromV = sqlgraph.Neighbors(pr.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryProducts queries the products edge of a ProductReferences.
+func (c *ProductReferencesClient) QueryProducts(pr *ProductReferences) *ProductsQuery {
+	query := (&ProductsClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := pr.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(productreferences.Table, productreferences.FieldID, id),
+			sqlgraph.To(products.Table, products.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, productreferences.ProductsTable, productreferences.ProductsColumn),
 		)
 		fromV = sqlgraph.Neighbors(pr.driver.Dialect(), step)
 		return fromV, nil
@@ -3518,7 +3534,7 @@ func (c *ProductsClient) QueryProductReferences(pr *Products) *ProductReferences
 		step := sqlgraph.NewStep(
 			sqlgraph.From(products.Table, products.FieldID, id),
 			sqlgraph.To(productreferences.Table, productreferences.FieldID),
-			sqlgraph.Edge(sqlgraph.O2M, false, products.ProductReferencesTable, products.ProductReferencesColumn),
+			sqlgraph.Edge(sqlgraph.M2O, true, products.ProductReferencesTable, products.ProductReferencesColumn),
 		)
 		fromV = sqlgraph.Neighbors(pr.driver.Dialect(), step)
 		return fromV, nil
@@ -3534,7 +3550,7 @@ func (c *ProductsClient) QueryImages(pr *Products) *ImagesQuery {
 		step := sqlgraph.NewStep(
 			sqlgraph.From(products.Table, products.FieldID, id),
 			sqlgraph.To(images.Table, images.FieldID),
-			sqlgraph.Edge(sqlgraph.O2M, false, products.ImagesTable, products.ImagesColumn),
+			sqlgraph.Edge(sqlgraph.M2O, true, products.ImagesTable, products.ImagesColumn),
 		)
 		fromV = sqlgraph.Neighbors(pr.driver.Dialect(), step)
 		return fromV, nil
@@ -3787,15 +3803,15 @@ func (c *PromotionHasProductClient) GetX(ctx context.Context, id int) *Promotion
 	return obj
 }
 
-// QueryProduct queries the product edge of a PromotionHasProduct.
-func (c *PromotionHasProductClient) QueryProduct(php *PromotionHasProduct) *ProductsQuery {
+// QueryProducts queries the products edge of a PromotionHasProduct.
+func (c *PromotionHasProductClient) QueryProducts(php *PromotionHasProduct) *ProductsQuery {
 	query := (&ProductsClient{config: c.config}).Query()
 	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
 		id := php.ID
 		step := sqlgraph.NewStep(
 			sqlgraph.From(promotionhasproduct.Table, promotionhasproduct.FieldID, id),
 			sqlgraph.To(products.Table, products.FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, true, promotionhasproduct.ProductTable, promotionhasproduct.ProductColumn),
+			sqlgraph.Edge(sqlgraph.M2O, true, promotionhasproduct.ProductsTable, promotionhasproduct.ProductsColumn),
 		)
 		fromV = sqlgraph.Neighbors(php.driver.Dialect(), step)
 		return fromV, nil
@@ -3803,15 +3819,15 @@ func (c *PromotionHasProductClient) QueryProduct(php *PromotionHasProduct) *Prod
 	return query
 }
 
-// QueryPromotion queries the promotion edge of a PromotionHasProduct.
-func (c *PromotionHasProductClient) QueryPromotion(php *PromotionHasProduct) *PromotionsQuery {
+// QueryPromotions queries the promotions edge of a PromotionHasProduct.
+func (c *PromotionHasProductClient) QueryPromotions(php *PromotionHasProduct) *PromotionsQuery {
 	query := (&PromotionsClient{config: c.config}).Query()
 	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
 		id := php.ID
 		step := sqlgraph.NewStep(
 			sqlgraph.From(promotionhasproduct.Table, promotionhasproduct.FieldID, id),
 			sqlgraph.To(promotions.Table, promotions.FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, true, promotionhasproduct.PromotionTable, promotionhasproduct.PromotionColumn),
+			sqlgraph.Edge(sqlgraph.M2O, true, promotionhasproduct.PromotionsTable, promotionhasproduct.PromotionsColumn),
 		)
 		fromV = sqlgraph.Neighbors(php.driver.Dialect(), step)
 		return fromV, nil
@@ -4250,15 +4266,15 @@ func (c *ToolHasProductClient) GetX(ctx context.Context, id int) *ToolHasProduct
 	return obj
 }
 
-// QueryProduct queries the product edge of a ToolHasProduct.
-func (c *ToolHasProductClient) QueryProduct(thp *ToolHasProduct) *ProductsQuery {
+// QueryProducts queries the products edge of a ToolHasProduct.
+func (c *ToolHasProductClient) QueryProducts(thp *ToolHasProduct) *ProductsQuery {
 	query := (&ProductsClient{config: c.config}).Query()
 	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
 		id := thp.ID
 		step := sqlgraph.NewStep(
 			sqlgraph.From(toolhasproduct.Table, toolhasproduct.FieldID, id),
 			sqlgraph.To(products.Table, products.FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, true, toolhasproduct.ProductTable, toolhasproduct.ProductColumn),
+			sqlgraph.Edge(sqlgraph.M2O, true, toolhasproduct.ProductsTable, toolhasproduct.ProductsColumn),
 		)
 		fromV = sqlgraph.Neighbors(thp.driver.Dialect(), step)
 		return fromV, nil
@@ -4266,15 +4282,15 @@ func (c *ToolHasProductClient) QueryProduct(thp *ToolHasProduct) *ProductsQuery 
 	return query
 }
 
-// QueryTool queries the tool edge of a ToolHasProduct.
-func (c *ToolHasProductClient) QueryTool(thp *ToolHasProduct) *ToolsQuery {
+// QueryTools queries the tools edge of a ToolHasProduct.
+func (c *ToolHasProductClient) QueryTools(thp *ToolHasProduct) *ToolsQuery {
 	query := (&ToolsClient{config: c.config}).Query()
 	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
 		id := thp.ID
 		step := sqlgraph.NewStep(
 			sqlgraph.From(toolhasproduct.Table, toolhasproduct.FieldID, id),
 			sqlgraph.To(tools.Table, tools.FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, true, toolhasproduct.ToolTable, toolhasproduct.ToolColumn),
+			sqlgraph.Edge(sqlgraph.M2O, true, toolhasproduct.ToolsTable, toolhasproduct.ToolsColumn),
 		)
 		fromV = sqlgraph.Neighbors(thp.driver.Dialect(), step)
 		return fromV, nil

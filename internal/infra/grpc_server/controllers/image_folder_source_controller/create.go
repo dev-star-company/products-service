@@ -9,10 +9,6 @@ import (
 
 func (c *controller) Create(ctx context.Context, in *image_folder_source_proto.CreateRequest) (*image_folder_source_proto.CreateResponse, error) {
 
-	if in.RequesterId == 0 {
-		return nil, errs.RequesterIdRequired()
-	}
-
 	tx, err := c.Db.Tx(ctx)
 	if err != nil {
 		return nil, errs.StartProductsError(err)
@@ -23,8 +19,6 @@ func (c *controller) Create(ctx context.Context, in *image_folder_source_proto.C
 		SetBaseURL(in.BaseUrl).
 		SetAccessKey(*in.AcessKey).
 		SetSecretKey(*in.SecretKey).
-		SetCreatedBy(int(in.RequesterId)).
-		SetUpdatedBy(int(in.RequesterId)).
 		Save(ctx)
 
 	if err != nil {

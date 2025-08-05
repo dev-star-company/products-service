@@ -9,10 +9,6 @@ import (
 
 func (c *controller) Create(ctx context.Context, in *product_info_proto.CreateRequest) (*product_info_proto.CreateResponse, error) {
 
-	if in.RequesterId == 0 {
-		return nil, errs.RequesterIdRequired()
-	}
-
 	tx, err := c.Db.Tx(ctx)
 	if err != nil {
 		return nil, errs.StartProductsError(err)
@@ -21,8 +17,6 @@ func (c *controller) Create(ctx context.Context, in *product_info_proto.CreateRe
 	create, err := c.Db.ProductInfo.Create().
 		SetInfoTypesID(int(in.InfoTypeId)).
 		SetValue(in.Value).
-		SetCreatedBy(int(in.RequesterId)).
-		SetUpdatedBy(int(in.RequesterId)).
 		Save(ctx)
 
 	if err != nil {

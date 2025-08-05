@@ -21,7 +21,7 @@ func (c *controller) Get(ctx context.Context, in *product_has_info_proto.GetRequ
 	}
 
 	return &product_has_info_proto.GetResponse{
-		RequesterId:   uint32(product_has_info.CreatedBy),
+
 		ProductInfoId: uint32(*product_has_info.ProductInfoID),
 		ProductsId:    uint32(*product_has_info.ProductID),
 	}, nil

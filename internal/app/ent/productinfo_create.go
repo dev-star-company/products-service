@@ -36,20 +36,6 @@ func (pic *ProductInfoCreate) SetNillableCreatedAt(t *time.Time) *ProductInfoCre
 	return pic
 }
 
-// SetUpdatedAt sets the "updated_at" field.
-func (pic *ProductInfoCreate) SetUpdatedAt(t time.Time) *ProductInfoCreate {
-	pic.mutation.SetUpdatedAt(t)
-	return pic
-}
-
-// SetNillableUpdatedAt sets the "updated_at" field if the given value is not nil.
-func (pic *ProductInfoCreate) SetNillableUpdatedAt(t *time.Time) *ProductInfoCreate {
-	if t != nil {
-		pic.SetUpdatedAt(*t)
-	}
-	return pic
-}
-
 // SetDeletedAt sets the "deleted_at" field.
 func (pic *ProductInfoCreate) SetDeletedAt(t time.Time) *ProductInfoCreate {
 	pic.mutation.SetDeletedAt(t)
@@ -60,32 +46,6 @@ func (pic *ProductInfoCreate) SetDeletedAt(t time.Time) *ProductInfoCreate {
 func (pic *ProductInfoCreate) SetNillableDeletedAt(t *time.Time) *ProductInfoCreate {
 	if t != nil {
 		pic.SetDeletedAt(*t)
-	}
-	return pic
-}
-
-// SetCreatedBy sets the "created_by" field.
-func (pic *ProductInfoCreate) SetCreatedBy(i int) *ProductInfoCreate {
-	pic.mutation.SetCreatedBy(i)
-	return pic
-}
-
-// SetUpdatedBy sets the "updated_by" field.
-func (pic *ProductInfoCreate) SetUpdatedBy(i int) *ProductInfoCreate {
-	pic.mutation.SetUpdatedBy(i)
-	return pic
-}
-
-// SetDeletedBy sets the "deleted_by" field.
-func (pic *ProductInfoCreate) SetDeletedBy(i int) *ProductInfoCreate {
-	pic.mutation.SetDeletedBy(i)
-	return pic
-}
-
-// SetNillableDeletedBy sets the "deleted_by" field if the given value is not nil.
-func (pic *ProductInfoCreate) SetNillableDeletedBy(i *int) *ProductInfoCreate {
-	if i != nil {
-		pic.SetDeletedBy(*i)
 	}
 	return pic
 }
@@ -198,35 +158,12 @@ func (pic *ProductInfoCreate) defaults() {
 		v := productinfo.DefaultCreatedAt()
 		pic.mutation.SetCreatedAt(v)
 	}
-	if _, ok := pic.mutation.UpdatedAt(); !ok {
-		v := productinfo.DefaultUpdatedAt()
-		pic.mutation.SetUpdatedAt(v)
-	}
 }
 
 // check runs all checks and user-defined validators on the builder.
 func (pic *ProductInfoCreate) check() error {
 	if _, ok := pic.mutation.CreatedAt(); !ok {
 		return &ValidationError{Name: "created_at", err: errors.New(`ent: missing required field "ProductInfo.created_at"`)}
-	}
-	if _, ok := pic.mutation.UpdatedAt(); !ok {
-		return &ValidationError{Name: "updated_at", err: errors.New(`ent: missing required field "ProductInfo.updated_at"`)}
-	}
-	if _, ok := pic.mutation.CreatedBy(); !ok {
-		return &ValidationError{Name: "created_by", err: errors.New(`ent: missing required field "ProductInfo.created_by"`)}
-	}
-	if v, ok := pic.mutation.CreatedBy(); ok {
-		if err := productinfo.CreatedByValidator(v); err != nil {
-			return &ValidationError{Name: "created_by", err: fmt.Errorf(`ent: validator failed for field "ProductInfo.created_by": %w`, err)}
-		}
-	}
-	if _, ok := pic.mutation.UpdatedBy(); !ok {
-		return &ValidationError{Name: "updated_by", err: errors.New(`ent: missing required field "ProductInfo.updated_by"`)}
-	}
-	if v, ok := pic.mutation.UpdatedBy(); ok {
-		if err := productinfo.UpdatedByValidator(v); err != nil {
-			return &ValidationError{Name: "updated_by", err: fmt.Errorf(`ent: validator failed for field "ProductInfo.updated_by": %w`, err)}
-		}
 	}
 	if _, ok := pic.mutation.Value(); !ok {
 		return &ValidationError{Name: "value", err: errors.New(`ent: missing required field "ProductInfo.value"`)}
@@ -261,25 +198,9 @@ func (pic *ProductInfoCreate) createSpec() (*ProductInfo, *sqlgraph.CreateSpec) 
 		_spec.SetField(productinfo.FieldCreatedAt, field.TypeTime, value)
 		_node.CreatedAt = value
 	}
-	if value, ok := pic.mutation.UpdatedAt(); ok {
-		_spec.SetField(productinfo.FieldUpdatedAt, field.TypeTime, value)
-		_node.UpdatedAt = value
-	}
 	if value, ok := pic.mutation.DeletedAt(); ok {
 		_spec.SetField(productinfo.FieldDeletedAt, field.TypeTime, value)
 		_node.DeletedAt = &value
-	}
-	if value, ok := pic.mutation.CreatedBy(); ok {
-		_spec.SetField(productinfo.FieldCreatedBy, field.TypeInt, value)
-		_node.CreatedBy = value
-	}
-	if value, ok := pic.mutation.UpdatedBy(); ok {
-		_spec.SetField(productinfo.FieldUpdatedBy, field.TypeInt, value)
-		_node.UpdatedBy = value
-	}
-	if value, ok := pic.mutation.DeletedBy(); ok {
-		_spec.SetField(productinfo.FieldDeletedBy, field.TypeInt, value)
-		_node.DeletedBy = &value
 	}
 	if value, ok := pic.mutation.Value(); ok {
 		_spec.SetField(productinfo.FieldValue, field.TypeString, value)

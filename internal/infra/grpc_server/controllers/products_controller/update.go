@@ -9,9 +9,6 @@ import (
 )
 
 func (c *controller) Update(ctx context.Context, in *products_proto.UpdateRequest) (*products_proto.UpdateResponse, error) {
-	if in.RequesterId == 0 {
-		return nil, errs.ProductsNotFound(int(in.Id))
-	}
 
 	tx, err := c.Db.Tx(ctx)
 	if err != nil {
@@ -39,7 +36,7 @@ func (c *controller) Update(ctx context.Context, in *products_proto.UpdateReques
 	}
 
 	if in.ImageId != nil && *in.ImageId > 0 {
-		productsQ.SetImageID(int(*in.ImageId))
+		productsQ.SetImagesID(int(*in.ImageId))
 	}
 
 	if in.Name != nil && *in.Name != "" {
@@ -49,8 +46,6 @@ func (c *controller) Update(ctx context.Context, in *products_proto.UpdateReques
 	if in.Stock != nil && *in.Stock > 0 {
 		productsQ.SetStock(int(*in.Stock))
 	}
-
-	productsQ.SetUpdatedBy(int(in.RequesterId))
 
 	products, err = productsQ.Save(ctx)
 	if err != nil {
@@ -68,12 +63,12 @@ func (c *controller) Update(ctx context.Context, in *products_proto.UpdateReques
 	}
 
 	return &products_proto.UpdateResponse{
-		RequesterId:         uint32(products.CreatedBy),
+
 		CategoryId:          uint32(*products.CategoryID),
 		BrandId:             uint32(*products.BrandID),
 		VariantTypeId:       uint32(*products.VariantTypeID),
 		ProductReferencesId: uint32(*products.ProductReferencesID),
-		ImageId:             uint32(*products.ImageID),
+		ImageId:             uint32(*products.ImagesID),
 		Name:                string(*products.Name),
 		Stock:               uint32(products.Stock),
 	}, nil

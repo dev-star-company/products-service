@@ -35,20 +35,6 @@ func (ptc *PriceTypeCreate) SetNillableCreatedAt(t *time.Time) *PriceTypeCreate 
 	return ptc
 }
 
-// SetUpdatedAt sets the "updated_at" field.
-func (ptc *PriceTypeCreate) SetUpdatedAt(t time.Time) *PriceTypeCreate {
-	ptc.mutation.SetUpdatedAt(t)
-	return ptc
-}
-
-// SetNillableUpdatedAt sets the "updated_at" field if the given value is not nil.
-func (ptc *PriceTypeCreate) SetNillableUpdatedAt(t *time.Time) *PriceTypeCreate {
-	if t != nil {
-		ptc.SetUpdatedAt(*t)
-	}
-	return ptc
-}
-
 // SetDeletedAt sets the "deleted_at" field.
 func (ptc *PriceTypeCreate) SetDeletedAt(t time.Time) *PriceTypeCreate {
 	ptc.mutation.SetDeletedAt(t)
@@ -59,32 +45,6 @@ func (ptc *PriceTypeCreate) SetDeletedAt(t time.Time) *PriceTypeCreate {
 func (ptc *PriceTypeCreate) SetNillableDeletedAt(t *time.Time) *PriceTypeCreate {
 	if t != nil {
 		ptc.SetDeletedAt(*t)
-	}
-	return ptc
-}
-
-// SetCreatedBy sets the "created_by" field.
-func (ptc *PriceTypeCreate) SetCreatedBy(i int) *PriceTypeCreate {
-	ptc.mutation.SetCreatedBy(i)
-	return ptc
-}
-
-// SetUpdatedBy sets the "updated_by" field.
-func (ptc *PriceTypeCreate) SetUpdatedBy(i int) *PriceTypeCreate {
-	ptc.mutation.SetUpdatedBy(i)
-	return ptc
-}
-
-// SetDeletedBy sets the "deleted_by" field.
-func (ptc *PriceTypeCreate) SetDeletedBy(i int) *PriceTypeCreate {
-	ptc.mutation.SetDeletedBy(i)
-	return ptc
-}
-
-// SetNillableDeletedBy sets the "deleted_by" field if the given value is not nil.
-func (ptc *PriceTypeCreate) SetNillableDeletedBy(i *int) *PriceTypeCreate {
-	if i != nil {
-		ptc.SetDeletedBy(*i)
 	}
 	return ptc
 }
@@ -149,35 +109,12 @@ func (ptc *PriceTypeCreate) defaults() {
 		v := pricetype.DefaultCreatedAt()
 		ptc.mutation.SetCreatedAt(v)
 	}
-	if _, ok := ptc.mutation.UpdatedAt(); !ok {
-		v := pricetype.DefaultUpdatedAt()
-		ptc.mutation.SetUpdatedAt(v)
-	}
 }
 
 // check runs all checks and user-defined validators on the builder.
 func (ptc *PriceTypeCreate) check() error {
 	if _, ok := ptc.mutation.CreatedAt(); !ok {
 		return &ValidationError{Name: "created_at", err: errors.New(`ent: missing required field "PriceType.created_at"`)}
-	}
-	if _, ok := ptc.mutation.UpdatedAt(); !ok {
-		return &ValidationError{Name: "updated_at", err: errors.New(`ent: missing required field "PriceType.updated_at"`)}
-	}
-	if _, ok := ptc.mutation.CreatedBy(); !ok {
-		return &ValidationError{Name: "created_by", err: errors.New(`ent: missing required field "PriceType.created_by"`)}
-	}
-	if v, ok := ptc.mutation.CreatedBy(); ok {
-		if err := pricetype.CreatedByValidator(v); err != nil {
-			return &ValidationError{Name: "created_by", err: fmt.Errorf(`ent: validator failed for field "PriceType.created_by": %w`, err)}
-		}
-	}
-	if _, ok := ptc.mutation.UpdatedBy(); !ok {
-		return &ValidationError{Name: "updated_by", err: errors.New(`ent: missing required field "PriceType.updated_by"`)}
-	}
-	if v, ok := ptc.mutation.UpdatedBy(); ok {
-		if err := pricetype.UpdatedByValidator(v); err != nil {
-			return &ValidationError{Name: "updated_by", err: fmt.Errorf(`ent: validator failed for field "PriceType.updated_by": %w`, err)}
-		}
 	}
 	if _, ok := ptc.mutation.Name(); !ok {
 		return &ValidationError{Name: "name", err: errors.New(`ent: missing required field "PriceType.name"`)}
@@ -212,25 +149,9 @@ func (ptc *PriceTypeCreate) createSpec() (*PriceType, *sqlgraph.CreateSpec) {
 		_spec.SetField(pricetype.FieldCreatedAt, field.TypeTime, value)
 		_node.CreatedAt = value
 	}
-	if value, ok := ptc.mutation.UpdatedAt(); ok {
-		_spec.SetField(pricetype.FieldUpdatedAt, field.TypeTime, value)
-		_node.UpdatedAt = value
-	}
 	if value, ok := ptc.mutation.DeletedAt(); ok {
 		_spec.SetField(pricetype.FieldDeletedAt, field.TypeTime, value)
 		_node.DeletedAt = &value
-	}
-	if value, ok := ptc.mutation.CreatedBy(); ok {
-		_spec.SetField(pricetype.FieldCreatedBy, field.TypeInt, value)
-		_node.CreatedBy = value
-	}
-	if value, ok := ptc.mutation.UpdatedBy(); ok {
-		_spec.SetField(pricetype.FieldUpdatedBy, field.TypeInt, value)
-		_node.UpdatedBy = value
-	}
-	if value, ok := ptc.mutation.DeletedBy(); ok {
-		_spec.SetField(pricetype.FieldDeletedBy, field.TypeInt, value)
-		_node.DeletedBy = &value
 	}
 	if value, ok := ptc.mutation.Name(); ok {
 		_spec.SetField(pricetype.FieldName, field.TypeString, value)

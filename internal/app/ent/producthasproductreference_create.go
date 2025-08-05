@@ -36,20 +36,6 @@ func (phprc *ProductHasProductReferenceCreate) SetNillableCreatedAt(t *time.Time
 	return phprc
 }
 
-// SetUpdatedAt sets the "updated_at" field.
-func (phprc *ProductHasProductReferenceCreate) SetUpdatedAt(t time.Time) *ProductHasProductReferenceCreate {
-	phprc.mutation.SetUpdatedAt(t)
-	return phprc
-}
-
-// SetNillableUpdatedAt sets the "updated_at" field if the given value is not nil.
-func (phprc *ProductHasProductReferenceCreate) SetNillableUpdatedAt(t *time.Time) *ProductHasProductReferenceCreate {
-	if t != nil {
-		phprc.SetUpdatedAt(*t)
-	}
-	return phprc
-}
-
 // SetDeletedAt sets the "deleted_at" field.
 func (phprc *ProductHasProductReferenceCreate) SetDeletedAt(t time.Time) *ProductHasProductReferenceCreate {
 	phprc.mutation.SetDeletedAt(t)
@@ -60,32 +46,6 @@ func (phprc *ProductHasProductReferenceCreate) SetDeletedAt(t time.Time) *Produc
 func (phprc *ProductHasProductReferenceCreate) SetNillableDeletedAt(t *time.Time) *ProductHasProductReferenceCreate {
 	if t != nil {
 		phprc.SetDeletedAt(*t)
-	}
-	return phprc
-}
-
-// SetCreatedBy sets the "created_by" field.
-func (phprc *ProductHasProductReferenceCreate) SetCreatedBy(i int) *ProductHasProductReferenceCreate {
-	phprc.mutation.SetCreatedBy(i)
-	return phprc
-}
-
-// SetUpdatedBy sets the "updated_by" field.
-func (phprc *ProductHasProductReferenceCreate) SetUpdatedBy(i int) *ProductHasProductReferenceCreate {
-	phprc.mutation.SetUpdatedBy(i)
-	return phprc
-}
-
-// SetDeletedBy sets the "deleted_by" field.
-func (phprc *ProductHasProductReferenceCreate) SetDeletedBy(i int) *ProductHasProductReferenceCreate {
-	phprc.mutation.SetDeletedBy(i)
-	return phprc
-}
-
-// SetNillableDeletedBy sets the "deleted_by" field if the given value is not nil.
-func (phprc *ProductHasProductReferenceCreate) SetNillableDeletedBy(i *int) *ProductHasProductReferenceCreate {
-	if i != nil {
-		phprc.SetDeletedBy(*i)
 	}
 	return phprc
 }
@@ -159,35 +119,12 @@ func (phprc *ProductHasProductReferenceCreate) defaults() {
 		v := producthasproductreference.DefaultCreatedAt()
 		phprc.mutation.SetCreatedAt(v)
 	}
-	if _, ok := phprc.mutation.UpdatedAt(); !ok {
-		v := producthasproductreference.DefaultUpdatedAt()
-		phprc.mutation.SetUpdatedAt(v)
-	}
 }
 
 // check runs all checks and user-defined validators on the builder.
 func (phprc *ProductHasProductReferenceCreate) check() error {
 	if _, ok := phprc.mutation.CreatedAt(); !ok {
 		return &ValidationError{Name: "created_at", err: errors.New(`ent: missing required field "ProductHasProductReference.created_at"`)}
-	}
-	if _, ok := phprc.mutation.UpdatedAt(); !ok {
-		return &ValidationError{Name: "updated_at", err: errors.New(`ent: missing required field "ProductHasProductReference.updated_at"`)}
-	}
-	if _, ok := phprc.mutation.CreatedBy(); !ok {
-		return &ValidationError{Name: "created_by", err: errors.New(`ent: missing required field "ProductHasProductReference.created_by"`)}
-	}
-	if v, ok := phprc.mutation.CreatedBy(); ok {
-		if err := producthasproductreference.CreatedByValidator(v); err != nil {
-			return &ValidationError{Name: "created_by", err: fmt.Errorf(`ent: validator failed for field "ProductHasProductReference.created_by": %w`, err)}
-		}
-	}
-	if _, ok := phprc.mutation.UpdatedBy(); !ok {
-		return &ValidationError{Name: "updated_by", err: errors.New(`ent: missing required field "ProductHasProductReference.updated_by"`)}
-	}
-	if v, ok := phprc.mutation.UpdatedBy(); ok {
-		if err := producthasproductreference.UpdatedByValidator(v); err != nil {
-			return &ValidationError{Name: "updated_by", err: fmt.Errorf(`ent: validator failed for field "ProductHasProductReference.updated_by": %w`, err)}
-		}
 	}
 	if _, ok := phprc.mutation.ProductReferenceID(); !ok {
 		return &ValidationError{Name: "product_reference_id", err: errors.New(`ent: missing required field "ProductHasProductReference.product_reference_id"`)}
@@ -225,25 +162,9 @@ func (phprc *ProductHasProductReferenceCreate) createSpec() (*ProductHasProductR
 		_spec.SetField(producthasproductreference.FieldCreatedAt, field.TypeTime, value)
 		_node.CreatedAt = value
 	}
-	if value, ok := phprc.mutation.UpdatedAt(); ok {
-		_spec.SetField(producthasproductreference.FieldUpdatedAt, field.TypeTime, value)
-		_node.UpdatedAt = value
-	}
 	if value, ok := phprc.mutation.DeletedAt(); ok {
 		_spec.SetField(producthasproductreference.FieldDeletedAt, field.TypeTime, value)
 		_node.DeletedAt = &value
-	}
-	if value, ok := phprc.mutation.CreatedBy(); ok {
-		_spec.SetField(producthasproductreference.FieldCreatedBy, field.TypeInt, value)
-		_node.CreatedBy = value
-	}
-	if value, ok := phprc.mutation.UpdatedBy(); ok {
-		_spec.SetField(producthasproductreference.FieldUpdatedBy, field.TypeInt, value)
-		_node.UpdatedBy = value
-	}
-	if value, ok := phprc.mutation.DeletedBy(); ok {
-		_spec.SetField(producthasproductreference.FieldDeletedBy, field.TypeInt, value)
-		_node.DeletedBy = &value
 	}
 	if nodes := phprc.mutation.ProductReferenceIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{

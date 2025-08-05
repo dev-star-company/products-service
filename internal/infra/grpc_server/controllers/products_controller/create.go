@@ -9,10 +9,6 @@ import (
 
 func (c *controller) Create(ctx context.Context, in *products_proto.CreateRequest) (*products_proto.CreateResponse, error) {
 
-	if in.RequesterId == 0 {
-		return nil, errs.RequesterIdRequired()
-	}
-
 	tx, err := c.Db.Tx(ctx)
 	if err != nil {
 		return nil, errs.StartProductsError(err)
@@ -23,11 +19,9 @@ func (c *controller) Create(ctx context.Context, in *products_proto.CreateReques
 		SetBrandID(int(*in.BrandId)).
 		SetVariantTypeID(int(*in.VariantTypeId)).
 		SetProductReferencesID(int(*in.ProductReferencesId)).
-		SetImageID(int(*in.ImageId)).
+		SetImagesID(int(*in.ImageId)).
 		SetName(in.Name).
 		SetStock(int(in.Stock)).
-		SetCreatedBy(int(in.RequesterId)).
-		SetUpdatedBy(int(in.RequesterId)).
 		Save(ctx)
 
 	if err != nil {
@@ -43,7 +37,7 @@ func (c *controller) Create(ctx context.Context, in *products_proto.CreateReques
 		BrandId:             uint32(*create.BrandID),
 		VariantTypeId:       uint32(*create.VariantTypeID),
 		ProductReferencesId: uint32(*create.ProductReferencesID),
-		ImageId:             uint32(*create.ImageID),
+		ImageId:             uint32(*create.ImagesID),
 		Name:                string(*create.Name),
 		Stock:               uint32(create.Stock),
 	}, nil

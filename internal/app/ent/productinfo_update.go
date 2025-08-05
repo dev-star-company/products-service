@@ -30,12 +30,6 @@ func (piu *ProductInfoUpdate) Where(ps ...predicate.ProductInfo) *ProductInfoUpd
 	return piu
 }
 
-// SetUpdatedAt sets the "updated_at" field.
-func (piu *ProductInfoUpdate) SetUpdatedAt(t time.Time) *ProductInfoUpdate {
-	piu.mutation.SetUpdatedAt(t)
-	return piu
-}
-
 // SetDeletedAt sets the "deleted_at" field.
 func (piu *ProductInfoUpdate) SetDeletedAt(t time.Time) *ProductInfoUpdate {
 	piu.mutation.SetDeletedAt(t)
@@ -53,54 +47,6 @@ func (piu *ProductInfoUpdate) SetNillableDeletedAt(t *time.Time) *ProductInfoUpd
 // ClearDeletedAt clears the value of the "deleted_at" field.
 func (piu *ProductInfoUpdate) ClearDeletedAt() *ProductInfoUpdate {
 	piu.mutation.ClearDeletedAt()
-	return piu
-}
-
-// SetUpdatedBy sets the "updated_by" field.
-func (piu *ProductInfoUpdate) SetUpdatedBy(i int) *ProductInfoUpdate {
-	piu.mutation.ResetUpdatedBy()
-	piu.mutation.SetUpdatedBy(i)
-	return piu
-}
-
-// SetNillableUpdatedBy sets the "updated_by" field if the given value is not nil.
-func (piu *ProductInfoUpdate) SetNillableUpdatedBy(i *int) *ProductInfoUpdate {
-	if i != nil {
-		piu.SetUpdatedBy(*i)
-	}
-	return piu
-}
-
-// AddUpdatedBy adds i to the "updated_by" field.
-func (piu *ProductInfoUpdate) AddUpdatedBy(i int) *ProductInfoUpdate {
-	piu.mutation.AddUpdatedBy(i)
-	return piu
-}
-
-// SetDeletedBy sets the "deleted_by" field.
-func (piu *ProductInfoUpdate) SetDeletedBy(i int) *ProductInfoUpdate {
-	piu.mutation.ResetDeletedBy()
-	piu.mutation.SetDeletedBy(i)
-	return piu
-}
-
-// SetNillableDeletedBy sets the "deleted_by" field if the given value is not nil.
-func (piu *ProductInfoUpdate) SetNillableDeletedBy(i *int) *ProductInfoUpdate {
-	if i != nil {
-		piu.SetDeletedBy(*i)
-	}
-	return piu
-}
-
-// AddDeletedBy adds i to the "deleted_by" field.
-func (piu *ProductInfoUpdate) AddDeletedBy(i int) *ProductInfoUpdate {
-	piu.mutation.AddDeletedBy(i)
-	return piu
-}
-
-// ClearDeletedBy clears the value of the "deleted_by" field.
-func (piu *ProductInfoUpdate) ClearDeletedBy() *ProductInfoUpdate {
-	piu.mutation.ClearDeletedBy()
 	return piu
 }
 
@@ -242,7 +188,6 @@ func (piu *ProductInfoUpdate) RemoveProductHasInfo(p ...*ProductHasInfo) *Produc
 
 // Save executes the query and returns the number of nodes affected by the update operation.
 func (piu *ProductInfoUpdate) Save(ctx context.Context) (int, error) {
-	piu.defaults()
 	return withHooks(ctx, piu.sqlSave, piu.mutation, piu.hooks)
 }
 
@@ -268,28 +213,7 @@ func (piu *ProductInfoUpdate) ExecX(ctx context.Context) {
 	}
 }
 
-// defaults sets the default values of the builder before save.
-func (piu *ProductInfoUpdate) defaults() {
-	if _, ok := piu.mutation.UpdatedAt(); !ok {
-		v := productinfo.UpdateDefaultUpdatedAt()
-		piu.mutation.SetUpdatedAt(v)
-	}
-}
-
-// check runs all checks and user-defined validators on the builder.
-func (piu *ProductInfoUpdate) check() error {
-	if v, ok := piu.mutation.UpdatedBy(); ok {
-		if err := productinfo.UpdatedByValidator(v); err != nil {
-			return &ValidationError{Name: "updated_by", err: fmt.Errorf(`ent: validator failed for field "ProductInfo.updated_by": %w`, err)}
-		}
-	}
-	return nil
-}
-
 func (piu *ProductInfoUpdate) sqlSave(ctx context.Context) (n int, err error) {
-	if err := piu.check(); err != nil {
-		return n, err
-	}
 	_spec := sqlgraph.NewUpdateSpec(productinfo.Table, productinfo.Columns, sqlgraph.NewFieldSpec(productinfo.FieldID, field.TypeInt))
 	if ps := piu.mutation.predicates; len(ps) > 0 {
 		_spec.Predicate = func(selector *sql.Selector) {
@@ -298,29 +222,11 @@ func (piu *ProductInfoUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			}
 		}
 	}
-	if value, ok := piu.mutation.UpdatedAt(); ok {
-		_spec.SetField(productinfo.FieldUpdatedAt, field.TypeTime, value)
-	}
 	if value, ok := piu.mutation.DeletedAt(); ok {
 		_spec.SetField(productinfo.FieldDeletedAt, field.TypeTime, value)
 	}
 	if piu.mutation.DeletedAtCleared() {
 		_spec.ClearField(productinfo.FieldDeletedAt, field.TypeTime)
-	}
-	if value, ok := piu.mutation.UpdatedBy(); ok {
-		_spec.SetField(productinfo.FieldUpdatedBy, field.TypeInt, value)
-	}
-	if value, ok := piu.mutation.AddedUpdatedBy(); ok {
-		_spec.AddField(productinfo.FieldUpdatedBy, field.TypeInt, value)
-	}
-	if value, ok := piu.mutation.DeletedBy(); ok {
-		_spec.SetField(productinfo.FieldDeletedBy, field.TypeInt, value)
-	}
-	if value, ok := piu.mutation.AddedDeletedBy(); ok {
-		_spec.AddField(productinfo.FieldDeletedBy, field.TypeInt, value)
-	}
-	if piu.mutation.DeletedByCleared() {
-		_spec.ClearField(productinfo.FieldDeletedBy, field.TypeInt)
 	}
 	if value, ok := piu.mutation.Value(); ok {
 		_spec.SetField(productinfo.FieldValue, field.TypeString, value)
@@ -464,12 +370,6 @@ type ProductInfoUpdateOne struct {
 	mutation *ProductInfoMutation
 }
 
-// SetUpdatedAt sets the "updated_at" field.
-func (piuo *ProductInfoUpdateOne) SetUpdatedAt(t time.Time) *ProductInfoUpdateOne {
-	piuo.mutation.SetUpdatedAt(t)
-	return piuo
-}
-
 // SetDeletedAt sets the "deleted_at" field.
 func (piuo *ProductInfoUpdateOne) SetDeletedAt(t time.Time) *ProductInfoUpdateOne {
 	piuo.mutation.SetDeletedAt(t)
@@ -487,54 +387,6 @@ func (piuo *ProductInfoUpdateOne) SetNillableDeletedAt(t *time.Time) *ProductInf
 // ClearDeletedAt clears the value of the "deleted_at" field.
 func (piuo *ProductInfoUpdateOne) ClearDeletedAt() *ProductInfoUpdateOne {
 	piuo.mutation.ClearDeletedAt()
-	return piuo
-}
-
-// SetUpdatedBy sets the "updated_by" field.
-func (piuo *ProductInfoUpdateOne) SetUpdatedBy(i int) *ProductInfoUpdateOne {
-	piuo.mutation.ResetUpdatedBy()
-	piuo.mutation.SetUpdatedBy(i)
-	return piuo
-}
-
-// SetNillableUpdatedBy sets the "updated_by" field if the given value is not nil.
-func (piuo *ProductInfoUpdateOne) SetNillableUpdatedBy(i *int) *ProductInfoUpdateOne {
-	if i != nil {
-		piuo.SetUpdatedBy(*i)
-	}
-	return piuo
-}
-
-// AddUpdatedBy adds i to the "updated_by" field.
-func (piuo *ProductInfoUpdateOne) AddUpdatedBy(i int) *ProductInfoUpdateOne {
-	piuo.mutation.AddUpdatedBy(i)
-	return piuo
-}
-
-// SetDeletedBy sets the "deleted_by" field.
-func (piuo *ProductInfoUpdateOne) SetDeletedBy(i int) *ProductInfoUpdateOne {
-	piuo.mutation.ResetDeletedBy()
-	piuo.mutation.SetDeletedBy(i)
-	return piuo
-}
-
-// SetNillableDeletedBy sets the "deleted_by" field if the given value is not nil.
-func (piuo *ProductInfoUpdateOne) SetNillableDeletedBy(i *int) *ProductInfoUpdateOne {
-	if i != nil {
-		piuo.SetDeletedBy(*i)
-	}
-	return piuo
-}
-
-// AddDeletedBy adds i to the "deleted_by" field.
-func (piuo *ProductInfoUpdateOne) AddDeletedBy(i int) *ProductInfoUpdateOne {
-	piuo.mutation.AddDeletedBy(i)
-	return piuo
-}
-
-// ClearDeletedBy clears the value of the "deleted_by" field.
-func (piuo *ProductInfoUpdateOne) ClearDeletedBy() *ProductInfoUpdateOne {
-	piuo.mutation.ClearDeletedBy()
 	return piuo
 }
 
@@ -689,7 +541,6 @@ func (piuo *ProductInfoUpdateOne) Select(field string, fields ...string) *Produc
 
 // Save executes the query and returns the updated ProductInfo entity.
 func (piuo *ProductInfoUpdateOne) Save(ctx context.Context) (*ProductInfo, error) {
-	piuo.defaults()
 	return withHooks(ctx, piuo.sqlSave, piuo.mutation, piuo.hooks)
 }
 
@@ -715,28 +566,7 @@ func (piuo *ProductInfoUpdateOne) ExecX(ctx context.Context) {
 	}
 }
 
-// defaults sets the default values of the builder before save.
-func (piuo *ProductInfoUpdateOne) defaults() {
-	if _, ok := piuo.mutation.UpdatedAt(); !ok {
-		v := productinfo.UpdateDefaultUpdatedAt()
-		piuo.mutation.SetUpdatedAt(v)
-	}
-}
-
-// check runs all checks and user-defined validators on the builder.
-func (piuo *ProductInfoUpdateOne) check() error {
-	if v, ok := piuo.mutation.UpdatedBy(); ok {
-		if err := productinfo.UpdatedByValidator(v); err != nil {
-			return &ValidationError{Name: "updated_by", err: fmt.Errorf(`ent: validator failed for field "ProductInfo.updated_by": %w`, err)}
-		}
-	}
-	return nil
-}
-
 func (piuo *ProductInfoUpdateOne) sqlSave(ctx context.Context) (_node *ProductInfo, err error) {
-	if err := piuo.check(); err != nil {
-		return _node, err
-	}
 	_spec := sqlgraph.NewUpdateSpec(productinfo.Table, productinfo.Columns, sqlgraph.NewFieldSpec(productinfo.FieldID, field.TypeInt))
 	id, ok := piuo.mutation.ID()
 	if !ok {
@@ -762,29 +592,11 @@ func (piuo *ProductInfoUpdateOne) sqlSave(ctx context.Context) (_node *ProductIn
 			}
 		}
 	}
-	if value, ok := piuo.mutation.UpdatedAt(); ok {
-		_spec.SetField(productinfo.FieldUpdatedAt, field.TypeTime, value)
-	}
 	if value, ok := piuo.mutation.DeletedAt(); ok {
 		_spec.SetField(productinfo.FieldDeletedAt, field.TypeTime, value)
 	}
 	if piuo.mutation.DeletedAtCleared() {
 		_spec.ClearField(productinfo.FieldDeletedAt, field.TypeTime)
-	}
-	if value, ok := piuo.mutation.UpdatedBy(); ok {
-		_spec.SetField(productinfo.FieldUpdatedBy, field.TypeInt, value)
-	}
-	if value, ok := piuo.mutation.AddedUpdatedBy(); ok {
-		_spec.AddField(productinfo.FieldUpdatedBy, field.TypeInt, value)
-	}
-	if value, ok := piuo.mutation.DeletedBy(); ok {
-		_spec.SetField(productinfo.FieldDeletedBy, field.TypeInt, value)
-	}
-	if value, ok := piuo.mutation.AddedDeletedBy(); ok {
-		_spec.AddField(productinfo.FieldDeletedBy, field.TypeInt, value)
-	}
-	if piuo.mutation.DeletedByCleared() {
-		_spec.ClearField(productinfo.FieldDeletedBy, field.TypeInt)
 	}
 	if value, ok := piuo.mutation.Value(); ok {
 		_spec.SetField(productinfo.FieldValue, field.TypeString, value)

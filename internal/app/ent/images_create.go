@@ -9,6 +9,7 @@ import (
 	"products-service/internal/app/ent/imagefolderpath"
 	"products-service/internal/app/ent/images"
 	"products-service/internal/app/ent/producthasimage"
+	"products-service/internal/app/ent/products"
 	"time"
 
 	"entgo.io/ent/dialect/sql/sqlgraph"
@@ -36,20 +37,6 @@ func (ic *ImagesCreate) SetNillableCreatedAt(t *time.Time) *ImagesCreate {
 	return ic
 }
 
-// SetUpdatedAt sets the "updated_at" field.
-func (ic *ImagesCreate) SetUpdatedAt(t time.Time) *ImagesCreate {
-	ic.mutation.SetUpdatedAt(t)
-	return ic
-}
-
-// SetNillableUpdatedAt sets the "updated_at" field if the given value is not nil.
-func (ic *ImagesCreate) SetNillableUpdatedAt(t *time.Time) *ImagesCreate {
-	if t != nil {
-		ic.SetUpdatedAt(*t)
-	}
-	return ic
-}
-
 // SetDeletedAt sets the "deleted_at" field.
 func (ic *ImagesCreate) SetDeletedAt(t time.Time) *ImagesCreate {
 	ic.mutation.SetDeletedAt(t)
@@ -61,38 +48,6 @@ func (ic *ImagesCreate) SetNillableDeletedAt(t *time.Time) *ImagesCreate {
 	if t != nil {
 		ic.SetDeletedAt(*t)
 	}
-	return ic
-}
-
-// SetCreatedBy sets the "created_by" field.
-func (ic *ImagesCreate) SetCreatedBy(i int) *ImagesCreate {
-	ic.mutation.SetCreatedBy(i)
-	return ic
-}
-
-// SetUpdatedBy sets the "updated_by" field.
-func (ic *ImagesCreate) SetUpdatedBy(i int) *ImagesCreate {
-	ic.mutation.SetUpdatedBy(i)
-	return ic
-}
-
-// SetDeletedBy sets the "deleted_by" field.
-func (ic *ImagesCreate) SetDeletedBy(i int) *ImagesCreate {
-	ic.mutation.SetDeletedBy(i)
-	return ic
-}
-
-// SetNillableDeletedBy sets the "deleted_by" field if the given value is not nil.
-func (ic *ImagesCreate) SetNillableDeletedBy(i *int) *ImagesCreate {
-	if i != nil {
-		ic.SetDeletedBy(*i)
-	}
-	return ic
-}
-
-// SetImageFolderPathID sets the "image_folder_path_id" field.
-func (ic *ImagesCreate) SetImageFolderPathID(i int) *ImagesCreate {
-	ic.mutation.SetImageFolderPathID(i)
 	return ic
 }
 
@@ -108,9 +63,30 @@ func (ic *ImagesCreate) SetPath(s string) *ImagesCreate {
 	return ic
 }
 
+// SetImageFolderPathID sets the "image_folder_path" edge to the ImageFolderPath entity by ID.
+func (ic *ImagesCreate) SetImageFolderPathID(id int) *ImagesCreate {
+	ic.mutation.SetImageFolderPathID(id)
+	return ic
+}
+
 // SetImageFolderPath sets the "image_folder_path" edge to the ImageFolderPath entity.
 func (ic *ImagesCreate) SetImageFolderPath(i *ImageFolderPath) *ImagesCreate {
 	return ic.SetImageFolderPathID(i.ID)
+}
+
+// AddProductIDs adds the "products" edge to the Products entity by IDs.
+func (ic *ImagesCreate) AddProductIDs(ids ...int) *ImagesCreate {
+	ic.mutation.AddProductIDs(ids...)
+	return ic
+}
+
+// AddProducts adds the "products" edges to the Products entity.
+func (ic *ImagesCreate) AddProducts(p ...*Products) *ImagesCreate {
+	ids := make([]int, len(p))
+	for i := range p {
+		ids[i] = p[i].ID
+	}
+	return ic.AddProductIDs(ids...)
 }
 
 // AddProductHasImageIDs adds the "product_has_image" edge to the ProductHasImage entity by IDs.
@@ -167,38 +143,12 @@ func (ic *ImagesCreate) defaults() {
 		v := images.DefaultCreatedAt()
 		ic.mutation.SetCreatedAt(v)
 	}
-	if _, ok := ic.mutation.UpdatedAt(); !ok {
-		v := images.DefaultUpdatedAt()
-		ic.mutation.SetUpdatedAt(v)
-	}
 }
 
 // check runs all checks and user-defined validators on the builder.
 func (ic *ImagesCreate) check() error {
 	if _, ok := ic.mutation.CreatedAt(); !ok {
 		return &ValidationError{Name: "created_at", err: errors.New(`ent: missing required field "Images.created_at"`)}
-	}
-	if _, ok := ic.mutation.UpdatedAt(); !ok {
-		return &ValidationError{Name: "updated_at", err: errors.New(`ent: missing required field "Images.updated_at"`)}
-	}
-	if _, ok := ic.mutation.CreatedBy(); !ok {
-		return &ValidationError{Name: "created_by", err: errors.New(`ent: missing required field "Images.created_by"`)}
-	}
-	if v, ok := ic.mutation.CreatedBy(); ok {
-		if err := images.CreatedByValidator(v); err != nil {
-			return &ValidationError{Name: "created_by", err: fmt.Errorf(`ent: validator failed for field "Images.created_by": %w`, err)}
-		}
-	}
-	if _, ok := ic.mutation.UpdatedBy(); !ok {
-		return &ValidationError{Name: "updated_by", err: errors.New(`ent: missing required field "Images.updated_by"`)}
-	}
-	if v, ok := ic.mutation.UpdatedBy(); ok {
-		if err := images.UpdatedByValidator(v); err != nil {
-			return &ValidationError{Name: "updated_by", err: fmt.Errorf(`ent: validator failed for field "Images.updated_by": %w`, err)}
-		}
-	}
-	if _, ok := ic.mutation.ImageFolderPathID(); !ok {
-		return &ValidationError{Name: "image_folder_path_id", err: errors.New(`ent: missing required field "Images.image_folder_path_id"`)}
 	}
 	if _, ok := ic.mutation.Content(); !ok {
 		return &ValidationError{Name: "content", err: errors.New(`ent: missing required field "Images.content"`)}
@@ -239,25 +189,9 @@ func (ic *ImagesCreate) createSpec() (*Images, *sqlgraph.CreateSpec) {
 		_spec.SetField(images.FieldCreatedAt, field.TypeTime, value)
 		_node.CreatedAt = value
 	}
-	if value, ok := ic.mutation.UpdatedAt(); ok {
-		_spec.SetField(images.FieldUpdatedAt, field.TypeTime, value)
-		_node.UpdatedAt = value
-	}
 	if value, ok := ic.mutation.DeletedAt(); ok {
 		_spec.SetField(images.FieldDeletedAt, field.TypeTime, value)
 		_node.DeletedAt = &value
-	}
-	if value, ok := ic.mutation.CreatedBy(); ok {
-		_spec.SetField(images.FieldCreatedBy, field.TypeInt, value)
-		_node.CreatedBy = value
-	}
-	if value, ok := ic.mutation.UpdatedBy(); ok {
-		_spec.SetField(images.FieldUpdatedBy, field.TypeInt, value)
-		_node.UpdatedBy = value
-	}
-	if value, ok := ic.mutation.DeletedBy(); ok {
-		_spec.SetField(images.FieldDeletedBy, field.TypeInt, value)
-		_node.DeletedBy = &value
 	}
 	if value, ok := ic.mutation.Content(); ok {
 		_spec.SetField(images.FieldContent, field.TypeString, value)
@@ -281,7 +215,23 @@ func (ic *ImagesCreate) createSpec() (*Images, *sqlgraph.CreateSpec) {
 		for _, k := range nodes {
 			edge.Target.Nodes = append(edge.Target.Nodes, k)
 		}
-		_node.ImageFolderPathID = &nodes[0]
+		_node.image_folder_path_images = &nodes[0]
+		_spec.Edges = append(_spec.Edges, edge)
+	}
+	if nodes := ic.mutation.ProductsIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   images.ProductsTable,
+			Columns: []string{images.ProductsColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(products.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
 		_spec.Edges = append(_spec.Edges, edge)
 	}
 	if nodes := ic.mutation.ProductHasImageIDs(); len(nodes) > 0 {

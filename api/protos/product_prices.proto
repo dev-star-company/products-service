@@ -28,7 +28,7 @@ message ProductPrices {
 }
 
 message CreateRequest {
-  uint32 requester_id = 1;
+  
   uint32 price_type_id = 2;
   uint32 products_id = 3;
   double default_value = 4;
@@ -36,7 +36,7 @@ message CreateRequest {
 }
 
 message CreateResponse {
-  uint32 requester_id = 1;
+  
   uint32 price_type_id = 2;
   uint32 products_id = 3;
   double default_value = 4;
@@ -54,7 +54,7 @@ message GetRequest {
 }
 
 message GetResponse {
-  uint32 requester_id = 1;
+  
   uint32 price_type_id = 2;
   uint32 products_id = 3;
   double default_value = 4;
@@ -69,7 +69,7 @@ message GetResponse {
 
 message UpdateRequest {
   uint32 id = 1;
-  uint32 requester_id = 2;
+  
   optional uint32 price_type_id = 3;
   optional uint32 products_id = 4;
   optional double default_value = 5;
@@ -77,7 +77,7 @@ message UpdateRequest {
 }
 
 message UpdateResponse {
-  uint32 requester_id = 1;
+  
   uint32 price_type_id = 2;
   uint32 products_id = 3;
   double default_value = 4;
@@ -92,7 +92,7 @@ message UpdateResponse {
 
 message DeleteRequest {
   uint32 id = 1;
-  uint32 requester_id = 2;
+  
 }
 
 message DeleteResponse {

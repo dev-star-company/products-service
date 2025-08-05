@@ -9,9 +9,6 @@ import (
 )
 
 func (c *controller) Update(ctx context.Context, in *brand_proto.UpdateRequest) (*brand_proto.UpdateResponse, error) {
-	if in.RequesterId == 0 {
-		return nil, errs.ProductsNotFound(int(in.Id))
-	}
 
 	tx, err := c.Db.Tx(ctx)
 	if err != nil {
@@ -25,8 +22,6 @@ func (c *controller) Update(ctx context.Context, in *brand_proto.UpdateRequest) 
 	if in.Name != nil && *in.Name != "" {
 		brandQ.SetName(string(*in.Name))
 	}
-
-	brandQ.SetUpdatedBy(int(in.RequesterId))
 
 	brand, err = brandQ.Save(ctx)
 	if err != nil {
@@ -44,7 +39,7 @@ func (c *controller) Update(ctx context.Context, in *brand_proto.UpdateRequest) 
 	}
 
 	return &brand_proto.UpdateResponse{
-		RequesterId: uint32(brand.CreatedBy),
-		Name:        string(*brand.Name),
+
+		Name: string(*brand.Name),
 	}, nil
 }

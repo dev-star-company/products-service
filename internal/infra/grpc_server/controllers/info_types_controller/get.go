@@ -19,7 +19,7 @@ func (c *controller) Get(ctx context.Context, in *info_types_proto.GetRequest) (
 	}
 
 	return &info_types_proto.GetResponse{
-		RequesterId: uint32(info_types.CreatedBy),
-		Name:        *info_types.Name,
+
+		Name: *info_types.Name,
 	}, nil
 }

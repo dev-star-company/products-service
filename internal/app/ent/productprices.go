@@ -21,16 +21,8 @@ type ProductPrices struct {
 	ID int `json:"id,omitempty"`
 	// CreatedAt holds the value of the "created_at" field.
 	CreatedAt time.Time `json:"created_at,omitempty"`
-	// UpdatedAt holds the value of the "updated_at" field.
-	UpdatedAt time.Time `json:"updated_at,omitempty"`
 	// DeletedAt holds the value of the "deleted_at" field.
 	DeletedAt *time.Time `json:"deleted_at,omitempty"`
-	// CreatedBy holds the value of the "created_by" field.
-	CreatedBy int `json:"created_by,omitempty"`
-	// UpdatedBy holds the value of the "updated_by" field.
-	UpdatedBy int `json:"updated_by,omitempty"`
-	// DeletedBy holds the value of the "deleted_by" field.
-	DeletedBy *int `json:"deleted_by,omitempty"`
 	// PriceTypeID holds the value of the "price_type_id" field.
 	PriceTypeID *int `json:"price_type_id,omitempty"`
 	// ProductID holds the value of the "product_id" field.
@@ -85,9 +77,9 @@ func (*ProductPrices) scanValues(columns []string) ([]any, error) {
 		switch columns[i] {
 		case productprices.FieldDefaultValue, productprices.FieldMinValue:
 			values[i] = new(sql.NullFloat64)
-		case productprices.FieldID, productprices.FieldCreatedBy, productprices.FieldUpdatedBy, productprices.FieldDeletedBy, productprices.FieldPriceTypeID, productprices.FieldProductID:
+		case productprices.FieldID, productprices.FieldPriceTypeID, productprices.FieldProductID:
 			values[i] = new(sql.NullInt64)
-		case productprices.FieldCreatedAt, productprices.FieldUpdatedAt, productprices.FieldDeletedAt:
+		case productprices.FieldCreatedAt, productprices.FieldDeletedAt:
 			values[i] = new(sql.NullTime)
 		default:
 			values[i] = new(sql.UnknownType)
@@ -116,37 +108,12 @@ func (pp *ProductPrices) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				pp.CreatedAt = value.Time
 			}
-		case productprices.FieldUpdatedAt:
-			if value, ok := values[i].(*sql.NullTime); !ok {
-				return fmt.Errorf("unexpected type %T for field updated_at", values[i])
-			} else if value.Valid {
-				pp.UpdatedAt = value.Time
-			}
 		case productprices.FieldDeletedAt:
 			if value, ok := values[i].(*sql.NullTime); !ok {
 				return fmt.Errorf("unexpected type %T for field deleted_at", values[i])
 			} else if value.Valid {
 				pp.DeletedAt = new(time.Time)
 				*pp.DeletedAt = value.Time
-			}
-		case productprices.FieldCreatedBy:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field created_by", values[i])
-			} else if value.Valid {
-				pp.CreatedBy = int(value.Int64)
-			}
-		case productprices.FieldUpdatedBy:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field updated_by", values[i])
-			} else if value.Valid {
-				pp.UpdatedBy = int(value.Int64)
-			}
-		case productprices.FieldDeletedBy:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field deleted_by", values[i])
-			} else if value.Valid {
-				pp.DeletedBy = new(int)
-				*pp.DeletedBy = int(value.Int64)
 			}
 		case productprices.FieldPriceTypeID:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
@@ -225,23 +192,9 @@ func (pp *ProductPrices) String() string {
 	builder.WriteString("created_at=")
 	builder.WriteString(pp.CreatedAt.Format(time.ANSIC))
 	builder.WriteString(", ")
-	builder.WriteString("updated_at=")
-	builder.WriteString(pp.UpdatedAt.Format(time.ANSIC))
-	builder.WriteString(", ")
 	if v := pp.DeletedAt; v != nil {
 		builder.WriteString("deleted_at=")
 		builder.WriteString(v.Format(time.ANSIC))
-	}
-	builder.WriteString(", ")
-	builder.WriteString("created_by=")
-	builder.WriteString(fmt.Sprintf("%v", pp.CreatedBy))
-	builder.WriteString(", ")
-	builder.WriteString("updated_by=")
-	builder.WriteString(fmt.Sprintf("%v", pp.UpdatedBy))
-	builder.WriteString(", ")
-	if v := pp.DeletedBy; v != nil {
-		builder.WriteString("deleted_by=")
-		builder.WriteString(fmt.Sprintf("%v", *v))
 	}
 	builder.WriteString(", ")
 	if v := pp.PriceTypeID; v != nil {

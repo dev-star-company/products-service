@@ -19,16 +19,8 @@ type VariantType struct {
 	ID int `json:"id,omitempty"`
 	// CreatedAt holds the value of the "created_at" field.
 	CreatedAt time.Time `json:"created_at,omitempty"`
-	// UpdatedAt holds the value of the "updated_at" field.
-	UpdatedAt time.Time `json:"updated_at,omitempty"`
 	// DeletedAt holds the value of the "deleted_at" field.
 	DeletedAt *time.Time `json:"deleted_at,omitempty"`
-	// CreatedBy holds the value of the "created_by" field.
-	CreatedBy int `json:"created_by,omitempty"`
-	// UpdatedBy holds the value of the "updated_by" field.
-	UpdatedBy int `json:"updated_by,omitempty"`
-	// DeletedBy holds the value of the "deleted_by" field.
-	DeletedBy *int `json:"deleted_by,omitempty"`
 	// Name holds the value of the "name" field.
 	Name *string `json:"name,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
@@ -60,11 +52,11 @@ func (*VariantType) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case varianttype.FieldID, varianttype.FieldCreatedBy, varianttype.FieldUpdatedBy, varianttype.FieldDeletedBy:
+		case varianttype.FieldID:
 			values[i] = new(sql.NullInt64)
 		case varianttype.FieldName:
 			values[i] = new(sql.NullString)
-		case varianttype.FieldCreatedAt, varianttype.FieldUpdatedAt, varianttype.FieldDeletedAt:
+		case varianttype.FieldCreatedAt, varianttype.FieldDeletedAt:
 			values[i] = new(sql.NullTime)
 		default:
 			values[i] = new(sql.UnknownType)
@@ -93,37 +85,12 @@ func (vt *VariantType) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				vt.CreatedAt = value.Time
 			}
-		case varianttype.FieldUpdatedAt:
-			if value, ok := values[i].(*sql.NullTime); !ok {
-				return fmt.Errorf("unexpected type %T for field updated_at", values[i])
-			} else if value.Valid {
-				vt.UpdatedAt = value.Time
-			}
 		case varianttype.FieldDeletedAt:
 			if value, ok := values[i].(*sql.NullTime); !ok {
 				return fmt.Errorf("unexpected type %T for field deleted_at", values[i])
 			} else if value.Valid {
 				vt.DeletedAt = new(time.Time)
 				*vt.DeletedAt = value.Time
-			}
-		case varianttype.FieldCreatedBy:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field created_by", values[i])
-			} else if value.Valid {
-				vt.CreatedBy = int(value.Int64)
-			}
-		case varianttype.FieldUpdatedBy:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field updated_by", values[i])
-			} else if value.Valid {
-				vt.UpdatedBy = int(value.Int64)
-			}
-		case varianttype.FieldDeletedBy:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field deleted_by", values[i])
-			} else if value.Valid {
-				vt.DeletedBy = new(int)
-				*vt.DeletedBy = int(value.Int64)
 			}
 		case varianttype.FieldName:
 			if value, ok := values[i].(*sql.NullString); !ok {
@@ -176,23 +143,9 @@ func (vt *VariantType) String() string {
 	builder.WriteString("created_at=")
 	builder.WriteString(vt.CreatedAt.Format(time.ANSIC))
 	builder.WriteString(", ")
-	builder.WriteString("updated_at=")
-	builder.WriteString(vt.UpdatedAt.Format(time.ANSIC))
-	builder.WriteString(", ")
 	if v := vt.DeletedAt; v != nil {
 		builder.WriteString("deleted_at=")
 		builder.WriteString(v.Format(time.ANSIC))
-	}
-	builder.WriteString(", ")
-	builder.WriteString("created_by=")
-	builder.WriteString(fmt.Sprintf("%v", vt.CreatedBy))
-	builder.WriteString(", ")
-	builder.WriteString("updated_by=")
-	builder.WriteString(fmt.Sprintf("%v", vt.UpdatedBy))
-	builder.WriteString(", ")
-	if v := vt.DeletedBy; v != nil {
-		builder.WriteString("deleted_by=")
-		builder.WriteString(fmt.Sprintf("%v", *v))
 	}
 	builder.WriteString(", ")
 	if v := vt.Name; v != nil {
