@@ -1,7 +1,7 @@
 package grpc_convertions
 
 import (
-	"products-service/generated_protos/variant_type_proto"
+	"github.com/dev-star-company/protos-go/products_service/generated_protos/variant_type_proto"
 
 	"products-service/internal/app/ent"
 )

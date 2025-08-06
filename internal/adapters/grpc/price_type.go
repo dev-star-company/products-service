@@ -1,8 +1,9 @@
 package grpc_convertions
 
 import (
-	"products-service/generated_protos/price_type_proto"
 	"products-service/internal/app/ent"
+
+	"github.com/dev-star-company/protos-go/products_service/generated_protos/price_type_proto"
 )
 
 func PriceTypeToProto(price_type *ent.PriceType) *price_type_proto.PriceType {

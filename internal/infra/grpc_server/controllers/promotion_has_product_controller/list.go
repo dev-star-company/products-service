@@ -3,13 +3,14 @@ package promotion_has_product_controller
 import (
 	"context"
 	"errors"
-	"products-service/generated_protos/promotion_has_product_proto"
 	grpc_convertions "products-service/internal/adapters/grpc"
 	"products-service/internal/app/ent"
 	"products-service/internal/app/ent/promotionhasproduct"
 	"products-service/internal/app/ent/schema"
 	"products-service/internal/pkg/errs"
 	"products-service/internal/pkg/utils"
+
+	"github.com/dev-star-company/protos-go/products_service/generated_protos/promotion_has_product_proto"
 )
 
 func (c *controller) List(ctx context.Context, in *promotion_has_product_proto.ListRequest) (*promotion_has_product_proto.ListResponse, error) {

@@ -2,10 +2,11 @@ package promotion_has_product_controller
 
 import (
 	"context"
-	"products-service/generated_protos/promotion_has_product_proto"
 	"products-service/internal/app/ent"
 	"products-service/internal/app/ent/promotionhasproduct"
 	"products-service/internal/pkg/errs"
+
+	"github.com/dev-star-company/protos-go/products_service/generated_protos/promotion_has_product_proto"
 )
 
 func (c *controller) Get(ctx context.Context, in *promotion_has_product_proto.GetRequest) (*promotion_has_product_proto.GetResponse, error) {

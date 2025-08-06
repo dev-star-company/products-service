@@ -2,10 +2,11 @@ package tools_controller
 
 import (
 	"context"
-	"products-service/generated_protos/tools_proto"
 	"products-service/internal/app/ent"
 	"products-service/internal/pkg/errs"
 	"products-service/internal/pkg/utils"
+
+	"github.com/dev-star-company/protos-go/products_service/generated_protos/tools_proto"
 )
 
 func (c *controller) Update(ctx context.Context, in *tools_proto.UpdateRequest) (*tools_proto.UpdateResponse, error) {

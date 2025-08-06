@@ -2,9 +2,10 @@ package tools_controller
 
 import (
 	"context"
-	"products-service/generated_protos/tools_proto"
 	"products-service/internal/pkg/errs"
 	"products-service/internal/pkg/utils"
+
+	"github.com/dev-star-company/protos-go/products_service/generated_protos/tools_proto"
 )
 
 func (c *controller) Create(ctx context.Context, in *tools_proto.CreateRequest) (*tools_proto.CreateResponse, error) {

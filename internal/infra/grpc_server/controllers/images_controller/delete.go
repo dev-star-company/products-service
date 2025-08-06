@@ -2,10 +2,11 @@ package images_controller
 
 import (
 	"context"
-	"products-service/generated_protos/images_proto"
 	"products-service/internal/pkg/errs"
 	"products-service/internal/pkg/utils"
 	"time"
+
+	"github.com/dev-star-company/protos-go/products_service/generated_protos/images_proto"
 )
 
 func (c *controller) Delete(ctx context.Context, in *images_proto.DeleteRequest) (*images_proto.DeleteResponse, error) {

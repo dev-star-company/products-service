@@ -2,10 +2,11 @@ package variant_type_controller
 
 import (
 	"context"
-	"products-service/generated_protos/variant_type_proto"
 	"products-service/internal/pkg/errs"
 	"products-service/internal/pkg/utils"
 	"time"
+
+	"github.com/dev-star-company/protos-go/products_service/generated_protos/variant_type_proto"
 )
 
 func (c *controller) Delete(ctx context.Context, in *variant_type_proto.DeleteRequest) (*variant_type_proto.DeleteResponse, error) {

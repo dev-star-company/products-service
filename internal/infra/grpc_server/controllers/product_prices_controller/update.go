@@ -2,10 +2,11 @@ package product_prices_controller
 
 import (
 	"context"
-	"products-service/generated_protos/product_prices_proto"
 	"products-service/internal/app/ent"
 	"products-service/internal/pkg/errs"
 	"products-service/internal/pkg/utils"
+
+	"github.com/dev-star-company/protos-go/products_service/generated_protos/product_prices_proto"
 )
 
 func (c *controller) Update(ctx context.Context, in *product_prices_proto.UpdateRequest) (*product_prices_proto.UpdateResponse, error) {

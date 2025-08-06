@@ -2,10 +2,11 @@ package image_folder_source_controller
 
 import (
 	"context"
-	"products-service/generated_protos/image_folder_source_proto"
 	"products-service/internal/pkg/errs"
 	"products-service/internal/pkg/utils"
 	"time"
+
+	"github.com/dev-star-company/protos-go/products_service/generated_protos/image_folder_source_proto"
 )
 
 func (c *controller) Delete(ctx context.Context, in *image_folder_source_proto.DeleteRequest) (*image_folder_source_proto.DeleteResponse, error) {

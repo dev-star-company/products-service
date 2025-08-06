@@ -1,8 +1,9 @@
 package grpc_convertions
 
 import (
-	"products-service/generated_protos/category_proto"
 	"products-service/internal/app/ent"
+
+	"github.com/dev-star-company/protos-go/products_service/generated_protos/category_proto"
 )
 
 func CategoryToProto(category *ent.Category) *category_proto.Category {

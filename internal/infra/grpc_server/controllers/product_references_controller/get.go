@@ -2,10 +2,11 @@ package product_references_controller
 
 import (
 	"context"
-	"products-service/generated_protos/product_references_proto"
 	"products-service/internal/app/ent"
 	"products-service/internal/app/ent/productreferences"
 	"products-service/internal/pkg/errs"
+
+	"github.com/dev-star-company/protos-go/products_service/generated_protos/product_references_proto"
 )
 
 func (c *controller) Get(ctx context.Context, in *product_references_proto.GetRequest) (*product_references_proto.GetResponse, error) {

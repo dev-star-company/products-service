@@ -2,10 +2,11 @@ package image_folder_path_controller
 
 import (
 	"context"
-	"products-service/generated_protos/image_folder_path_proto"
 	"products-service/internal/app/ent"
 	"products-service/internal/app/ent/imagefolderpath"
 	"products-service/internal/pkg/errs"
+
+	"github.com/dev-star-company/protos-go/products_service/generated_protos/image_folder_path_proto"
 )
 
 func (c *controller) Get(ctx context.Context, in *image_folder_path_proto.GetRequest) (*image_folder_path_proto.GetResponse, error) {

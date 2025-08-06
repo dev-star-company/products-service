@@ -1,8 +1,9 @@
 package grpc_convertions
 
 import (
-	"products-service/generated_protos/references_sources_proto"
 	"products-service/internal/app/ent"
+
+	"github.com/dev-star-company/protos-go/products_service/generated_protos/references_sources_proto"
 )
 
 func ReferencesSourcesToProto(references_sources *ent.ReferenceSources) *references_sources_proto.ReferencesSources {

@@ -2,10 +2,11 @@ package product_has_image_controller
 
 import (
 	"context"
-	"products-service/generated_protos/product_has_image_proto"
 	"products-service/internal/pkg/errs"
 	"products-service/internal/pkg/utils"
 	"time"
+
+	"github.com/dev-star-company/protos-go/products_service/generated_protos/product_has_image_proto"
 )
 
 func (c *controller) Delete(ctx context.Context, in *product_has_image_proto.DeleteRequest) (*product_has_image_proto.DeleteResponse, error) {

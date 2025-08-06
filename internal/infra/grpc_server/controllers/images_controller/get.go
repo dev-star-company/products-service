@@ -2,10 +2,11 @@ package images_controller
 
 import (
 	"context"
-	"products-service/generated_protos/images_proto"
 	"products-service/internal/app/ent"
 	"products-service/internal/app/ent/images"
 	"products-service/internal/pkg/errs"
+
+	"github.com/dev-star-company/protos-go/products_service/generated_protos/images_proto"
 )
 
 func (c *controller) Get(ctx context.Context, in *images_proto.GetRequest) (*images_proto.GetResponse, error) {
@@ -20,7 +21,7 @@ func (c *controller) Get(ctx context.Context, in *images_proto.GetRequest) (*ima
 
 	return &images_proto.GetResponse{
 
-		Content:           string(*images.Content),
-		Path:              string(*images.Path),
+		Content: string(*images.Content),
+		Path:    string(*images.Path),
 	}, nil
 }

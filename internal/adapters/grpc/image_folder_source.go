@@ -1,8 +1,9 @@
 package grpc_convertions
 
 import (
-	"products-service/generated_protos/image_folder_source_proto"
 	"products-service/internal/app/ent"
+
+	"github.com/dev-star-company/protos-go/products_service/generated_protos/image_folder_source_proto"
 )
 
 func ImageFolderSourceToProto(image_folder_source *ent.ImageFolderSource) *image_folder_source_proto.ImageFolderSource {

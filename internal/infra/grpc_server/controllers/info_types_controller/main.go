@@ -2,8 +2,9 @@ package info_types_controller
 
 import (
 	"context"
-	"products-service/generated_protos/info_types_proto"
 	"products-service/internal/app/ent"
+
+	"github.com/dev-star-company/protos-go/products_service/generated_protos/info_types_proto"
 )
 
 type Controller interface {

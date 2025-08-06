@@ -2,10 +2,11 @@ package brand_controller
 
 import (
 	"context"
-	"products-service/generated_protos/brand_proto"
 	"products-service/internal/pkg/errs"
 	"products-service/internal/pkg/utils"
 	"time"
+
+	"github.com/dev-star-company/protos-go/products_service/generated_protos/brand_proto"
 )
 
 func (c *controller) Delete(ctx context.Context, in *brand_proto.DeleteRequest) (*brand_proto.DeleteResponse, error) {

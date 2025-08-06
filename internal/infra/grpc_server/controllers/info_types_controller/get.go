@@ -2,10 +2,11 @@ package info_types_controller
 
 import (
 	"context"
-	"products-service/generated_protos/info_types_proto"
 	"products-service/internal/app/ent"
 	"products-service/internal/app/ent/infotypes"
 	"products-service/internal/pkg/errs"
+
+	"github.com/dev-star-company/protos-go/products_service/generated_protos/info_types_proto"
 )
 
 func (c *controller) Get(ctx context.Context, in *info_types_proto.GetRequest) (*info_types_proto.GetResponse, error) {

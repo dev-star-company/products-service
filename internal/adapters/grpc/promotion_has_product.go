@@ -1,8 +1,9 @@
 package grpc_convertions
 
 import (
-	"products-service/generated_protos/promotion_has_product_proto"
 	"products-service/internal/app/ent"
+
+	"github.com/dev-star-company/protos-go/products_service/generated_protos/promotion_has_product_proto"
 )
 
 func PromotionHasProductToProto(promotion_has_product *ent.PromotionHasProduct) *promotion_has_product_proto.PromotionHasProduct {

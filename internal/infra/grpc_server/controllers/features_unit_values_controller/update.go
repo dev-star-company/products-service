@@ -2,10 +2,11 @@ package features_unit_values_controller
 
 import (
 	"context"
-	"products-service/generated_protos/features_unit_values_proto"
 	"products-service/internal/app/ent"
 	"products-service/internal/pkg/errs"
 	"products-service/internal/pkg/utils"
+
+	"github.com/dev-star-company/protos-go/products_service/generated_protos/features_unit_values_proto"
 )
 
 func (c *controller) Update(ctx context.Context, in *features_unit_values_proto.UpdateRequest) (*features_unit_values_proto.UpdateResponse, error) {
@@ -26,7 +27,6 @@ func (c *controller) Update(ctx context.Context, in *features_unit_values_proto.
 	if in.Name != nil && *in.Name != "" {
 		features_unit_valuesQ.SetName(string(*in.Name))
 	}
-
 
 	features_unit_values, err = features_unit_valuesQ.Save(ctx)
 	if err != nil {

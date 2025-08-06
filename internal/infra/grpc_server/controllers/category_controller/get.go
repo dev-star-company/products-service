@@ -2,10 +2,11 @@ package category_controller
 
 import (
 	"context"
-	"products-service/generated_protos/category_proto"
 	"products-service/internal/app/ent"
 	"products-service/internal/app/ent/category"
 	"products-service/internal/pkg/errs"
+
+	"github.com/dev-star-company/protos-go/products_service/generated_protos/category_proto"
 )
 
 func (c *controller) Get(ctx context.Context, in *category_proto.GetRequest) (*category_proto.GetResponse, error) {

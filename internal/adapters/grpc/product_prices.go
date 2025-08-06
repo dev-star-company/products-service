@@ -1,8 +1,9 @@
 package grpc_convertions
 
 import (
-	"products-service/generated_protos/product_prices_proto"
 	"products-service/internal/app/ent"
+
+	"github.com/dev-star-company/protos-go/products_service/generated_protos/product_prices_proto"
 )
 
 func ProductPricesToProto(product_prices *ent.ProductPrices) *product_prices_proto.ProductPrices {

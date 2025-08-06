@@ -2,8 +2,9 @@ package tool_has_product_controller
 
 import (
 	"context"
-	"products-service/generated_protos/tool_has_product_proto"
 	"products-service/internal/app/ent"
+
+	"github.com/dev-star-company/protos-go/products_service/generated_protos/tool_has_product_proto"
 )
 
 type Controller interface {

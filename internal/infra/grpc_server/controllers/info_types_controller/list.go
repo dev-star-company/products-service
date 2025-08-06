@@ -3,13 +3,14 @@ package info_types_controller
 import (
 	"context"
 	"errors"
-	"products-service/generated_protos/info_types_proto"
 	grpc_convertions "products-service/internal/adapters/grpc"
 	"products-service/internal/app/ent"
 	"products-service/internal/app/ent/infotypes"
 	"products-service/internal/app/ent/schema"
 	"products-service/internal/pkg/errs"
 	"products-service/internal/pkg/utils"
+
+	"github.com/dev-star-company/protos-go/products_service/generated_protos/info_types_proto"
 )
 
 func (c *controller) List(ctx context.Context, in *info_types_proto.ListRequest) (*info_types_proto.ListResponse, error) {

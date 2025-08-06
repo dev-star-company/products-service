@@ -2,8 +2,9 @@ package promotions_controller
 
 import (
 	"context"
-	"products-service/generated_protos/promotions_proto"
 	"products-service/internal/app/ent"
+
+	"github.com/dev-star-company/protos-go/products_service/generated_protos/promotions_proto"
 )
 
 type Controller interface {

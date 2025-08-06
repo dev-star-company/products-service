@@ -2,10 +2,11 @@ package images_controller
 
 import (
 	"context"
-	"products-service/generated_protos/images_proto"
 	"products-service/internal/app/ent"
 	"products-service/internal/pkg/errs"
 	"products-service/internal/pkg/utils"
+
+	"github.com/dev-star-company/protos-go/products_service/generated_protos/images_proto"
 )
 
 func (c *controller) Update(ctx context.Context, in *images_proto.UpdateRequest) (*images_proto.UpdateResponse, error) {
@@ -48,7 +49,7 @@ func (c *controller) Update(ctx context.Context, in *images_proto.UpdateRequest)
 
 	return &images_proto.UpdateResponse{
 
-		Content:           string(*images.Content),
-		Path:              string(*images.Path),
+		Content: string(*images.Content),
+		Path:    string(*images.Path),
 	}, nil
 }

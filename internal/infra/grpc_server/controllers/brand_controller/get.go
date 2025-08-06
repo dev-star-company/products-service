@@ -2,10 +2,11 @@ package brand_controller
 
 import (
 	"context"
-	"products-service/generated_protos/brand_proto"
 	"products-service/internal/app/ent"
 	"products-service/internal/app/ent/brand"
 	"products-service/internal/pkg/errs"
+
+	"github.com/dev-star-company/protos-go/products_service/generated_protos/brand_proto"
 )
 
 func (c *controller) Get(ctx context.Context, in *brand_proto.GetRequest) (*brand_proto.GetResponse, error) {

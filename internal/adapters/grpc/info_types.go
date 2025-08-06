@@ -1,8 +1,9 @@
 package grpc_convertions
 
 import (
-	"products-service/generated_protos/info_types_proto"
 	"products-service/internal/app/ent"
+
+	"github.com/dev-star-company/protos-go/products_service/generated_protos/info_types_proto"
 )
 
 func InfoTypesToProto(info_types *ent.InfoTypes) *info_types_proto.InfoTypes {

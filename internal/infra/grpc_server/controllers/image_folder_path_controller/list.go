@@ -3,13 +3,14 @@ package image_folder_path_controller
 import (
 	"context"
 	"errors"
-	"products-service/generated_protos/image_folder_path_proto"
 	grpc_convertions "products-service/internal/adapters/grpc"
 	"products-service/internal/app/ent"
 	"products-service/internal/app/ent/imagefolderpath"
 	"products-service/internal/app/ent/schema"
 	"products-service/internal/pkg/errs"
 	"products-service/internal/pkg/utils"
+
+	"github.com/dev-star-company/protos-go/products_service/generated_protos/image_folder_path_proto"
 )
 
 func (c *controller) List(ctx context.Context, in *image_folder_path_proto.ListRequest) (*image_folder_path_proto.ListResponse, error) {

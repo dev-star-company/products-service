@@ -2,10 +2,11 @@ package product_prices_controller
 
 import (
 	"context"
-	"products-service/generated_protos/product_prices_proto"
 	"products-service/internal/pkg/errs"
 	"products-service/internal/pkg/utils"
 	"time"
+
+	"github.com/dev-star-company/protos-go/products_service/generated_protos/product_prices_proto"
 )
 
 func (c *controller) Delete(ctx context.Context, in *product_prices_proto.DeleteRequest) (*product_prices_proto.DeleteResponse, error) {

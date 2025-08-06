@@ -2,11 +2,12 @@ package promotions_controller
 
 import (
 	"context"
-	"products-service/generated_protos/promotions_proto"
 	"products-service/internal/app/ent"
 	"products-service/internal/pkg/errs"
 	"products-service/internal/pkg/utils"
 	"time"
+
+	"github.com/dev-star-company/protos-go/products_service/generated_protos/promotions_proto"
 )
 
 func (c *controller) Update(ctx context.Context, in *promotions_proto.UpdateRequest) (*promotions_proto.UpdateResponse, error) {

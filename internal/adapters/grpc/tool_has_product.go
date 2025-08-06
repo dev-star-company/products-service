@@ -1,8 +1,9 @@
 package grpc_convertions
 
 import (
-	"products-service/generated_protos/tool_has_product_proto"
 	"products-service/internal/app/ent"
+
+	"github.com/dev-star-company/protos-go/products_service/generated_protos/tool_has_product_proto"
 )
 
 func ToolHasProductToProto(tool_has_product *ent.ToolHasProduct) *tool_has_product_proto.ToolHasProduct {

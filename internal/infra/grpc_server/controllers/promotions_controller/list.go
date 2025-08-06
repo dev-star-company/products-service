@@ -3,7 +3,6 @@ package promotions_controller
 import (
 	"context"
 	"errors"
-	"products-service/generated_protos/promotions_proto"
 	grpc_convertions "products-service/internal/adapters/grpc"
 	"products-service/internal/app/ent"
 	"products-service/internal/app/ent/promotions"
@@ -11,6 +10,8 @@ import (
 	"products-service/internal/pkg/errs"
 	"products-service/internal/pkg/utils"
 	"time"
+
+	"github.com/dev-star-company/protos-go/products_service/generated_protos/promotions_proto"
 )
 
 func (c *controller) List(ctx context.Context, in *promotions_proto.ListRequest) (*promotions_proto.ListResponse, error) {

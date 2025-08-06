@@ -2,10 +2,11 @@ package category_controller
 
 import (
 	"context"
-	"products-service/generated_protos/category_proto"
 	"products-service/internal/app/ent"
 	"products-service/internal/pkg/errs"
 	"products-service/internal/pkg/utils"
+
+	"github.com/dev-star-company/protos-go/products_service/generated_protos/category_proto"
 )
 
 func (c *controller) Update(ctx context.Context, in *category_proto.UpdateRequest) (*category_proto.UpdateResponse, error) {

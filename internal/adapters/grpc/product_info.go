@@ -1,8 +1,9 @@
 package grpc_convertions
 
 import (
-	"products-service/generated_protos/product_info_proto"
 	"products-service/internal/app/ent"
+
+	"github.com/dev-star-company/protos-go/products_service/generated_protos/product_info_proto"
 )
 
 func ProductInfoToProto(product_info *ent.ProductInfo) *product_info_proto.ProductInfo {

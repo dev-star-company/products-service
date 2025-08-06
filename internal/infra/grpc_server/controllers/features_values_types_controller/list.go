@@ -3,13 +3,14 @@ package features_values_types_controller
 import (
 	"context"
 	"errors"
-	"products-service/generated_protos/features_values_types_proto"
 	grpc_convertions "products-service/internal/adapters/grpc"
 	"products-service/internal/app/ent"
 	"products-service/internal/app/ent/featuresvaluestypes"
 	"products-service/internal/app/ent/schema"
 	"products-service/internal/pkg/errs"
 	"products-service/internal/pkg/utils"
+
+	"github.com/dev-star-company/protos-go/products_service/generated_protos/features_values_types_proto"
 )
 
 func (c *controller) List(ctx context.Context, in *features_values_types_proto.ListRequest) (*features_values_types_proto.ListResponse, error) {

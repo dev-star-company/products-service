@@ -2,9 +2,10 @@ package images_controller
 
 import (
 	"context"
-	"products-service/generated_protos/images_proto"
 	"products-service/internal/pkg/errs"
 	"products-service/internal/pkg/utils"
+
+	"github.com/dev-star-company/protos-go/products_service/generated_protos/images_proto"
 )
 
 func (c *controller) Create(ctx context.Context, in *images_proto.CreateRequest) (*images_proto.CreateResponse, error) {
@@ -29,7 +30,7 @@ func (c *controller) Create(ctx context.Context, in *images_proto.CreateRequest)
 	}
 
 	return &images_proto.CreateResponse{
-		Content:           string(*create.Content),
-		Path:              string(*create.Path),
+		Content: string(*create.Content),
+		Path:    string(*create.Path),
 	}, nil
 }

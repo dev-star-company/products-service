@@ -1,8 +1,9 @@
 package grpc_convertions
 
 import (
-	"products-service/generated_protos/product_has_product_reference_proto"
 	"products-service/internal/app/ent"
+
+	"github.com/dev-star-company/protos-go/products_service/generated_protos/product_has_product_reference_proto"
 )
 
 func ProductHasProductReferenceToProto(product_has_product_reference *ent.ProductHasProductReference) *product_has_product_reference_proto.ProductHasProductReference {

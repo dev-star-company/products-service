@@ -2,10 +2,11 @@ package variant_type_controller
 
 import (
 	"context"
-	"products-service/generated_protos/variant_type_proto"
 	"products-service/internal/app/ent"
 	"products-service/internal/app/ent/varianttype"
 	"products-service/internal/pkg/errs"
+
+	"github.com/dev-star-company/protos-go/products_service/generated_protos/variant_type_proto"
 )
 
 func (c *controller) Get(ctx context.Context, in *variant_type_proto.GetRequest) (*variant_type_proto.GetResponse, error) {

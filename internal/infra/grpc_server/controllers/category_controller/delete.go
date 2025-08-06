@@ -2,10 +2,11 @@ package category_controller
 
 import (
 	"context"
-	"products-service/generated_protos/category_proto"
 	"products-service/internal/pkg/errs"
 	"products-service/internal/pkg/utils"
 	"time"
+
+	"github.com/dev-star-company/protos-go/products_service/generated_protos/category_proto"
 )
 
 func (c *controller) Delete(ctx context.Context, in *category_proto.DeleteRequest) (*category_proto.DeleteResponse, error) {

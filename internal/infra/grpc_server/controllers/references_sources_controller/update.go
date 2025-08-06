@@ -2,10 +2,11 @@ package references_sources_controller
 
 import (
 	"context"
-	"products-service/generated_protos/references_sources_proto"
 	"products-service/internal/app/ent"
 	"products-service/internal/pkg/errs"
 	"products-service/internal/pkg/utils"
+
+	"github.com/dev-star-company/protos-go/products_service/generated_protos/references_sources_proto"
 )
 
 func (c *controller) Update(ctx context.Context, in *references_sources_proto.UpdateRequest) (*references_sources_proto.UpdateResponse, error) {

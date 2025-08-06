@@ -1,8 +1,9 @@
 package grpc_convertions
 
 import (
-	"products-service/generated_protos/features_unit_values_proto"
 	"products-service/internal/app/ent"
+
+	"github.com/dev-star-company/protos-go/products_service/generated_protos/features_unit_values_proto"
 )
 
 func FeaturesUnitValuesToProto(features_unit_values *ent.FeaturesUnitValues) *features_unit_values_proto.FeaturesUnitValues {

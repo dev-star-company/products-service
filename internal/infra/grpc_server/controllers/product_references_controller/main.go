@@ -2,8 +2,9 @@ package product_references_controller
 
 import (
 	"context"
-	"products-service/generated_protos/product_references_proto"
 	"products-service/internal/app/ent"
+
+	"github.com/dev-star-company/protos-go/products_service/generated_protos/product_references_proto"
 )
 
 type Controller interface {

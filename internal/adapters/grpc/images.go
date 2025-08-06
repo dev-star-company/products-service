@@ -1,8 +1,9 @@
 package grpc_convertions
 
 import (
-	"products-service/generated_protos/images_proto"
 	"products-service/internal/app/ent"
+
+	"github.com/dev-star-company/protos-go/products_service/generated_protos/images_proto"
 )
 
 func ImagesToProto(images *ent.Images) *images_proto.Images {
@@ -11,10 +12,10 @@ func ImagesToProto(images *ent.Images) *images_proto.Images {
 	}
 
 	cur := &images_proto.Images{
-		Id:                uint32(images.ID),
-		Content:           *images.Content,
-		Path:              *images.Path,
-		CreatedAt:         images.CreatedAt.Format("2006-01-02 15:04:05"),
+		Id:        uint32(images.ID),
+		Content:   *images.Content,
+		Path:      *images.Path,
+		CreatedAt: images.CreatedAt.Format("2006-01-02 15:04:05"),
 	}
 
 	if images.DeletedAt != nil {

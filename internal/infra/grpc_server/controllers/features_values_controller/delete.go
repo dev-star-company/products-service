@@ -2,10 +2,11 @@ package features_values_controller
 
 import (
 	"context"
-	"products-service/generated_protos/features_values_proto"
 	"products-service/internal/pkg/errs"
 	"products-service/internal/pkg/utils"
 	"time"
+
+	"github.com/dev-star-company/protos-go/products_service/generated_protos/features_values_proto"
 )
 
 func (c *controller) Delete(ctx context.Context, in *features_values_proto.DeleteRequest) (*features_values_proto.DeleteResponse, error) {

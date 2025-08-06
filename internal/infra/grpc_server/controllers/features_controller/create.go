@@ -2,9 +2,10 @@ package features_controller
 
 import (
 	"context"
-	"products-service/generated_protos/features_proto"
 	"products-service/internal/pkg/errs"
 	"products-service/internal/pkg/utils"
+
+	"github.com/dev-star-company/protos-go/products_service/generated_protos/features_proto"
 )
 
 func (c *controller) Create(ctx context.Context, in *features_proto.CreateRequest) (*features_proto.CreateResponse, error) {

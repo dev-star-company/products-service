@@ -2,10 +2,11 @@ package product_has_image_controller
 
 import (
 	"context"
-	"products-service/generated_protos/product_has_image_proto"
 	"products-service/internal/app/ent"
 	"products-service/internal/app/ent/producthasimage"
 	"products-service/internal/pkg/errs"
+
+	"github.com/dev-star-company/protos-go/products_service/generated_protos/product_has_image_proto"
 )
 
 func (c *controller) Get(ctx context.Context, in *product_has_image_proto.GetRequest) (*product_has_image_proto.GetResponse, error) {
