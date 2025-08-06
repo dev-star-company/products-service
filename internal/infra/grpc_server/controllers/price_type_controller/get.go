@@ -2,6 +2,7 @@ package price_type_controller
 
 import (
 	"context"
+	"products-service/internal/adapters/grpc_convertions"
 	"products-service/internal/app/ent"
 	"products-service/internal/app/ent/pricetype"
 	"products-service/internal/pkg/errs"
@@ -20,7 +21,6 @@ func (c *controller) Get(ctx context.Context, in *price_type_proto.GetRequest) (
 	}
 
 	return &price_type_proto.GetResponse{
-
-		Name: *price_type.Name,
+		Pricetype: grpc_convertions.PriceTypeToProto(price_type),
 	}, nil
 }

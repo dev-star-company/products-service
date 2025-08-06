@@ -2,6 +2,7 @@ package features_unit_values_controller
 
 import (
 	"context"
+	"products-service/internal/adapters/grpc_convertions"
 	"products-service/internal/pkg/errs"
 	"products-service/internal/pkg/utils"
 
@@ -29,7 +30,6 @@ func (c *controller) Create(ctx context.Context, in *features_unit_values_proto.
 	}
 
 	return &features_unit_values_proto.CreateResponse{
-		Decimals: float32(*create.Decimals),
-		Name:     string(*create.Name),
+		Featuresunitvalues: grpc_convertions.FeaturesUnitValuesToProto(create),
 	}, nil
 }

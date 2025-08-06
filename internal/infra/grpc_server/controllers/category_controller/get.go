@@ -2,6 +2,7 @@ package category_controller
 
 import (
 	"context"
+	"products-service/internal/adapters/grpc_convertions"
 	"products-service/internal/app/ent"
 	"products-service/internal/app/ent/category"
 	"products-service/internal/pkg/errs"
@@ -20,7 +21,6 @@ func (c *controller) Get(ctx context.Context, in *category_proto.GetRequest) (*c
 	}
 
 	return &category_proto.GetResponse{
-
-		Name: *category.Name,
+		Category: grpc_convertions.CategoryToProto(category),
 	}, nil
 }

@@ -3,7 +3,7 @@ package image_folder_source_controller
 import (
 	"context"
 	"errors"
-	grpc_convertions "products-service/internal/adapters/grpc"
+	"products-service/internal/adapters/grpc_convertions"
 	"products-service/internal/app/ent"
 	"products-service/internal/app/ent/imagefoldersource"
 	"products-service/internal/app/ent/schema"

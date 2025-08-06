@@ -2,6 +2,7 @@ package product_has_info_controller
 
 import (
 	"context"
+	"products-service/internal/adapters/grpc_convertions"
 	"products-service/internal/app/ent"
 	"products-service/internal/app/ent/producthasinfo"
 	"products-service/internal/pkg/errs"
@@ -22,8 +23,6 @@ func (c *controller) Get(ctx context.Context, in *product_has_info_proto.GetRequ
 	}
 
 	return &product_has_info_proto.GetResponse{
-
-		ProductInfoId: uint32(*product_has_info.ProductInfoID),
-		ProductsId:    uint32(*product_has_info.ProductID),
+		Producthasinfo: grpc_convertions.ProductHasInfoToProto(product_has_info),
 	}, nil
 }

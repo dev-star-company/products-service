@@ -2,6 +2,7 @@ package promotion_has_product_controller
 
 import (
 	"context"
+	"products-service/internal/adapters/grpc_convertions"
 	"products-service/internal/pkg/errs"
 	"products-service/internal/pkg/utils"
 
@@ -29,7 +30,6 @@ func (c *controller) Create(ctx context.Context, in *promotion_has_product_proto
 	}
 
 	return &promotion_has_product_proto.CreateResponse{
-		PromotionId: uint32(*create.PromotionsID),
-		ProductsId:  uint32(*create.ProductsID),
+		Promotionhasproduct: grpc_convertions.PromotionHasProductToProto(create),
 	}, nil
 }

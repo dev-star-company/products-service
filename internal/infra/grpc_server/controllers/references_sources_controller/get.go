@@ -2,6 +2,7 @@ package references_sources_controller
 
 import (
 	"context"
+	"products-service/internal/adapters/grpc_convertions"
 	"products-service/internal/app/ent"
 	"products-service/internal/app/ent/referencesources"
 	"products-service/internal/pkg/errs"
@@ -20,6 +21,6 @@ func (c *controller) Get(ctx context.Context, in *references_sources_proto.GetRe
 	}
 
 	return &references_sources_proto.GetResponse{
-		Name: *references_sources.Name,
+		Referencessources: grpc_convertions.ReferencesSourcesToProto(references_sources),
 	}, nil
 }

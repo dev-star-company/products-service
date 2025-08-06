@@ -2,6 +2,7 @@ package features_values_types_controller
 
 import (
 	"context"
+	"products-service/internal/adapters/grpc_convertions"
 	"products-service/internal/app/ent"
 	"products-service/internal/app/ent/featuresvaluestypes"
 	"products-service/internal/pkg/errs"
@@ -20,7 +21,6 @@ func (c *controller) Get(ctx context.Context, in *features_values_types_proto.Ge
 	}
 
 	return &features_values_types_proto.GetResponse{
-
-		Name: *features_values_types.Name,
+		Featuresvaluestypes: grpc_convertions.FeaturesValuesTypesToProto(features_values_types),
 	}, nil
 }

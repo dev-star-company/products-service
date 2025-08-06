@@ -26,7 +26,7 @@ require (
 )
 
 require (
-	github.com/dev-star-company/protos-go v0.0.0-20250804171303-0b55384f93c0
+	github.com/dev-star-company/protos-go v0.0.0-20250806124632-235a450e05f9
 	github.com/joho/godotenv v1.5.1
 	github.com/lib/pq v1.10.9
 	golang.org/x/sys v0.34.0 // indirect

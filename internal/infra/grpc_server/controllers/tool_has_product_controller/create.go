@@ -2,6 +2,7 @@ package tool_has_product_controller
 
 import (
 	"context"
+	"products-service/internal/adapters/grpc_convertions"
 	"products-service/internal/pkg/errs"
 	"products-service/internal/pkg/utils"
 
@@ -29,7 +30,6 @@ func (c *controller) Create(ctx context.Context, in *tool_has_product_proto.Crea
 	}
 
 	return &tool_has_product_proto.CreateResponse{
-		ToolId:     uint32(*create.ToolsID),
-		ProductsId: uint32(*create.ProductsID),
+		Toolhasproduct: grpc_convertions.ToolHasProductToProto(create),
 	}, nil
 }

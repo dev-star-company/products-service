@@ -2,6 +2,7 @@ package tools_controller
 
 import (
 	"context"
+	"products-service/internal/adapters/grpc_convertions"
 	"products-service/internal/app/ent"
 	"products-service/internal/app/ent/tools"
 	"products-service/internal/pkg/errs"
@@ -20,6 +21,6 @@ func (c *controller) Get(ctx context.Context, in *tools_proto.GetRequest) (*tool
 	}
 
 	return &tools_proto.GetResponse{
-		Name: *tools.Name,
+		Tools: grpc_convertions.ToolsToProto(tools),
 	}, nil
 }

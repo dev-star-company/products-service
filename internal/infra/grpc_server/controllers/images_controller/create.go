@@ -2,6 +2,7 @@ package images_controller
 
 import (
 	"context"
+	"products-service/internal/adapters/grpc_convertions"
 	"products-service/internal/pkg/errs"
 	"products-service/internal/pkg/utils"
 
@@ -30,7 +31,6 @@ func (c *controller) Create(ctx context.Context, in *images_proto.CreateRequest)
 	}
 
 	return &images_proto.CreateResponse{
-		Content: string(*create.Content),
-		Path:    string(*create.Path),
+		Images: grpc_convertions.ImagesToProto(create),
 	}, nil
 }

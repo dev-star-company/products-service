@@ -2,6 +2,7 @@ package product_has_image_controller
 
 import (
 	"context"
+	"products-service/internal/adapters/grpc_convertions"
 	"products-service/internal/pkg/errs"
 	"products-service/internal/pkg/utils"
 
@@ -30,8 +31,6 @@ func (c *controller) Create(ctx context.Context, in *product_has_image_proto.Cre
 	}
 
 	return &product_has_image_proto.CreateResponse{
-		ProductsId: uint32(*create.ProductID),
-		ImagesId:   uint32(*create.ImageID),
-		Priority:   uint32(create.Priority),
+		Producthasimage: grpc_convertions.ProductHasImageToProto(create),
 	}, nil
 }

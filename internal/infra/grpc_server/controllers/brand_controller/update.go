@@ -2,6 +2,7 @@ package brand_controller
 
 import (
 	"context"
+	"products-service/internal/adapters/grpc_convertions"
 	"products-service/internal/app/ent"
 	"products-service/internal/pkg/errs"
 	"products-service/internal/pkg/utils"
@@ -40,7 +41,6 @@ func (c *controller) Update(ctx context.Context, in *brand_proto.UpdateRequest) 
 	}
 
 	return &brand_proto.UpdateResponse{
-
-		Name: string(*brand.Name),
+		Brand: grpc_convertions.BrandToProto(brand),
 	}, nil
 }

@@ -2,6 +2,7 @@ package image_folder_source_controller
 
 import (
 	"context"
+	"products-service/internal/adapters/grpc_convertions"
 	"products-service/internal/app/ent"
 	"products-service/internal/app/ent/imagefoldersource"
 	"products-service/internal/pkg/errs"
@@ -20,10 +21,6 @@ func (c *controller) Get(ctx context.Context, in *image_folder_source_proto.GetR
 	}
 
 	return &image_folder_source_proto.GetResponse{
-
-		Name:      *image_folder_source.Name,
-		BaseUrl:   *image_folder_source.BaseURL,
-		AcessKey:  *image_folder_source.AccessKey,
-		SecretKey: *image_folder_source.SecretKey,
+		Imagefoldersource: grpc_convertions.ImageFolderSourceToProto(image_folder_source),
 	}, nil
 }

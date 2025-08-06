@@ -2,6 +2,7 @@ package image_folder_path_controller
 
 import (
 	"context"
+	"products-service/internal/adapters/grpc_convertions"
 	"products-service/internal/pkg/errs"
 	"products-service/internal/pkg/utils"
 
@@ -28,6 +29,6 @@ func (c *controller) Create(ctx context.Context, in *image_folder_path_proto.Cre
 	}
 
 	return &image_folder_path_proto.CreateResponse{
-		ImageFolderSourceId: uint32(*create.ImageFolderSourceID),
+		Imagefolderpath: grpc_convertions.ImageFolderPathToProto(create),
 	}, nil
 }

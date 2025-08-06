@@ -2,6 +2,7 @@ package promotions_controller
 
 import (
 	"context"
+	"products-service/internal/adapters/grpc_convertions"
 	"products-service/internal/app/ent"
 	"products-service/internal/pkg/errs"
 	"products-service/internal/pkg/utils"
@@ -57,7 +58,6 @@ func (c *controller) Update(ctx context.Context, in *promotions_proto.UpdateRequ
 	}
 
 	return &promotions_proto.UpdateResponse{
-
-		Name: string(*promotions.Name),
+		Promotions: grpc_convertions.PromotionsToProto(promotions),
 	}, nil
 }

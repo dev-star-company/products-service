@@ -2,6 +2,7 @@ package product_prices_controller
 
 import (
 	"context"
+	"products-service/internal/adapters/grpc_convertions"
 	"products-service/internal/pkg/errs"
 	"products-service/internal/pkg/utils"
 
@@ -32,9 +33,6 @@ func (c *controller) Create(ctx context.Context, in *product_prices_proto.Create
 	}
 
 	return &product_prices_proto.CreateResponse{
-		PriceTypeId:  uint32(*create.PriceTypeID),
-		ProductsId:   uint32(*create.ProductID),
-		DefaultValue: float64(*create.DefaultValue),
-		MinValue:     float64(*create.MinValue),
+		Productprices: grpc_convertions.ProductPricesToProto(create),
 	}, nil
 }

@@ -2,6 +2,7 @@ package tools_controller
 
 import (
 	"context"
+	"products-service/internal/adapters/grpc_convertions"
 	"products-service/internal/pkg/errs"
 	"products-service/internal/pkg/utils"
 
@@ -15,7 +16,7 @@ func (c *controller) Create(ctx context.Context, in *tools_proto.CreateRequest) 
 		return nil, errs.StartProductsError(err)
 	}
 
-	create, err := c.Db.Brand.Create().
+	create, err := c.Db.Tools.Create().
 		SetName(in.Name).
 		Save(ctx)
 
@@ -28,6 +29,6 @@ func (c *controller) Create(ctx context.Context, in *tools_proto.CreateRequest) 
 	}
 
 	return &tools_proto.CreateResponse{
-		Name: string(*create.Name),
+		Tools: grpc_convertions.ToolsToProto(create),
 	}, nil
 }

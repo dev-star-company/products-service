@@ -2,6 +2,7 @@ package product_has_feature_controller
 
 import (
 	"context"
+	"products-service/internal/adapters/grpc_convertions"
 	"products-service/internal/pkg/errs"
 	"products-service/internal/pkg/utils"
 
@@ -29,7 +30,6 @@ func (c *controller) Create(ctx context.Context, in *product_has_feature_proto.C
 	}
 
 	return &product_has_feature_proto.CreateResponse{
-		FeaturesId: uint32(*create.FeatureID),
-		ProductsId: uint32(*create.ProductID),
+		Producthasfeature: grpc_convertions.ProductHasFeatureToProto(create),
 	}, nil
 }

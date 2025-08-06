@@ -2,6 +2,7 @@ package image_folder_source_controller
 
 import (
 	"context"
+	"products-service/internal/adapters/grpc_convertions"
 	"products-service/internal/pkg/errs"
 	"products-service/internal/pkg/utils"
 
@@ -31,9 +32,6 @@ func (c *controller) Create(ctx context.Context, in *image_folder_source_proto.C
 	}
 
 	return &image_folder_source_proto.CreateResponse{
-		Name:      *create.Name,
-		BaseUrl:   *create.BaseURL,
-		AcessKey:  *create.AccessKey,
-		SecretKey: *create.SecretKey,
+		Imagefoldersource: grpc_convertions.ImageFolderSourceToProto(create),
 	}, nil
 }

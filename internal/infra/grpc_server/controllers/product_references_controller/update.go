@@ -2,6 +2,7 @@ package product_references_controller
 
 import (
 	"context"
+	"products-service/internal/adapters/grpc_convertions"
 	"products-service/internal/app/ent"
 	"products-service/internal/pkg/errs"
 	"products-service/internal/pkg/utils"
@@ -44,8 +45,6 @@ func (c *controller) Update(ctx context.Context, in *product_references_proto.Up
 	}
 
 	return &product_references_proto.UpdateResponse{
-
-		ReferenceSourceId: uint32(*product_references.ReferenceSourceID),
-		Value:             *product_references.Value,
+		Productreferences: grpc_convertions.ProductReferencesToProto(product_references),
 	}, nil
 }

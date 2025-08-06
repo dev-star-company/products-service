@@ -2,6 +2,7 @@ package product_has_product_reference_controller
 
 import (
 	"context"
+	"products-service/internal/adapters/grpc_convertions"
 	"products-service/internal/pkg/errs"
 	"products-service/internal/pkg/utils"
 
@@ -29,7 +30,6 @@ func (c *controller) Create(ctx context.Context, in *product_has_product_referen
 	}
 
 	return &product_has_product_reference_proto.CreateResponse{
-		ProductReferenceId: uint32(*create.ProductReferenceID),
-		ProductsId:         uint32(*create.ProductID),
+		Producthasproductreference: grpc_convertions.ProductHasProductReferenceToProto(create),
 	}, nil
 }

@@ -2,6 +2,7 @@ package products_controller
 
 import (
 	"context"
+	"products-service/internal/adapters/grpc_convertions"
 	"products-service/internal/app/ent"
 	"products-service/internal/pkg/errs"
 	"products-service/internal/pkg/utils"
@@ -64,13 +65,6 @@ func (c *controller) Update(ctx context.Context, in *products_proto.UpdateReques
 	}
 
 	return &products_proto.UpdateResponse{
-
-		CategoryId:          uint32(*products.CategoryID),
-		BrandId:             uint32(*products.BrandID),
-		VariantTypeId:       uint32(*products.VariantTypeID),
-		ProductReferencesId: uint32(*products.ProductReferencesID),
-		ImageId:             uint32(*products.ImagesID),
-		Name:                string(*products.Name),
-		Stock:               uint32(products.Stock),
+		Products: grpc_convertions.ProductsToProto(products),
 	}, nil
 }

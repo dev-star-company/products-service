@@ -2,6 +2,7 @@ package product_has_image_controller
 
 import (
 	"context"
+	"products-service/internal/adapters/grpc_convertions"
 	"products-service/internal/app/ent"
 	"products-service/internal/app/ent/producthasimage"
 	"products-service/internal/pkg/errs"
@@ -20,9 +21,6 @@ func (c *controller) Get(ctx context.Context, in *product_has_image_proto.GetReq
 	}
 
 	return &product_has_image_proto.GetResponse{
-
-		ProductsId: uint32(*product_has_image.ProductID),
-		ImagesId:   uint32(*product_has_image.ImageID),
-		Priority:   uint32(product_has_image.Priority),
+		Producthasimage: grpc_convertions.ProductHasImageToProto(product_has_image),
 	}, nil
 }

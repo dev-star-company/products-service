@@ -2,6 +2,7 @@ package products_controller
 
 import (
 	"context"
+	"products-service/internal/adapters/grpc_convertions"
 	"products-service/internal/pkg/errs"
 	"products-service/internal/pkg/utils"
 
@@ -34,12 +35,6 @@ func (c *controller) Create(ctx context.Context, in *products_proto.CreateReques
 	}
 
 	return &products_proto.CreateResponse{
-		CategoryId:          uint32(*create.CategoryID),
-		BrandId:             uint32(*create.BrandID),
-		VariantTypeId:       uint32(*create.VariantTypeID),
-		ProductReferencesId: uint32(*create.ProductReferencesID),
-		ImageId:             uint32(*create.ImagesID),
-		Name:                string(*create.Name),
-		Stock:               uint32(create.Stock),
+		Products: grpc_convertions.ProductsToProto(create),
 	}, nil
 }

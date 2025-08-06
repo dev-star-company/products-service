@@ -2,6 +2,7 @@ package tools_controller
 
 import (
 	"context"
+	"products-service/internal/adapters/grpc_convertions"
 	"products-service/internal/app/ent"
 	"products-service/internal/pkg/errs"
 	"products-service/internal/pkg/utils"
@@ -16,9 +17,9 @@ func (c *controller) Update(ctx context.Context, in *tools_proto.UpdateRequest) 
 		return nil, errs.StartProductsError(err)
 	}
 
-	var tools *ent.Brand
+	var tools *ent.Tools
 
-	toolsQ := tx.Brand.UpdateOneID(int(in.Id))
+	toolsQ := tx.Tools.UpdateOneID(int(in.Id))
 
 	if in.Name != nil && *in.Name != "" {
 		toolsQ.SetName(string(*in.Name))
@@ -40,6 +41,6 @@ func (c *controller) Update(ctx context.Context, in *tools_proto.UpdateRequest) 
 	}
 
 	return &tools_proto.UpdateResponse{
-		Name: string(*tools.Name),
+		Tools: grpc_convertions.ToolsToProto(tools),
 	}, nil
 }

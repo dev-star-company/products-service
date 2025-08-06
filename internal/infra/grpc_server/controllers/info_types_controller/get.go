@@ -2,6 +2,7 @@ package info_types_controller
 
 import (
 	"context"
+	"products-service/internal/adapters/grpc_convertions"
 	"products-service/internal/app/ent"
 	"products-service/internal/app/ent/infotypes"
 	"products-service/internal/pkg/errs"
@@ -20,7 +21,6 @@ func (c *controller) Get(ctx context.Context, in *info_types_proto.GetRequest) (
 	}
 
 	return &info_types_proto.GetResponse{
-
-		Name: *info_types.Name,
+		Infotypes: grpc_convertions.InfoTypesToProto(info_types),
 	}, nil
 }

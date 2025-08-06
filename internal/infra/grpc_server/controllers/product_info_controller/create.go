@@ -2,6 +2,7 @@ package product_info_controller
 
 import (
 	"context"
+	"products-service/internal/adapters/grpc_convertions"
 	"products-service/internal/pkg/errs"
 	"products-service/internal/pkg/utils"
 
@@ -29,7 +30,6 @@ func (c *controller) Create(ctx context.Context, in *product_info_proto.CreateRe
 	}
 
 	return &product_info_proto.CreateResponse{
-		InfoTypeId: uint32(*create.InfoTypesID),
-		Value:      string(*create.Value),
+		Productinfo: grpc_convertions.ProductInfoToProto(create),
 	}, nil
 }

@@ -3,7 +3,7 @@ package product_references_controller
 import (
 	"context"
 	"errors"
-	grpc_convertions "products-service/internal/adapters/grpc"
+	"products-service/internal/adapters/grpc_convertions"
 	"products-service/internal/app/ent"
 	"products-service/internal/app/ent/productreferences"
 	"products-service/internal/app/ent/schema"

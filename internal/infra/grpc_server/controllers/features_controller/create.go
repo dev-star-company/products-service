@@ -2,6 +2,7 @@ package features_controller
 
 import (
 	"context"
+	"products-service/internal/adapters/grpc_convertions"
 	"products-service/internal/pkg/errs"
 	"products-service/internal/pkg/utils"
 
@@ -29,7 +30,6 @@ func (c *controller) Create(ctx context.Context, in *features_proto.CreateReques
 	}
 
 	return &features_proto.CreateResponse{
-		FeatureValueId: uint32(*create.FeatureValueID),
-		Name:           string(*create.Name),
+		Features: grpc_convertions.FeaturesToProto(create),
 	}, nil
 }

@@ -2,6 +2,7 @@ package products_controller
 
 import (
 	"context"
+	"products-service/internal/adapters/grpc_convertions"
 	"products-service/internal/app/ent"
 	"products-service/internal/app/ent/products"
 	"products-service/internal/pkg/errs"
@@ -25,12 +26,6 @@ func (c *controller) Get(ctx context.Context, in *products_proto.GetRequest) (*p
 	}
 
 	return &products_proto.GetResponse{
-
-		CategoryId:          uint32(*products.CategoryID),
-		BrandId:             uint32(*products.BrandID),
-		VariantTypeId:       uint32(*products.VariantTypeID),
-		ProductReferencesId: uint32(*products.ProductReferencesID),
-		Name:                *products.Name,
-		Stock:               uint32(products.Stock),
+		Products: grpc_convertions.ProductsToProto(products),
 	}, nil
 }
