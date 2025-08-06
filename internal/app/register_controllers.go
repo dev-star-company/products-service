@@ -7,9 +7,6 @@ import (
 	"github.com/dev-star-company/protos-go/products_service/generated_protos/features_unit_values_proto"
 	"github.com/dev-star-company/protos-go/products_service/generated_protos/features_values_proto"
 	"github.com/dev-star-company/protos-go/products_service/generated_protos/features_values_types_proto"
-	"github.com/dev-star-company/protos-go/products_service/generated_protos/image_folder_path_proto"
-	"github.com/dev-star-company/protos-go/products_service/generated_protos/image_folder_source_proto"
-	"github.com/dev-star-company/protos-go/products_service/generated_protos/images_proto"
 	"github.com/dev-star-company/protos-go/products_service/generated_protos/info_types_proto"
 	"github.com/dev-star-company/protos-go/products_service/generated_protos/price_type_proto"
 	"github.com/dev-star-company/protos-go/products_service/generated_protos/product_has_feature_proto"
@@ -34,9 +31,6 @@ import (
 	"products-service/internal/infra/grpc_server/controllers/features_unit_values_controller"
 	"products-service/internal/infra/grpc_server/controllers/features_values_controller"
 	"products-service/internal/infra/grpc_server/controllers/features_values_types_controller"
-	"products-service/internal/infra/grpc_server/controllers/image_folder_path_controller"
-	"products-service/internal/infra/grpc_server/controllers/image_folder_source_controller"
-	"products-service/internal/infra/grpc_server/controllers/images_controller"
 	"products-service/internal/infra/grpc_server/controllers/info_types_controller"
 	"products-service/internal/infra/grpc_server/controllers/price_type_controller"
 	"products-service/internal/infra/grpc_server/controllers/product_has_feature_controller"
@@ -64,9 +58,6 @@ func RegisterControllers(grpcServer *grpc.Server, client *ent.Client) {
 	features_unit_values_proto.RegisterFeaturesUnitValuesServiceServer(grpcServer, features_unit_values_controller.New(client))
 	features_values_proto.RegisterFeaturesValuesServiceServer(grpcServer, features_values_controller.New(client))
 	features_values_types_proto.RegisterFeaturesValuesTypesServiceServer(grpcServer, features_values_types_controller.New(client))
-	image_folder_path_proto.RegisterImageFolderPathServiceServer(grpcServer, image_folder_path_controller.New(client))
-	image_folder_source_proto.RegisterImageFolderSourceServiceServer(grpcServer, image_folder_source_controller.New(client))
-	images_proto.RegisterImagesServiceServer(grpcServer, images_controller.New(client))
 	info_types_proto.RegisterInfoTypesServiceServer(grpcServer, info_types_controller.New(client))
 	price_type_proto.RegisterPriceTypeServiceServer(grpcServer, price_type_controller.New(client))
 	product_has_feature_proto.RegisterProductHasFeatureServiceServer(grpcServer, product_has_feature_controller.New(client))

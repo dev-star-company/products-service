@@ -18,7 +18,7 @@ func (c *controller) Get(ctx context.Context, in *products_proto.GetRequest) (*p
 		WithBrand().
 		WithVariantType().
 		WithProductReferences().
-		WithImages().
+		// WithImages().
 		Only(ctx)
 
 	if ent.IsNotFound(err) {

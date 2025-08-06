@@ -21,7 +21,7 @@ func (c *controller) Create(ctx context.Context, in *products_proto.CreateReques
 		SetBrandID(int(*in.BrandId)).
 		SetVariantTypeID(int(*in.VariantTypeId)).
 		SetProductReferencesID(int(*in.ProductReferencesId)).
-		SetImagesID(int(*in.ImageId)).
+		// SetImagesID(int(*in.ImageId)).
 		SetName(in.Name).
 		SetStock(int(in.Stock)).
 		Save(ctx)
