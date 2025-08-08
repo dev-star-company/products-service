@@ -4,6 +4,7 @@ import (
 	"entgo.io/ent"
 	"entgo.io/ent/schema/edge"
 	"entgo.io/ent/schema/field"
+	"entgo.io/ent/schema/index"
 )
 
 // PromotionHasProduct holds the schema definition for the PromotionHasProduct entity.
@@ -32,11 +33,17 @@ func (PromotionHasProduct) Edges() []ent.Edge {
 		edge.From("products", Products.Type).
 			Ref("promotion_has_product").
 			Field("products_id").
-			Unique(),     
+			Unique(),
 
 		edge.From("promotions", Promotions.Type).
 			Ref("promotion_has_product").
 			Field("promotions_id").
 			Unique(),
+	}
+}
+
+func (PromotionHasProduct) Indexes() []ent.Index {
+	return []ent.Index{
+		index.Fields("products_id", "promotions_id").Unique(),
 	}
 }

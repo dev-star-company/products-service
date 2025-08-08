@@ -15,7 +15,7 @@ type Category struct {
 func (Category) Fields() []ent.Field {
 	return []ent.Field{
 		field.Int("category_id").Nillable().Optional(),
-		field.String("name").Nillable(),
+		field.String("name").Nillable().Unique(),
 	}
 }
 

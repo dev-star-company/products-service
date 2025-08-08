@@ -4,6 +4,7 @@ import (
 	"entgo.io/ent"
 	"entgo.io/ent/schema/edge"
 	"entgo.io/ent/schema/field"
+	"entgo.io/ent/schema/index"
 )
 
 // ProductHasImage holds the schema definition for the ProductHasImage entity.
@@ -39,5 +40,11 @@ func (ProductHasImage) Edges() []ent.Edge {
 			Field("image_id").
 			Unique().
 			Required(),
+	}
+}
+
+func (ProductHasImage) Indexes() []ent.Index {
+	return []ent.Index{
+		index.Fields("product_id", "image_id").Unique(),
 	}
 }

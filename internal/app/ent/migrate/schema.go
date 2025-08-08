@@ -13,7 +13,7 @@ var (
 		{Name: "id", Type: field.TypeInt, Increment: true},
 		{Name: "created_at", Type: field.TypeTime},
 		{Name: "deleted_at", Type: field.TypeTime, Nullable: true},
-		{Name: "name", Type: field.TypeString},
+		{Name: "name", Type: field.TypeString, Unique: true},
 	}
 	// BrandsTable holds the schema information for the "brands" table.
 	BrandsTable = &schema.Table{
@@ -27,7 +27,7 @@ var (
 		{Name: "created_at", Type: field.TypeTime},
 		{Name: "deleted_at", Type: field.TypeTime, Nullable: true},
 		{Name: "category_id", Type: field.TypeInt, Nullable: true},
-		{Name: "name", Type: field.TypeString},
+		{Name: "name", Type: field.TypeString, Unique: true},
 		{Name: "category_children", Type: field.TypeInt, Nullable: true},
 	}
 	// CategoriesTable holds the schema information for the "categories" table.
@@ -235,6 +235,13 @@ var (
 				OnDelete:   schema.SetNull,
 			},
 		},
+		Indexes: []*schema.Index{
+			{
+				Name:    "producthasfeature_product_id_feature_id",
+				Unique:  true,
+				Columns: []*schema.Column{ProductHasFeaturesColumns[4], ProductHasFeaturesColumns[3]},
+			},
+		},
 	}
 	// ProductHasImagesColumns holds the columns for the "product_has_images" table.
 	ProductHasImagesColumns = []*schema.Column{
@@ -262,6 +269,13 @@ var (
 				Columns:    []*schema.Column{ProductHasImagesColumns[5]},
 				RefColumns: []*schema.Column{ProductsColumns[0]},
 				OnDelete:   schema.SetNull,
+			},
+		},
+		Indexes: []*schema.Index{
+			{
+				Name:    "producthasimage_product_id_image_id",
+				Unique:  true,
+				Columns: []*schema.Column{ProductHasImagesColumns[5], ProductHasImagesColumns[4]},
 			},
 		},
 	}
@@ -299,6 +313,13 @@ var (
 				OnDelete:   schema.SetNull,
 			},
 		},
+		Indexes: []*schema.Index{
+			{
+				Name:    "producthasinfo_product_id_product_info_id",
+				Unique:  true,
+				Columns: []*schema.Column{ProductHasInfosColumns[5], ProductHasInfosColumns[4]},
+			},
+		},
 	}
 	// ProductHasProductReferencesColumns holds the columns for the "product_has_product_references" table.
 	ProductHasProductReferencesColumns = []*schema.Column{
@@ -325,6 +346,13 @@ var (
 				Columns:    []*schema.Column{ProductHasProductReferencesColumns[4]},
 				RefColumns: []*schema.Column{ProductsColumns[0]},
 				OnDelete:   schema.SetNull,
+			},
+		},
+		Indexes: []*schema.Index{
+			{
+				Name:    "producthasproductreference_product_id_product_reference_id",
+				Unique:  true,
+				Columns: []*schema.Column{ProductHasProductReferencesColumns[4], ProductHasProductReferencesColumns[3]},
 			},
 		},
 	}
@@ -414,7 +442,7 @@ var (
 		{Name: "id", Type: field.TypeInt, Increment: true},
 		{Name: "created_at", Type: field.TypeTime},
 		{Name: "deleted_at", Type: field.TypeTime, Nullable: true},
-		{Name: "name", Type: field.TypeString},
+		{Name: "name", Type: field.TypeString, Unique: true},
 		{Name: "stock", Type: field.TypeInt},
 		{Name: "brand_id", Type: field.TypeInt, Nullable: true},
 		{Name: "category_id", Type: field.TypeInt, Nullable: true},
@@ -516,6 +544,13 @@ var (
 				OnDelete:   schema.SetNull,
 			},
 		},
+		Indexes: []*schema.Index{
+			{
+				Name:    "promotionhasproduct_products_id_promotions_id",
+				Unique:  true,
+				Columns: []*schema.Column{PromotionHasProductsColumns[4], PromotionHasProductsColumns[5]},
+			},
+		},
 	}
 	// PromotionsColumns holds the columns for the "promotions" table.
 	PromotionsColumns = []*schema.Column{
@@ -570,6 +605,13 @@ var (
 				Columns:    []*schema.Column{ToolHasProductsColumns[4]},
 				RefColumns: []*schema.Column{ToolsColumns[0]},
 				OnDelete:   schema.SetNull,
+			},
+		},
+		Indexes: []*schema.Index{
+			{
+				Name:    "toolhasproduct_products_id_tools_id",
+				Unique:  true,
+				Columns: []*schema.Column{ToolHasProductsColumns[3], ToolHasProductsColumns[4]},
 			},
 		},
 	}

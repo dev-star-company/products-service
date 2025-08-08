@@ -14,7 +14,7 @@ type Brand struct {
 // Fields of the Brand.
 func (Brand) Fields() []ent.Field {
 	return []ent.Field{
-		field.String("name").Nillable(),
+		field.String("name").Nillable().Unique(),
 	}
 }
 

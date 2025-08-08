@@ -4,6 +4,7 @@ import (
 	"entgo.io/ent"
 	"entgo.io/ent/schema/edge"
 	"entgo.io/ent/schema/field"
+	"entgo.io/ent/schema/index"
 )
 
 // ToolHasProduct holds the schema definition for the ToolHasProduct entity.
@@ -37,5 +38,11 @@ func (ToolHasProduct) Edges() []ent.Edge {
 			Ref("tool_has_product").
 			Field("tools_id").
 			Unique(),
+	}
+}
+
+func (ToolHasProduct) Indexes() []ent.Index {
+	return []ent.Index{
+		index.Fields("products_id", "tools_id").Unique(),
 	}
 }

@@ -4,6 +4,7 @@ import (
 	"entgo.io/ent"
 	"entgo.io/ent/schema/edge"
 	"entgo.io/ent/schema/field"
+	"entgo.io/ent/schema/index"
 )
 
 // ProductHasInfo holds the schema definition for the ProductHasInfo entity.
@@ -37,5 +38,11 @@ func (ProductHasInfo) Edges() []ent.Edge {
 			Ref("product_has_info").
 			Field("product_info_id").
 			Unique(),
+	}
+}
+
+func (ProductHasInfo) Indexes() []ent.Index {
+	return []ent.Index{
+		index.Fields("product_id", "product_info_id").Unique(),
 	}
 }

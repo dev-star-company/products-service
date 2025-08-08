@@ -19,7 +19,7 @@ func (Products) Fields() []ent.Field {
 		field.Int("variant_type_id").Nillable().Optional(),
 		field.Int("product_references_id").Nillable().Optional(),
 		field.Int("images_id").Nillable().Optional(),
-		field.String("name").Nillable(),
+		field.String("name").Nillable().Unique(),
 		field.Int("stock"),
 	}
 }

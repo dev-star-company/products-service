@@ -29,10 +29,14 @@ func (c *controller) Create(ctx context.Context, in *promotions_proto.CreateRequ
 		return nil, fmt.Errorf("invalid ending_datetime: %w", err)
 	}
 
+	if endTime.Before(startTime) {
+		return nil, fmt.Errorf("ending_datetime cannot be before starting_datetime")
+	}
+
 	create, err := c.Db.Promotions.Create().
 		SetName(in.Name).
 		SetStartingDatetime(startTime).
-		SetStartingDatetime(endTime).
+		SetEndingDatetime(endTime).
 		Save(ctx)
 
 	if err != nil {
