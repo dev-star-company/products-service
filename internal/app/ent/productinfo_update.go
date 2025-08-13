@@ -103,21 +103,6 @@ func (piu *ProductInfoUpdate) SetInfoType(i *InfoTypes) *ProductInfoUpdate {
 	return piu.SetInfoTypeID(i.ID)
 }
 
-// AddProductIDs adds the "products" edge to the ProductHasInfo entity by IDs.
-func (piu *ProductInfoUpdate) AddProductIDs(ids ...int) *ProductInfoUpdate {
-	piu.mutation.AddProductIDs(ids...)
-	return piu
-}
-
-// AddProducts adds the "products" edges to the ProductHasInfo entity.
-func (piu *ProductInfoUpdate) AddProducts(p ...*ProductHasInfo) *ProductInfoUpdate {
-	ids := make([]int, len(p))
-	for i := range p {
-		ids[i] = p[i].ID
-	}
-	return piu.AddProductIDs(ids...)
-}
-
 // AddProductHasInfoIDs adds the "product_has_info" edge to the ProductHasInfo entity by IDs.
 func (piu *ProductInfoUpdate) AddProductHasInfoIDs(ids ...int) *ProductInfoUpdate {
 	piu.mutation.AddProductHasInfoIDs(ids...)
@@ -142,27 +127,6 @@ func (piu *ProductInfoUpdate) Mutation() *ProductInfoMutation {
 func (piu *ProductInfoUpdate) ClearInfoType() *ProductInfoUpdate {
 	piu.mutation.ClearInfoType()
 	return piu
-}
-
-// ClearProducts clears all "products" edges to the ProductHasInfo entity.
-func (piu *ProductInfoUpdate) ClearProducts() *ProductInfoUpdate {
-	piu.mutation.ClearProducts()
-	return piu
-}
-
-// RemoveProductIDs removes the "products" edge to ProductHasInfo entities by IDs.
-func (piu *ProductInfoUpdate) RemoveProductIDs(ids ...int) *ProductInfoUpdate {
-	piu.mutation.RemoveProductIDs(ids...)
-	return piu
-}
-
-// RemoveProducts removes "products" edges to ProductHasInfo entities.
-func (piu *ProductInfoUpdate) RemoveProducts(p ...*ProductHasInfo) *ProductInfoUpdate {
-	ids := make([]int, len(p))
-	for i := range p {
-		ids[i] = p[i].ID
-	}
-	return piu.RemoveProductIDs(ids...)
 }
 
 // ClearProductHasInfo clears all "product_has_info" edges to the ProductHasInfo entity.
@@ -253,51 +217,6 @@ func (piu *ProductInfoUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(infotypes.FieldID, field.TypeInt),
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_spec.Edges.Add = append(_spec.Edges.Add, edge)
-	}
-	if piu.mutation.ProductsCleared() {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
-			Table:   productinfo.ProductsTable,
-			Columns: []string{productinfo.ProductsColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(producthasinfo.FieldID, field.TypeInt),
-			},
-		}
-		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
-	}
-	if nodes := piu.mutation.RemovedProductsIDs(); len(nodes) > 0 && !piu.mutation.ProductsCleared() {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
-			Table:   productinfo.ProductsTable,
-			Columns: []string{productinfo.ProductsColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(producthasinfo.FieldID, field.TypeInt),
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
-	}
-	if nodes := piu.mutation.ProductsIDs(); len(nodes) > 0 {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
-			Table:   productinfo.ProductsTable,
-			Columns: []string{productinfo.ProductsColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(producthasinfo.FieldID, field.TypeInt),
 			},
 		}
 		for _, k := range nodes {
@@ -443,21 +362,6 @@ func (piuo *ProductInfoUpdateOne) SetInfoType(i *InfoTypes) *ProductInfoUpdateOn
 	return piuo.SetInfoTypeID(i.ID)
 }
 
-// AddProductIDs adds the "products" edge to the ProductHasInfo entity by IDs.
-func (piuo *ProductInfoUpdateOne) AddProductIDs(ids ...int) *ProductInfoUpdateOne {
-	piuo.mutation.AddProductIDs(ids...)
-	return piuo
-}
-
-// AddProducts adds the "products" edges to the ProductHasInfo entity.
-func (piuo *ProductInfoUpdateOne) AddProducts(p ...*ProductHasInfo) *ProductInfoUpdateOne {
-	ids := make([]int, len(p))
-	for i := range p {
-		ids[i] = p[i].ID
-	}
-	return piuo.AddProductIDs(ids...)
-}
-
 // AddProductHasInfoIDs adds the "product_has_info" edge to the ProductHasInfo entity by IDs.
 func (piuo *ProductInfoUpdateOne) AddProductHasInfoIDs(ids ...int) *ProductInfoUpdateOne {
 	piuo.mutation.AddProductHasInfoIDs(ids...)
@@ -482,27 +386,6 @@ func (piuo *ProductInfoUpdateOne) Mutation() *ProductInfoMutation {
 func (piuo *ProductInfoUpdateOne) ClearInfoType() *ProductInfoUpdateOne {
 	piuo.mutation.ClearInfoType()
 	return piuo
-}
-
-// ClearProducts clears all "products" edges to the ProductHasInfo entity.
-func (piuo *ProductInfoUpdateOne) ClearProducts() *ProductInfoUpdateOne {
-	piuo.mutation.ClearProducts()
-	return piuo
-}
-
-// RemoveProductIDs removes the "products" edge to ProductHasInfo entities by IDs.
-func (piuo *ProductInfoUpdateOne) RemoveProductIDs(ids ...int) *ProductInfoUpdateOne {
-	piuo.mutation.RemoveProductIDs(ids...)
-	return piuo
-}
-
-// RemoveProducts removes "products" edges to ProductHasInfo entities.
-func (piuo *ProductInfoUpdateOne) RemoveProducts(p ...*ProductHasInfo) *ProductInfoUpdateOne {
-	ids := make([]int, len(p))
-	for i := range p {
-		ids[i] = p[i].ID
-	}
-	return piuo.RemoveProductIDs(ids...)
 }
 
 // ClearProductHasInfo clears all "product_has_info" edges to the ProductHasInfo entity.
@@ -623,51 +506,6 @@ func (piuo *ProductInfoUpdateOne) sqlSave(ctx context.Context) (_node *ProductIn
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(infotypes.FieldID, field.TypeInt),
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_spec.Edges.Add = append(_spec.Edges.Add, edge)
-	}
-	if piuo.mutation.ProductsCleared() {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
-			Table:   productinfo.ProductsTable,
-			Columns: []string{productinfo.ProductsColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(producthasinfo.FieldID, field.TypeInt),
-			},
-		}
-		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
-	}
-	if nodes := piuo.mutation.RemovedProductsIDs(); len(nodes) > 0 && !piuo.mutation.ProductsCleared() {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
-			Table:   productinfo.ProductsTable,
-			Columns: []string{productinfo.ProductsColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(producthasinfo.FieldID, field.TypeInt),
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
-	}
-	if nodes := piuo.mutation.ProductsIDs(); len(nodes) > 0 {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
-			Table:   productinfo.ProductsTable,
-			Columns: []string{productinfo.ProductsColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(producthasinfo.FieldID, field.TypeInt),
 			},
 		}
 		for _, k := range nodes {

@@ -37,10 +37,6 @@ func (c *controller) Update(ctx context.Context, in *products_proto.UpdateReques
 		productsQ.SetProductReferencesID(int(*in.ProductReferencesId))
 	}
 
-	// if in.ImageId != nil && *in.ImageId > 0 {
-	// 	productsQ.SetImagesID(int(*in.ImageId))
-	// }
-
 	if in.Name != nil && *in.Name != "" {
 		productsQ.SetName(string(*in.Name))
 	}

@@ -9,7 +9,6 @@ import (
 	"products-service/internal/app/ent/imagefolderpath"
 	"products-service/internal/app/ent/images"
 	"products-service/internal/app/ent/producthasimage"
-	"products-service/internal/app/ent/products"
 	"time"
 
 	"entgo.io/ent/dialect/sql/sqlgraph"
@@ -72,21 +71,6 @@ func (ic *ImagesCreate) SetImageFolderPathID(id int) *ImagesCreate {
 // SetImageFolderPath sets the "image_folder_path" edge to the ImageFolderPath entity.
 func (ic *ImagesCreate) SetImageFolderPath(i *ImageFolderPath) *ImagesCreate {
 	return ic.SetImageFolderPathID(i.ID)
-}
-
-// AddProductIDs adds the "products" edge to the Products entity by IDs.
-func (ic *ImagesCreate) AddProductIDs(ids ...int) *ImagesCreate {
-	ic.mutation.AddProductIDs(ids...)
-	return ic
-}
-
-// AddProducts adds the "products" edges to the Products entity.
-func (ic *ImagesCreate) AddProducts(p ...*Products) *ImagesCreate {
-	ids := make([]int, len(p))
-	for i := range p {
-		ids[i] = p[i].ID
-	}
-	return ic.AddProductIDs(ids...)
 }
 
 // AddProductHasImageIDs adds the "product_has_image" edge to the ProductHasImage entity by IDs.
@@ -216,22 +200,6 @@ func (ic *ImagesCreate) createSpec() (*Images, *sqlgraph.CreateSpec) {
 			edge.Target.Nodes = append(edge.Target.Nodes, k)
 		}
 		_node.image_folder_path_images = &nodes[0]
-		_spec.Edges = append(_spec.Edges, edge)
-	}
-	if nodes := ic.mutation.ProductsIDs(); len(nodes) > 0 {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
-			Table:   images.ProductsTable,
-			Columns: []string{images.ProductsColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(products.FieldID, field.TypeInt),
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
 		_spec.Edges = append(_spec.Edges, edge)
 	}
 	if nodes := ic.mutation.ProductHasImageIDs(); len(nodes) > 0 {

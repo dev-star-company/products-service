@@ -89,21 +89,6 @@ func (pic *ProductInfoCreate) SetInfoType(i *InfoTypes) *ProductInfoCreate {
 	return pic.SetInfoTypeID(i.ID)
 }
 
-// AddProductIDs adds the "products" edge to the ProductHasInfo entity by IDs.
-func (pic *ProductInfoCreate) AddProductIDs(ids ...int) *ProductInfoCreate {
-	pic.mutation.AddProductIDs(ids...)
-	return pic
-}
-
-// AddProducts adds the "products" edges to the ProductHasInfo entity.
-func (pic *ProductInfoCreate) AddProducts(p ...*ProductHasInfo) *ProductInfoCreate {
-	ids := make([]int, len(p))
-	for i := range p {
-		ids[i] = p[i].ID
-	}
-	return pic.AddProductIDs(ids...)
-}
-
 // AddProductHasInfoIDs adds the "product_has_info" edge to the ProductHasInfo entity by IDs.
 func (pic *ProductInfoCreate) AddProductHasInfoIDs(ids ...int) *ProductInfoCreate {
 	pic.mutation.AddProductHasInfoIDs(ids...)
@@ -221,22 +206,6 @@ func (pic *ProductInfoCreate) createSpec() (*ProductInfo, *sqlgraph.CreateSpec) 
 			edge.Target.Nodes = append(edge.Target.Nodes, k)
 		}
 		_node.InfoTypesID = &nodes[0]
-		_spec.Edges = append(_spec.Edges, edge)
-	}
-	if nodes := pic.mutation.ProductsIDs(); len(nodes) > 0 {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
-			Table:   productinfo.ProductsTable,
-			Columns: []string{productinfo.ProductsColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(producthasinfo.FieldID, field.TypeInt),
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
 		_spec.Edges = append(_spec.Edges, edge)
 	}
 	if nodes := pic.mutation.ProductHasInfoIDs(); len(nodes) > 0 {

@@ -32,7 +32,6 @@ func (Images) Edges() []ent.Edge {
 			Ref("images").
 			Unique().
 			Required(),
-		edge.To("products", Products.Type),
 		edge.To("product_has_image", ProductHasImage.Type),
 	}
 }

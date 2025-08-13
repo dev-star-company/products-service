@@ -37,13 +37,11 @@ type Images struct {
 type ImagesEdges struct {
 	// ImageFolderPath holds the value of the image_folder_path edge.
 	ImageFolderPath *ImageFolderPath `json:"image_folder_path,omitempty"`
-	// Products holds the value of the products edge.
-	Products []*Products `json:"products,omitempty"`
 	// ProductHasImage holds the value of the product_has_image edge.
 	ProductHasImage []*ProductHasImage `json:"product_has_image,omitempty"`
 	// loadedTypes holds the information for reporting if a
 	// type was loaded (or requested) in eager-loading or not.
-	loadedTypes [3]bool
+	loadedTypes [2]bool
 }
 
 // ImageFolderPathOrErr returns the ImageFolderPath value or an error if the edge
@@ -57,19 +55,10 @@ func (e ImagesEdges) ImageFolderPathOrErr() (*ImageFolderPath, error) {
 	return nil, &NotLoadedError{edge: "image_folder_path"}
 }
 
-// ProductsOrErr returns the Products value or an error if the edge
-// was not loaded in eager-loading.
-func (e ImagesEdges) ProductsOrErr() ([]*Products, error) {
-	if e.loadedTypes[1] {
-		return e.Products, nil
-	}
-	return nil, &NotLoadedError{edge: "products"}
-}
-
 // ProductHasImageOrErr returns the ProductHasImage value or an error if the edge
 // was not loaded in eager-loading.
 func (e ImagesEdges) ProductHasImageOrErr() ([]*ProductHasImage, error) {
-	if e.loadedTypes[2] {
+	if e.loadedTypes[1] {
 		return e.ProductHasImage, nil
 	}
 	return nil, &NotLoadedError{edge: "product_has_image"}
@@ -159,11 +148,6 @@ func (i *Images) Value(name string) (ent.Value, error) {
 // QueryImageFolderPath queries the "image_folder_path" edge of the Images entity.
 func (i *Images) QueryImageFolderPath() *ImageFolderPathQuery {
 	return NewImagesClient(i.config).QueryImageFolderPath(i)
-}
-
-// QueryProducts queries the "products" edge of the Images entity.
-func (i *Images) QueryProducts() *ProductsQuery {
-	return NewImagesClient(i.config).QueryProducts(i)
 }
 
 // QueryProductHasImage queries the "product_has_image" edge of the Images entity.

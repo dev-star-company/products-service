@@ -41,10 +41,6 @@ func (c *controller) List(ctx context.Context, in *products_proto.ListRequest) (
 		query = query.Where(products.ProductReferencesID(int(*in.ProductReferencesId)))
 	}
 
-	if in.ImageId != nil {
-		query = query.Where(products.ImagesID(int(*in.ImageId)))
-	}
-
 	count, err := query.Count(ctx)
 	if err != nil {
 		return nil, errs.ListingError("querying products", err)

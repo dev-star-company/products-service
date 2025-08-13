@@ -9,6 +9,7 @@ import (
 	"products-service/internal/app/ent/features"
 	"products-service/internal/app/ent/featuresunitvalues"
 	"products-service/internal/app/ent/featuresvalues"
+	"products-service/internal/app/ent/featuresvaluestypes"
 	"products-service/internal/app/ent/predicate"
 
 	"entgo.io/ent"
@@ -20,13 +21,13 @@ import (
 // FeaturesValuesQuery is the builder for querying FeaturesValues entities.
 type FeaturesValuesQuery struct {
 	config
-	ctx                   *QueryContext
-	order                 []featuresvalues.OrderOption
-	inters                []Interceptor
-	predicates            []predicate.FeaturesValues
-	withFeature           *FeaturesQuery
-	withFeatureUnitValues *FeaturesUnitValuesQuery
-	withFKs               bool
+	ctx                    *QueryContext
+	order                  []featuresvalues.OrderOption
+	inters                 []Interceptor
+	predicates             []predicate.FeaturesValues
+	withFeatures           *FeaturesQuery
+	withFeatureUnitValues  *FeaturesUnitValuesQuery
+	withFeatureValuesTypes *FeaturesValuesTypesQuery
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
 	path func(context.Context) (*sql.Selector, error)
@@ -63,8 +64,8 @@ func (fvq *FeaturesValuesQuery) Order(o ...featuresvalues.OrderOption) *Features
 	return fvq
 }
 
-// QueryFeature chains the current query on the "feature" edge.
-func (fvq *FeaturesValuesQuery) QueryFeature() *FeaturesQuery {
+// QueryFeatures chains the current query on the "features" edge.
+func (fvq *FeaturesValuesQuery) QueryFeatures() *FeaturesQuery {
 	query := (&FeaturesClient{config: fvq.config}).Query()
 	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
 		if err := fvq.prepareQuery(ctx); err != nil {
@@ -77,7 +78,7 @@ func (fvq *FeaturesValuesQuery) QueryFeature() *FeaturesQuery {
 		step := sqlgraph.NewStep(
 			sqlgraph.From(featuresvalues.Table, featuresvalues.FieldID, selector),
 			sqlgraph.To(features.Table, features.FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, true, featuresvalues.FeatureTable, featuresvalues.FeatureColumn),
+			sqlgraph.Edge(sqlgraph.M2O, true, featuresvalues.FeaturesTable, featuresvalues.FeaturesColumn),
 		)
 		fromU = sqlgraph.SetNeighbors(fvq.driver.Dialect(), step)
 		return fromU, nil
@@ -100,6 +101,28 @@ func (fvq *FeaturesValuesQuery) QueryFeatureUnitValues() *FeaturesUnitValuesQuer
 			sqlgraph.From(featuresvalues.Table, featuresvalues.FieldID, selector),
 			sqlgraph.To(featuresunitvalues.Table, featuresunitvalues.FieldID),
 			sqlgraph.Edge(sqlgraph.M2O, true, featuresvalues.FeatureUnitValuesTable, featuresvalues.FeatureUnitValuesColumn),
+		)
+		fromU = sqlgraph.SetNeighbors(fvq.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
+}
+
+// QueryFeatureValuesTypes chains the current query on the "feature_values_types" edge.
+func (fvq *FeaturesValuesQuery) QueryFeatureValuesTypes() *FeaturesValuesTypesQuery {
+	query := (&FeaturesValuesTypesClient{config: fvq.config}).Query()
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := fvq.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		selector := fvq.sqlQuery(ctx)
+		if err := selector.Err(); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(featuresvalues.Table, featuresvalues.FieldID, selector),
+			sqlgraph.To(featuresvaluestypes.Table, featuresvaluestypes.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, featuresvalues.FeatureValuesTypesTable, featuresvalues.FeatureValuesTypesColumn),
 		)
 		fromU = sqlgraph.SetNeighbors(fvq.driver.Dialect(), step)
 		return fromU, nil
@@ -294,27 +317,28 @@ func (fvq *FeaturesValuesQuery) Clone() *FeaturesValuesQuery {
 		return nil
 	}
 	return &FeaturesValuesQuery{
-		config:                fvq.config,
-		ctx:                   fvq.ctx.Clone(),
-		order:                 append([]featuresvalues.OrderOption{}, fvq.order...),
-		inters:                append([]Interceptor{}, fvq.inters...),
-		predicates:            append([]predicate.FeaturesValues{}, fvq.predicates...),
-		withFeature:           fvq.withFeature.Clone(),
-		withFeatureUnitValues: fvq.withFeatureUnitValues.Clone(),
+		config:                 fvq.config,
+		ctx:                    fvq.ctx.Clone(),
+		order:                  append([]featuresvalues.OrderOption{}, fvq.order...),
+		inters:                 append([]Interceptor{}, fvq.inters...),
+		predicates:             append([]predicate.FeaturesValues{}, fvq.predicates...),
+		withFeatures:           fvq.withFeatures.Clone(),
+		withFeatureUnitValues:  fvq.withFeatureUnitValues.Clone(),
+		withFeatureValuesTypes: fvq.withFeatureValuesTypes.Clone(),
 		// clone intermediate query.
 		sql:  fvq.sql.Clone(),
 		path: fvq.path,
 	}
 }
 
-// WithFeature tells the query-builder to eager-load the nodes that are connected to
-// the "feature" edge. The optional arguments are used to configure the query builder of the edge.
-func (fvq *FeaturesValuesQuery) WithFeature(opts ...func(*FeaturesQuery)) *FeaturesValuesQuery {
+// WithFeatures tells the query-builder to eager-load the nodes that are connected to
+// the "features" edge. The optional arguments are used to configure the query builder of the edge.
+func (fvq *FeaturesValuesQuery) WithFeatures(opts ...func(*FeaturesQuery)) *FeaturesValuesQuery {
 	query := (&FeaturesClient{config: fvq.config}).Query()
 	for _, opt := range opts {
 		opt(query)
 	}
-	fvq.withFeature = query
+	fvq.withFeatures = query
 	return fvq
 }
 
@@ -326,6 +350,17 @@ func (fvq *FeaturesValuesQuery) WithFeatureUnitValues(opts ...func(*FeaturesUnit
 		opt(query)
 	}
 	fvq.withFeatureUnitValues = query
+	return fvq
+}
+
+// WithFeatureValuesTypes tells the query-builder to eager-load the nodes that are connected to
+// the "feature_values_types" edge. The optional arguments are used to configure the query builder of the edge.
+func (fvq *FeaturesValuesQuery) WithFeatureValuesTypes(opts ...func(*FeaturesValuesTypesQuery)) *FeaturesValuesQuery {
+	query := (&FeaturesValuesTypesClient{config: fvq.config}).Query()
+	for _, opt := range opts {
+		opt(query)
+	}
+	fvq.withFeatureValuesTypes = query
 	return fvq
 }
 
@@ -406,16 +441,13 @@ func (fvq *FeaturesValuesQuery) prepareQuery(ctx context.Context) error {
 func (fvq *FeaturesValuesQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*FeaturesValues, error) {
 	var (
 		nodes       = []*FeaturesValues{}
-		withFKs     = fvq.withFKs
 		_spec       = fvq.querySpec()
-		loadedTypes = [2]bool{
-			fvq.withFeature != nil,
+		loadedTypes = [3]bool{
+			fvq.withFeatures != nil,
 			fvq.withFeatureUnitValues != nil,
+			fvq.withFeatureValuesTypes != nil,
 		}
 	)
-	if withFKs {
-		_spec.Node.Columns = append(_spec.Node.Columns, featuresvalues.ForeignKeys...)
-	}
 	_spec.ScanValues = func(columns []string) ([]any, error) {
 		return (*FeaturesValues).scanValues(nil, columns)
 	}
@@ -434,9 +466,9 @@ func (fvq *FeaturesValuesQuery) sqlAll(ctx context.Context, hooks ...queryHook) 
 	if len(nodes) == 0 {
 		return nodes, nil
 	}
-	if query := fvq.withFeature; query != nil {
-		if err := fvq.loadFeature(ctx, query, nodes, nil,
-			func(n *FeaturesValues, e *Features) { n.Edges.Feature = e }); err != nil {
+	if query := fvq.withFeatures; query != nil {
+		if err := fvq.loadFeatures(ctx, query, nodes, nil,
+			func(n *FeaturesValues, e *Features) { n.Edges.Features = e }); err != nil {
 			return nil, err
 		}
 	}
@@ -446,17 +478,23 @@ func (fvq *FeaturesValuesQuery) sqlAll(ctx context.Context, hooks ...queryHook) 
 			return nil, err
 		}
 	}
+	if query := fvq.withFeatureValuesTypes; query != nil {
+		if err := fvq.loadFeatureValuesTypes(ctx, query, nodes, nil,
+			func(n *FeaturesValues, e *FeaturesValuesTypes) { n.Edges.FeatureValuesTypes = e }); err != nil {
+			return nil, err
+		}
+	}
 	return nodes, nil
 }
 
-func (fvq *FeaturesValuesQuery) loadFeature(ctx context.Context, query *FeaturesQuery, nodes []*FeaturesValues, init func(*FeaturesValues), assign func(*FeaturesValues, *Features)) error {
+func (fvq *FeaturesValuesQuery) loadFeatures(ctx context.Context, query *FeaturesQuery, nodes []*FeaturesValues, init func(*FeaturesValues), assign func(*FeaturesValues, *Features)) error {
 	ids := make([]int, 0, len(nodes))
 	nodeids := make(map[int][]*FeaturesValues)
 	for i := range nodes {
-		if nodes[i].FeatureID == nil {
+		if nodes[i].FeaturesID == nil {
 			continue
 		}
-		fk := *nodes[i].FeatureID
+		fk := *nodes[i].FeaturesID
 		if _, ok := nodeids[fk]; !ok {
 			ids = append(ids, fk)
 		}
@@ -473,7 +511,7 @@ func (fvq *FeaturesValuesQuery) loadFeature(ctx context.Context, query *Features
 	for _, n := range neighbors {
 		nodes, ok := nodeids[n.ID]
 		if !ok {
-			return fmt.Errorf(`unexpected foreign-key "feature_id" returned %v`, n.ID)
+			return fmt.Errorf(`unexpected foreign-key "features_id" returned %v`, n.ID)
 		}
 		for i := range nodes {
 			assign(nodes[i], n)
@@ -513,6 +551,38 @@ func (fvq *FeaturesValuesQuery) loadFeatureUnitValues(ctx context.Context, query
 	}
 	return nil
 }
+func (fvq *FeaturesValuesQuery) loadFeatureValuesTypes(ctx context.Context, query *FeaturesValuesTypesQuery, nodes []*FeaturesValues, init func(*FeaturesValues), assign func(*FeaturesValues, *FeaturesValuesTypes)) error {
+	ids := make([]int, 0, len(nodes))
+	nodeids := make(map[int][]*FeaturesValues)
+	for i := range nodes {
+		if nodes[i].FeatureValuesTypesID == nil {
+			continue
+		}
+		fk := *nodes[i].FeatureValuesTypesID
+		if _, ok := nodeids[fk]; !ok {
+			ids = append(ids, fk)
+		}
+		nodeids[fk] = append(nodeids[fk], nodes[i])
+	}
+	if len(ids) == 0 {
+		return nil
+	}
+	query.Where(featuresvaluestypes.IDIn(ids...))
+	neighbors, err := query.All(ctx)
+	if err != nil {
+		return err
+	}
+	for _, n := range neighbors {
+		nodes, ok := nodeids[n.ID]
+		if !ok {
+			return fmt.Errorf(`unexpected foreign-key "feature_values_types_id" returned %v`, n.ID)
+		}
+		for i := range nodes {
+			assign(nodes[i], n)
+		}
+	}
+	return nil
+}
 
 func (fvq *FeaturesValuesQuery) sqlCount(ctx context.Context) (int, error) {
 	_spec := fvq.querySpec()
@@ -539,11 +609,14 @@ func (fvq *FeaturesValuesQuery) querySpec() *sqlgraph.QuerySpec {
 				_spec.Node.Columns = append(_spec.Node.Columns, fields[i])
 			}
 		}
-		if fvq.withFeature != nil {
-			_spec.Node.AddColumnOnce(featuresvalues.FieldFeatureID)
+		if fvq.withFeatures != nil {
+			_spec.Node.AddColumnOnce(featuresvalues.FieldFeaturesID)
 		}
 		if fvq.withFeatureUnitValues != nil {
 			_spec.Node.AddColumnOnce(featuresvalues.FieldFeatureUnitValuesID)
+		}
+		if fvq.withFeatureValuesTypes != nil {
+			_spec.Node.AddColumnOnce(featuresvalues.FieldFeatureValuesTypesID)
 		}
 	}
 	if ps := fvq.predicates; len(ps) > 0 {

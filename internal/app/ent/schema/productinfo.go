@@ -32,7 +32,6 @@ func (ProductInfo) Edges() []ent.Edge {
 			Ref("product_info").
 			Field("info_types_id").
 			Unique(),
-		edge.To("products", ProductHasInfo.Type),
 		edge.To("product_has_info", ProductHasInfo.Type),
 	}
 }

@@ -39,7 +39,7 @@ const (
 	// It exists in this package in order to avoid circular dependency with the "featuresvalues" package.
 	FeatureValuesInverseTable = "features_values"
 	// FeatureValuesColumn is the table column denoting the feature_values relation/edge.
-	FeatureValuesColumn = "features_values_types_feature_values"
+	FeatureValuesColumn = "feature_values_types_id"
 )
 
 // Columns holds all SQL columns for featuresvaluestypes fields.

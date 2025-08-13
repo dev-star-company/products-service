@@ -1168,15 +1168,15 @@ func (c *FeaturesValuesClient) GetX(ctx context.Context, id int) *FeaturesValues
 	return obj
 }
 
-// QueryFeature queries the feature edge of a FeaturesValues.
-func (c *FeaturesValuesClient) QueryFeature(fv *FeaturesValues) *FeaturesQuery {
+// QueryFeatures queries the features edge of a FeaturesValues.
+func (c *FeaturesValuesClient) QueryFeatures(fv *FeaturesValues) *FeaturesQuery {
 	query := (&FeaturesClient{config: c.config}).Query()
 	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
 		id := fv.ID
 		step := sqlgraph.NewStep(
 			sqlgraph.From(featuresvalues.Table, featuresvalues.FieldID, id),
 			sqlgraph.To(features.Table, features.FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, true, featuresvalues.FeatureTable, featuresvalues.FeatureColumn),
+			sqlgraph.Edge(sqlgraph.M2O, true, featuresvalues.FeaturesTable, featuresvalues.FeaturesColumn),
 		)
 		fromV = sqlgraph.Neighbors(fv.driver.Dialect(), step)
 		return fromV, nil
@@ -1193,6 +1193,22 @@ func (c *FeaturesValuesClient) QueryFeatureUnitValues(fv *FeaturesValues) *Featu
 			sqlgraph.From(featuresvalues.Table, featuresvalues.FieldID, id),
 			sqlgraph.To(featuresunitvalues.Table, featuresunitvalues.FieldID),
 			sqlgraph.Edge(sqlgraph.M2O, true, featuresvalues.FeatureUnitValuesTable, featuresvalues.FeatureUnitValuesColumn),
+		)
+		fromV = sqlgraph.Neighbors(fv.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryFeatureValuesTypes queries the feature_values_types edge of a FeaturesValues.
+func (c *FeaturesValuesClient) QueryFeatureValuesTypes(fv *FeaturesValues) *FeaturesValuesTypesQuery {
+	query := (&FeaturesValuesTypesClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := fv.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(featuresvalues.Table, featuresvalues.FieldID, id),
+			sqlgraph.To(featuresvaluestypes.Table, featuresvaluestypes.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, featuresvalues.FeatureValuesTypesTable, featuresvalues.FeatureValuesTypesColumn),
 		)
 		fromV = sqlgraph.Neighbors(fv.driver.Dialect(), step)
 		return fromV, nil
@@ -1821,22 +1837,6 @@ func (c *ImagesClient) QueryImageFolderPath(i *Images) *ImageFolderPathQuery {
 			sqlgraph.From(images.Table, images.FieldID, id),
 			sqlgraph.To(imagefolderpath.Table, imagefolderpath.FieldID),
 			sqlgraph.Edge(sqlgraph.M2O, true, images.ImageFolderPathTable, images.ImageFolderPathColumn),
-		)
-		fromV = sqlgraph.Neighbors(i.driver.Dialect(), step)
-		return fromV, nil
-	}
-	return query
-}
-
-// QueryProducts queries the products edge of a Images.
-func (c *ImagesClient) QueryProducts(i *Images) *ProductsQuery {
-	query := (&ProductsClient{config: c.config}).Query()
-	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
-		id := i.ID
-		step := sqlgraph.NewStep(
-			sqlgraph.From(images.Table, images.FieldID, id),
-			sqlgraph.To(products.Table, products.FieldID),
-			sqlgraph.Edge(sqlgraph.O2M, false, images.ProductsTable, images.ProductsColumn),
 		)
 		fromV = sqlgraph.Neighbors(i.driver.Dialect(), step)
 		return fromV, nil
@@ -2967,22 +2967,6 @@ func (c *ProductInfoClient) QueryInfoType(pi *ProductInfo) *InfoTypesQuery {
 	return query
 }
 
-// QueryProducts queries the products edge of a ProductInfo.
-func (c *ProductInfoClient) QueryProducts(pi *ProductInfo) *ProductHasInfoQuery {
-	query := (&ProductHasInfoClient{config: c.config}).Query()
-	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
-		id := pi.ID
-		step := sqlgraph.NewStep(
-			sqlgraph.From(productinfo.Table, productinfo.FieldID, id),
-			sqlgraph.To(producthasinfo.Table, producthasinfo.FieldID),
-			sqlgraph.Edge(sqlgraph.O2M, false, productinfo.ProductsTable, productinfo.ProductsColumn),
-		)
-		fromV = sqlgraph.Neighbors(pi.driver.Dialect(), step)
-		return fromV, nil
-	}
-	return query
-}
-
 // QueryProductHasInfo queries the product_has_info edge of a ProductInfo.
 func (c *ProductInfoClient) QueryProductHasInfo(pi *ProductInfo) *ProductHasInfoQuery {
 	query := (&ProductHasInfoClient{config: c.config}).Query()
@@ -3535,22 +3519,6 @@ func (c *ProductsClient) QueryProductReferences(pr *Products) *ProductReferences
 			sqlgraph.From(products.Table, products.FieldID, id),
 			sqlgraph.To(productreferences.Table, productreferences.FieldID),
 			sqlgraph.Edge(sqlgraph.M2O, true, products.ProductReferencesTable, products.ProductReferencesColumn),
-		)
-		fromV = sqlgraph.Neighbors(pr.driver.Dialect(), step)
-		return fromV, nil
-	}
-	return query
-}
-
-// QueryImages queries the images edge of a Products.
-func (c *ProductsClient) QueryImages(pr *Products) *ImagesQuery {
-	query := (&ImagesClient{config: c.config}).Query()
-	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
-		id := pr.ID
-		step := sqlgraph.NewStep(
-			sqlgraph.From(products.Table, products.FieldID, id),
-			sqlgraph.To(images.Table, images.FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, true, products.ImagesTable, products.ImagesColumn),
 		)
 		fromV = sqlgraph.Neighbors(pr.driver.Dialect(), step)
 		return fromV, nil

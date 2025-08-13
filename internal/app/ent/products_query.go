@@ -9,7 +9,6 @@ import (
 	"math"
 	"products-service/internal/app/ent/brand"
 	"products-service/internal/app/ent/category"
-	"products-service/internal/app/ent/images"
 	"products-service/internal/app/ent/predicate"
 	"products-service/internal/app/ent/producthasfeature"
 	"products-service/internal/app/ent/producthasimage"
@@ -39,7 +38,6 @@ type ProductsQuery struct {
 	withBrand                      *BrandQuery
 	withVariantType                *VariantTypeQuery
 	withProductReferences          *ProductReferencesQuery
-	withImages                     *ImagesQuery
 	withProductHasImage            *ProductHasImageQuery
 	withPromotionHasProduct        *PromotionHasProductQuery
 	withToolHasProduct             *ToolHasProductQuery
@@ -165,28 +163,6 @@ func (pq *ProductsQuery) QueryProductReferences() *ProductReferencesQuery {
 			sqlgraph.From(products.Table, products.FieldID, selector),
 			sqlgraph.To(productreferences.Table, productreferences.FieldID),
 			sqlgraph.Edge(sqlgraph.M2O, true, products.ProductReferencesTable, products.ProductReferencesColumn),
-		)
-		fromU = sqlgraph.SetNeighbors(pq.driver.Dialect(), step)
-		return fromU, nil
-	}
-	return query
-}
-
-// QueryImages chains the current query on the "images" edge.
-func (pq *ProductsQuery) QueryImages() *ImagesQuery {
-	query := (&ImagesClient{config: pq.config}).Query()
-	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
-		if err := pq.prepareQuery(ctx); err != nil {
-			return nil, err
-		}
-		selector := pq.sqlQuery(ctx)
-		if err := selector.Err(); err != nil {
-			return nil, err
-		}
-		step := sqlgraph.NewStep(
-			sqlgraph.From(products.Table, products.FieldID, selector),
-			sqlgraph.To(images.Table, images.FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, true, products.ImagesTable, products.ImagesColumn),
 		)
 		fromU = sqlgraph.SetNeighbors(pq.driver.Dialect(), step)
 		return fromU, nil
@@ -544,7 +520,6 @@ func (pq *ProductsQuery) Clone() *ProductsQuery {
 		withBrand:                      pq.withBrand.Clone(),
 		withVariantType:                pq.withVariantType.Clone(),
 		withProductReferences:          pq.withProductReferences.Clone(),
-		withImages:                     pq.withImages.Clone(),
 		withProductHasImage:            pq.withProductHasImage.Clone(),
 		withPromotionHasProduct:        pq.withPromotionHasProduct.Clone(),
 		withToolHasProduct:             pq.withToolHasProduct.Clone(),
@@ -599,17 +574,6 @@ func (pq *ProductsQuery) WithProductReferences(opts ...func(*ProductReferencesQu
 		opt(query)
 	}
 	pq.withProductReferences = query
-	return pq
-}
-
-// WithImages tells the query-builder to eager-load the nodes that are connected to
-// the "images" edge. The optional arguments are used to configure the query builder of the edge.
-func (pq *ProductsQuery) WithImages(opts ...func(*ImagesQuery)) *ProductsQuery {
-	query := (&ImagesClient{config: pq.config}).Query()
-	for _, opt := range opts {
-		opt(query)
-	}
-	pq.withImages = query
 	return pq
 }
 
@@ -769,12 +733,11 @@ func (pq *ProductsQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Pro
 		nodes       = []*Products{}
 		withFKs     = pq.withFKs
 		_spec       = pq.querySpec()
-		loadedTypes = [12]bool{
+		loadedTypes = [11]bool{
 			pq.withCategory != nil,
 			pq.withBrand != nil,
 			pq.withVariantType != nil,
 			pq.withProductReferences != nil,
-			pq.withImages != nil,
 			pq.withProductHasImage != nil,
 			pq.withPromotionHasProduct != nil,
 			pq.withToolHasProduct != nil,
@@ -826,12 +789,6 @@ func (pq *ProductsQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Pro
 	if query := pq.withProductReferences; query != nil {
 		if err := pq.loadProductReferences(ctx, query, nodes, nil,
 			func(n *Products, e *ProductReferences) { n.Edges.ProductReferences = e }); err != nil {
-			return nil, err
-		}
-	}
-	if query := pq.withImages; query != nil {
-		if err := pq.loadImages(ctx, query, nodes, nil,
-			func(n *Products, e *Images) { n.Edges.Images = e }); err != nil {
 			return nil, err
 		}
 	}
@@ -1021,38 +978,6 @@ func (pq *ProductsQuery) loadProductReferences(ctx context.Context, query *Produ
 	}
 	return nil
 }
-func (pq *ProductsQuery) loadImages(ctx context.Context, query *ImagesQuery, nodes []*Products, init func(*Products), assign func(*Products, *Images)) error {
-	ids := make([]int, 0, len(nodes))
-	nodeids := make(map[int][]*Products)
-	for i := range nodes {
-		if nodes[i].ImagesID == nil {
-			continue
-		}
-		fk := *nodes[i].ImagesID
-		if _, ok := nodeids[fk]; !ok {
-			ids = append(ids, fk)
-		}
-		nodeids[fk] = append(nodeids[fk], nodes[i])
-	}
-	if len(ids) == 0 {
-		return nil
-	}
-	query.Where(images.IDIn(ids...))
-	neighbors, err := query.All(ctx)
-	if err != nil {
-		return err
-	}
-	for _, n := range neighbors {
-		nodes, ok := nodeids[n.ID]
-		if !ok {
-			return fmt.Errorf(`unexpected foreign-key "images_id" returned %v`, n.ID)
-		}
-		for i := range nodes {
-			assign(nodes[i], n)
-		}
-	}
-	return nil
-}
 func (pq *ProductsQuery) loadProductHasImage(ctx context.Context, query *ProductHasImageQuery, nodes []*Products, init func(*Products), assign func(*Products, *ProductHasImage)) error {
 	fks := make([]driver.Value, 0, len(nodes))
 	nodeids := make(map[int]*Products)
@@ -1195,7 +1120,6 @@ func (pq *ProductsQuery) loadProductHasInfo(ctx context.Context, query *ProductH
 			init(nodes[i])
 		}
 	}
-	query.withFKs = true
 	if len(query.ctx.Fields) > 0 {
 		query.ctx.AppendFieldOnce(producthasinfo.FieldProductID)
 	}
@@ -1322,9 +1246,6 @@ func (pq *ProductsQuery) querySpec() *sqlgraph.QuerySpec {
 		}
 		if pq.withProductReferences != nil {
 			_spec.Node.AddColumnOnce(products.FieldProductReferencesID)
-		}
-		if pq.withImages != nil {
-			_spec.Node.AddColumnOnce(products.FieldImagesID)
 		}
 	}
 	if ps := pq.predicates; len(ps) > 0 {

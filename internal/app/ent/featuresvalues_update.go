@@ -9,6 +9,7 @@ import (
 	"products-service/internal/app/ent/features"
 	"products-service/internal/app/ent/featuresunitvalues"
 	"products-service/internal/app/ent/featuresvalues"
+	"products-service/internal/app/ent/featuresvaluestypes"
 	"products-service/internal/app/ent/predicate"
 	"time"
 
@@ -50,16 +51,16 @@ func (fvu *FeaturesValuesUpdate) ClearDeletedAt() *FeaturesValuesUpdate {
 	return fvu
 }
 
-// SetFeatureID sets the "feature_id" field.
-func (fvu *FeaturesValuesUpdate) SetFeatureID(i int) *FeaturesValuesUpdate {
-	fvu.mutation.SetFeatureID(i)
+// SetFeaturesID sets the "features_id" field.
+func (fvu *FeaturesValuesUpdate) SetFeaturesID(i int) *FeaturesValuesUpdate {
+	fvu.mutation.SetFeaturesID(i)
 	return fvu
 }
 
-// SetNillableFeatureID sets the "feature_id" field if the given value is not nil.
-func (fvu *FeaturesValuesUpdate) SetNillableFeatureID(i *int) *FeaturesValuesUpdate {
+// SetNillableFeaturesID sets the "features_id" field if the given value is not nil.
+func (fvu *FeaturesValuesUpdate) SetNillableFeaturesID(i *int) *FeaturesValuesUpdate {
 	if i != nil {
-		fvu.SetFeatureID(*i)
+		fvu.SetFeaturesID(*i)
 	}
 	return fvu
 }
@@ -84,30 +85,23 @@ func (fvu *FeaturesValuesUpdate) ClearFeatureUnitValuesID() *FeaturesValuesUpdat
 	return fvu
 }
 
-// SetFeatureValuesID sets the "feature_values_id" field.
-func (fvu *FeaturesValuesUpdate) SetFeatureValuesID(i int) *FeaturesValuesUpdate {
-	fvu.mutation.ResetFeatureValuesID()
-	fvu.mutation.SetFeatureValuesID(i)
+// SetFeatureValuesTypesID sets the "feature_values_types_id" field.
+func (fvu *FeaturesValuesUpdate) SetFeatureValuesTypesID(i int) *FeaturesValuesUpdate {
+	fvu.mutation.SetFeatureValuesTypesID(i)
 	return fvu
 }
 
-// SetNillableFeatureValuesID sets the "feature_values_id" field if the given value is not nil.
-func (fvu *FeaturesValuesUpdate) SetNillableFeatureValuesID(i *int) *FeaturesValuesUpdate {
+// SetNillableFeatureValuesTypesID sets the "feature_values_types_id" field if the given value is not nil.
+func (fvu *FeaturesValuesUpdate) SetNillableFeatureValuesTypesID(i *int) *FeaturesValuesUpdate {
 	if i != nil {
-		fvu.SetFeatureValuesID(*i)
+		fvu.SetFeatureValuesTypesID(*i)
 	}
 	return fvu
 }
 
-// AddFeatureValuesID adds i to the "feature_values_id" field.
-func (fvu *FeaturesValuesUpdate) AddFeatureValuesID(i int) *FeaturesValuesUpdate {
-	fvu.mutation.AddFeatureValuesID(i)
-	return fvu
-}
-
-// ClearFeatureValuesID clears the value of the "feature_values_id" field.
-func (fvu *FeaturesValuesUpdate) ClearFeatureValuesID() *FeaturesValuesUpdate {
-	fvu.mutation.ClearFeatureValuesID()
+// ClearFeatureValuesTypesID clears the value of the "feature_values_types_id" field.
+func (fvu *FeaturesValuesUpdate) ClearFeatureValuesTypesID() *FeaturesValuesUpdate {
+	fvu.mutation.ClearFeatureValuesTypesID()
 	return fvu
 }
 
@@ -125,9 +119,9 @@ func (fvu *FeaturesValuesUpdate) SetNillableValue(s *string) *FeaturesValuesUpda
 	return fvu
 }
 
-// SetFeature sets the "feature" edge to the Features entity.
-func (fvu *FeaturesValuesUpdate) SetFeature(f *Features) *FeaturesValuesUpdate {
-	return fvu.SetFeatureID(f.ID)
+// SetFeatures sets the "features" edge to the Features entity.
+func (fvu *FeaturesValuesUpdate) SetFeatures(f *Features) *FeaturesValuesUpdate {
+	return fvu.SetFeaturesID(f.ID)
 }
 
 // SetFeatureUnitValues sets the "feature_unit_values" edge to the FeaturesUnitValues entity.
@@ -135,20 +129,31 @@ func (fvu *FeaturesValuesUpdate) SetFeatureUnitValues(f *FeaturesUnitValues) *Fe
 	return fvu.SetFeatureUnitValuesID(f.ID)
 }
 
+// SetFeatureValuesTypes sets the "feature_values_types" edge to the FeaturesValuesTypes entity.
+func (fvu *FeaturesValuesUpdate) SetFeatureValuesTypes(f *FeaturesValuesTypes) *FeaturesValuesUpdate {
+	return fvu.SetFeatureValuesTypesID(f.ID)
+}
+
 // Mutation returns the FeaturesValuesMutation object of the builder.
 func (fvu *FeaturesValuesUpdate) Mutation() *FeaturesValuesMutation {
 	return fvu.mutation
 }
 
-// ClearFeature clears the "feature" edge to the Features entity.
-func (fvu *FeaturesValuesUpdate) ClearFeature() *FeaturesValuesUpdate {
-	fvu.mutation.ClearFeature()
+// ClearFeatures clears the "features" edge to the Features entity.
+func (fvu *FeaturesValuesUpdate) ClearFeatures() *FeaturesValuesUpdate {
+	fvu.mutation.ClearFeatures()
 	return fvu
 }
 
 // ClearFeatureUnitValues clears the "feature_unit_values" edge to the FeaturesUnitValues entity.
 func (fvu *FeaturesValuesUpdate) ClearFeatureUnitValues() *FeaturesValuesUpdate {
 	fvu.mutation.ClearFeatureUnitValues()
+	return fvu
+}
+
+// ClearFeatureValuesTypes clears the "feature_values_types" edge to the FeaturesValuesTypes entity.
+func (fvu *FeaturesValuesUpdate) ClearFeatureValuesTypes() *FeaturesValuesUpdate {
+	fvu.mutation.ClearFeatureValuesTypes()
 	return fvu
 }
 
@@ -181,8 +186,8 @@ func (fvu *FeaturesValuesUpdate) ExecX(ctx context.Context) {
 
 // check runs all checks and user-defined validators on the builder.
 func (fvu *FeaturesValuesUpdate) check() error {
-	if fvu.mutation.FeatureCleared() && len(fvu.mutation.FeatureIDs()) > 0 {
-		return errors.New(`ent: clearing a required unique edge "FeaturesValues.feature"`)
+	if fvu.mutation.FeaturesCleared() && len(fvu.mutation.FeaturesIDs()) > 0 {
+		return errors.New(`ent: clearing a required unique edge "FeaturesValues.features"`)
 	}
 	return nil
 }
@@ -205,24 +210,15 @@ func (fvu *FeaturesValuesUpdate) sqlSave(ctx context.Context) (n int, err error)
 	if fvu.mutation.DeletedAtCleared() {
 		_spec.ClearField(featuresvalues.FieldDeletedAt, field.TypeTime)
 	}
-	if value, ok := fvu.mutation.FeatureValuesID(); ok {
-		_spec.SetField(featuresvalues.FieldFeatureValuesID, field.TypeInt, value)
-	}
-	if value, ok := fvu.mutation.AddedFeatureValuesID(); ok {
-		_spec.AddField(featuresvalues.FieldFeatureValuesID, field.TypeInt, value)
-	}
-	if fvu.mutation.FeatureValuesIDCleared() {
-		_spec.ClearField(featuresvalues.FieldFeatureValuesID, field.TypeInt)
-	}
 	if value, ok := fvu.mutation.Value(); ok {
 		_spec.SetField(featuresvalues.FieldValue, field.TypeString, value)
 	}
-	if fvu.mutation.FeatureCleared() {
+	if fvu.mutation.FeaturesCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2O,
 			Inverse: true,
-			Table:   featuresvalues.FeatureTable,
-			Columns: []string{featuresvalues.FeatureColumn},
+			Table:   featuresvalues.FeaturesTable,
+			Columns: []string{featuresvalues.FeaturesColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(features.FieldID, field.TypeInt),
@@ -230,12 +226,12 @@ func (fvu *FeaturesValuesUpdate) sqlSave(ctx context.Context) (n int, err error)
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
-	if nodes := fvu.mutation.FeatureIDs(); len(nodes) > 0 {
+	if nodes := fvu.mutation.FeaturesIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2O,
 			Inverse: true,
-			Table:   featuresvalues.FeatureTable,
-			Columns: []string{featuresvalues.FeatureColumn},
+			Table:   featuresvalues.FeaturesTable,
+			Columns: []string{featuresvalues.FeaturesColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(features.FieldID, field.TypeInt),
@@ -268,6 +264,35 @@ func (fvu *FeaturesValuesUpdate) sqlSave(ctx context.Context) (n int, err error)
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(featuresunitvalues.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if fvu.mutation.FeatureValuesTypesCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   featuresvalues.FeatureValuesTypesTable,
+			Columns: []string{featuresvalues.FeatureValuesTypesColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(featuresvaluestypes.FieldID, field.TypeInt),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := fvu.mutation.FeatureValuesTypesIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   featuresvalues.FeatureValuesTypesTable,
+			Columns: []string{featuresvalues.FeatureValuesTypesColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(featuresvaluestypes.FieldID, field.TypeInt),
 			},
 		}
 		for _, k := range nodes {
@@ -315,16 +340,16 @@ func (fvuo *FeaturesValuesUpdateOne) ClearDeletedAt() *FeaturesValuesUpdateOne {
 	return fvuo
 }
 
-// SetFeatureID sets the "feature_id" field.
-func (fvuo *FeaturesValuesUpdateOne) SetFeatureID(i int) *FeaturesValuesUpdateOne {
-	fvuo.mutation.SetFeatureID(i)
+// SetFeaturesID sets the "features_id" field.
+func (fvuo *FeaturesValuesUpdateOne) SetFeaturesID(i int) *FeaturesValuesUpdateOne {
+	fvuo.mutation.SetFeaturesID(i)
 	return fvuo
 }
 
-// SetNillableFeatureID sets the "feature_id" field if the given value is not nil.
-func (fvuo *FeaturesValuesUpdateOne) SetNillableFeatureID(i *int) *FeaturesValuesUpdateOne {
+// SetNillableFeaturesID sets the "features_id" field if the given value is not nil.
+func (fvuo *FeaturesValuesUpdateOne) SetNillableFeaturesID(i *int) *FeaturesValuesUpdateOne {
 	if i != nil {
-		fvuo.SetFeatureID(*i)
+		fvuo.SetFeaturesID(*i)
 	}
 	return fvuo
 }
@@ -349,30 +374,23 @@ func (fvuo *FeaturesValuesUpdateOne) ClearFeatureUnitValuesID() *FeaturesValuesU
 	return fvuo
 }
 
-// SetFeatureValuesID sets the "feature_values_id" field.
-func (fvuo *FeaturesValuesUpdateOne) SetFeatureValuesID(i int) *FeaturesValuesUpdateOne {
-	fvuo.mutation.ResetFeatureValuesID()
-	fvuo.mutation.SetFeatureValuesID(i)
+// SetFeatureValuesTypesID sets the "feature_values_types_id" field.
+func (fvuo *FeaturesValuesUpdateOne) SetFeatureValuesTypesID(i int) *FeaturesValuesUpdateOne {
+	fvuo.mutation.SetFeatureValuesTypesID(i)
 	return fvuo
 }
 
-// SetNillableFeatureValuesID sets the "feature_values_id" field if the given value is not nil.
-func (fvuo *FeaturesValuesUpdateOne) SetNillableFeatureValuesID(i *int) *FeaturesValuesUpdateOne {
+// SetNillableFeatureValuesTypesID sets the "feature_values_types_id" field if the given value is not nil.
+func (fvuo *FeaturesValuesUpdateOne) SetNillableFeatureValuesTypesID(i *int) *FeaturesValuesUpdateOne {
 	if i != nil {
-		fvuo.SetFeatureValuesID(*i)
+		fvuo.SetFeatureValuesTypesID(*i)
 	}
 	return fvuo
 }
 
-// AddFeatureValuesID adds i to the "feature_values_id" field.
-func (fvuo *FeaturesValuesUpdateOne) AddFeatureValuesID(i int) *FeaturesValuesUpdateOne {
-	fvuo.mutation.AddFeatureValuesID(i)
-	return fvuo
-}
-
-// ClearFeatureValuesID clears the value of the "feature_values_id" field.
-func (fvuo *FeaturesValuesUpdateOne) ClearFeatureValuesID() *FeaturesValuesUpdateOne {
-	fvuo.mutation.ClearFeatureValuesID()
+// ClearFeatureValuesTypesID clears the value of the "feature_values_types_id" field.
+func (fvuo *FeaturesValuesUpdateOne) ClearFeatureValuesTypesID() *FeaturesValuesUpdateOne {
+	fvuo.mutation.ClearFeatureValuesTypesID()
 	return fvuo
 }
 
@@ -390,9 +408,9 @@ func (fvuo *FeaturesValuesUpdateOne) SetNillableValue(s *string) *FeaturesValues
 	return fvuo
 }
 
-// SetFeature sets the "feature" edge to the Features entity.
-func (fvuo *FeaturesValuesUpdateOne) SetFeature(f *Features) *FeaturesValuesUpdateOne {
-	return fvuo.SetFeatureID(f.ID)
+// SetFeatures sets the "features" edge to the Features entity.
+func (fvuo *FeaturesValuesUpdateOne) SetFeatures(f *Features) *FeaturesValuesUpdateOne {
+	return fvuo.SetFeaturesID(f.ID)
 }
 
 // SetFeatureUnitValues sets the "feature_unit_values" edge to the FeaturesUnitValues entity.
@@ -400,20 +418,31 @@ func (fvuo *FeaturesValuesUpdateOne) SetFeatureUnitValues(f *FeaturesUnitValues)
 	return fvuo.SetFeatureUnitValuesID(f.ID)
 }
 
+// SetFeatureValuesTypes sets the "feature_values_types" edge to the FeaturesValuesTypes entity.
+func (fvuo *FeaturesValuesUpdateOne) SetFeatureValuesTypes(f *FeaturesValuesTypes) *FeaturesValuesUpdateOne {
+	return fvuo.SetFeatureValuesTypesID(f.ID)
+}
+
 // Mutation returns the FeaturesValuesMutation object of the builder.
 func (fvuo *FeaturesValuesUpdateOne) Mutation() *FeaturesValuesMutation {
 	return fvuo.mutation
 }
 
-// ClearFeature clears the "feature" edge to the Features entity.
-func (fvuo *FeaturesValuesUpdateOne) ClearFeature() *FeaturesValuesUpdateOne {
-	fvuo.mutation.ClearFeature()
+// ClearFeatures clears the "features" edge to the Features entity.
+func (fvuo *FeaturesValuesUpdateOne) ClearFeatures() *FeaturesValuesUpdateOne {
+	fvuo.mutation.ClearFeatures()
 	return fvuo
 }
 
 // ClearFeatureUnitValues clears the "feature_unit_values" edge to the FeaturesUnitValues entity.
 func (fvuo *FeaturesValuesUpdateOne) ClearFeatureUnitValues() *FeaturesValuesUpdateOne {
 	fvuo.mutation.ClearFeatureUnitValues()
+	return fvuo
+}
+
+// ClearFeatureValuesTypes clears the "feature_values_types" edge to the FeaturesValuesTypes entity.
+func (fvuo *FeaturesValuesUpdateOne) ClearFeatureValuesTypes() *FeaturesValuesUpdateOne {
+	fvuo.mutation.ClearFeatureValuesTypes()
 	return fvuo
 }
 
@@ -459,8 +488,8 @@ func (fvuo *FeaturesValuesUpdateOne) ExecX(ctx context.Context) {
 
 // check runs all checks and user-defined validators on the builder.
 func (fvuo *FeaturesValuesUpdateOne) check() error {
-	if fvuo.mutation.FeatureCleared() && len(fvuo.mutation.FeatureIDs()) > 0 {
-		return errors.New(`ent: clearing a required unique edge "FeaturesValues.feature"`)
+	if fvuo.mutation.FeaturesCleared() && len(fvuo.mutation.FeaturesIDs()) > 0 {
+		return errors.New(`ent: clearing a required unique edge "FeaturesValues.features"`)
 	}
 	return nil
 }
@@ -500,24 +529,15 @@ func (fvuo *FeaturesValuesUpdateOne) sqlSave(ctx context.Context) (_node *Featur
 	if fvuo.mutation.DeletedAtCleared() {
 		_spec.ClearField(featuresvalues.FieldDeletedAt, field.TypeTime)
 	}
-	if value, ok := fvuo.mutation.FeatureValuesID(); ok {
-		_spec.SetField(featuresvalues.FieldFeatureValuesID, field.TypeInt, value)
-	}
-	if value, ok := fvuo.mutation.AddedFeatureValuesID(); ok {
-		_spec.AddField(featuresvalues.FieldFeatureValuesID, field.TypeInt, value)
-	}
-	if fvuo.mutation.FeatureValuesIDCleared() {
-		_spec.ClearField(featuresvalues.FieldFeatureValuesID, field.TypeInt)
-	}
 	if value, ok := fvuo.mutation.Value(); ok {
 		_spec.SetField(featuresvalues.FieldValue, field.TypeString, value)
 	}
-	if fvuo.mutation.FeatureCleared() {
+	if fvuo.mutation.FeaturesCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2O,
 			Inverse: true,
-			Table:   featuresvalues.FeatureTable,
-			Columns: []string{featuresvalues.FeatureColumn},
+			Table:   featuresvalues.FeaturesTable,
+			Columns: []string{featuresvalues.FeaturesColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(features.FieldID, field.TypeInt),
@@ -525,12 +545,12 @@ func (fvuo *FeaturesValuesUpdateOne) sqlSave(ctx context.Context) (_node *Featur
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
-	if nodes := fvuo.mutation.FeatureIDs(); len(nodes) > 0 {
+	if nodes := fvuo.mutation.FeaturesIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2O,
 			Inverse: true,
-			Table:   featuresvalues.FeatureTable,
-			Columns: []string{featuresvalues.FeatureColumn},
+			Table:   featuresvalues.FeaturesTable,
+			Columns: []string{featuresvalues.FeaturesColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(features.FieldID, field.TypeInt),
@@ -563,6 +583,35 @@ func (fvuo *FeaturesValuesUpdateOne) sqlSave(ctx context.Context) (_node *Featur
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(featuresunitvalues.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if fvuo.mutation.FeatureValuesTypesCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   featuresvalues.FeatureValuesTypesTable,
+			Columns: []string{featuresvalues.FeatureValuesTypesColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(featuresvaluestypes.FieldID, field.TypeInt),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := fvuo.mutation.FeatureValuesTypesIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   featuresvalues.FeatureValuesTypesTable,
+			Columns: []string{featuresvalues.FeatureValuesTypesColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(featuresvaluestypes.FieldID, field.TypeInt),
 			},
 		}
 		for _, k := range nodes {

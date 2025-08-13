@@ -37,13 +37,11 @@ type ProductInfo struct {
 type ProductInfoEdges struct {
 	// InfoType holds the value of the info_type edge.
 	InfoType *InfoTypes `json:"info_type,omitempty"`
-	// Products holds the value of the products edge.
-	Products []*ProductHasInfo `json:"products,omitempty"`
 	// ProductHasInfo holds the value of the product_has_info edge.
 	ProductHasInfo []*ProductHasInfo `json:"product_has_info,omitempty"`
 	// loadedTypes holds the information for reporting if a
 	// type was loaded (or requested) in eager-loading or not.
-	loadedTypes [3]bool
+	loadedTypes [2]bool
 }
 
 // InfoTypeOrErr returns the InfoType value or an error if the edge
@@ -57,19 +55,10 @@ func (e ProductInfoEdges) InfoTypeOrErr() (*InfoTypes, error) {
 	return nil, &NotLoadedError{edge: "info_type"}
 }
 
-// ProductsOrErr returns the Products value or an error if the edge
-// was not loaded in eager-loading.
-func (e ProductInfoEdges) ProductsOrErr() ([]*ProductHasInfo, error) {
-	if e.loadedTypes[1] {
-		return e.Products, nil
-	}
-	return nil, &NotLoadedError{edge: "products"}
-}
-
 // ProductHasInfoOrErr returns the ProductHasInfo value or an error if the edge
 // was not loaded in eager-loading.
 func (e ProductInfoEdges) ProductHasInfoOrErr() ([]*ProductHasInfo, error) {
-	if e.loadedTypes[2] {
+	if e.loadedTypes[1] {
 		return e.ProductHasInfo, nil
 	}
 	return nil, &NotLoadedError{edge: "product_has_info"}
@@ -159,11 +148,6 @@ func (pi *ProductInfo) GetValue(name string) (ent.Value, error) {
 // QueryInfoType queries the "info_type" edge of the ProductInfo entity.
 func (pi *ProductInfo) QueryInfoType() *InfoTypesQuery {
 	return NewProductInfoClient(pi.config).QueryInfoType(pi)
-}
-
-// QueryProducts queries the "products" edge of the ProductInfo entity.
-func (pi *ProductInfo) QueryProducts() *ProductHasInfoQuery {
-	return NewProductInfoClient(pi.config).QueryProducts(pi)
 }
 
 // QueryProductHasInfo queries the "product_has_info" edge of the ProductInfo entity.

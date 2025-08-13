@@ -24,8 +24,6 @@ const (
 	FieldValue = "value"
 	// EdgeInfoType holds the string denoting the info_type edge name in mutations.
 	EdgeInfoType = "info_type"
-	// EdgeProducts holds the string denoting the products edge name in mutations.
-	EdgeProducts = "products"
 	// EdgeProductHasInfo holds the string denoting the product_has_info edge name in mutations.
 	EdgeProductHasInfo = "product_has_info"
 	// Table holds the table name of the productinfo in the database.
@@ -37,13 +35,6 @@ const (
 	InfoTypeInverseTable = "info_types"
 	// InfoTypeColumn is the table column denoting the info_type relation/edge.
 	InfoTypeColumn = "info_types_id"
-	// ProductsTable is the table that holds the products relation/edge.
-	ProductsTable = "product_has_infos"
-	// ProductsInverseTable is the table name for the ProductHasInfo entity.
-	// It exists in this package in order to avoid circular dependency with the "producthasinfo" package.
-	ProductsInverseTable = "product_has_infos"
-	// ProductsColumn is the table column denoting the products relation/edge.
-	ProductsColumn = "product_info_products"
 	// ProductHasInfoTable is the table that holds the product_has_info relation/edge.
 	ProductHasInfoTable = "product_has_infos"
 	// ProductHasInfoInverseTable is the table name for the ProductHasInfo entity.
@@ -123,20 +114,6 @@ func ByInfoTypeField(field string, opts ...sql.OrderTermOption) OrderOption {
 	}
 }
 
-// ByProductsCount orders the results by products count.
-func ByProductsCount(opts ...sql.OrderTermOption) OrderOption {
-	return func(s *sql.Selector) {
-		sqlgraph.OrderByNeighborsCount(s, newProductsStep(), opts...)
-	}
-}
-
-// ByProducts orders the results by products terms.
-func ByProducts(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
-	return func(s *sql.Selector) {
-		sqlgraph.OrderByNeighborTerms(s, newProductsStep(), append([]sql.OrderTerm{term}, terms...)...)
-	}
-}
-
 // ByProductHasInfoCount orders the results by product_has_info count.
 func ByProductHasInfoCount(opts ...sql.OrderTermOption) OrderOption {
 	return func(s *sql.Selector) {
@@ -155,13 +132,6 @@ func newInfoTypeStep() *sqlgraph.Step {
 		sqlgraph.From(Table, FieldID),
 		sqlgraph.To(InfoTypeInverseTable, FieldID),
 		sqlgraph.Edge(sqlgraph.M2O, true, InfoTypeTable, InfoTypeColumn),
-	)
-}
-func newProductsStep() *sqlgraph.Step {
-	return sqlgraph.NewStep(
-		sqlgraph.From(Table, FieldID),
-		sqlgraph.To(ProductsInverseTable, FieldID),
-		sqlgraph.Edge(sqlgraph.O2M, false, ProductsTable, ProductsColumn),
 	)
 }
 func newProductHasInfoStep() *sqlgraph.Step {

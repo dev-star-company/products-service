@@ -7,6 +7,7 @@ import (
 	"products-service/internal/app/ent/features"
 	"products-service/internal/app/ent/featuresunitvalues"
 	"products-service/internal/app/ent/featuresvalues"
+	"products-service/internal/app/ent/featuresvaluestypes"
 	"strings"
 	"time"
 
@@ -23,41 +24,42 @@ type FeaturesValues struct {
 	CreatedAt time.Time `json:"created_at,omitempty"`
 	// DeletedAt holds the value of the "deleted_at" field.
 	DeletedAt *time.Time `json:"deleted_at,omitempty"`
-	// FeatureID holds the value of the "feature_id" field.
-	FeatureID *int `json:"feature_id,omitempty"`
+	// FeaturesID holds the value of the "features_id" field.
+	FeaturesID *int `json:"features_id,omitempty"`
 	// FeatureUnitValuesID holds the value of the "feature_unit_values_id" field.
 	FeatureUnitValuesID *int `json:"feature_unit_values_id,omitempty"`
-	// FeatureValuesID holds the value of the "feature_values_id" field.
-	FeatureValuesID *int `json:"feature_values_id,omitempty"`
+	// FeatureValuesTypesID holds the value of the "feature_values_types_id" field.
+	FeatureValuesTypesID *int `json:"feature_values_types_id,omitempty"`
 	// Value holds the value of the "value" field.
 	Value *string `json:"value,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the FeaturesValuesQuery when eager-loading is set.
-	Edges                                FeaturesValuesEdges `json:"edges"`
-	features_values_types_feature_values *int
-	selectValues                         sql.SelectValues
+	Edges        FeaturesValuesEdges `json:"edges"`
+	selectValues sql.SelectValues
 }
 
 // FeaturesValuesEdges holds the relations/edges for other nodes in the graph.
 type FeaturesValuesEdges struct {
-	// Feature holds the value of the feature edge.
-	Feature *Features `json:"feature,omitempty"`
+	// Features holds the value of the features edge.
+	Features *Features `json:"features,omitempty"`
 	// FeatureUnitValues holds the value of the feature_unit_values edge.
 	FeatureUnitValues *FeaturesUnitValues `json:"feature_unit_values,omitempty"`
+	// FeatureValuesTypes holds the value of the feature_values_types edge.
+	FeatureValuesTypes *FeaturesValuesTypes `json:"feature_values_types,omitempty"`
 	// loadedTypes holds the information for reporting if a
 	// type was loaded (or requested) in eager-loading or not.
-	loadedTypes [2]bool
+	loadedTypes [3]bool
 }
 
-// FeatureOrErr returns the Feature value or an error if the edge
+// FeaturesOrErr returns the Features value or an error if the edge
 // was not loaded in eager-loading, or loaded but was not found.
-func (e FeaturesValuesEdges) FeatureOrErr() (*Features, error) {
-	if e.Feature != nil {
-		return e.Feature, nil
+func (e FeaturesValuesEdges) FeaturesOrErr() (*Features, error) {
+	if e.Features != nil {
+		return e.Features, nil
 	} else if e.loadedTypes[0] {
 		return nil, &NotFoundError{label: features.Label}
 	}
-	return nil, &NotLoadedError{edge: "feature"}
+	return nil, &NotLoadedError{edge: "features"}
 }
 
 // FeatureUnitValuesOrErr returns the FeatureUnitValues value or an error if the edge
@@ -71,19 +73,28 @@ func (e FeaturesValuesEdges) FeatureUnitValuesOrErr() (*FeaturesUnitValues, erro
 	return nil, &NotLoadedError{edge: "feature_unit_values"}
 }
 
+// FeatureValuesTypesOrErr returns the FeatureValuesTypes value or an error if the edge
+// was not loaded in eager-loading, or loaded but was not found.
+func (e FeaturesValuesEdges) FeatureValuesTypesOrErr() (*FeaturesValuesTypes, error) {
+	if e.FeatureValuesTypes != nil {
+		return e.FeatureValuesTypes, nil
+	} else if e.loadedTypes[2] {
+		return nil, &NotFoundError{label: featuresvaluestypes.Label}
+	}
+	return nil, &NotLoadedError{edge: "feature_values_types"}
+}
+
 // scanValues returns the types for scanning values from sql.Rows.
 func (*FeaturesValues) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case featuresvalues.FieldID, featuresvalues.FieldFeatureID, featuresvalues.FieldFeatureUnitValuesID, featuresvalues.FieldFeatureValuesID:
+		case featuresvalues.FieldID, featuresvalues.FieldFeaturesID, featuresvalues.FieldFeatureUnitValuesID, featuresvalues.FieldFeatureValuesTypesID:
 			values[i] = new(sql.NullInt64)
 		case featuresvalues.FieldValue:
 			values[i] = new(sql.NullString)
 		case featuresvalues.FieldCreatedAt, featuresvalues.FieldDeletedAt:
 			values[i] = new(sql.NullTime)
-		case featuresvalues.ForeignKeys[0]: // features_values_types_feature_values
-			values[i] = new(sql.NullInt64)
 		default:
 			values[i] = new(sql.UnknownType)
 		}
@@ -118,12 +129,12 @@ func (fv *FeaturesValues) assignValues(columns []string, values []any) error {
 				fv.DeletedAt = new(time.Time)
 				*fv.DeletedAt = value.Time
 			}
-		case featuresvalues.FieldFeatureID:
+		case featuresvalues.FieldFeaturesID:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field feature_id", values[i])
+				return fmt.Errorf("unexpected type %T for field features_id", values[i])
 			} else if value.Valid {
-				fv.FeatureID = new(int)
-				*fv.FeatureID = int(value.Int64)
+				fv.FeaturesID = new(int)
+				*fv.FeaturesID = int(value.Int64)
 			}
 		case featuresvalues.FieldFeatureUnitValuesID:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
@@ -132,12 +143,12 @@ func (fv *FeaturesValues) assignValues(columns []string, values []any) error {
 				fv.FeatureUnitValuesID = new(int)
 				*fv.FeatureUnitValuesID = int(value.Int64)
 			}
-		case featuresvalues.FieldFeatureValuesID:
+		case featuresvalues.FieldFeatureValuesTypesID:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field feature_values_id", values[i])
+				return fmt.Errorf("unexpected type %T for field feature_values_types_id", values[i])
 			} else if value.Valid {
-				fv.FeatureValuesID = new(int)
-				*fv.FeatureValuesID = int(value.Int64)
+				fv.FeatureValuesTypesID = new(int)
+				*fv.FeatureValuesTypesID = int(value.Int64)
 			}
 		case featuresvalues.FieldValue:
 			if value, ok := values[i].(*sql.NullString); !ok {
@@ -145,13 +156,6 @@ func (fv *FeaturesValues) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				fv.Value = new(string)
 				*fv.Value = value.String
-			}
-		case featuresvalues.ForeignKeys[0]:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for edge-field features_values_types_feature_values", value)
-			} else if value.Valid {
-				fv.features_values_types_feature_values = new(int)
-				*fv.features_values_types_feature_values = int(value.Int64)
 			}
 		default:
 			fv.selectValues.Set(columns[i], values[i])
@@ -166,14 +170,19 @@ func (fv *FeaturesValues) GetValue(name string) (ent.Value, error) {
 	return fv.selectValues.Get(name)
 }
 
-// QueryFeature queries the "feature" edge of the FeaturesValues entity.
-func (fv *FeaturesValues) QueryFeature() *FeaturesQuery {
-	return NewFeaturesValuesClient(fv.config).QueryFeature(fv)
+// QueryFeatures queries the "features" edge of the FeaturesValues entity.
+func (fv *FeaturesValues) QueryFeatures() *FeaturesQuery {
+	return NewFeaturesValuesClient(fv.config).QueryFeatures(fv)
 }
 
 // QueryFeatureUnitValues queries the "feature_unit_values" edge of the FeaturesValues entity.
 func (fv *FeaturesValues) QueryFeatureUnitValues() *FeaturesUnitValuesQuery {
 	return NewFeaturesValuesClient(fv.config).QueryFeatureUnitValues(fv)
+}
+
+// QueryFeatureValuesTypes queries the "feature_values_types" edge of the FeaturesValues entity.
+func (fv *FeaturesValues) QueryFeatureValuesTypes() *FeaturesValuesTypesQuery {
+	return NewFeaturesValuesClient(fv.config).QueryFeatureValuesTypes(fv)
 }
 
 // Update returns a builder for updating this FeaturesValues.
@@ -207,8 +216,8 @@ func (fv *FeaturesValues) String() string {
 		builder.WriteString(v.Format(time.ANSIC))
 	}
 	builder.WriteString(", ")
-	if v := fv.FeatureID; v != nil {
-		builder.WriteString("feature_id=")
+	if v := fv.FeaturesID; v != nil {
+		builder.WriteString("features_id=")
 		builder.WriteString(fmt.Sprintf("%v", *v))
 	}
 	builder.WriteString(", ")
@@ -217,8 +226,8 @@ func (fv *FeaturesValues) String() string {
 		builder.WriteString(fmt.Sprintf("%v", *v))
 	}
 	builder.WriteString(", ")
-	if v := fv.FeatureValuesID; v != nil {
-		builder.WriteString("feature_values_id=")
+	if v := fv.FeatureValuesTypesID; v != nil {
+		builder.WriteString("feature_values_types_id=")
 		builder.WriteString(fmt.Sprintf("%v", *v))
 	}
 	builder.WriteString(", ")

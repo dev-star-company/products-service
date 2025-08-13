@@ -8,7 +8,6 @@ import (
 	"fmt"
 	"products-service/internal/app/ent/brand"
 	"products-service/internal/app/ent/category"
-	"products-service/internal/app/ent/images"
 	"products-service/internal/app/ent/predicate"
 	"products-service/internal/app/ent/producthasfeature"
 	"products-service/internal/app/ent/producthasimage"
@@ -140,26 +139,6 @@ func (pu *ProductsUpdate) ClearProductReferencesID() *ProductsUpdate {
 	return pu
 }
 
-// SetImagesID sets the "images_id" field.
-func (pu *ProductsUpdate) SetImagesID(i int) *ProductsUpdate {
-	pu.mutation.SetImagesID(i)
-	return pu
-}
-
-// SetNillableImagesID sets the "images_id" field if the given value is not nil.
-func (pu *ProductsUpdate) SetNillableImagesID(i *int) *ProductsUpdate {
-	if i != nil {
-		pu.SetImagesID(*i)
-	}
-	return pu
-}
-
-// ClearImagesID clears the value of the "images_id" field.
-func (pu *ProductsUpdate) ClearImagesID() *ProductsUpdate {
-	pu.mutation.ClearImagesID()
-	return pu
-}
-
 // SetName sets the "name" field.
 func (pu *ProductsUpdate) SetName(s string) *ProductsUpdate {
 	pu.mutation.SetName(s)
@@ -213,11 +192,6 @@ func (pu *ProductsUpdate) SetVariantType(v *VariantType) *ProductsUpdate {
 // SetProductReferences sets the "product_references" edge to the ProductReferences entity.
 func (pu *ProductsUpdate) SetProductReferences(p *ProductReferences) *ProductsUpdate {
 	return pu.SetProductReferencesID(p.ID)
-}
-
-// SetImages sets the "images" edge to the Images entity.
-func (pu *ProductsUpdate) SetImages(i *Images) *ProductsUpdate {
-	return pu.SetImagesID(i.ID)
 }
 
 // AddProductHasImageIDs adds the "product_has_image" edge to the ProductHasImage entity by IDs.
@@ -351,12 +325,6 @@ func (pu *ProductsUpdate) ClearVariantType() *ProductsUpdate {
 // ClearProductReferences clears the "product_references" edge to the ProductReferences entity.
 func (pu *ProductsUpdate) ClearProductReferences() *ProductsUpdate {
 	pu.mutation.ClearProductReferences()
-	return pu
-}
-
-// ClearImages clears the "images" edge to the Images entity.
-func (pu *ProductsUpdate) ClearImages() *ProductsUpdate {
-	pu.mutation.ClearImages()
 	return pu
 }
 
@@ -667,35 +635,6 @@ func (pu *ProductsUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(productreferences.FieldID, field.TypeInt),
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_spec.Edges.Add = append(_spec.Edges.Add, edge)
-	}
-	if pu.mutation.ImagesCleared() {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.M2O,
-			Inverse: true,
-			Table:   products.ImagesTable,
-			Columns: []string{products.ImagesColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(images.FieldID, field.TypeInt),
-			},
-		}
-		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
-	}
-	if nodes := pu.mutation.ImagesIDs(); len(nodes) > 0 {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.M2O,
-			Inverse: true,
-			Table:   products.ImagesTable,
-			Columns: []string{products.ImagesColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(images.FieldID, field.TypeInt),
 			},
 		}
 		for _, k := range nodes {
@@ -1138,26 +1077,6 @@ func (puo *ProductsUpdateOne) ClearProductReferencesID() *ProductsUpdateOne {
 	return puo
 }
 
-// SetImagesID sets the "images_id" field.
-func (puo *ProductsUpdateOne) SetImagesID(i int) *ProductsUpdateOne {
-	puo.mutation.SetImagesID(i)
-	return puo
-}
-
-// SetNillableImagesID sets the "images_id" field if the given value is not nil.
-func (puo *ProductsUpdateOne) SetNillableImagesID(i *int) *ProductsUpdateOne {
-	if i != nil {
-		puo.SetImagesID(*i)
-	}
-	return puo
-}
-
-// ClearImagesID clears the value of the "images_id" field.
-func (puo *ProductsUpdateOne) ClearImagesID() *ProductsUpdateOne {
-	puo.mutation.ClearImagesID()
-	return puo
-}
-
 // SetName sets the "name" field.
 func (puo *ProductsUpdateOne) SetName(s string) *ProductsUpdateOne {
 	puo.mutation.SetName(s)
@@ -1211,11 +1130,6 @@ func (puo *ProductsUpdateOne) SetVariantType(v *VariantType) *ProductsUpdateOne 
 // SetProductReferences sets the "product_references" edge to the ProductReferences entity.
 func (puo *ProductsUpdateOne) SetProductReferences(p *ProductReferences) *ProductsUpdateOne {
 	return puo.SetProductReferencesID(p.ID)
-}
-
-// SetImages sets the "images" edge to the Images entity.
-func (puo *ProductsUpdateOne) SetImages(i *Images) *ProductsUpdateOne {
-	return puo.SetImagesID(i.ID)
 }
 
 // AddProductHasImageIDs adds the "product_has_image" edge to the ProductHasImage entity by IDs.
@@ -1349,12 +1263,6 @@ func (puo *ProductsUpdateOne) ClearVariantType() *ProductsUpdateOne {
 // ClearProductReferences clears the "product_references" edge to the ProductReferences entity.
 func (puo *ProductsUpdateOne) ClearProductReferences() *ProductsUpdateOne {
 	puo.mutation.ClearProductReferences()
-	return puo
-}
-
-// ClearImages clears the "images" edge to the Images entity.
-func (puo *ProductsUpdateOne) ClearImages() *ProductsUpdateOne {
-	puo.mutation.ClearImages()
 	return puo
 }
 
@@ -1695,35 +1603,6 @@ func (puo *ProductsUpdateOne) sqlSave(ctx context.Context) (_node *Products, err
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(productreferences.FieldID, field.TypeInt),
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_spec.Edges.Add = append(_spec.Edges.Add, edge)
-	}
-	if puo.mutation.ImagesCleared() {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.M2O,
-			Inverse: true,
-			Table:   products.ImagesTable,
-			Columns: []string{products.ImagesColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(images.FieldID, field.TypeInt),
-			},
-		}
-		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
-	}
-	if nodes := puo.mutation.ImagesIDs(); len(nodes) > 0 {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.M2O,
-			Inverse: true,
-			Table:   products.ImagesTable,
-			Columns: []string{products.ImagesColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(images.FieldID, field.TypeInt),
 			},
 		}
 		for _, k := range nodes {

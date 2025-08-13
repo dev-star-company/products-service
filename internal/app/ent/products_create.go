@@ -8,7 +8,6 @@ import (
 	"fmt"
 	"products-service/internal/app/ent/brand"
 	"products-service/internal/app/ent/category"
-	"products-service/internal/app/ent/images"
 	"products-service/internal/app/ent/producthasfeature"
 	"products-service/internal/app/ent/producthasimage"
 	"products-service/internal/app/ent/producthasinfo"
@@ -116,20 +115,6 @@ func (pc *ProductsCreate) SetNillableProductReferencesID(i *int) *ProductsCreate
 	return pc
 }
 
-// SetImagesID sets the "images_id" field.
-func (pc *ProductsCreate) SetImagesID(i int) *ProductsCreate {
-	pc.mutation.SetImagesID(i)
-	return pc
-}
-
-// SetNillableImagesID sets the "images_id" field if the given value is not nil.
-func (pc *ProductsCreate) SetNillableImagesID(i *int) *ProductsCreate {
-	if i != nil {
-		pc.SetImagesID(*i)
-	}
-	return pc
-}
-
 // SetName sets the "name" field.
 func (pc *ProductsCreate) SetName(s string) *ProductsCreate {
 	pc.mutation.SetName(s)
@@ -160,11 +145,6 @@ func (pc *ProductsCreate) SetVariantType(v *VariantType) *ProductsCreate {
 // SetProductReferences sets the "product_references" edge to the ProductReferences entity.
 func (pc *ProductsCreate) SetProductReferences(p *ProductReferences) *ProductsCreate {
 	return pc.SetProductReferencesID(p.ID)
-}
-
-// SetImages sets the "images" edge to the Images entity.
-func (pc *ProductsCreate) SetImages(i *Images) *ProductsCreate {
-	return pc.SetImagesID(i.ID)
 }
 
 // AddProductHasImageIDs adds the "product_has_image" edge to the ProductHasImage entity by IDs.
@@ -432,23 +412,6 @@ func (pc *ProductsCreate) createSpec() (*Products, *sqlgraph.CreateSpec) {
 			edge.Target.Nodes = append(edge.Target.Nodes, k)
 		}
 		_node.ProductReferencesID = &nodes[0]
-		_spec.Edges = append(_spec.Edges, edge)
-	}
-	if nodes := pc.mutation.ImagesIDs(); len(nodes) > 0 {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.M2O,
-			Inverse: true,
-			Table:   products.ImagesTable,
-			Columns: []string{products.ImagesColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(images.FieldID, field.TypeInt),
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_node.ImagesID = &nodes[0]
 		_spec.Edges = append(_spec.Edges, edge)
 	}
 	if nodes := pc.mutation.ProductHasImageIDs(); len(nodes) > 0 {

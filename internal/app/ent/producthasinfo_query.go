@@ -26,7 +26,6 @@ type ProductHasInfoQuery struct {
 	predicates      []predicate.ProductHasInfo
 	withProducts    *ProductsQuery
 	withProductInfo *ProductInfoQuery
-	withFKs         bool
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
 	path func(context.Context) (*sql.Selector, error)
@@ -406,16 +405,12 @@ func (phiq *ProductHasInfoQuery) prepareQuery(ctx context.Context) error {
 func (phiq *ProductHasInfoQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*ProductHasInfo, error) {
 	var (
 		nodes       = []*ProductHasInfo{}
-		withFKs     = phiq.withFKs
 		_spec       = phiq.querySpec()
 		loadedTypes = [2]bool{
 			phiq.withProducts != nil,
 			phiq.withProductInfo != nil,
 		}
 	)
-	if withFKs {
-		_spec.Node.Columns = append(_spec.Node.Columns, producthasinfo.ForeignKeys...)
-	}
 	_spec.ScanValues = func(columns []string) ([]any, error) {
 		return (*ProductHasInfo).scanValues(nil, columns)
 	}

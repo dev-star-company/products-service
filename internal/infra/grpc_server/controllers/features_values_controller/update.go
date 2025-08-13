@@ -22,7 +22,7 @@ func (c *controller) Update(ctx context.Context, in *features_values_proto.Updat
 	features_valuesQ := tx.FeaturesValues.UpdateOneID(int(in.Id))
 
 	if in.FeatureId != nil && *in.FeatureId > 0 {
-		features_valuesQ.SetFeatureID(int(*in.FeatureId))
+		features_valuesQ.SetFeaturesID(int(*in.FeatureId))
 	}
 
 	if in.FeatureUnitValuesId != nil && *in.FeatureUnitValuesId > 0 {

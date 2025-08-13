@@ -14,9 +14,9 @@ type FeaturesValues struct {
 // Fields of the FeaturesValues.
 func (FeaturesValues) Fields() []ent.Field {
 	return []ent.Field{
-		field.Int("feature_id").Nillable(),
+		field.Int("features_id").Nillable(),
 		field.Int("feature_unit_values_id").Nillable().Optional(),
-		field.Int("feature_values_id").Nillable().Optional(),
+		field.Int("feature_values_types_id").Nillable().Optional(),
 		field.String("value").Nillable(),
 	}
 }
@@ -30,15 +30,20 @@ func (FeaturesValues) Mixin() []ent.Mixin {
 // Edges of the FeaturesValues.
 func (FeaturesValues) Edges() []ent.Edge {
 	return []ent.Edge{
-		edge.From("feature", Features.Type).
+		edge.From("features", Features.Type).
 			Ref("feature_values").
-			Field("feature_id").
+			Field("features_id").
 			Unique().
 			Required(),
 
 		edge.From("feature_unit_values", FeaturesUnitValues.Type).
 			Ref("feature_values").
 			Field("feature_unit_values_id").
+			Unique(),
+
+		edge.From("feature_values_types", FeaturesValuesTypes.Type).
+			Ref("feature_values").
+			Field("feature_values_types_id").
 			Unique(),
 	}
 }

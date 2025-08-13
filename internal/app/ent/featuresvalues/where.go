@@ -65,9 +65,9 @@ func DeletedAt(v time.Time) predicate.FeaturesValues {
 	return predicate.FeaturesValues(sql.FieldEQ(FieldDeletedAt, v))
 }
 
-// FeatureID applies equality check predicate on the "feature_id" field. It's identical to FeatureIDEQ.
-func FeatureID(v int) predicate.FeaturesValues {
-	return predicate.FeaturesValues(sql.FieldEQ(FieldFeatureID, v))
+// FeaturesID applies equality check predicate on the "features_id" field. It's identical to FeaturesIDEQ.
+func FeaturesID(v int) predicate.FeaturesValues {
+	return predicate.FeaturesValues(sql.FieldEQ(FieldFeaturesID, v))
 }
 
 // FeatureUnitValuesID applies equality check predicate on the "feature_unit_values_id" field. It's identical to FeatureUnitValuesIDEQ.
@@ -75,9 +75,9 @@ func FeatureUnitValuesID(v int) predicate.FeaturesValues {
 	return predicate.FeaturesValues(sql.FieldEQ(FieldFeatureUnitValuesID, v))
 }
 
-// FeatureValuesID applies equality check predicate on the "feature_values_id" field. It's identical to FeatureValuesIDEQ.
-func FeatureValuesID(v int) predicate.FeaturesValues {
-	return predicate.FeaturesValues(sql.FieldEQ(FieldFeatureValuesID, v))
+// FeatureValuesTypesID applies equality check predicate on the "feature_values_types_id" field. It's identical to FeatureValuesTypesIDEQ.
+func FeatureValuesTypesID(v int) predicate.FeaturesValues {
+	return predicate.FeaturesValues(sql.FieldEQ(FieldFeatureValuesTypesID, v))
 }
 
 // Value applies equality check predicate on the "value" field. It's identical to ValueEQ.
@@ -175,24 +175,24 @@ func DeletedAtNotNil() predicate.FeaturesValues {
 	return predicate.FeaturesValues(sql.FieldNotNull(FieldDeletedAt))
 }
 
-// FeatureIDEQ applies the EQ predicate on the "feature_id" field.
-func FeatureIDEQ(v int) predicate.FeaturesValues {
-	return predicate.FeaturesValues(sql.FieldEQ(FieldFeatureID, v))
+// FeaturesIDEQ applies the EQ predicate on the "features_id" field.
+func FeaturesIDEQ(v int) predicate.FeaturesValues {
+	return predicate.FeaturesValues(sql.FieldEQ(FieldFeaturesID, v))
 }
 
-// FeatureIDNEQ applies the NEQ predicate on the "feature_id" field.
-func FeatureIDNEQ(v int) predicate.FeaturesValues {
-	return predicate.FeaturesValues(sql.FieldNEQ(FieldFeatureID, v))
+// FeaturesIDNEQ applies the NEQ predicate on the "features_id" field.
+func FeaturesIDNEQ(v int) predicate.FeaturesValues {
+	return predicate.FeaturesValues(sql.FieldNEQ(FieldFeaturesID, v))
 }
 
-// FeatureIDIn applies the In predicate on the "feature_id" field.
-func FeatureIDIn(vs ...int) predicate.FeaturesValues {
-	return predicate.FeaturesValues(sql.FieldIn(FieldFeatureID, vs...))
+// FeaturesIDIn applies the In predicate on the "features_id" field.
+func FeaturesIDIn(vs ...int) predicate.FeaturesValues {
+	return predicate.FeaturesValues(sql.FieldIn(FieldFeaturesID, vs...))
 }
 
-// FeatureIDNotIn applies the NotIn predicate on the "feature_id" field.
-func FeatureIDNotIn(vs ...int) predicate.FeaturesValues {
-	return predicate.FeaturesValues(sql.FieldNotIn(FieldFeatureID, vs...))
+// FeaturesIDNotIn applies the NotIn predicate on the "features_id" field.
+func FeaturesIDNotIn(vs ...int) predicate.FeaturesValues {
+	return predicate.FeaturesValues(sql.FieldNotIn(FieldFeaturesID, vs...))
 }
 
 // FeatureUnitValuesIDEQ applies the EQ predicate on the "feature_unit_values_id" field.
@@ -225,54 +225,34 @@ func FeatureUnitValuesIDNotNil() predicate.FeaturesValues {
 	return predicate.FeaturesValues(sql.FieldNotNull(FieldFeatureUnitValuesID))
 }
 
-// FeatureValuesIDEQ applies the EQ predicate on the "feature_values_id" field.
-func FeatureValuesIDEQ(v int) predicate.FeaturesValues {
-	return predicate.FeaturesValues(sql.FieldEQ(FieldFeatureValuesID, v))
+// FeatureValuesTypesIDEQ applies the EQ predicate on the "feature_values_types_id" field.
+func FeatureValuesTypesIDEQ(v int) predicate.FeaturesValues {
+	return predicate.FeaturesValues(sql.FieldEQ(FieldFeatureValuesTypesID, v))
 }
 
-// FeatureValuesIDNEQ applies the NEQ predicate on the "feature_values_id" field.
-func FeatureValuesIDNEQ(v int) predicate.FeaturesValues {
-	return predicate.FeaturesValues(sql.FieldNEQ(FieldFeatureValuesID, v))
+// FeatureValuesTypesIDNEQ applies the NEQ predicate on the "feature_values_types_id" field.
+func FeatureValuesTypesIDNEQ(v int) predicate.FeaturesValues {
+	return predicate.FeaturesValues(sql.FieldNEQ(FieldFeatureValuesTypesID, v))
 }
 
-// FeatureValuesIDIn applies the In predicate on the "feature_values_id" field.
-func FeatureValuesIDIn(vs ...int) predicate.FeaturesValues {
-	return predicate.FeaturesValues(sql.FieldIn(FieldFeatureValuesID, vs...))
+// FeatureValuesTypesIDIn applies the In predicate on the "feature_values_types_id" field.
+func FeatureValuesTypesIDIn(vs ...int) predicate.FeaturesValues {
+	return predicate.FeaturesValues(sql.FieldIn(FieldFeatureValuesTypesID, vs...))
 }
 
-// FeatureValuesIDNotIn applies the NotIn predicate on the "feature_values_id" field.
-func FeatureValuesIDNotIn(vs ...int) predicate.FeaturesValues {
-	return predicate.FeaturesValues(sql.FieldNotIn(FieldFeatureValuesID, vs...))
+// FeatureValuesTypesIDNotIn applies the NotIn predicate on the "feature_values_types_id" field.
+func FeatureValuesTypesIDNotIn(vs ...int) predicate.FeaturesValues {
+	return predicate.FeaturesValues(sql.FieldNotIn(FieldFeatureValuesTypesID, vs...))
 }
 
-// FeatureValuesIDGT applies the GT predicate on the "feature_values_id" field.
-func FeatureValuesIDGT(v int) predicate.FeaturesValues {
-	return predicate.FeaturesValues(sql.FieldGT(FieldFeatureValuesID, v))
+// FeatureValuesTypesIDIsNil applies the IsNil predicate on the "feature_values_types_id" field.
+func FeatureValuesTypesIDIsNil() predicate.FeaturesValues {
+	return predicate.FeaturesValues(sql.FieldIsNull(FieldFeatureValuesTypesID))
 }
 
-// FeatureValuesIDGTE applies the GTE predicate on the "feature_values_id" field.
-func FeatureValuesIDGTE(v int) predicate.FeaturesValues {
-	return predicate.FeaturesValues(sql.FieldGTE(FieldFeatureValuesID, v))
-}
-
-// FeatureValuesIDLT applies the LT predicate on the "feature_values_id" field.
-func FeatureValuesIDLT(v int) predicate.FeaturesValues {
-	return predicate.FeaturesValues(sql.FieldLT(FieldFeatureValuesID, v))
-}
-
-// FeatureValuesIDLTE applies the LTE predicate on the "feature_values_id" field.
-func FeatureValuesIDLTE(v int) predicate.FeaturesValues {
-	return predicate.FeaturesValues(sql.FieldLTE(FieldFeatureValuesID, v))
-}
-
-// FeatureValuesIDIsNil applies the IsNil predicate on the "feature_values_id" field.
-func FeatureValuesIDIsNil() predicate.FeaturesValues {
-	return predicate.FeaturesValues(sql.FieldIsNull(FieldFeatureValuesID))
-}
-
-// FeatureValuesIDNotNil applies the NotNil predicate on the "feature_values_id" field.
-func FeatureValuesIDNotNil() predicate.FeaturesValues {
-	return predicate.FeaturesValues(sql.FieldNotNull(FieldFeatureValuesID))
+// FeatureValuesTypesIDNotNil applies the NotNil predicate on the "feature_values_types_id" field.
+func FeatureValuesTypesIDNotNil() predicate.FeaturesValues {
+	return predicate.FeaturesValues(sql.FieldNotNull(FieldFeatureValuesTypesID))
 }
 
 // ValueEQ applies the EQ predicate on the "value" field.
@@ -340,21 +320,21 @@ func ValueContainsFold(v string) predicate.FeaturesValues {
 	return predicate.FeaturesValues(sql.FieldContainsFold(FieldValue, v))
 }
 
-// HasFeature applies the HasEdge predicate on the "feature" edge.
-func HasFeature() predicate.FeaturesValues {
+// HasFeatures applies the HasEdge predicate on the "features" edge.
+func HasFeatures() predicate.FeaturesValues {
 	return predicate.FeaturesValues(func(s *sql.Selector) {
 		step := sqlgraph.NewStep(
 			sqlgraph.From(Table, FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, true, FeatureTable, FeatureColumn),
+			sqlgraph.Edge(sqlgraph.M2O, true, FeaturesTable, FeaturesColumn),
 		)
 		sqlgraph.HasNeighbors(s, step)
 	})
 }
 
-// HasFeatureWith applies the HasEdge predicate on the "feature" edge with a given conditions (other predicates).
-func HasFeatureWith(preds ...predicate.Features) predicate.FeaturesValues {
+// HasFeaturesWith applies the HasEdge predicate on the "features" edge with a given conditions (other predicates).
+func HasFeaturesWith(preds ...predicate.Features) predicate.FeaturesValues {
 	return predicate.FeaturesValues(func(s *sql.Selector) {
-		step := newFeatureStep()
+		step := newFeaturesStep()
 		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
 			for _, p := range preds {
 				p(s)
@@ -378,6 +358,29 @@ func HasFeatureUnitValues() predicate.FeaturesValues {
 func HasFeatureUnitValuesWith(preds ...predicate.FeaturesUnitValues) predicate.FeaturesValues {
 	return predicate.FeaturesValues(func(s *sql.Selector) {
 		step := newFeatureUnitValuesStep()
+		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
+			for _, p := range preds {
+				p(s)
+			}
+		})
+	})
+}
+
+// HasFeatureValuesTypes applies the HasEdge predicate on the "feature_values_types" edge.
+func HasFeatureValuesTypes() predicate.FeaturesValues {
+	return predicate.FeaturesValues(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, FeatureValuesTypesTable, FeatureValuesTypesColumn),
+		)
+		sqlgraph.HasNeighbors(s, step)
+	})
+}
+
+// HasFeatureValuesTypesWith applies the HasEdge predicate on the "feature_values_types" edge with a given conditions (other predicates).
+func HasFeatureValuesTypesWith(preds ...predicate.FeaturesValuesTypes) predicate.FeaturesValues {
+	return predicate.FeaturesValues(func(s *sql.Selector) {
+		step := newFeatureValuesTypesStep()
 		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
 			for _, p := range preds {
 				p(s)

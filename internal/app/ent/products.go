@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"products-service/internal/app/ent/brand"
 	"products-service/internal/app/ent/category"
-	"products-service/internal/app/ent/images"
 	"products-service/internal/app/ent/productreferences"
 	"products-service/internal/app/ent/products"
 	"products-service/internal/app/ent/varianttype"
@@ -34,8 +33,6 @@ type Products struct {
 	VariantTypeID *int `json:"variant_type_id,omitempty"`
 	// ProductReferencesID holds the value of the "product_references_id" field.
 	ProductReferencesID *int `json:"product_references_id,omitempty"`
-	// ImagesID holds the value of the "images_id" field.
-	ImagesID *int `json:"images_id,omitempty"`
 	// Name holds the value of the "name" field.
 	Name *string `json:"name,omitempty"`
 	// Stock holds the value of the "stock" field.
@@ -60,8 +57,6 @@ type ProductsEdges struct {
 	VariantType *VariantType `json:"variant_type,omitempty"`
 	// ProductReferences holds the value of the product_references edge.
 	ProductReferences *ProductReferences `json:"product_references,omitempty"`
-	// Images holds the value of the images edge.
-	Images *Images `json:"images,omitempty"`
 	// ProductHasImage holds the value of the product_has_image edge.
 	ProductHasImage []*ProductHasImage `json:"product_has_image,omitempty"`
 	// PromotionHasProduct holds the value of the promotion_has_product edge.
@@ -78,7 +73,7 @@ type ProductsEdges struct {
 	ProductPrices []*ProductPrices `json:"product_prices,omitempty"`
 	// loadedTypes holds the information for reporting if a
 	// type was loaded (or requested) in eager-loading or not.
-	loadedTypes [12]bool
+	loadedTypes [11]bool
 }
 
 // CategoryOrErr returns the Category value or an error if the edge
@@ -125,21 +120,10 @@ func (e ProductsEdges) ProductReferencesOrErr() (*ProductReferences, error) {
 	return nil, &NotLoadedError{edge: "product_references"}
 }
 
-// ImagesOrErr returns the Images value or an error if the edge
-// was not loaded in eager-loading, or loaded but was not found.
-func (e ProductsEdges) ImagesOrErr() (*Images, error) {
-	if e.Images != nil {
-		return e.Images, nil
-	} else if e.loadedTypes[4] {
-		return nil, &NotFoundError{label: images.Label}
-	}
-	return nil, &NotLoadedError{edge: "images"}
-}
-
 // ProductHasImageOrErr returns the ProductHasImage value or an error if the edge
 // was not loaded in eager-loading.
 func (e ProductsEdges) ProductHasImageOrErr() ([]*ProductHasImage, error) {
-	if e.loadedTypes[5] {
+	if e.loadedTypes[4] {
 		return e.ProductHasImage, nil
 	}
 	return nil, &NotLoadedError{edge: "product_has_image"}
@@ -148,7 +132,7 @@ func (e ProductsEdges) ProductHasImageOrErr() ([]*ProductHasImage, error) {
 // PromotionHasProductOrErr returns the PromotionHasProduct value or an error if the edge
 // was not loaded in eager-loading.
 func (e ProductsEdges) PromotionHasProductOrErr() ([]*PromotionHasProduct, error) {
-	if e.loadedTypes[6] {
+	if e.loadedTypes[5] {
 		return e.PromotionHasProduct, nil
 	}
 	return nil, &NotLoadedError{edge: "promotion_has_product"}
@@ -157,7 +141,7 @@ func (e ProductsEdges) PromotionHasProductOrErr() ([]*PromotionHasProduct, error
 // ToolHasProductOrErr returns the ToolHasProduct value or an error if the edge
 // was not loaded in eager-loading.
 func (e ProductsEdges) ToolHasProductOrErr() ([]*ToolHasProduct, error) {
-	if e.loadedTypes[7] {
+	if e.loadedTypes[6] {
 		return e.ToolHasProduct, nil
 	}
 	return nil, &NotLoadedError{edge: "tool_has_product"}
@@ -166,7 +150,7 @@ func (e ProductsEdges) ToolHasProductOrErr() ([]*ToolHasProduct, error) {
 // ProductHasFeatureOrErr returns the ProductHasFeature value or an error if the edge
 // was not loaded in eager-loading.
 func (e ProductsEdges) ProductHasFeatureOrErr() ([]*ProductHasFeature, error) {
-	if e.loadedTypes[8] {
+	if e.loadedTypes[7] {
 		return e.ProductHasFeature, nil
 	}
 	return nil, &NotLoadedError{edge: "product_has_feature"}
@@ -175,7 +159,7 @@ func (e ProductsEdges) ProductHasFeatureOrErr() ([]*ProductHasFeature, error) {
 // ProductHasInfoOrErr returns the ProductHasInfo value or an error if the edge
 // was not loaded in eager-loading.
 func (e ProductsEdges) ProductHasInfoOrErr() ([]*ProductHasInfo, error) {
-	if e.loadedTypes[9] {
+	if e.loadedTypes[8] {
 		return e.ProductHasInfo, nil
 	}
 	return nil, &NotLoadedError{edge: "product_has_info"}
@@ -184,7 +168,7 @@ func (e ProductsEdges) ProductHasInfoOrErr() ([]*ProductHasInfo, error) {
 // ProductHasProductReferenceOrErr returns the ProductHasProductReference value or an error if the edge
 // was not loaded in eager-loading.
 func (e ProductsEdges) ProductHasProductReferenceOrErr() ([]*ProductHasProductReference, error) {
-	if e.loadedTypes[10] {
+	if e.loadedTypes[9] {
 		return e.ProductHasProductReference, nil
 	}
 	return nil, &NotLoadedError{edge: "product_has_product_reference"}
@@ -193,7 +177,7 @@ func (e ProductsEdges) ProductHasProductReferenceOrErr() ([]*ProductHasProductRe
 // ProductPricesOrErr returns the ProductPrices value or an error if the edge
 // was not loaded in eager-loading.
 func (e ProductsEdges) ProductPricesOrErr() ([]*ProductPrices, error) {
-	if e.loadedTypes[11] {
+	if e.loadedTypes[10] {
 		return e.ProductPrices, nil
 	}
 	return nil, &NotLoadedError{edge: "product_prices"}
@@ -204,7 +188,7 @@ func (*Products) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case products.FieldID, products.FieldCategoryID, products.FieldBrandID, products.FieldVariantTypeID, products.FieldProductReferencesID, products.FieldImagesID, products.FieldStock:
+		case products.FieldID, products.FieldCategoryID, products.FieldBrandID, products.FieldVariantTypeID, products.FieldProductReferencesID, products.FieldStock:
 			values[i] = new(sql.NullInt64)
 		case products.FieldName:
 			values[i] = new(sql.NullString)
@@ -280,13 +264,6 @@ func (pr *Products) assignValues(columns []string, values []any) error {
 				pr.ProductReferencesID = new(int)
 				*pr.ProductReferencesID = int(value.Int64)
 			}
-		case products.FieldImagesID:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field images_id", values[i])
-			} else if value.Valid {
-				pr.ImagesID = new(int)
-				*pr.ImagesID = int(value.Int64)
-			}
 		case products.FieldName:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field name", values[i])
@@ -359,11 +336,6 @@ func (pr *Products) QueryVariantType() *VariantTypeQuery {
 // QueryProductReferences queries the "product_references" edge of the Products entity.
 func (pr *Products) QueryProductReferences() *ProductReferencesQuery {
 	return NewProductsClient(pr.config).QueryProductReferences(pr)
-}
-
-// QueryImages queries the "images" edge of the Products entity.
-func (pr *Products) QueryImages() *ImagesQuery {
-	return NewProductsClient(pr.config).QueryImages(pr)
 }
 
 // QueryProductHasImage queries the "product_has_image" edge of the Products entity.
@@ -449,11 +421,6 @@ func (pr *Products) String() string {
 	builder.WriteString(", ")
 	if v := pr.ProductReferencesID; v != nil {
 		builder.WriteString("product_references_id=")
-		builder.WriteString(fmt.Sprintf("%v", *v))
-	}
-	builder.WriteString(", ")
-	if v := pr.ImagesID; v != nil {
-		builder.WriteString("images_id=")
 		builder.WriteString(fmt.Sprintf("%v", *v))
 	}
 	builder.WriteString(", ")

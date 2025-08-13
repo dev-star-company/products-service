@@ -24,8 +24,6 @@ const (
 	FieldPath = "path"
 	// EdgeImageFolderPath holds the string denoting the image_folder_path edge name in mutations.
 	EdgeImageFolderPath = "image_folder_path"
-	// EdgeProducts holds the string denoting the products edge name in mutations.
-	EdgeProducts = "products"
 	// EdgeProductHasImage holds the string denoting the product_has_image edge name in mutations.
 	EdgeProductHasImage = "product_has_image"
 	// Table holds the table name of the images in the database.
@@ -37,13 +35,6 @@ const (
 	ImageFolderPathInverseTable = "image_folder_paths"
 	// ImageFolderPathColumn is the table column denoting the image_folder_path relation/edge.
 	ImageFolderPathColumn = "image_folder_path_images"
-	// ProductsTable is the table that holds the products relation/edge.
-	ProductsTable = "products"
-	// ProductsInverseTable is the table name for the Products entity.
-	// It exists in this package in order to avoid circular dependency with the "products" package.
-	ProductsInverseTable = "products"
-	// ProductsColumn is the table column denoting the products relation/edge.
-	ProductsColumn = "images_id"
 	// ProductHasImageTable is the table that holds the product_has_image relation/edge.
 	ProductHasImageTable = "product_has_images"
 	// ProductHasImageInverseTable is the table name for the ProductHasImage entity.
@@ -123,20 +114,6 @@ func ByImageFolderPathField(field string, opts ...sql.OrderTermOption) OrderOpti
 	}
 }
 
-// ByProductsCount orders the results by products count.
-func ByProductsCount(opts ...sql.OrderTermOption) OrderOption {
-	return func(s *sql.Selector) {
-		sqlgraph.OrderByNeighborsCount(s, newProductsStep(), opts...)
-	}
-}
-
-// ByProducts orders the results by products terms.
-func ByProducts(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
-	return func(s *sql.Selector) {
-		sqlgraph.OrderByNeighborTerms(s, newProductsStep(), append([]sql.OrderTerm{term}, terms...)...)
-	}
-}
-
 // ByProductHasImageCount orders the results by product_has_image count.
 func ByProductHasImageCount(opts ...sql.OrderTermOption) OrderOption {
 	return func(s *sql.Selector) {
@@ -155,13 +132,6 @@ func newImageFolderPathStep() *sqlgraph.Step {
 		sqlgraph.From(Table, FieldID),
 		sqlgraph.To(ImageFolderPathInverseTable, FieldID),
 		sqlgraph.Edge(sqlgraph.M2O, true, ImageFolderPathTable, ImageFolderPathColumn),
-	)
-}
-func newProductsStep() *sqlgraph.Step {
-	return sqlgraph.NewStep(
-		sqlgraph.From(Table, FieldID),
-		sqlgraph.To(ProductsInverseTable, FieldID),
-		sqlgraph.Edge(sqlgraph.O2M, false, ProductsTable, ProductsColumn),
 	)
 }
 func newProductHasImageStep() *sqlgraph.Step {

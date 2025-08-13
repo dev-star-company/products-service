@@ -26,11 +26,11 @@ func (c *controller) List(ctx context.Context, in *product_has_feature_proto.Lis
 	query := tx.ProductHasFeature.Query()
 
 	if in.FeaturesId != nil {
-		query = query.Where(producthasfeature.FeatureID(int(*in.FeaturesId)))
+		query = query.Where(producthasfeature.FeatureIDEQ(int(*in.FeaturesId)))
 	}
 
 	if in.ProductsId != nil {
-		query = query.Where(producthasfeature.ProductID(int(*in.ProductsId)))
+		query = query.Where(producthasfeature.ProductIDEQ(int(*in.ProductsId)))
 	}
 
 	count, err := query.Count(ctx)

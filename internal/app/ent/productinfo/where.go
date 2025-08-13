@@ -283,29 +283,6 @@ func HasInfoTypeWith(preds ...predicate.InfoTypes) predicate.ProductInfo {
 	})
 }
 
-// HasProducts applies the HasEdge predicate on the "products" edge.
-func HasProducts() predicate.ProductInfo {
-	return predicate.ProductInfo(func(s *sql.Selector) {
-		step := sqlgraph.NewStep(
-			sqlgraph.From(Table, FieldID),
-			sqlgraph.Edge(sqlgraph.O2M, false, ProductsTable, ProductsColumn),
-		)
-		sqlgraph.HasNeighbors(s, step)
-	})
-}
-
-// HasProductsWith applies the HasEdge predicate on the "products" edge with a given conditions (other predicates).
-func HasProductsWith(preds ...predicate.ProductHasInfo) predicate.ProductInfo {
-	return predicate.ProductInfo(func(s *sql.Selector) {
-		step := newProductsStep()
-		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
-			for _, p := range preds {
-				p(s)
-			}
-		})
-	})
-}
-
 // HasProductHasInfo applies the HasEdge predicate on the "product_has_info" edge.
 func HasProductHasInfo() predicate.ProductInfo {
 	return predicate.ProductInfo(func(s *sql.Selector) {

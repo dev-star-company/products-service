@@ -490,7 +490,9 @@ func (fvtq *FeaturesValuesTypesQuery) loadFeatureValues(ctx context.Context, que
 			init(nodes[i])
 		}
 	}
-	query.withFKs = true
+	if len(query.ctx.Fields) > 0 {
+		query.ctx.AppendFieldOnce(featuresvalues.FieldFeatureValuesTypesID)
+	}
 	query.Where(predicate.FeaturesValues(func(s *sql.Selector) {
 		s.Where(sql.InValues(s.C(featuresvaluestypes.FeatureValuesColumn), fks...))
 	}))
@@ -499,13 +501,13 @@ func (fvtq *FeaturesValuesTypesQuery) loadFeatureValues(ctx context.Context, que
 		return err
 	}
 	for _, n := range neighbors {
-		fk := n.features_values_types_feature_values
+		fk := n.FeatureValuesTypesID
 		if fk == nil {
-			return fmt.Errorf(`foreign-key "features_values_types_feature_values" is nil for node %v`, n.ID)
+			return fmt.Errorf(`foreign-key "feature_values_types_id" is nil for node %v`, n.ID)
 		}
 		node, ok := nodeids[*fk]
 		if !ok {
-			return fmt.Errorf(`unexpected referenced foreign-key "features_values_types_feature_values" returned %v for node %v`, *fk, n.ID)
+			return fmt.Errorf(`unexpected referenced foreign-key "feature_values_types_id" returned %v for node %v`, *fk, n.ID)
 		}
 		assign(node, n)
 	}

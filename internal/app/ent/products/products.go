@@ -26,8 +26,6 @@ const (
 	FieldVariantTypeID = "variant_type_id"
 	// FieldProductReferencesID holds the string denoting the product_references_id field in the database.
 	FieldProductReferencesID = "product_references_id"
-	// FieldImagesID holds the string denoting the images_id field in the database.
-	FieldImagesID = "images_id"
 	// FieldName holds the string denoting the name field in the database.
 	FieldName = "name"
 	// FieldStock holds the string denoting the stock field in the database.
@@ -40,8 +38,6 @@ const (
 	EdgeVariantType = "variant_type"
 	// EdgeProductReferences holds the string denoting the product_references edge name in mutations.
 	EdgeProductReferences = "product_references"
-	// EdgeImages holds the string denoting the images edge name in mutations.
-	EdgeImages = "images"
 	// EdgeProductHasImage holds the string denoting the product_has_image edge name in mutations.
 	EdgeProductHasImage = "product_has_image"
 	// EdgePromotionHasProduct holds the string denoting the promotion_has_product edge name in mutations.
@@ -86,13 +82,6 @@ const (
 	ProductReferencesInverseTable = "product_references"
 	// ProductReferencesColumn is the table column denoting the product_references relation/edge.
 	ProductReferencesColumn = "product_references_id"
-	// ImagesTable is the table that holds the images relation/edge.
-	ImagesTable = "products"
-	// ImagesInverseTable is the table name for the Images entity.
-	// It exists in this package in order to avoid circular dependency with the "images" package.
-	ImagesInverseTable = "images"
-	// ImagesColumn is the table column denoting the images relation/edge.
-	ImagesColumn = "images_id"
 	// ProductHasImageTable is the table that holds the product_has_image relation/edge.
 	ProductHasImageTable = "product_has_images"
 	// ProductHasImageInverseTable is the table name for the ProductHasImage entity.
@@ -153,7 +142,6 @@ var Columns = []string{
 	FieldBrandID,
 	FieldVariantTypeID,
 	FieldProductReferencesID,
-	FieldImagesID,
 	FieldName,
 	FieldStock,
 }
@@ -225,11 +213,6 @@ func ByProductReferencesID(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldProductReferencesID, opts...).ToFunc()
 }
 
-// ByImagesID orders the results by the images_id field.
-func ByImagesID(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldImagesID, opts...).ToFunc()
-}
-
 // ByName orders the results by the name field.
 func ByName(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldName, opts...).ToFunc()
@@ -265,13 +248,6 @@ func ByVariantTypeField(field string, opts ...sql.OrderTermOption) OrderOption {
 func ByProductReferencesField(field string, opts ...sql.OrderTermOption) OrderOption {
 	return func(s *sql.Selector) {
 		sqlgraph.OrderByNeighborTerms(s, newProductReferencesStep(), sql.OrderByField(field, opts...))
-	}
-}
-
-// ByImagesField orders the results by images field.
-func ByImagesField(field string, opts ...sql.OrderTermOption) OrderOption {
-	return func(s *sql.Selector) {
-		sqlgraph.OrderByNeighborTerms(s, newImagesStep(), sql.OrderByField(field, opts...))
 	}
 }
 
@@ -398,13 +374,6 @@ func newProductReferencesStep() *sqlgraph.Step {
 		sqlgraph.From(Table, FieldID),
 		sqlgraph.To(ProductReferencesInverseTable, FieldID),
 		sqlgraph.Edge(sqlgraph.M2O, true, ProductReferencesTable, ProductReferencesColumn),
-	)
-}
-func newImagesStep() *sqlgraph.Step {
-	return sqlgraph.NewStep(
-		sqlgraph.From(Table, FieldID),
-		sqlgraph.To(ImagesInverseTable, FieldID),
-		sqlgraph.Edge(sqlgraph.M2O, true, ImagesTable, ImagesColumn),
 	)
 }
 func newProductHasImageStep() *sqlgraph.Step {

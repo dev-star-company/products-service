@@ -26,7 +26,7 @@ func (c *controller) List(ctx context.Context, in *features_values_proto.ListReq
 	query := tx.FeaturesValues.Query()
 
 	if in.FeatureId != 0 {
-		query = query.Where(featuresvalues.FeatureID(int(in.FeatureId)))
+		query = query.Where(featuresvalues.FeaturesIDEQ(int(in.FeatureId)))
 	}
 
 	if in.FeatureUnitValuesId != 0 {

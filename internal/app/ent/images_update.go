@@ -10,7 +10,6 @@ import (
 	"products-service/internal/app/ent/images"
 	"products-service/internal/app/ent/predicate"
 	"products-service/internal/app/ent/producthasimage"
-	"products-service/internal/app/ent/products"
 	"time"
 
 	"entgo.io/ent/dialect/sql"
@@ -90,21 +89,6 @@ func (iu *ImagesUpdate) SetImageFolderPath(i *ImageFolderPath) *ImagesUpdate {
 	return iu.SetImageFolderPathID(i.ID)
 }
 
-// AddProductIDs adds the "products" edge to the Products entity by IDs.
-func (iu *ImagesUpdate) AddProductIDs(ids ...int) *ImagesUpdate {
-	iu.mutation.AddProductIDs(ids...)
-	return iu
-}
-
-// AddProducts adds the "products" edges to the Products entity.
-func (iu *ImagesUpdate) AddProducts(p ...*Products) *ImagesUpdate {
-	ids := make([]int, len(p))
-	for i := range p {
-		ids[i] = p[i].ID
-	}
-	return iu.AddProductIDs(ids...)
-}
-
 // AddProductHasImageIDs adds the "product_has_image" edge to the ProductHasImage entity by IDs.
 func (iu *ImagesUpdate) AddProductHasImageIDs(ids ...int) *ImagesUpdate {
 	iu.mutation.AddProductHasImageIDs(ids...)
@@ -129,27 +113,6 @@ func (iu *ImagesUpdate) Mutation() *ImagesMutation {
 func (iu *ImagesUpdate) ClearImageFolderPath() *ImagesUpdate {
 	iu.mutation.ClearImageFolderPath()
 	return iu
-}
-
-// ClearProducts clears all "products" edges to the Products entity.
-func (iu *ImagesUpdate) ClearProducts() *ImagesUpdate {
-	iu.mutation.ClearProducts()
-	return iu
-}
-
-// RemoveProductIDs removes the "products" edge to Products entities by IDs.
-func (iu *ImagesUpdate) RemoveProductIDs(ids ...int) *ImagesUpdate {
-	iu.mutation.RemoveProductIDs(ids...)
-	return iu
-}
-
-// RemoveProducts removes "products" edges to Products entities.
-func (iu *ImagesUpdate) RemoveProducts(p ...*Products) *ImagesUpdate {
-	ids := make([]int, len(p))
-	for i := range p {
-		ids[i] = p[i].ID
-	}
-	return iu.RemoveProductIDs(ids...)
 }
 
 // ClearProductHasImage clears all "product_has_image" edges to the ProductHasImage entity.
@@ -254,51 +217,6 @@ func (iu *ImagesUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(imagefolderpath.FieldID, field.TypeInt),
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_spec.Edges.Add = append(_spec.Edges.Add, edge)
-	}
-	if iu.mutation.ProductsCleared() {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
-			Table:   images.ProductsTable,
-			Columns: []string{images.ProductsColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(products.FieldID, field.TypeInt),
-			},
-		}
-		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
-	}
-	if nodes := iu.mutation.RemovedProductsIDs(); len(nodes) > 0 && !iu.mutation.ProductsCleared() {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
-			Table:   images.ProductsTable,
-			Columns: []string{images.ProductsColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(products.FieldID, field.TypeInt),
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
-	}
-	if nodes := iu.mutation.ProductsIDs(); len(nodes) > 0 {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
-			Table:   images.ProductsTable,
-			Columns: []string{images.ProductsColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(products.FieldID, field.TypeInt),
 			},
 		}
 		for _, k := range nodes {
@@ -430,21 +348,6 @@ func (iuo *ImagesUpdateOne) SetImageFolderPath(i *ImageFolderPath) *ImagesUpdate
 	return iuo.SetImageFolderPathID(i.ID)
 }
 
-// AddProductIDs adds the "products" edge to the Products entity by IDs.
-func (iuo *ImagesUpdateOne) AddProductIDs(ids ...int) *ImagesUpdateOne {
-	iuo.mutation.AddProductIDs(ids...)
-	return iuo
-}
-
-// AddProducts adds the "products" edges to the Products entity.
-func (iuo *ImagesUpdateOne) AddProducts(p ...*Products) *ImagesUpdateOne {
-	ids := make([]int, len(p))
-	for i := range p {
-		ids[i] = p[i].ID
-	}
-	return iuo.AddProductIDs(ids...)
-}
-
 // AddProductHasImageIDs adds the "product_has_image" edge to the ProductHasImage entity by IDs.
 func (iuo *ImagesUpdateOne) AddProductHasImageIDs(ids ...int) *ImagesUpdateOne {
 	iuo.mutation.AddProductHasImageIDs(ids...)
@@ -469,27 +372,6 @@ func (iuo *ImagesUpdateOne) Mutation() *ImagesMutation {
 func (iuo *ImagesUpdateOne) ClearImageFolderPath() *ImagesUpdateOne {
 	iuo.mutation.ClearImageFolderPath()
 	return iuo
-}
-
-// ClearProducts clears all "products" edges to the Products entity.
-func (iuo *ImagesUpdateOne) ClearProducts() *ImagesUpdateOne {
-	iuo.mutation.ClearProducts()
-	return iuo
-}
-
-// RemoveProductIDs removes the "products" edge to Products entities by IDs.
-func (iuo *ImagesUpdateOne) RemoveProductIDs(ids ...int) *ImagesUpdateOne {
-	iuo.mutation.RemoveProductIDs(ids...)
-	return iuo
-}
-
-// RemoveProducts removes "products" edges to Products entities.
-func (iuo *ImagesUpdateOne) RemoveProducts(p ...*Products) *ImagesUpdateOne {
-	ids := make([]int, len(p))
-	for i := range p {
-		ids[i] = p[i].ID
-	}
-	return iuo.RemoveProductIDs(ids...)
 }
 
 // ClearProductHasImage clears all "product_has_image" edges to the ProductHasImage entity.
@@ -624,51 +506,6 @@ func (iuo *ImagesUpdateOne) sqlSave(ctx context.Context) (_node *Images, err err
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(imagefolderpath.FieldID, field.TypeInt),
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_spec.Edges.Add = append(_spec.Edges.Add, edge)
-	}
-	if iuo.mutation.ProductsCleared() {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
-			Table:   images.ProductsTable,
-			Columns: []string{images.ProductsColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(products.FieldID, field.TypeInt),
-			},
-		}
-		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
-	}
-	if nodes := iuo.mutation.RemovedProductsIDs(); len(nodes) > 0 && !iuo.mutation.ProductsCleared() {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
-			Table:   images.ProductsTable,
-			Columns: []string{images.ProductsColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(products.FieldID, field.TypeInt),
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
-	}
-	if nodes := iuo.mutation.ProductsIDs(); len(nodes) > 0 {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
-			Table:   images.ProductsTable,
-			Columns: []string{images.ProductsColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(products.FieldID, field.TypeInt),
 			},
 		}
 		for _, k := range nodes {

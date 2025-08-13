@@ -38,11 +38,6 @@ func ProductsToProto(products *ent.Products) *products_proto.Products {
 		cur.ProductReferencesId = &x
 	}
 
-	if products.ImagesID != nil {
-		x := uint32(*products.ImagesID)
-		cur.ImageId = &x
-	}
-
 	if products.DeletedAt != nil {
 		x := products.DeletedAt.Format("2006-01-02 15:04:05")
 		cur.DeletedAt = &x

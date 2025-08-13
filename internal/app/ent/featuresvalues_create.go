@@ -9,6 +9,7 @@ import (
 	"products-service/internal/app/ent/features"
 	"products-service/internal/app/ent/featuresunitvalues"
 	"products-service/internal/app/ent/featuresvalues"
+	"products-service/internal/app/ent/featuresvaluestypes"
 	"time"
 
 	"entgo.io/ent/dialect/sql/sqlgraph"
@@ -50,9 +51,9 @@ func (fvc *FeaturesValuesCreate) SetNillableDeletedAt(t *time.Time) *FeaturesVal
 	return fvc
 }
 
-// SetFeatureID sets the "feature_id" field.
-func (fvc *FeaturesValuesCreate) SetFeatureID(i int) *FeaturesValuesCreate {
-	fvc.mutation.SetFeatureID(i)
+// SetFeaturesID sets the "features_id" field.
+func (fvc *FeaturesValuesCreate) SetFeaturesID(i int) *FeaturesValuesCreate {
+	fvc.mutation.SetFeaturesID(i)
 	return fvc
 }
 
@@ -70,16 +71,16 @@ func (fvc *FeaturesValuesCreate) SetNillableFeatureUnitValuesID(i *int) *Feature
 	return fvc
 }
 
-// SetFeatureValuesID sets the "feature_values_id" field.
-func (fvc *FeaturesValuesCreate) SetFeatureValuesID(i int) *FeaturesValuesCreate {
-	fvc.mutation.SetFeatureValuesID(i)
+// SetFeatureValuesTypesID sets the "feature_values_types_id" field.
+func (fvc *FeaturesValuesCreate) SetFeatureValuesTypesID(i int) *FeaturesValuesCreate {
+	fvc.mutation.SetFeatureValuesTypesID(i)
 	return fvc
 }
 
-// SetNillableFeatureValuesID sets the "feature_values_id" field if the given value is not nil.
-func (fvc *FeaturesValuesCreate) SetNillableFeatureValuesID(i *int) *FeaturesValuesCreate {
+// SetNillableFeatureValuesTypesID sets the "feature_values_types_id" field if the given value is not nil.
+func (fvc *FeaturesValuesCreate) SetNillableFeatureValuesTypesID(i *int) *FeaturesValuesCreate {
 	if i != nil {
-		fvc.SetFeatureValuesID(*i)
+		fvc.SetFeatureValuesTypesID(*i)
 	}
 	return fvc
 }
@@ -90,14 +91,19 @@ func (fvc *FeaturesValuesCreate) SetValue(s string) *FeaturesValuesCreate {
 	return fvc
 }
 
-// SetFeature sets the "feature" edge to the Features entity.
-func (fvc *FeaturesValuesCreate) SetFeature(f *Features) *FeaturesValuesCreate {
-	return fvc.SetFeatureID(f.ID)
+// SetFeatures sets the "features" edge to the Features entity.
+func (fvc *FeaturesValuesCreate) SetFeatures(f *Features) *FeaturesValuesCreate {
+	return fvc.SetFeaturesID(f.ID)
 }
 
 // SetFeatureUnitValues sets the "feature_unit_values" edge to the FeaturesUnitValues entity.
 func (fvc *FeaturesValuesCreate) SetFeatureUnitValues(f *FeaturesUnitValues) *FeaturesValuesCreate {
 	return fvc.SetFeatureUnitValuesID(f.ID)
+}
+
+// SetFeatureValuesTypes sets the "feature_values_types" edge to the FeaturesValuesTypes entity.
+func (fvc *FeaturesValuesCreate) SetFeatureValuesTypes(f *FeaturesValuesTypes) *FeaturesValuesCreate {
+	return fvc.SetFeatureValuesTypesID(f.ID)
 }
 
 // Mutation returns the FeaturesValuesMutation object of the builder.
@@ -146,14 +152,14 @@ func (fvc *FeaturesValuesCreate) check() error {
 	if _, ok := fvc.mutation.CreatedAt(); !ok {
 		return &ValidationError{Name: "created_at", err: errors.New(`ent: missing required field "FeaturesValues.created_at"`)}
 	}
-	if _, ok := fvc.mutation.FeatureID(); !ok {
-		return &ValidationError{Name: "feature_id", err: errors.New(`ent: missing required field "FeaturesValues.feature_id"`)}
+	if _, ok := fvc.mutation.FeaturesID(); !ok {
+		return &ValidationError{Name: "features_id", err: errors.New(`ent: missing required field "FeaturesValues.features_id"`)}
 	}
 	if _, ok := fvc.mutation.Value(); !ok {
 		return &ValidationError{Name: "value", err: errors.New(`ent: missing required field "FeaturesValues.value"`)}
 	}
-	if len(fvc.mutation.FeatureIDs()) == 0 {
-		return &ValidationError{Name: "feature", err: errors.New(`ent: missing required edge "FeaturesValues.feature"`)}
+	if len(fvc.mutation.FeaturesIDs()) == 0 {
+		return &ValidationError{Name: "features", err: errors.New(`ent: missing required edge "FeaturesValues.features"`)}
 	}
 	return nil
 }
@@ -189,20 +195,16 @@ func (fvc *FeaturesValuesCreate) createSpec() (*FeaturesValues, *sqlgraph.Create
 		_spec.SetField(featuresvalues.FieldDeletedAt, field.TypeTime, value)
 		_node.DeletedAt = &value
 	}
-	if value, ok := fvc.mutation.FeatureValuesID(); ok {
-		_spec.SetField(featuresvalues.FieldFeatureValuesID, field.TypeInt, value)
-		_node.FeatureValuesID = &value
-	}
 	if value, ok := fvc.mutation.Value(); ok {
 		_spec.SetField(featuresvalues.FieldValue, field.TypeString, value)
 		_node.Value = &value
 	}
-	if nodes := fvc.mutation.FeatureIDs(); len(nodes) > 0 {
+	if nodes := fvc.mutation.FeaturesIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2O,
 			Inverse: true,
-			Table:   featuresvalues.FeatureTable,
-			Columns: []string{featuresvalues.FeatureColumn},
+			Table:   featuresvalues.FeaturesTable,
+			Columns: []string{featuresvalues.FeaturesColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(features.FieldID, field.TypeInt),
@@ -211,7 +213,7 @@ func (fvc *FeaturesValuesCreate) createSpec() (*FeaturesValues, *sqlgraph.Create
 		for _, k := range nodes {
 			edge.Target.Nodes = append(edge.Target.Nodes, k)
 		}
-		_node.FeatureID = &nodes[0]
+		_node.FeaturesID = &nodes[0]
 		_spec.Edges = append(_spec.Edges, edge)
 	}
 	if nodes := fvc.mutation.FeatureUnitValuesIDs(); len(nodes) > 0 {
@@ -229,6 +231,23 @@ func (fvc *FeaturesValuesCreate) createSpec() (*FeaturesValues, *sqlgraph.Create
 			edge.Target.Nodes = append(edge.Target.Nodes, k)
 		}
 		_node.FeatureUnitValuesID = &nodes[0]
+		_spec.Edges = append(_spec.Edges, edge)
+	}
+	if nodes := fvc.mutation.FeatureValuesTypesIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   featuresvalues.FeatureValuesTypesTable,
+			Columns: []string{featuresvalues.FeatureValuesTypesColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(featuresvaluestypes.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_node.FeatureValuesTypesID = &nodes[0]
 		_spec.Edges = append(_spec.Edges, edge)
 	}
 	return _node, _spec

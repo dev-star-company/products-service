@@ -26,7 +26,6 @@ type ProductInfoQuery struct {
 	inters             []Interceptor
 	predicates         []predicate.ProductInfo
 	withInfoType       *InfoTypesQuery
-	withProducts       *ProductHasInfoQuery
 	withProductHasInfo *ProductHasInfoQuery
 	withFKs            bool
 	// intermediate query (i.e. traversal path).
@@ -80,28 +79,6 @@ func (piq *ProductInfoQuery) QueryInfoType() *InfoTypesQuery {
 			sqlgraph.From(productinfo.Table, productinfo.FieldID, selector),
 			sqlgraph.To(infotypes.Table, infotypes.FieldID),
 			sqlgraph.Edge(sqlgraph.M2O, true, productinfo.InfoTypeTable, productinfo.InfoTypeColumn),
-		)
-		fromU = sqlgraph.SetNeighbors(piq.driver.Dialect(), step)
-		return fromU, nil
-	}
-	return query
-}
-
-// QueryProducts chains the current query on the "products" edge.
-func (piq *ProductInfoQuery) QueryProducts() *ProductHasInfoQuery {
-	query := (&ProductHasInfoClient{config: piq.config}).Query()
-	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
-		if err := piq.prepareQuery(ctx); err != nil {
-			return nil, err
-		}
-		selector := piq.sqlQuery(ctx)
-		if err := selector.Err(); err != nil {
-			return nil, err
-		}
-		step := sqlgraph.NewStep(
-			sqlgraph.From(productinfo.Table, productinfo.FieldID, selector),
-			sqlgraph.To(producthasinfo.Table, producthasinfo.FieldID),
-			sqlgraph.Edge(sqlgraph.O2M, false, productinfo.ProductsTable, productinfo.ProductsColumn),
 		)
 		fromU = sqlgraph.SetNeighbors(piq.driver.Dialect(), step)
 		return fromU, nil
@@ -324,7 +301,6 @@ func (piq *ProductInfoQuery) Clone() *ProductInfoQuery {
 		inters:             append([]Interceptor{}, piq.inters...),
 		predicates:         append([]predicate.ProductInfo{}, piq.predicates...),
 		withInfoType:       piq.withInfoType.Clone(),
-		withProducts:       piq.withProducts.Clone(),
 		withProductHasInfo: piq.withProductHasInfo.Clone(),
 		// clone intermediate query.
 		sql:  piq.sql.Clone(),
@@ -340,17 +316,6 @@ func (piq *ProductInfoQuery) WithInfoType(opts ...func(*InfoTypesQuery)) *Produc
 		opt(query)
 	}
 	piq.withInfoType = query
-	return piq
-}
-
-// WithProducts tells the query-builder to eager-load the nodes that are connected to
-// the "products" edge. The optional arguments are used to configure the query builder of the edge.
-func (piq *ProductInfoQuery) WithProducts(opts ...func(*ProductHasInfoQuery)) *ProductInfoQuery {
-	query := (&ProductHasInfoClient{config: piq.config}).Query()
-	for _, opt := range opts {
-		opt(query)
-	}
-	piq.withProducts = query
 	return piq
 }
 
@@ -444,9 +409,8 @@ func (piq *ProductInfoQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]
 		nodes       = []*ProductInfo{}
 		withFKs     = piq.withFKs
 		_spec       = piq.querySpec()
-		loadedTypes = [3]bool{
+		loadedTypes = [2]bool{
 			piq.withInfoType != nil,
-			piq.withProducts != nil,
 			piq.withProductHasInfo != nil,
 		}
 	)
@@ -474,13 +438,6 @@ func (piq *ProductInfoQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]
 	if query := piq.withInfoType; query != nil {
 		if err := piq.loadInfoType(ctx, query, nodes, nil,
 			func(n *ProductInfo, e *InfoTypes) { n.Edges.InfoType = e }); err != nil {
-			return nil, err
-		}
-	}
-	if query := piq.withProducts; query != nil {
-		if err := piq.loadProducts(ctx, query, nodes,
-			func(n *ProductInfo) { n.Edges.Products = []*ProductHasInfo{} },
-			func(n *ProductInfo, e *ProductHasInfo) { n.Edges.Products = append(n.Edges.Products, e) }); err != nil {
 			return nil, err
 		}
 	}
@@ -526,37 +483,6 @@ func (piq *ProductInfoQuery) loadInfoType(ctx context.Context, query *InfoTypesQ
 	}
 	return nil
 }
-func (piq *ProductInfoQuery) loadProducts(ctx context.Context, query *ProductHasInfoQuery, nodes []*ProductInfo, init func(*ProductInfo), assign func(*ProductInfo, *ProductHasInfo)) error {
-	fks := make([]driver.Value, 0, len(nodes))
-	nodeids := make(map[int]*ProductInfo)
-	for i := range nodes {
-		fks = append(fks, nodes[i].ID)
-		nodeids[nodes[i].ID] = nodes[i]
-		if init != nil {
-			init(nodes[i])
-		}
-	}
-	query.withFKs = true
-	query.Where(predicate.ProductHasInfo(func(s *sql.Selector) {
-		s.Where(sql.InValues(s.C(productinfo.ProductsColumn), fks...))
-	}))
-	neighbors, err := query.All(ctx)
-	if err != nil {
-		return err
-	}
-	for _, n := range neighbors {
-		fk := n.product_info_products
-		if fk == nil {
-			return fmt.Errorf(`foreign-key "product_info_products" is nil for node %v`, n.ID)
-		}
-		node, ok := nodeids[*fk]
-		if !ok {
-			return fmt.Errorf(`unexpected referenced foreign-key "product_info_products" returned %v for node %v`, *fk, n.ID)
-		}
-		assign(node, n)
-	}
-	return nil
-}
 func (piq *ProductInfoQuery) loadProductHasInfo(ctx context.Context, query *ProductHasInfoQuery, nodes []*ProductInfo, init func(*ProductInfo), assign func(*ProductInfo, *ProductHasInfo)) error {
 	fks := make([]driver.Value, 0, len(nodes))
 	nodeids := make(map[int]*ProductInfo)
@@ -567,7 +493,6 @@ func (piq *ProductInfoQuery) loadProductHasInfo(ctx context.Context, query *Prod
 			init(nodes[i])
 		}
 	}
-	query.withFKs = true
 	if len(query.ctx.Fields) > 0 {
 		query.ctx.AppendFieldOnce(producthasinfo.FieldProductInfoID)
 	}

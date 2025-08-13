@@ -29,9 +29,8 @@ type ProductHasInfo struct {
 	ProductInfoID *int `json:"product_info_id,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the ProductHasInfoQuery when eager-loading is set.
-	Edges                 ProductHasInfoEdges `json:"edges"`
-	product_info_products *int
-	selectValues          sql.SelectValues
+	Edges        ProductHasInfoEdges `json:"edges"`
+	selectValues sql.SelectValues
 }
 
 // ProductHasInfoEdges holds the relations/edges for other nodes in the graph.
@@ -76,8 +75,6 @@ func (*ProductHasInfo) scanValues(columns []string) ([]any, error) {
 			values[i] = new(sql.NullInt64)
 		case producthasinfo.FieldCreatedAt, producthasinfo.FieldDeletedAt:
 			values[i] = new(sql.NullTime)
-		case producthasinfo.ForeignKeys[0]: // product_info_products
-			values[i] = new(sql.NullInt64)
 		default:
 			values[i] = new(sql.UnknownType)
 		}
@@ -125,13 +122,6 @@ func (phi *ProductHasInfo) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				phi.ProductInfoID = new(int)
 				*phi.ProductInfoID = int(value.Int64)
-			}
-		case producthasinfo.ForeignKeys[0]:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for edge-field product_info_products", value)
-			} else if value.Valid {
-				phi.product_info_products = new(int)
-				*phi.product_info_products = int(value.Int64)
 			}
 		default:
 			phi.selectValues.Set(columns[i], values[i])

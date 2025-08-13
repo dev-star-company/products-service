@@ -318,29 +318,6 @@ func HasImageFolderPathWith(preds ...predicate.ImageFolderPath) predicate.Images
 	})
 }
 
-// HasProducts applies the HasEdge predicate on the "products" edge.
-func HasProducts() predicate.Images {
-	return predicate.Images(func(s *sql.Selector) {
-		step := sqlgraph.NewStep(
-			sqlgraph.From(Table, FieldID),
-			sqlgraph.Edge(sqlgraph.O2M, false, ProductsTable, ProductsColumn),
-		)
-		sqlgraph.HasNeighbors(s, step)
-	})
-}
-
-// HasProductsWith applies the HasEdge predicate on the "products" edge with a given conditions (other predicates).
-func HasProductsWith(preds ...predicate.Products) predicate.Images {
-	return predicate.Images(func(s *sql.Selector) {
-		step := newProductsStep()
-		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
-			for _, p := range preds {
-				p(s)
-			}
-		})
-	})
-}
-
 // HasProductHasImage applies the HasEdge predicate on the "product_has_image" edge.
 func HasProductHasImage() predicate.Images {
 	return predicate.Images(func(s *sql.Selector) {

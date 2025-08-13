@@ -17,7 +17,7 @@ func (c *controller) Create(ctx context.Context, in *features_values_proto.Creat
 	}
 
 	create, err := c.Db.FeaturesValues.Create().
-		SetFeatureID(int(in.FeatureId)).
+		SetFeaturesID(int(in.FeatureId)).
 		SetFeatureUnitValuesID(int(in.FeatureUnitValuesId)).
 		SetValue(in.Value).
 		Save(ctx)

@@ -2811,22 +2811,22 @@ func (m *FeaturesUnitValuesMutation) ResetEdge(name string) error {
 // FeaturesValuesMutation represents an operation that mutates the FeaturesValues nodes in the graph.
 type FeaturesValuesMutation struct {
 	config
-	op                         Op
-	typ                        string
-	id                         *int
-	created_at                 *time.Time
-	deleted_at                 *time.Time
-	feature_values_id          *int
-	addfeature_values_id       *int
-	value                      *string
-	clearedFields              map[string]struct{}
-	feature                    *int
-	clearedfeature             bool
-	feature_unit_values        *int
-	clearedfeature_unit_values bool
-	done                       bool
-	oldValue                   func(context.Context) (*FeaturesValues, error)
-	predicates                 []predicate.FeaturesValues
+	op                          Op
+	typ                         string
+	id                          *int
+	created_at                  *time.Time
+	deleted_at                  *time.Time
+	value                       *string
+	clearedFields               map[string]struct{}
+	features                    *int
+	clearedfeatures             bool
+	feature_unit_values         *int
+	clearedfeature_unit_values  bool
+	feature_values_types        *int
+	clearedfeature_values_types bool
+	done                        bool
+	oldValue                    func(context.Context) (*FeaturesValues, error)
+	predicates                  []predicate.FeaturesValues
 }
 
 var _ ent.Mutation = (*FeaturesValuesMutation)(nil)
@@ -3012,40 +3012,40 @@ func (m *FeaturesValuesMutation) ResetDeletedAt() {
 	delete(m.clearedFields, featuresvalues.FieldDeletedAt)
 }
 
-// SetFeatureID sets the "feature_id" field.
-func (m *FeaturesValuesMutation) SetFeatureID(i int) {
-	m.feature = &i
+// SetFeaturesID sets the "features_id" field.
+func (m *FeaturesValuesMutation) SetFeaturesID(i int) {
+	m.features = &i
 }
 
-// FeatureID returns the value of the "feature_id" field in the mutation.
-func (m *FeaturesValuesMutation) FeatureID() (r int, exists bool) {
-	v := m.feature
+// FeaturesID returns the value of the "features_id" field in the mutation.
+func (m *FeaturesValuesMutation) FeaturesID() (r int, exists bool) {
+	v := m.features
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldFeatureID returns the old "feature_id" field's value of the FeaturesValues entity.
+// OldFeaturesID returns the old "features_id" field's value of the FeaturesValues entity.
 // If the FeaturesValues object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *FeaturesValuesMutation) OldFeatureID(ctx context.Context) (v *int, err error) {
+func (m *FeaturesValuesMutation) OldFeaturesID(ctx context.Context) (v *int, err error) {
 	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldFeatureID is only allowed on UpdateOne operations")
+		return v, errors.New("OldFeaturesID is only allowed on UpdateOne operations")
 	}
 	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldFeatureID requires an ID field in the mutation")
+		return v, errors.New("OldFeaturesID requires an ID field in the mutation")
 	}
 	oldValue, err := m.oldValue(ctx)
 	if err != nil {
-		return v, fmt.Errorf("querying old value for OldFeatureID: %w", err)
+		return v, fmt.Errorf("querying old value for OldFeaturesID: %w", err)
 	}
-	return oldValue.FeatureID, nil
+	return oldValue.FeaturesID, nil
 }
 
-// ResetFeatureID resets all changes to the "feature_id" field.
-func (m *FeaturesValuesMutation) ResetFeatureID() {
-	m.feature = nil
+// ResetFeaturesID resets all changes to the "features_id" field.
+func (m *FeaturesValuesMutation) ResetFeaturesID() {
+	m.features = nil
 }
 
 // SetFeatureUnitValuesID sets the "feature_unit_values_id" field.
@@ -3097,74 +3097,53 @@ func (m *FeaturesValuesMutation) ResetFeatureUnitValuesID() {
 	delete(m.clearedFields, featuresvalues.FieldFeatureUnitValuesID)
 }
 
-// SetFeatureValuesID sets the "feature_values_id" field.
-func (m *FeaturesValuesMutation) SetFeatureValuesID(i int) {
-	m.feature_values_id = &i
-	m.addfeature_values_id = nil
+// SetFeatureValuesTypesID sets the "feature_values_types_id" field.
+func (m *FeaturesValuesMutation) SetFeatureValuesTypesID(i int) {
+	m.feature_values_types = &i
 }
 
-// FeatureValuesID returns the value of the "feature_values_id" field in the mutation.
-func (m *FeaturesValuesMutation) FeatureValuesID() (r int, exists bool) {
-	v := m.feature_values_id
+// FeatureValuesTypesID returns the value of the "feature_values_types_id" field in the mutation.
+func (m *FeaturesValuesMutation) FeatureValuesTypesID() (r int, exists bool) {
+	v := m.feature_values_types
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldFeatureValuesID returns the old "feature_values_id" field's value of the FeaturesValues entity.
+// OldFeatureValuesTypesID returns the old "feature_values_types_id" field's value of the FeaturesValues entity.
 // If the FeaturesValues object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *FeaturesValuesMutation) OldFeatureValuesID(ctx context.Context) (v *int, err error) {
+func (m *FeaturesValuesMutation) OldFeatureValuesTypesID(ctx context.Context) (v *int, err error) {
 	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldFeatureValuesID is only allowed on UpdateOne operations")
+		return v, errors.New("OldFeatureValuesTypesID is only allowed on UpdateOne operations")
 	}
 	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldFeatureValuesID requires an ID field in the mutation")
+		return v, errors.New("OldFeatureValuesTypesID requires an ID field in the mutation")
 	}
 	oldValue, err := m.oldValue(ctx)
 	if err != nil {
-		return v, fmt.Errorf("querying old value for OldFeatureValuesID: %w", err)
+		return v, fmt.Errorf("querying old value for OldFeatureValuesTypesID: %w", err)
 	}
-	return oldValue.FeatureValuesID, nil
+	return oldValue.FeatureValuesTypesID, nil
 }
 
-// AddFeatureValuesID adds i to the "feature_values_id" field.
-func (m *FeaturesValuesMutation) AddFeatureValuesID(i int) {
-	if m.addfeature_values_id != nil {
-		*m.addfeature_values_id += i
-	} else {
-		m.addfeature_values_id = &i
-	}
+// ClearFeatureValuesTypesID clears the value of the "feature_values_types_id" field.
+func (m *FeaturesValuesMutation) ClearFeatureValuesTypesID() {
+	m.feature_values_types = nil
+	m.clearedFields[featuresvalues.FieldFeatureValuesTypesID] = struct{}{}
 }
 
-// AddedFeatureValuesID returns the value that was added to the "feature_values_id" field in this mutation.
-func (m *FeaturesValuesMutation) AddedFeatureValuesID() (r int, exists bool) {
-	v := m.addfeature_values_id
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// ClearFeatureValuesID clears the value of the "feature_values_id" field.
-func (m *FeaturesValuesMutation) ClearFeatureValuesID() {
-	m.feature_values_id = nil
-	m.addfeature_values_id = nil
-	m.clearedFields[featuresvalues.FieldFeatureValuesID] = struct{}{}
-}
-
-// FeatureValuesIDCleared returns if the "feature_values_id" field was cleared in this mutation.
-func (m *FeaturesValuesMutation) FeatureValuesIDCleared() bool {
-	_, ok := m.clearedFields[featuresvalues.FieldFeatureValuesID]
+// FeatureValuesTypesIDCleared returns if the "feature_values_types_id" field was cleared in this mutation.
+func (m *FeaturesValuesMutation) FeatureValuesTypesIDCleared() bool {
+	_, ok := m.clearedFields[featuresvalues.FieldFeatureValuesTypesID]
 	return ok
 }
 
-// ResetFeatureValuesID resets all changes to the "feature_values_id" field.
-func (m *FeaturesValuesMutation) ResetFeatureValuesID() {
-	m.feature_values_id = nil
-	m.addfeature_values_id = nil
-	delete(m.clearedFields, featuresvalues.FieldFeatureValuesID)
+// ResetFeatureValuesTypesID resets all changes to the "feature_values_types_id" field.
+func (m *FeaturesValuesMutation) ResetFeatureValuesTypesID() {
+	m.feature_values_types = nil
+	delete(m.clearedFields, featuresvalues.FieldFeatureValuesTypesID)
 }
 
 // SetValue sets the "value" field.
@@ -3203,31 +3182,31 @@ func (m *FeaturesValuesMutation) ResetValue() {
 	m.value = nil
 }
 
-// ClearFeature clears the "feature" edge to the Features entity.
-func (m *FeaturesValuesMutation) ClearFeature() {
-	m.clearedfeature = true
-	m.clearedFields[featuresvalues.FieldFeatureID] = struct{}{}
+// ClearFeatures clears the "features" edge to the Features entity.
+func (m *FeaturesValuesMutation) ClearFeatures() {
+	m.clearedfeatures = true
+	m.clearedFields[featuresvalues.FieldFeaturesID] = struct{}{}
 }
 
-// FeatureCleared reports if the "feature" edge to the Features entity was cleared.
-func (m *FeaturesValuesMutation) FeatureCleared() bool {
-	return m.clearedfeature
+// FeaturesCleared reports if the "features" edge to the Features entity was cleared.
+func (m *FeaturesValuesMutation) FeaturesCleared() bool {
+	return m.clearedfeatures
 }
 
-// FeatureIDs returns the "feature" edge IDs in the mutation.
+// FeaturesIDs returns the "features" edge IDs in the mutation.
 // Note that IDs always returns len(IDs) <= 1 for unique edges, and you should use
-// FeatureID instead. It exists only for internal usage by the builders.
-func (m *FeaturesValuesMutation) FeatureIDs() (ids []int) {
-	if id := m.feature; id != nil {
+// FeaturesID instead. It exists only for internal usage by the builders.
+func (m *FeaturesValuesMutation) FeaturesIDs() (ids []int) {
+	if id := m.features; id != nil {
 		ids = append(ids, *id)
 	}
 	return
 }
 
-// ResetFeature resets all changes to the "feature" edge.
-func (m *FeaturesValuesMutation) ResetFeature() {
-	m.feature = nil
-	m.clearedfeature = false
+// ResetFeatures resets all changes to the "features" edge.
+func (m *FeaturesValuesMutation) ResetFeatures() {
+	m.features = nil
+	m.clearedfeatures = false
 }
 
 // ClearFeatureUnitValues clears the "feature_unit_values" edge to the FeaturesUnitValues entity.
@@ -3255,6 +3234,33 @@ func (m *FeaturesValuesMutation) FeatureUnitValuesIDs() (ids []int) {
 func (m *FeaturesValuesMutation) ResetFeatureUnitValues() {
 	m.feature_unit_values = nil
 	m.clearedfeature_unit_values = false
+}
+
+// ClearFeatureValuesTypes clears the "feature_values_types" edge to the FeaturesValuesTypes entity.
+func (m *FeaturesValuesMutation) ClearFeatureValuesTypes() {
+	m.clearedfeature_values_types = true
+	m.clearedFields[featuresvalues.FieldFeatureValuesTypesID] = struct{}{}
+}
+
+// FeatureValuesTypesCleared reports if the "feature_values_types" edge to the FeaturesValuesTypes entity was cleared.
+func (m *FeaturesValuesMutation) FeatureValuesTypesCleared() bool {
+	return m.FeatureValuesTypesIDCleared() || m.clearedfeature_values_types
+}
+
+// FeatureValuesTypesIDs returns the "feature_values_types" edge IDs in the mutation.
+// Note that IDs always returns len(IDs) <= 1 for unique edges, and you should use
+// FeatureValuesTypesID instead. It exists only for internal usage by the builders.
+func (m *FeaturesValuesMutation) FeatureValuesTypesIDs() (ids []int) {
+	if id := m.feature_values_types; id != nil {
+		ids = append(ids, *id)
+	}
+	return
+}
+
+// ResetFeatureValuesTypes resets all changes to the "feature_values_types" edge.
+func (m *FeaturesValuesMutation) ResetFeatureValuesTypes() {
+	m.feature_values_types = nil
+	m.clearedfeature_values_types = false
 }
 
 // Where appends a list predicates to the FeaturesValuesMutation builder.
@@ -3298,14 +3304,14 @@ func (m *FeaturesValuesMutation) Fields() []string {
 	if m.deleted_at != nil {
 		fields = append(fields, featuresvalues.FieldDeletedAt)
 	}
-	if m.feature != nil {
-		fields = append(fields, featuresvalues.FieldFeatureID)
+	if m.features != nil {
+		fields = append(fields, featuresvalues.FieldFeaturesID)
 	}
 	if m.feature_unit_values != nil {
 		fields = append(fields, featuresvalues.FieldFeatureUnitValuesID)
 	}
-	if m.feature_values_id != nil {
-		fields = append(fields, featuresvalues.FieldFeatureValuesID)
+	if m.feature_values_types != nil {
+		fields = append(fields, featuresvalues.FieldFeatureValuesTypesID)
 	}
 	if m.value != nil {
 		fields = append(fields, featuresvalues.FieldValue)
@@ -3322,12 +3328,12 @@ func (m *FeaturesValuesMutation) Field(name string) (ent.Value, bool) {
 		return m.CreatedAt()
 	case featuresvalues.FieldDeletedAt:
 		return m.DeletedAt()
-	case featuresvalues.FieldFeatureID:
-		return m.FeatureID()
+	case featuresvalues.FieldFeaturesID:
+		return m.FeaturesID()
 	case featuresvalues.FieldFeatureUnitValuesID:
 		return m.FeatureUnitValuesID()
-	case featuresvalues.FieldFeatureValuesID:
-		return m.FeatureValuesID()
+	case featuresvalues.FieldFeatureValuesTypesID:
+		return m.FeatureValuesTypesID()
 	case featuresvalues.FieldValue:
 		return m.Value()
 	}
@@ -3343,12 +3349,12 @@ func (m *FeaturesValuesMutation) OldField(ctx context.Context, name string) (ent
 		return m.OldCreatedAt(ctx)
 	case featuresvalues.FieldDeletedAt:
 		return m.OldDeletedAt(ctx)
-	case featuresvalues.FieldFeatureID:
-		return m.OldFeatureID(ctx)
+	case featuresvalues.FieldFeaturesID:
+		return m.OldFeaturesID(ctx)
 	case featuresvalues.FieldFeatureUnitValuesID:
 		return m.OldFeatureUnitValuesID(ctx)
-	case featuresvalues.FieldFeatureValuesID:
-		return m.OldFeatureValuesID(ctx)
+	case featuresvalues.FieldFeatureValuesTypesID:
+		return m.OldFeatureValuesTypesID(ctx)
 	case featuresvalues.FieldValue:
 		return m.OldValue(ctx)
 	}
@@ -3374,12 +3380,12 @@ func (m *FeaturesValuesMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetDeletedAt(v)
 		return nil
-	case featuresvalues.FieldFeatureID:
+	case featuresvalues.FieldFeaturesID:
 		v, ok := value.(int)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.SetFeatureID(v)
+		m.SetFeaturesID(v)
 		return nil
 	case featuresvalues.FieldFeatureUnitValuesID:
 		v, ok := value.(int)
@@ -3388,12 +3394,12 @@ func (m *FeaturesValuesMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetFeatureUnitValuesID(v)
 		return nil
-	case featuresvalues.FieldFeatureValuesID:
+	case featuresvalues.FieldFeatureValuesTypesID:
 		v, ok := value.(int)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.SetFeatureValuesID(v)
+		m.SetFeatureValuesTypesID(v)
 		return nil
 	case featuresvalues.FieldValue:
 		v, ok := value.(string)
@@ -3410,9 +3416,6 @@ func (m *FeaturesValuesMutation) SetField(name string, value ent.Value) error {
 // this mutation.
 func (m *FeaturesValuesMutation) AddedFields() []string {
 	var fields []string
-	if m.addfeature_values_id != nil {
-		fields = append(fields, featuresvalues.FieldFeatureValuesID)
-	}
 	return fields
 }
 
@@ -3421,8 +3424,6 @@ func (m *FeaturesValuesMutation) AddedFields() []string {
 // was not set, or was not defined in the schema.
 func (m *FeaturesValuesMutation) AddedField(name string) (ent.Value, bool) {
 	switch name {
-	case featuresvalues.FieldFeatureValuesID:
-		return m.AddedFeatureValuesID()
 	}
 	return nil, false
 }
@@ -3432,13 +3433,6 @@ func (m *FeaturesValuesMutation) AddedField(name string) (ent.Value, bool) {
 // type.
 func (m *FeaturesValuesMutation) AddField(name string, value ent.Value) error {
 	switch name {
-	case featuresvalues.FieldFeatureValuesID:
-		v, ok := value.(int)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.AddFeatureValuesID(v)
-		return nil
 	}
 	return fmt.Errorf("unknown FeaturesValues numeric field %s", name)
 }
@@ -3453,8 +3447,8 @@ func (m *FeaturesValuesMutation) ClearedFields() []string {
 	if m.FieldCleared(featuresvalues.FieldFeatureUnitValuesID) {
 		fields = append(fields, featuresvalues.FieldFeatureUnitValuesID)
 	}
-	if m.FieldCleared(featuresvalues.FieldFeatureValuesID) {
-		fields = append(fields, featuresvalues.FieldFeatureValuesID)
+	if m.FieldCleared(featuresvalues.FieldFeatureValuesTypesID) {
+		fields = append(fields, featuresvalues.FieldFeatureValuesTypesID)
 	}
 	return fields
 }
@@ -3476,8 +3470,8 @@ func (m *FeaturesValuesMutation) ClearField(name string) error {
 	case featuresvalues.FieldFeatureUnitValuesID:
 		m.ClearFeatureUnitValuesID()
 		return nil
-	case featuresvalues.FieldFeatureValuesID:
-		m.ClearFeatureValuesID()
+	case featuresvalues.FieldFeatureValuesTypesID:
+		m.ClearFeatureValuesTypesID()
 		return nil
 	}
 	return fmt.Errorf("unknown FeaturesValues nullable field %s", name)
@@ -3493,14 +3487,14 @@ func (m *FeaturesValuesMutation) ResetField(name string) error {
 	case featuresvalues.FieldDeletedAt:
 		m.ResetDeletedAt()
 		return nil
-	case featuresvalues.FieldFeatureID:
-		m.ResetFeatureID()
+	case featuresvalues.FieldFeaturesID:
+		m.ResetFeaturesID()
 		return nil
 	case featuresvalues.FieldFeatureUnitValuesID:
 		m.ResetFeatureUnitValuesID()
 		return nil
-	case featuresvalues.FieldFeatureValuesID:
-		m.ResetFeatureValuesID()
+	case featuresvalues.FieldFeatureValuesTypesID:
+		m.ResetFeatureValuesTypesID()
 		return nil
 	case featuresvalues.FieldValue:
 		m.ResetValue()
@@ -3511,12 +3505,15 @@ func (m *FeaturesValuesMutation) ResetField(name string) error {
 
 // AddedEdges returns all edge names that were set/added in this mutation.
 func (m *FeaturesValuesMutation) AddedEdges() []string {
-	edges := make([]string, 0, 2)
-	if m.feature != nil {
-		edges = append(edges, featuresvalues.EdgeFeature)
+	edges := make([]string, 0, 3)
+	if m.features != nil {
+		edges = append(edges, featuresvalues.EdgeFeatures)
 	}
 	if m.feature_unit_values != nil {
 		edges = append(edges, featuresvalues.EdgeFeatureUnitValues)
+	}
+	if m.feature_values_types != nil {
+		edges = append(edges, featuresvalues.EdgeFeatureValuesTypes)
 	}
 	return edges
 }
@@ -3525,12 +3522,16 @@ func (m *FeaturesValuesMutation) AddedEdges() []string {
 // name in this mutation.
 func (m *FeaturesValuesMutation) AddedIDs(name string) []ent.Value {
 	switch name {
-	case featuresvalues.EdgeFeature:
-		if id := m.feature; id != nil {
+	case featuresvalues.EdgeFeatures:
+		if id := m.features; id != nil {
 			return []ent.Value{*id}
 		}
 	case featuresvalues.EdgeFeatureUnitValues:
 		if id := m.feature_unit_values; id != nil {
+			return []ent.Value{*id}
+		}
+	case featuresvalues.EdgeFeatureValuesTypes:
+		if id := m.feature_values_types; id != nil {
 			return []ent.Value{*id}
 		}
 	}
@@ -3539,7 +3540,7 @@ func (m *FeaturesValuesMutation) AddedIDs(name string) []ent.Value {
 
 // RemovedEdges returns all edge names that were removed in this mutation.
 func (m *FeaturesValuesMutation) RemovedEdges() []string {
-	edges := make([]string, 0, 2)
+	edges := make([]string, 0, 3)
 	return edges
 }
 
@@ -3551,12 +3552,15 @@ func (m *FeaturesValuesMutation) RemovedIDs(name string) []ent.Value {
 
 // ClearedEdges returns all edge names that were cleared in this mutation.
 func (m *FeaturesValuesMutation) ClearedEdges() []string {
-	edges := make([]string, 0, 2)
-	if m.clearedfeature {
-		edges = append(edges, featuresvalues.EdgeFeature)
+	edges := make([]string, 0, 3)
+	if m.clearedfeatures {
+		edges = append(edges, featuresvalues.EdgeFeatures)
 	}
 	if m.clearedfeature_unit_values {
 		edges = append(edges, featuresvalues.EdgeFeatureUnitValues)
+	}
+	if m.clearedfeature_values_types {
+		edges = append(edges, featuresvalues.EdgeFeatureValuesTypes)
 	}
 	return edges
 }
@@ -3565,10 +3569,12 @@ func (m *FeaturesValuesMutation) ClearedEdges() []string {
 // was cleared in this mutation.
 func (m *FeaturesValuesMutation) EdgeCleared(name string) bool {
 	switch name {
-	case featuresvalues.EdgeFeature:
-		return m.clearedfeature
+	case featuresvalues.EdgeFeatures:
+		return m.clearedfeatures
 	case featuresvalues.EdgeFeatureUnitValues:
 		return m.clearedfeature_unit_values
+	case featuresvalues.EdgeFeatureValuesTypes:
+		return m.clearedfeature_values_types
 	}
 	return false
 }
@@ -3577,11 +3583,14 @@ func (m *FeaturesValuesMutation) EdgeCleared(name string) bool {
 // if that edge is not defined in the schema.
 func (m *FeaturesValuesMutation) ClearEdge(name string) error {
 	switch name {
-	case featuresvalues.EdgeFeature:
-		m.ClearFeature()
+	case featuresvalues.EdgeFeatures:
+		m.ClearFeatures()
 		return nil
 	case featuresvalues.EdgeFeatureUnitValues:
 		m.ClearFeatureUnitValues()
+		return nil
+	case featuresvalues.EdgeFeatureValuesTypes:
+		m.ClearFeatureValuesTypes()
 		return nil
 	}
 	return fmt.Errorf("unknown FeaturesValues unique edge %s", name)
@@ -3591,11 +3600,14 @@ func (m *FeaturesValuesMutation) ClearEdge(name string) error {
 // It returns an error if the edge is not defined in the schema.
 func (m *FeaturesValuesMutation) ResetEdge(name string) error {
 	switch name {
-	case featuresvalues.EdgeFeature:
-		m.ResetFeature()
+	case featuresvalues.EdgeFeatures:
+		m.ResetFeatures()
 		return nil
 	case featuresvalues.EdgeFeatureUnitValues:
 		m.ResetFeatureUnitValues()
+		return nil
+	case featuresvalues.EdgeFeatureValuesTypes:
+		m.ResetFeatureValuesTypes()
 		return nil
 	}
 	return fmt.Errorf("unknown FeaturesValues edge %s", name)
@@ -5593,9 +5605,6 @@ type ImagesMutation struct {
 	clearedFields            map[string]struct{}
 	image_folder_path        *int
 	clearedimage_folder_path bool
-	products                 map[int]struct{}
-	removedproducts          map[int]struct{}
-	clearedproducts          bool
 	product_has_image        map[int]struct{}
 	removedproduct_has_image map[int]struct{}
 	clearedproduct_has_image bool
@@ -5898,60 +5907,6 @@ func (m *ImagesMutation) ResetImageFolderPath() {
 	m.clearedimage_folder_path = false
 }
 
-// AddProductIDs adds the "products" edge to the Products entity by ids.
-func (m *ImagesMutation) AddProductIDs(ids ...int) {
-	if m.products == nil {
-		m.products = make(map[int]struct{})
-	}
-	for i := range ids {
-		m.products[ids[i]] = struct{}{}
-	}
-}
-
-// ClearProducts clears the "products" edge to the Products entity.
-func (m *ImagesMutation) ClearProducts() {
-	m.clearedproducts = true
-}
-
-// ProductsCleared reports if the "products" edge to the Products entity was cleared.
-func (m *ImagesMutation) ProductsCleared() bool {
-	return m.clearedproducts
-}
-
-// RemoveProductIDs removes the "products" edge to the Products entity by IDs.
-func (m *ImagesMutation) RemoveProductIDs(ids ...int) {
-	if m.removedproducts == nil {
-		m.removedproducts = make(map[int]struct{})
-	}
-	for i := range ids {
-		delete(m.products, ids[i])
-		m.removedproducts[ids[i]] = struct{}{}
-	}
-}
-
-// RemovedProducts returns the removed IDs of the "products" edge to the Products entity.
-func (m *ImagesMutation) RemovedProductsIDs() (ids []int) {
-	for id := range m.removedproducts {
-		ids = append(ids, id)
-	}
-	return
-}
-
-// ProductsIDs returns the "products" edge IDs in the mutation.
-func (m *ImagesMutation) ProductsIDs() (ids []int) {
-	for id := range m.products {
-		ids = append(ids, id)
-	}
-	return
-}
-
-// ResetProducts resets all changes to the "products" edge.
-func (m *ImagesMutation) ResetProducts() {
-	m.products = nil
-	m.clearedproducts = false
-	m.removedproducts = nil
-}
-
 // AddProductHasImageIDs adds the "product_has_image" edge to the ProductHasImage entity by ids.
 func (m *ImagesMutation) AddProductHasImageIDs(ids ...int) {
 	if m.product_has_image == nil {
@@ -6199,12 +6154,9 @@ func (m *ImagesMutation) ResetField(name string) error {
 
 // AddedEdges returns all edge names that were set/added in this mutation.
 func (m *ImagesMutation) AddedEdges() []string {
-	edges := make([]string, 0, 3)
+	edges := make([]string, 0, 2)
 	if m.image_folder_path != nil {
 		edges = append(edges, images.EdgeImageFolderPath)
-	}
-	if m.products != nil {
-		edges = append(edges, images.EdgeProducts)
 	}
 	if m.product_has_image != nil {
 		edges = append(edges, images.EdgeProductHasImage)
@@ -6220,12 +6172,6 @@ func (m *ImagesMutation) AddedIDs(name string) []ent.Value {
 		if id := m.image_folder_path; id != nil {
 			return []ent.Value{*id}
 		}
-	case images.EdgeProducts:
-		ids := make([]ent.Value, 0, len(m.products))
-		for id := range m.products {
-			ids = append(ids, id)
-		}
-		return ids
 	case images.EdgeProductHasImage:
 		ids := make([]ent.Value, 0, len(m.product_has_image))
 		for id := range m.product_has_image {
@@ -6238,10 +6184,7 @@ func (m *ImagesMutation) AddedIDs(name string) []ent.Value {
 
 // RemovedEdges returns all edge names that were removed in this mutation.
 func (m *ImagesMutation) RemovedEdges() []string {
-	edges := make([]string, 0, 3)
-	if m.removedproducts != nil {
-		edges = append(edges, images.EdgeProducts)
-	}
+	edges := make([]string, 0, 2)
 	if m.removedproduct_has_image != nil {
 		edges = append(edges, images.EdgeProductHasImage)
 	}
@@ -6252,12 +6195,6 @@ func (m *ImagesMutation) RemovedEdges() []string {
 // the given name in this mutation.
 func (m *ImagesMutation) RemovedIDs(name string) []ent.Value {
 	switch name {
-	case images.EdgeProducts:
-		ids := make([]ent.Value, 0, len(m.removedproducts))
-		for id := range m.removedproducts {
-			ids = append(ids, id)
-		}
-		return ids
 	case images.EdgeProductHasImage:
 		ids := make([]ent.Value, 0, len(m.removedproduct_has_image))
 		for id := range m.removedproduct_has_image {
@@ -6270,12 +6207,9 @@ func (m *ImagesMutation) RemovedIDs(name string) []ent.Value {
 
 // ClearedEdges returns all edge names that were cleared in this mutation.
 func (m *ImagesMutation) ClearedEdges() []string {
-	edges := make([]string, 0, 3)
+	edges := make([]string, 0, 2)
 	if m.clearedimage_folder_path {
 		edges = append(edges, images.EdgeImageFolderPath)
-	}
-	if m.clearedproducts {
-		edges = append(edges, images.EdgeProducts)
 	}
 	if m.clearedproduct_has_image {
 		edges = append(edges, images.EdgeProductHasImage)
@@ -6289,8 +6223,6 @@ func (m *ImagesMutation) EdgeCleared(name string) bool {
 	switch name {
 	case images.EdgeImageFolderPath:
 		return m.clearedimage_folder_path
-	case images.EdgeProducts:
-		return m.clearedproducts
 	case images.EdgeProductHasImage:
 		return m.clearedproduct_has_image
 	}
@@ -6314,9 +6246,6 @@ func (m *ImagesMutation) ResetEdge(name string) error {
 	switch name {
 	case images.EdgeImageFolderPath:
 		m.ResetImageFolderPath()
-		return nil
-	case images.EdgeProducts:
-		m.ResetProducts()
 		return nil
 	case images.EdgeProductHasImage:
 		m.ResetProductHasImage()
@@ -10108,9 +10037,6 @@ type ProductInfoMutation struct {
 	clearedFields           map[string]struct{}
 	info_type               *int
 	clearedinfo_type        bool
-	products                map[int]struct{}
-	removedproducts         map[int]struct{}
-	clearedproducts         bool
 	product_has_info        map[int]struct{}
 	removedproduct_has_info map[int]struct{}
 	clearedproduct_has_info bool
@@ -10427,60 +10353,6 @@ func (m *ProductInfoMutation) ResetInfoType() {
 	m.clearedinfo_type = false
 }
 
-// AddProductIDs adds the "products" edge to the ProductHasInfo entity by ids.
-func (m *ProductInfoMutation) AddProductIDs(ids ...int) {
-	if m.products == nil {
-		m.products = make(map[int]struct{})
-	}
-	for i := range ids {
-		m.products[ids[i]] = struct{}{}
-	}
-}
-
-// ClearProducts clears the "products" edge to the ProductHasInfo entity.
-func (m *ProductInfoMutation) ClearProducts() {
-	m.clearedproducts = true
-}
-
-// ProductsCleared reports if the "products" edge to the ProductHasInfo entity was cleared.
-func (m *ProductInfoMutation) ProductsCleared() bool {
-	return m.clearedproducts
-}
-
-// RemoveProductIDs removes the "products" edge to the ProductHasInfo entity by IDs.
-func (m *ProductInfoMutation) RemoveProductIDs(ids ...int) {
-	if m.removedproducts == nil {
-		m.removedproducts = make(map[int]struct{})
-	}
-	for i := range ids {
-		delete(m.products, ids[i])
-		m.removedproducts[ids[i]] = struct{}{}
-	}
-}
-
-// RemovedProducts returns the removed IDs of the "products" edge to the ProductHasInfo entity.
-func (m *ProductInfoMutation) RemovedProductsIDs() (ids []int) {
-	for id := range m.removedproducts {
-		ids = append(ids, id)
-	}
-	return
-}
-
-// ProductsIDs returns the "products" edge IDs in the mutation.
-func (m *ProductInfoMutation) ProductsIDs() (ids []int) {
-	for id := range m.products {
-		ids = append(ids, id)
-	}
-	return
-}
-
-// ResetProducts resets all changes to the "products" edge.
-func (m *ProductInfoMutation) ResetProducts() {
-	m.products = nil
-	m.clearedproducts = false
-	m.removedproducts = nil
-}
-
 // AddProductHasInfoIDs adds the "product_has_info" edge to the ProductHasInfo entity by ids.
 func (m *ProductInfoMutation) AddProductHasInfoIDs(ids ...int) {
 	if m.product_has_info == nil {
@@ -10737,12 +10609,9 @@ func (m *ProductInfoMutation) ResetField(name string) error {
 
 // AddedEdges returns all edge names that were set/added in this mutation.
 func (m *ProductInfoMutation) AddedEdges() []string {
-	edges := make([]string, 0, 3)
+	edges := make([]string, 0, 2)
 	if m.info_type != nil {
 		edges = append(edges, productinfo.EdgeInfoType)
-	}
-	if m.products != nil {
-		edges = append(edges, productinfo.EdgeProducts)
 	}
 	if m.product_has_info != nil {
 		edges = append(edges, productinfo.EdgeProductHasInfo)
@@ -10758,12 +10627,6 @@ func (m *ProductInfoMutation) AddedIDs(name string) []ent.Value {
 		if id := m.info_type; id != nil {
 			return []ent.Value{*id}
 		}
-	case productinfo.EdgeProducts:
-		ids := make([]ent.Value, 0, len(m.products))
-		for id := range m.products {
-			ids = append(ids, id)
-		}
-		return ids
 	case productinfo.EdgeProductHasInfo:
 		ids := make([]ent.Value, 0, len(m.product_has_info))
 		for id := range m.product_has_info {
@@ -10776,10 +10639,7 @@ func (m *ProductInfoMutation) AddedIDs(name string) []ent.Value {
 
 // RemovedEdges returns all edge names that were removed in this mutation.
 func (m *ProductInfoMutation) RemovedEdges() []string {
-	edges := make([]string, 0, 3)
-	if m.removedproducts != nil {
-		edges = append(edges, productinfo.EdgeProducts)
-	}
+	edges := make([]string, 0, 2)
 	if m.removedproduct_has_info != nil {
 		edges = append(edges, productinfo.EdgeProductHasInfo)
 	}
@@ -10790,12 +10650,6 @@ func (m *ProductInfoMutation) RemovedEdges() []string {
 // the given name in this mutation.
 func (m *ProductInfoMutation) RemovedIDs(name string) []ent.Value {
 	switch name {
-	case productinfo.EdgeProducts:
-		ids := make([]ent.Value, 0, len(m.removedproducts))
-		for id := range m.removedproducts {
-			ids = append(ids, id)
-		}
-		return ids
 	case productinfo.EdgeProductHasInfo:
 		ids := make([]ent.Value, 0, len(m.removedproduct_has_info))
 		for id := range m.removedproduct_has_info {
@@ -10808,12 +10662,9 @@ func (m *ProductInfoMutation) RemovedIDs(name string) []ent.Value {
 
 // ClearedEdges returns all edge names that were cleared in this mutation.
 func (m *ProductInfoMutation) ClearedEdges() []string {
-	edges := make([]string, 0, 3)
+	edges := make([]string, 0, 2)
 	if m.clearedinfo_type {
 		edges = append(edges, productinfo.EdgeInfoType)
-	}
-	if m.clearedproducts {
-		edges = append(edges, productinfo.EdgeProducts)
 	}
 	if m.clearedproduct_has_info {
 		edges = append(edges, productinfo.EdgeProductHasInfo)
@@ -10827,8 +10678,6 @@ func (m *ProductInfoMutation) EdgeCleared(name string) bool {
 	switch name {
 	case productinfo.EdgeInfoType:
 		return m.clearedinfo_type
-	case productinfo.EdgeProducts:
-		return m.clearedproducts
 	case productinfo.EdgeProductHasInfo:
 		return m.clearedproduct_has_info
 	}
@@ -10852,9 +10701,6 @@ func (m *ProductInfoMutation) ResetEdge(name string) error {
 	switch name {
 	case productinfo.EdgeInfoType:
 		m.ResetInfoType()
-		return nil
-	case productinfo.EdgeProducts:
-		m.ResetProducts()
 		return nil
 	case productinfo.EdgeProductHasInfo:
 		m.ResetProductHasInfo()
@@ -12476,8 +12322,6 @@ type ProductsMutation struct {
 	clearedvariant_type                  bool
 	product_references                   *int
 	clearedproduct_references            bool
-	images                               *int
-	clearedimages                        bool
 	product_has_image                    map[int]struct{}
 	removedproduct_has_image             map[int]struct{}
 	clearedproduct_has_image             bool
@@ -12883,55 +12727,6 @@ func (m *ProductsMutation) ResetProductReferencesID() {
 	delete(m.clearedFields, products.FieldProductReferencesID)
 }
 
-// SetImagesID sets the "images_id" field.
-func (m *ProductsMutation) SetImagesID(i int) {
-	m.images = &i
-}
-
-// ImagesID returns the value of the "images_id" field in the mutation.
-func (m *ProductsMutation) ImagesID() (r int, exists bool) {
-	v := m.images
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldImagesID returns the old "images_id" field's value of the Products entity.
-// If the Products object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *ProductsMutation) OldImagesID(ctx context.Context) (v *int, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldImagesID is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldImagesID requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldImagesID: %w", err)
-	}
-	return oldValue.ImagesID, nil
-}
-
-// ClearImagesID clears the value of the "images_id" field.
-func (m *ProductsMutation) ClearImagesID() {
-	m.images = nil
-	m.clearedFields[products.FieldImagesID] = struct{}{}
-}
-
-// ImagesIDCleared returns if the "images_id" field was cleared in this mutation.
-func (m *ProductsMutation) ImagesIDCleared() bool {
-	_, ok := m.clearedFields[products.FieldImagesID]
-	return ok
-}
-
-// ResetImagesID resets all changes to the "images_id" field.
-func (m *ProductsMutation) ResetImagesID() {
-	m.images = nil
-	delete(m.clearedFields, products.FieldImagesID)
-}
-
 // SetName sets the "name" field.
 func (m *ProductsMutation) SetName(s string) {
 	m.name = &s
@@ -13130,33 +12925,6 @@ func (m *ProductsMutation) ProductReferencesIDs() (ids []int) {
 func (m *ProductsMutation) ResetProductReferences() {
 	m.product_references = nil
 	m.clearedproduct_references = false
-}
-
-// ClearImages clears the "images" edge to the Images entity.
-func (m *ProductsMutation) ClearImages() {
-	m.clearedimages = true
-	m.clearedFields[products.FieldImagesID] = struct{}{}
-}
-
-// ImagesCleared reports if the "images" edge to the Images entity was cleared.
-func (m *ProductsMutation) ImagesCleared() bool {
-	return m.ImagesIDCleared() || m.clearedimages
-}
-
-// ImagesIDs returns the "images" edge IDs in the mutation.
-// Note that IDs always returns len(IDs) <= 1 for unique edges, and you should use
-// ImagesID instead. It exists only for internal usage by the builders.
-func (m *ProductsMutation) ImagesIDs() (ids []int) {
-	if id := m.images; id != nil {
-		ids = append(ids, *id)
-	}
-	return
-}
-
-// ResetImages resets all changes to the "images" edge.
-func (m *ProductsMutation) ResetImages() {
-	m.images = nil
-	m.clearedimages = false
 }
 
 // AddProductHasImageIDs adds the "product_has_image" edge to the ProductHasImage entity by ids.
@@ -13571,7 +13339,7 @@ func (m *ProductsMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *ProductsMutation) Fields() []string {
-	fields := make([]string, 0, 9)
+	fields := make([]string, 0, 8)
 	if m.created_at != nil {
 		fields = append(fields, products.FieldCreatedAt)
 	}
@@ -13589,9 +13357,6 @@ func (m *ProductsMutation) Fields() []string {
 	}
 	if m.product_references != nil {
 		fields = append(fields, products.FieldProductReferencesID)
-	}
-	if m.images != nil {
-		fields = append(fields, products.FieldImagesID)
 	}
 	if m.name != nil {
 		fields = append(fields, products.FieldName)
@@ -13619,8 +13384,6 @@ func (m *ProductsMutation) Field(name string) (ent.Value, bool) {
 		return m.VariantTypeID()
 	case products.FieldProductReferencesID:
 		return m.ProductReferencesID()
-	case products.FieldImagesID:
-		return m.ImagesID()
 	case products.FieldName:
 		return m.Name()
 	case products.FieldStock:
@@ -13646,8 +13409,6 @@ func (m *ProductsMutation) OldField(ctx context.Context, name string) (ent.Value
 		return m.OldVariantTypeID(ctx)
 	case products.FieldProductReferencesID:
 		return m.OldProductReferencesID(ctx)
-	case products.FieldImagesID:
-		return m.OldImagesID(ctx)
 	case products.FieldName:
 		return m.OldName(ctx)
 	case products.FieldStock:
@@ -13702,13 +13463,6 @@ func (m *ProductsMutation) SetField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetProductReferencesID(v)
-		return nil
-	case products.FieldImagesID:
-		v, ok := value.(int)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetImagesID(v)
 		return nil
 	case products.FieldName:
 		v, ok := value.(string)
@@ -13784,9 +13538,6 @@ func (m *ProductsMutation) ClearedFields() []string {
 	if m.FieldCleared(products.FieldProductReferencesID) {
 		fields = append(fields, products.FieldProductReferencesID)
 	}
-	if m.FieldCleared(products.FieldImagesID) {
-		fields = append(fields, products.FieldImagesID)
-	}
 	return fields
 }
 
@@ -13816,9 +13567,6 @@ func (m *ProductsMutation) ClearField(name string) error {
 	case products.FieldProductReferencesID:
 		m.ClearProductReferencesID()
 		return nil
-	case products.FieldImagesID:
-		m.ClearImagesID()
-		return nil
 	}
 	return fmt.Errorf("unknown Products nullable field %s", name)
 }
@@ -13845,9 +13593,6 @@ func (m *ProductsMutation) ResetField(name string) error {
 	case products.FieldProductReferencesID:
 		m.ResetProductReferencesID()
 		return nil
-	case products.FieldImagesID:
-		m.ResetImagesID()
-		return nil
 	case products.FieldName:
 		m.ResetName()
 		return nil
@@ -13860,7 +13605,7 @@ func (m *ProductsMutation) ResetField(name string) error {
 
 // AddedEdges returns all edge names that were set/added in this mutation.
 func (m *ProductsMutation) AddedEdges() []string {
-	edges := make([]string, 0, 12)
+	edges := make([]string, 0, 11)
 	if m.category != nil {
 		edges = append(edges, products.EdgeCategory)
 	}
@@ -13872,9 +13617,6 @@ func (m *ProductsMutation) AddedEdges() []string {
 	}
 	if m.product_references != nil {
 		edges = append(edges, products.EdgeProductReferences)
-	}
-	if m.images != nil {
-		edges = append(edges, products.EdgeImages)
 	}
 	if m.product_has_image != nil {
 		edges = append(edges, products.EdgeProductHasImage)
@@ -13918,10 +13660,6 @@ func (m *ProductsMutation) AddedIDs(name string) []ent.Value {
 		}
 	case products.EdgeProductReferences:
 		if id := m.product_references; id != nil {
-			return []ent.Value{*id}
-		}
-	case products.EdgeImages:
-		if id := m.images; id != nil {
 			return []ent.Value{*id}
 		}
 	case products.EdgeProductHasImage:
@@ -13972,7 +13710,7 @@ func (m *ProductsMutation) AddedIDs(name string) []ent.Value {
 
 // RemovedEdges returns all edge names that were removed in this mutation.
 func (m *ProductsMutation) RemovedEdges() []string {
-	edges := make([]string, 0, 12)
+	edges := make([]string, 0, 11)
 	if m.removedproduct_has_image != nil {
 		edges = append(edges, products.EdgeProductHasImage)
 	}
@@ -14049,7 +13787,7 @@ func (m *ProductsMutation) RemovedIDs(name string) []ent.Value {
 
 // ClearedEdges returns all edge names that were cleared in this mutation.
 func (m *ProductsMutation) ClearedEdges() []string {
-	edges := make([]string, 0, 12)
+	edges := make([]string, 0, 11)
 	if m.clearedcategory {
 		edges = append(edges, products.EdgeCategory)
 	}
@@ -14061,9 +13799,6 @@ func (m *ProductsMutation) ClearedEdges() []string {
 	}
 	if m.clearedproduct_references {
 		edges = append(edges, products.EdgeProductReferences)
-	}
-	if m.clearedimages {
-		edges = append(edges, products.EdgeImages)
 	}
 	if m.clearedproduct_has_image {
 		edges = append(edges, products.EdgeProductHasImage)
@@ -14101,8 +13836,6 @@ func (m *ProductsMutation) EdgeCleared(name string) bool {
 		return m.clearedvariant_type
 	case products.EdgeProductReferences:
 		return m.clearedproduct_references
-	case products.EdgeImages:
-		return m.clearedimages
 	case products.EdgeProductHasImage:
 		return m.clearedproduct_has_image
 	case products.EdgePromotionHasProduct:
@@ -14137,9 +13870,6 @@ func (m *ProductsMutation) ClearEdge(name string) error {
 	case products.EdgeProductReferences:
 		m.ClearProductReferences()
 		return nil
-	case products.EdgeImages:
-		m.ClearImages()
-		return nil
 	}
 	return fmt.Errorf("unknown Products unique edge %s", name)
 }
@@ -14159,9 +13889,6 @@ func (m *ProductsMutation) ResetEdge(name string) error {
 		return nil
 	case products.EdgeProductReferences:
 		m.ResetProductReferences()
-		return nil
-	case products.EdgeImages:
-		m.ResetImages()
 		return nil
 	case products.EdgeProductHasImage:
 		m.ResetProductHasImage()

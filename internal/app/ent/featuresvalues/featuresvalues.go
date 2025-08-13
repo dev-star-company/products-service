@@ -18,27 +18,29 @@ const (
 	FieldCreatedAt = "created_at"
 	// FieldDeletedAt holds the string denoting the deleted_at field in the database.
 	FieldDeletedAt = "deleted_at"
-	// FieldFeatureID holds the string denoting the feature_id field in the database.
-	FieldFeatureID = "feature_id"
+	// FieldFeaturesID holds the string denoting the features_id field in the database.
+	FieldFeaturesID = "features_id"
 	// FieldFeatureUnitValuesID holds the string denoting the feature_unit_values_id field in the database.
 	FieldFeatureUnitValuesID = "feature_unit_values_id"
-	// FieldFeatureValuesID holds the string denoting the feature_values_id field in the database.
-	FieldFeatureValuesID = "feature_values_id"
+	// FieldFeatureValuesTypesID holds the string denoting the feature_values_types_id field in the database.
+	FieldFeatureValuesTypesID = "feature_values_types_id"
 	// FieldValue holds the string denoting the value field in the database.
 	FieldValue = "value"
-	// EdgeFeature holds the string denoting the feature edge name in mutations.
-	EdgeFeature = "feature"
+	// EdgeFeatures holds the string denoting the features edge name in mutations.
+	EdgeFeatures = "features"
 	// EdgeFeatureUnitValues holds the string denoting the feature_unit_values edge name in mutations.
 	EdgeFeatureUnitValues = "feature_unit_values"
+	// EdgeFeatureValuesTypes holds the string denoting the feature_values_types edge name in mutations.
+	EdgeFeatureValuesTypes = "feature_values_types"
 	// Table holds the table name of the featuresvalues in the database.
 	Table = "features_values"
-	// FeatureTable is the table that holds the feature relation/edge.
-	FeatureTable = "features_values"
-	// FeatureInverseTable is the table name for the Features entity.
+	// FeaturesTable is the table that holds the features relation/edge.
+	FeaturesTable = "features_values"
+	// FeaturesInverseTable is the table name for the Features entity.
 	// It exists in this package in order to avoid circular dependency with the "features" package.
-	FeatureInverseTable = "features"
-	// FeatureColumn is the table column denoting the feature relation/edge.
-	FeatureColumn = "feature_id"
+	FeaturesInverseTable = "features"
+	// FeaturesColumn is the table column denoting the features relation/edge.
+	FeaturesColumn = "features_id"
 	// FeatureUnitValuesTable is the table that holds the feature_unit_values relation/edge.
 	FeatureUnitValuesTable = "features_values"
 	// FeatureUnitValuesInverseTable is the table name for the FeaturesUnitValues entity.
@@ -46,6 +48,13 @@ const (
 	FeatureUnitValuesInverseTable = "features_unit_values"
 	// FeatureUnitValuesColumn is the table column denoting the feature_unit_values relation/edge.
 	FeatureUnitValuesColumn = "feature_unit_values_id"
+	// FeatureValuesTypesTable is the table that holds the feature_values_types relation/edge.
+	FeatureValuesTypesTable = "features_values"
+	// FeatureValuesTypesInverseTable is the table name for the FeaturesValuesTypes entity.
+	// It exists in this package in order to avoid circular dependency with the "featuresvaluestypes" package.
+	FeatureValuesTypesInverseTable = "features_values_types"
+	// FeatureValuesTypesColumn is the table column denoting the feature_values_types relation/edge.
+	FeatureValuesTypesColumn = "feature_values_types_id"
 )
 
 // Columns holds all SQL columns for featuresvalues fields.
@@ -53,27 +62,16 @@ var Columns = []string{
 	FieldID,
 	FieldCreatedAt,
 	FieldDeletedAt,
-	FieldFeatureID,
+	FieldFeaturesID,
 	FieldFeatureUnitValuesID,
-	FieldFeatureValuesID,
+	FieldFeatureValuesTypesID,
 	FieldValue,
-}
-
-// ForeignKeys holds the SQL foreign-keys that are owned by the "features_values"
-// table and are not defined as standalone fields in the schema.
-var ForeignKeys = []string{
-	"features_values_types_feature_values",
 }
 
 // ValidColumn reports if the column name is valid (part of the table columns).
 func ValidColumn(column string) bool {
 	for i := range Columns {
 		if column == Columns[i] {
-			return true
-		}
-	}
-	for i := range ForeignKeys {
-		if column == ForeignKeys[i] {
 			return true
 		}
 	}
@@ -103,9 +101,9 @@ func ByDeletedAt(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldDeletedAt, opts...).ToFunc()
 }
 
-// ByFeatureID orders the results by the feature_id field.
-func ByFeatureID(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldFeatureID, opts...).ToFunc()
+// ByFeaturesID orders the results by the features_id field.
+func ByFeaturesID(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldFeaturesID, opts...).ToFunc()
 }
 
 // ByFeatureUnitValuesID orders the results by the feature_unit_values_id field.
@@ -113,9 +111,9 @@ func ByFeatureUnitValuesID(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldFeatureUnitValuesID, opts...).ToFunc()
 }
 
-// ByFeatureValuesID orders the results by the feature_values_id field.
-func ByFeatureValuesID(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldFeatureValuesID, opts...).ToFunc()
+// ByFeatureValuesTypesID orders the results by the feature_values_types_id field.
+func ByFeatureValuesTypesID(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldFeatureValuesTypesID, opts...).ToFunc()
 }
 
 // ByValue orders the results by the value field.
@@ -123,10 +121,10 @@ func ByValue(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldValue, opts...).ToFunc()
 }
 
-// ByFeatureField orders the results by feature field.
-func ByFeatureField(field string, opts ...sql.OrderTermOption) OrderOption {
+// ByFeaturesField orders the results by features field.
+func ByFeaturesField(field string, opts ...sql.OrderTermOption) OrderOption {
 	return func(s *sql.Selector) {
-		sqlgraph.OrderByNeighborTerms(s, newFeatureStep(), sql.OrderByField(field, opts...))
+		sqlgraph.OrderByNeighborTerms(s, newFeaturesStep(), sql.OrderByField(field, opts...))
 	}
 }
 
@@ -136,11 +134,18 @@ func ByFeatureUnitValuesField(field string, opts ...sql.OrderTermOption) OrderOp
 		sqlgraph.OrderByNeighborTerms(s, newFeatureUnitValuesStep(), sql.OrderByField(field, opts...))
 	}
 }
-func newFeatureStep() *sqlgraph.Step {
+
+// ByFeatureValuesTypesField orders the results by feature_values_types field.
+func ByFeatureValuesTypesField(field string, opts ...sql.OrderTermOption) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborTerms(s, newFeatureValuesTypesStep(), sql.OrderByField(field, opts...))
+	}
+}
+func newFeaturesStep() *sqlgraph.Step {
 	return sqlgraph.NewStep(
 		sqlgraph.From(Table, FieldID),
-		sqlgraph.To(FeatureInverseTable, FieldID),
-		sqlgraph.Edge(sqlgraph.M2O, true, FeatureTable, FeatureColumn),
+		sqlgraph.To(FeaturesInverseTable, FieldID),
+		sqlgraph.Edge(sqlgraph.M2O, true, FeaturesTable, FeaturesColumn),
 	)
 }
 func newFeatureUnitValuesStep() *sqlgraph.Step {
@@ -148,5 +153,12 @@ func newFeatureUnitValuesStep() *sqlgraph.Step {
 		sqlgraph.From(Table, FieldID),
 		sqlgraph.To(FeatureUnitValuesInverseTable, FieldID),
 		sqlgraph.Edge(sqlgraph.M2O, true, FeatureUnitValuesTable, FeatureUnitValuesColumn),
+	)
+}
+func newFeatureValuesTypesStep() *sqlgraph.Step {
+	return sqlgraph.NewStep(
+		sqlgraph.From(Table, FieldID),
+		sqlgraph.To(FeatureValuesTypesInverseTable, FieldID),
+		sqlgraph.Edge(sqlgraph.M2O, true, FeatureValuesTypesTable, FeatureValuesTypesColumn),
 	)
 }

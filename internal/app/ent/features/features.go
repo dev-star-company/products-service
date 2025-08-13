@@ -34,7 +34,7 @@ const (
 	// It exists in this package in order to avoid circular dependency with the "featuresvalues" package.
 	FeatureValuesInverseTable = "features_values"
 	// FeatureValuesColumn is the table column denoting the feature_values relation/edge.
-	FeatureValuesColumn = "feature_id"
+	FeatureValuesColumn = "features_id"
 	// ProductHasFeatureTable is the table that holds the product_has_feature relation/edge.
 	ProductHasFeatureTable = "product_has_features"
 	// ProductHasFeatureInverseTable is the table name for the ProductHasFeature entity.
