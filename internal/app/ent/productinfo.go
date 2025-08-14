@@ -4,6 +4,7 @@ package ent
 
 import (
 	"fmt"
+	"products-service/internal/app/ent/featuresvaluestypes"
 	"products-service/internal/app/ent/infotypes"
 	"products-service/internal/app/ent/productinfo"
 	"strings"
@@ -24,24 +25,27 @@ type ProductInfo struct {
 	DeletedAt *time.Time `json:"deleted_at,omitempty"`
 	// InfoTypesID holds the value of the "info_types_id" field.
 	InfoTypesID *int `json:"info_types_id,omitempty"`
+	// FeaturesValuesTypesID holds the value of the "features_values_types_id" field.
+	FeaturesValuesTypesID *int `json:"features_values_types_id,omitempty"`
 	// Value holds the value of the "value" field.
 	Value *string `json:"value,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the ProductInfoQuery when eager-loading is set.
-	Edges                              ProductInfoEdges `json:"edges"`
-	features_values_types_product_info *int
-	selectValues                       sql.SelectValues
+	Edges        ProductInfoEdges `json:"edges"`
+	selectValues sql.SelectValues
 }
 
 // ProductInfoEdges holds the relations/edges for other nodes in the graph.
 type ProductInfoEdges struct {
 	// InfoType holds the value of the info_type edge.
 	InfoType *InfoTypes `json:"info_type,omitempty"`
+	// FeaturesValuesTypes holds the value of the features_values_types edge.
+	FeaturesValuesTypes *FeaturesValuesTypes `json:"features_values_types,omitempty"`
 	// ProductHasInfo holds the value of the product_has_info edge.
 	ProductHasInfo []*ProductHasInfo `json:"product_has_info,omitempty"`
 	// loadedTypes holds the information for reporting if a
 	// type was loaded (or requested) in eager-loading or not.
-	loadedTypes [2]bool
+	loadedTypes [3]bool
 }
 
 // InfoTypeOrErr returns the InfoType value or an error if the edge
@@ -55,10 +59,21 @@ func (e ProductInfoEdges) InfoTypeOrErr() (*InfoTypes, error) {
 	return nil, &NotLoadedError{edge: "info_type"}
 }
 
+// FeaturesValuesTypesOrErr returns the FeaturesValuesTypes value or an error if the edge
+// was not loaded in eager-loading, or loaded but was not found.
+func (e ProductInfoEdges) FeaturesValuesTypesOrErr() (*FeaturesValuesTypes, error) {
+	if e.FeaturesValuesTypes != nil {
+		return e.FeaturesValuesTypes, nil
+	} else if e.loadedTypes[1] {
+		return nil, &NotFoundError{label: featuresvaluestypes.Label}
+	}
+	return nil, &NotLoadedError{edge: "features_values_types"}
+}
+
 // ProductHasInfoOrErr returns the ProductHasInfo value or an error if the edge
 // was not loaded in eager-loading.
 func (e ProductInfoEdges) ProductHasInfoOrErr() ([]*ProductHasInfo, error) {
-	if e.loadedTypes[1] {
+	if e.loadedTypes[2] {
 		return e.ProductHasInfo, nil
 	}
 	return nil, &NotLoadedError{edge: "product_has_info"}
@@ -69,14 +84,12 @@ func (*ProductInfo) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case productinfo.FieldID, productinfo.FieldInfoTypesID:
+		case productinfo.FieldID, productinfo.FieldInfoTypesID, productinfo.FieldFeaturesValuesTypesID:
 			values[i] = new(sql.NullInt64)
 		case productinfo.FieldValue:
 			values[i] = new(sql.NullString)
 		case productinfo.FieldCreatedAt, productinfo.FieldDeletedAt:
 			values[i] = new(sql.NullTime)
-		case productinfo.ForeignKeys[0]: // features_values_types_product_info
-			values[i] = new(sql.NullInt64)
 		default:
 			values[i] = new(sql.UnknownType)
 		}
@@ -118,19 +131,19 @@ func (pi *ProductInfo) assignValues(columns []string, values []any) error {
 				pi.InfoTypesID = new(int)
 				*pi.InfoTypesID = int(value.Int64)
 			}
+		case productinfo.FieldFeaturesValuesTypesID:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for field features_values_types_id", values[i])
+			} else if value.Valid {
+				pi.FeaturesValuesTypesID = new(int)
+				*pi.FeaturesValuesTypesID = int(value.Int64)
+			}
 		case productinfo.FieldValue:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field value", values[i])
 			} else if value.Valid {
 				pi.Value = new(string)
 				*pi.Value = value.String
-			}
-		case productinfo.ForeignKeys[0]:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for edge-field features_values_types_product_info", value)
-			} else if value.Valid {
-				pi.features_values_types_product_info = new(int)
-				*pi.features_values_types_product_info = int(value.Int64)
 			}
 		default:
 			pi.selectValues.Set(columns[i], values[i])
@@ -148,6 +161,11 @@ func (pi *ProductInfo) GetValue(name string) (ent.Value, error) {
 // QueryInfoType queries the "info_type" edge of the ProductInfo entity.
 func (pi *ProductInfo) QueryInfoType() *InfoTypesQuery {
 	return NewProductInfoClient(pi.config).QueryInfoType(pi)
+}
+
+// QueryFeaturesValuesTypes queries the "features_values_types" edge of the ProductInfo entity.
+func (pi *ProductInfo) QueryFeaturesValuesTypes() *FeaturesValuesTypesQuery {
+	return NewProductInfoClient(pi.config).QueryFeaturesValuesTypes(pi)
 }
 
 // QueryProductHasInfo queries the "product_has_info" edge of the ProductInfo entity.
@@ -188,6 +206,11 @@ func (pi *ProductInfo) String() string {
 	builder.WriteString(", ")
 	if v := pi.InfoTypesID; v != nil {
 		builder.WriteString("info_types_id=")
+		builder.WriteString(fmt.Sprintf("%v", *v))
+	}
+	builder.WriteString(", ")
+	if v := pi.FeaturesValuesTypesID; v != nil {
+		builder.WriteString("features_values_types_id=")
 		builder.WriteString(fmt.Sprintf("%v", *v))
 	}
 	builder.WriteString(", ")

@@ -70,6 +70,11 @@ func InfoTypesID(v int) predicate.ProductInfo {
 	return predicate.ProductInfo(sql.FieldEQ(FieldInfoTypesID, v))
 }
 
+// FeaturesValuesTypesID applies equality check predicate on the "features_values_types_id" field. It's identical to FeaturesValuesTypesIDEQ.
+func FeaturesValuesTypesID(v int) predicate.ProductInfo {
+	return predicate.ProductInfo(sql.FieldEQ(FieldFeaturesValuesTypesID, v))
+}
+
 // Value applies equality check predicate on the "value" field. It's identical to ValueEQ.
 func Value(v string) predicate.ProductInfo {
 	return predicate.ProductInfo(sql.FieldEQ(FieldValue, v))
@@ -195,6 +200,36 @@ func InfoTypesIDNotNil() predicate.ProductInfo {
 	return predicate.ProductInfo(sql.FieldNotNull(FieldInfoTypesID))
 }
 
+// FeaturesValuesTypesIDEQ applies the EQ predicate on the "features_values_types_id" field.
+func FeaturesValuesTypesIDEQ(v int) predicate.ProductInfo {
+	return predicate.ProductInfo(sql.FieldEQ(FieldFeaturesValuesTypesID, v))
+}
+
+// FeaturesValuesTypesIDNEQ applies the NEQ predicate on the "features_values_types_id" field.
+func FeaturesValuesTypesIDNEQ(v int) predicate.ProductInfo {
+	return predicate.ProductInfo(sql.FieldNEQ(FieldFeaturesValuesTypesID, v))
+}
+
+// FeaturesValuesTypesIDIn applies the In predicate on the "features_values_types_id" field.
+func FeaturesValuesTypesIDIn(vs ...int) predicate.ProductInfo {
+	return predicate.ProductInfo(sql.FieldIn(FieldFeaturesValuesTypesID, vs...))
+}
+
+// FeaturesValuesTypesIDNotIn applies the NotIn predicate on the "features_values_types_id" field.
+func FeaturesValuesTypesIDNotIn(vs ...int) predicate.ProductInfo {
+	return predicate.ProductInfo(sql.FieldNotIn(FieldFeaturesValuesTypesID, vs...))
+}
+
+// FeaturesValuesTypesIDIsNil applies the IsNil predicate on the "features_values_types_id" field.
+func FeaturesValuesTypesIDIsNil() predicate.ProductInfo {
+	return predicate.ProductInfo(sql.FieldIsNull(FieldFeaturesValuesTypesID))
+}
+
+// FeaturesValuesTypesIDNotNil applies the NotNil predicate on the "features_values_types_id" field.
+func FeaturesValuesTypesIDNotNil() predicate.ProductInfo {
+	return predicate.ProductInfo(sql.FieldNotNull(FieldFeaturesValuesTypesID))
+}
+
 // ValueEQ applies the EQ predicate on the "value" field.
 func ValueEQ(v string) predicate.ProductInfo {
 	return predicate.ProductInfo(sql.FieldEQ(FieldValue, v))
@@ -275,6 +310,29 @@ func HasInfoType() predicate.ProductInfo {
 func HasInfoTypeWith(preds ...predicate.InfoTypes) predicate.ProductInfo {
 	return predicate.ProductInfo(func(s *sql.Selector) {
 		step := newInfoTypeStep()
+		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
+			for _, p := range preds {
+				p(s)
+			}
+		})
+	})
+}
+
+// HasFeaturesValuesTypes applies the HasEdge predicate on the "features_values_types" edge.
+func HasFeaturesValuesTypes() predicate.ProductInfo {
+	return predicate.ProductInfo(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, FeaturesValuesTypesTable, FeaturesValuesTypesColumn),
+		)
+		sqlgraph.HasNeighbors(s, step)
+	})
+}
+
+// HasFeaturesValuesTypesWith applies the HasEdge predicate on the "features_values_types" edge with a given conditions (other predicates).
+func HasFeaturesValuesTypesWith(preds ...predicate.FeaturesValuesTypes) predicate.ProductInfo {
+	return predicate.ProductInfo(func(s *sql.Selector) {
+		step := newFeaturesValuesTypesStep()
 		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
 			for _, p := range preds {
 				p(s)

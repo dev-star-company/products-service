@@ -7,6 +7,7 @@ import (
 	"database/sql/driver"
 	"fmt"
 	"math"
+	"products-service/internal/app/ent/featuresvaluestypes"
 	"products-service/internal/app/ent/infotypes"
 	"products-service/internal/app/ent/predicate"
 	"products-service/internal/app/ent/producthasinfo"
@@ -21,13 +22,13 @@ import (
 // ProductInfoQuery is the builder for querying ProductInfo entities.
 type ProductInfoQuery struct {
 	config
-	ctx                *QueryContext
-	order              []productinfo.OrderOption
-	inters             []Interceptor
-	predicates         []predicate.ProductInfo
-	withInfoType       *InfoTypesQuery
-	withProductHasInfo *ProductHasInfoQuery
-	withFKs            bool
+	ctx                     *QueryContext
+	order                   []productinfo.OrderOption
+	inters                  []Interceptor
+	predicates              []predicate.ProductInfo
+	withInfoType            *InfoTypesQuery
+	withFeaturesValuesTypes *FeaturesValuesTypesQuery
+	withProductHasInfo      *ProductHasInfoQuery
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
 	path func(context.Context) (*sql.Selector, error)
@@ -79,6 +80,28 @@ func (piq *ProductInfoQuery) QueryInfoType() *InfoTypesQuery {
 			sqlgraph.From(productinfo.Table, productinfo.FieldID, selector),
 			sqlgraph.To(infotypes.Table, infotypes.FieldID),
 			sqlgraph.Edge(sqlgraph.M2O, true, productinfo.InfoTypeTable, productinfo.InfoTypeColumn),
+		)
+		fromU = sqlgraph.SetNeighbors(piq.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
+}
+
+// QueryFeaturesValuesTypes chains the current query on the "features_values_types" edge.
+func (piq *ProductInfoQuery) QueryFeaturesValuesTypes() *FeaturesValuesTypesQuery {
+	query := (&FeaturesValuesTypesClient{config: piq.config}).Query()
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := piq.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		selector := piq.sqlQuery(ctx)
+		if err := selector.Err(); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(productinfo.Table, productinfo.FieldID, selector),
+			sqlgraph.To(featuresvaluestypes.Table, featuresvaluestypes.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, productinfo.FeaturesValuesTypesTable, productinfo.FeaturesValuesTypesColumn),
 		)
 		fromU = sqlgraph.SetNeighbors(piq.driver.Dialect(), step)
 		return fromU, nil
@@ -295,13 +318,14 @@ func (piq *ProductInfoQuery) Clone() *ProductInfoQuery {
 		return nil
 	}
 	return &ProductInfoQuery{
-		config:             piq.config,
-		ctx:                piq.ctx.Clone(),
-		order:              append([]productinfo.OrderOption{}, piq.order...),
-		inters:             append([]Interceptor{}, piq.inters...),
-		predicates:         append([]predicate.ProductInfo{}, piq.predicates...),
-		withInfoType:       piq.withInfoType.Clone(),
-		withProductHasInfo: piq.withProductHasInfo.Clone(),
+		config:                  piq.config,
+		ctx:                     piq.ctx.Clone(),
+		order:                   append([]productinfo.OrderOption{}, piq.order...),
+		inters:                  append([]Interceptor{}, piq.inters...),
+		predicates:              append([]predicate.ProductInfo{}, piq.predicates...),
+		withInfoType:            piq.withInfoType.Clone(),
+		withFeaturesValuesTypes: piq.withFeaturesValuesTypes.Clone(),
+		withProductHasInfo:      piq.withProductHasInfo.Clone(),
 		// clone intermediate query.
 		sql:  piq.sql.Clone(),
 		path: piq.path,
@@ -316,6 +340,17 @@ func (piq *ProductInfoQuery) WithInfoType(opts ...func(*InfoTypesQuery)) *Produc
 		opt(query)
 	}
 	piq.withInfoType = query
+	return piq
+}
+
+// WithFeaturesValuesTypes tells the query-builder to eager-load the nodes that are connected to
+// the "features_values_types" edge. The optional arguments are used to configure the query builder of the edge.
+func (piq *ProductInfoQuery) WithFeaturesValuesTypes(opts ...func(*FeaturesValuesTypesQuery)) *ProductInfoQuery {
+	query := (&FeaturesValuesTypesClient{config: piq.config}).Query()
+	for _, opt := range opts {
+		opt(query)
+	}
+	piq.withFeaturesValuesTypes = query
 	return piq
 }
 
@@ -407,16 +442,13 @@ func (piq *ProductInfoQuery) prepareQuery(ctx context.Context) error {
 func (piq *ProductInfoQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*ProductInfo, error) {
 	var (
 		nodes       = []*ProductInfo{}
-		withFKs     = piq.withFKs
 		_spec       = piq.querySpec()
-		loadedTypes = [2]bool{
+		loadedTypes = [3]bool{
 			piq.withInfoType != nil,
+			piq.withFeaturesValuesTypes != nil,
 			piq.withProductHasInfo != nil,
 		}
 	)
-	if withFKs {
-		_spec.Node.Columns = append(_spec.Node.Columns, productinfo.ForeignKeys...)
-	}
 	_spec.ScanValues = func(columns []string) ([]any, error) {
 		return (*ProductInfo).scanValues(nil, columns)
 	}
@@ -438,6 +470,12 @@ func (piq *ProductInfoQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]
 	if query := piq.withInfoType; query != nil {
 		if err := piq.loadInfoType(ctx, query, nodes, nil,
 			func(n *ProductInfo, e *InfoTypes) { n.Edges.InfoType = e }); err != nil {
+			return nil, err
+		}
+	}
+	if query := piq.withFeaturesValuesTypes; query != nil {
+		if err := piq.loadFeaturesValuesTypes(ctx, query, nodes, nil,
+			func(n *ProductInfo, e *FeaturesValuesTypes) { n.Edges.FeaturesValuesTypes = e }); err != nil {
 			return nil, err
 		}
 	}
@@ -476,6 +514,38 @@ func (piq *ProductInfoQuery) loadInfoType(ctx context.Context, query *InfoTypesQ
 		nodes, ok := nodeids[n.ID]
 		if !ok {
 			return fmt.Errorf(`unexpected foreign-key "info_types_id" returned %v`, n.ID)
+		}
+		for i := range nodes {
+			assign(nodes[i], n)
+		}
+	}
+	return nil
+}
+func (piq *ProductInfoQuery) loadFeaturesValuesTypes(ctx context.Context, query *FeaturesValuesTypesQuery, nodes []*ProductInfo, init func(*ProductInfo), assign func(*ProductInfo, *FeaturesValuesTypes)) error {
+	ids := make([]int, 0, len(nodes))
+	nodeids := make(map[int][]*ProductInfo)
+	for i := range nodes {
+		if nodes[i].FeaturesValuesTypesID == nil {
+			continue
+		}
+		fk := *nodes[i].FeaturesValuesTypesID
+		if _, ok := nodeids[fk]; !ok {
+			ids = append(ids, fk)
+		}
+		nodeids[fk] = append(nodeids[fk], nodes[i])
+	}
+	if len(ids) == 0 {
+		return nil
+	}
+	query.Where(featuresvaluestypes.IDIn(ids...))
+	neighbors, err := query.All(ctx)
+	if err != nil {
+		return err
+	}
+	for _, n := range neighbors {
+		nodes, ok := nodeids[n.ID]
+		if !ok {
+			return fmt.Errorf(`unexpected foreign-key "features_values_types_id" returned %v`, n.ID)
 		}
 		for i := range nodes {
 			assign(nodes[i], n)
@@ -544,6 +614,9 @@ func (piq *ProductInfoQuery) querySpec() *sqlgraph.QuerySpec {
 		}
 		if piq.withInfoType != nil {
 			_spec.Node.AddColumnOnce(productinfo.FieldInfoTypesID)
+		}
+		if piq.withFeaturesValuesTypes != nil {
+			_spec.Node.AddColumnOnce(productinfo.FieldFeaturesValuesTypesID)
 		}
 	}
 	if ps := piq.predicates; len(ps) > 0 {

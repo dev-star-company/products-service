@@ -6,6 +6,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"products-service/internal/app/ent/featuresvaluestypes"
 	"products-service/internal/app/ent/infotypes"
 	"products-service/internal/app/ent/predicate"
 	"products-service/internal/app/ent/producthasinfo"
@@ -70,6 +71,26 @@ func (piu *ProductInfoUpdate) ClearInfoTypesID() *ProductInfoUpdate {
 	return piu
 }
 
+// SetFeaturesValuesTypesID sets the "features_values_types_id" field.
+func (piu *ProductInfoUpdate) SetFeaturesValuesTypesID(i int) *ProductInfoUpdate {
+	piu.mutation.SetFeaturesValuesTypesID(i)
+	return piu
+}
+
+// SetNillableFeaturesValuesTypesID sets the "features_values_types_id" field if the given value is not nil.
+func (piu *ProductInfoUpdate) SetNillableFeaturesValuesTypesID(i *int) *ProductInfoUpdate {
+	if i != nil {
+		piu.SetFeaturesValuesTypesID(*i)
+	}
+	return piu
+}
+
+// ClearFeaturesValuesTypesID clears the value of the "features_values_types_id" field.
+func (piu *ProductInfoUpdate) ClearFeaturesValuesTypesID() *ProductInfoUpdate {
+	piu.mutation.ClearFeaturesValuesTypesID()
+	return piu
+}
+
 // SetValue sets the "value" field.
 func (piu *ProductInfoUpdate) SetValue(s string) *ProductInfoUpdate {
 	piu.mutation.SetValue(s)
@@ -103,6 +124,11 @@ func (piu *ProductInfoUpdate) SetInfoType(i *InfoTypes) *ProductInfoUpdate {
 	return piu.SetInfoTypeID(i.ID)
 }
 
+// SetFeaturesValuesTypes sets the "features_values_types" edge to the FeaturesValuesTypes entity.
+func (piu *ProductInfoUpdate) SetFeaturesValuesTypes(f *FeaturesValuesTypes) *ProductInfoUpdate {
+	return piu.SetFeaturesValuesTypesID(f.ID)
+}
+
 // AddProductHasInfoIDs adds the "product_has_info" edge to the ProductHasInfo entity by IDs.
 func (piu *ProductInfoUpdate) AddProductHasInfoIDs(ids ...int) *ProductInfoUpdate {
 	piu.mutation.AddProductHasInfoIDs(ids...)
@@ -126,6 +152,12 @@ func (piu *ProductInfoUpdate) Mutation() *ProductInfoMutation {
 // ClearInfoType clears the "info_type" edge to the InfoTypes entity.
 func (piu *ProductInfoUpdate) ClearInfoType() *ProductInfoUpdate {
 	piu.mutation.ClearInfoType()
+	return piu
+}
+
+// ClearFeaturesValuesTypes clears the "features_values_types" edge to the FeaturesValuesTypes entity.
+func (piu *ProductInfoUpdate) ClearFeaturesValuesTypes() *ProductInfoUpdate {
+	piu.mutation.ClearFeaturesValuesTypes()
 	return piu
 }
 
@@ -217,6 +249,35 @@ func (piu *ProductInfoUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(infotypes.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if piu.mutation.FeaturesValuesTypesCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   productinfo.FeaturesValuesTypesTable,
+			Columns: []string{productinfo.FeaturesValuesTypesColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(featuresvaluestypes.FieldID, field.TypeInt),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := piu.mutation.FeaturesValuesTypesIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   productinfo.FeaturesValuesTypesTable,
+			Columns: []string{productinfo.FeaturesValuesTypesColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(featuresvaluestypes.FieldID, field.TypeInt),
 			},
 		}
 		for _, k := range nodes {
@@ -329,6 +390,26 @@ func (piuo *ProductInfoUpdateOne) ClearInfoTypesID() *ProductInfoUpdateOne {
 	return piuo
 }
 
+// SetFeaturesValuesTypesID sets the "features_values_types_id" field.
+func (piuo *ProductInfoUpdateOne) SetFeaturesValuesTypesID(i int) *ProductInfoUpdateOne {
+	piuo.mutation.SetFeaturesValuesTypesID(i)
+	return piuo
+}
+
+// SetNillableFeaturesValuesTypesID sets the "features_values_types_id" field if the given value is not nil.
+func (piuo *ProductInfoUpdateOne) SetNillableFeaturesValuesTypesID(i *int) *ProductInfoUpdateOne {
+	if i != nil {
+		piuo.SetFeaturesValuesTypesID(*i)
+	}
+	return piuo
+}
+
+// ClearFeaturesValuesTypesID clears the value of the "features_values_types_id" field.
+func (piuo *ProductInfoUpdateOne) ClearFeaturesValuesTypesID() *ProductInfoUpdateOne {
+	piuo.mutation.ClearFeaturesValuesTypesID()
+	return piuo
+}
+
 // SetValue sets the "value" field.
 func (piuo *ProductInfoUpdateOne) SetValue(s string) *ProductInfoUpdateOne {
 	piuo.mutation.SetValue(s)
@@ -362,6 +443,11 @@ func (piuo *ProductInfoUpdateOne) SetInfoType(i *InfoTypes) *ProductInfoUpdateOn
 	return piuo.SetInfoTypeID(i.ID)
 }
 
+// SetFeaturesValuesTypes sets the "features_values_types" edge to the FeaturesValuesTypes entity.
+func (piuo *ProductInfoUpdateOne) SetFeaturesValuesTypes(f *FeaturesValuesTypes) *ProductInfoUpdateOne {
+	return piuo.SetFeaturesValuesTypesID(f.ID)
+}
+
 // AddProductHasInfoIDs adds the "product_has_info" edge to the ProductHasInfo entity by IDs.
 func (piuo *ProductInfoUpdateOne) AddProductHasInfoIDs(ids ...int) *ProductInfoUpdateOne {
 	piuo.mutation.AddProductHasInfoIDs(ids...)
@@ -385,6 +471,12 @@ func (piuo *ProductInfoUpdateOne) Mutation() *ProductInfoMutation {
 // ClearInfoType clears the "info_type" edge to the InfoTypes entity.
 func (piuo *ProductInfoUpdateOne) ClearInfoType() *ProductInfoUpdateOne {
 	piuo.mutation.ClearInfoType()
+	return piuo
+}
+
+// ClearFeaturesValuesTypes clears the "features_values_types" edge to the FeaturesValuesTypes entity.
+func (piuo *ProductInfoUpdateOne) ClearFeaturesValuesTypes() *ProductInfoUpdateOne {
+	piuo.mutation.ClearFeaturesValuesTypes()
 	return piuo
 }
 
@@ -506,6 +598,35 @@ func (piuo *ProductInfoUpdateOne) sqlSave(ctx context.Context) (_node *ProductIn
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(infotypes.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if piuo.mutation.FeaturesValuesTypesCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   productinfo.FeaturesValuesTypesTable,
+			Columns: []string{productinfo.FeaturesValuesTypesColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(featuresvaluestypes.FieldID, field.TypeInt),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := piuo.mutation.FeaturesValuesTypesIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   productinfo.FeaturesValuesTypesTable,
+			Columns: []string{productinfo.FeaturesValuesTypesColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(featuresvaluestypes.FieldID, field.TypeInt),
 			},
 		}
 		for _, k := range nodes {

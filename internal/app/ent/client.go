@@ -2967,6 +2967,22 @@ func (c *ProductInfoClient) QueryInfoType(pi *ProductInfo) *InfoTypesQuery {
 	return query
 }
 
+// QueryFeaturesValuesTypes queries the features_values_types edge of a ProductInfo.
+func (c *ProductInfoClient) QueryFeaturesValuesTypes(pi *ProductInfo) *FeaturesValuesTypesQuery {
+	query := (&FeaturesValuesTypesClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := pi.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(productinfo.Table, productinfo.FieldID, id),
+			sqlgraph.To(featuresvaluestypes.Table, featuresvaluestypes.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, productinfo.FeaturesValuesTypesTable, productinfo.FeaturesValuesTypesColumn),
+		)
+		fromV = sqlgraph.Neighbors(pi.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
 // QueryProductHasInfo queries the product_has_info edge of a ProductInfo.
 func (c *ProductInfoClient) QueryProductHasInfo(pi *ProductInfo) *ProductHasInfoQuery {
 	query := (&ProductHasInfoClient{config: c.config}).Query()

@@ -15,6 +15,7 @@ type ProductInfo struct {
 func (ProductInfo) Fields() []ent.Field {
 	return []ent.Field{
 		field.Int("info_types_id").Nillable().Optional(),
+		field.Int("features_values_types_id").Nillable().Optional(),
 		field.String("value").Nillable(),
 	}
 }
@@ -32,6 +33,12 @@ func (ProductInfo) Edges() []ent.Edge {
 			Ref("product_info").
 			Field("info_types_id").
 			Unique(),
+
+		edge.From("features_values_types", FeaturesValuesTypes.Type).
+			Ref("product_info").
+			Field("features_values_types_id").
+			Unique(),
+
 		edge.To("product_has_info", ProductHasInfo.Type),
 	}
 }

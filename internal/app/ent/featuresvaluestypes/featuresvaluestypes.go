@@ -32,7 +32,7 @@ const (
 	// It exists in this package in order to avoid circular dependency with the "productinfo" package.
 	ProductInfoInverseTable = "product_infos"
 	// ProductInfoColumn is the table column denoting the product_info relation/edge.
-	ProductInfoColumn = "features_values_types_product_info"
+	ProductInfoColumn = "features_values_types_id"
 	// FeatureValuesTable is the table that holds the feature_values relation/edge.
 	FeatureValuesTable = "features_values"
 	// FeatureValuesInverseTable is the table name for the FeaturesValues entity.

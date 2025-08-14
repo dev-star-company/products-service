@@ -354,7 +354,7 @@ var (
 		{Name: "created_at", Type: field.TypeTime},
 		{Name: "deleted_at", Type: field.TypeTime, Nullable: true},
 		{Name: "value", Type: field.TypeString},
-		{Name: "features_values_types_product_info", Type: field.TypeInt, Nullable: true},
+		{Name: "features_values_types_id", Type: field.TypeInt, Nullable: true},
 		{Name: "info_types_id", Type: field.TypeInt, Nullable: true},
 	}
 	// ProductInfosTable holds the schema information for the "product_infos" table.

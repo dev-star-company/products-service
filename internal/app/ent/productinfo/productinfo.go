@@ -20,10 +20,14 @@ const (
 	FieldDeletedAt = "deleted_at"
 	// FieldInfoTypesID holds the string denoting the info_types_id field in the database.
 	FieldInfoTypesID = "info_types_id"
+	// FieldFeaturesValuesTypesID holds the string denoting the features_values_types_id field in the database.
+	FieldFeaturesValuesTypesID = "features_values_types_id"
 	// FieldValue holds the string denoting the value field in the database.
 	FieldValue = "value"
 	// EdgeInfoType holds the string denoting the info_type edge name in mutations.
 	EdgeInfoType = "info_type"
+	// EdgeFeaturesValuesTypes holds the string denoting the features_values_types edge name in mutations.
+	EdgeFeaturesValuesTypes = "features_values_types"
 	// EdgeProductHasInfo holds the string denoting the product_has_info edge name in mutations.
 	EdgeProductHasInfo = "product_has_info"
 	// Table holds the table name of the productinfo in the database.
@@ -35,6 +39,13 @@ const (
 	InfoTypeInverseTable = "info_types"
 	// InfoTypeColumn is the table column denoting the info_type relation/edge.
 	InfoTypeColumn = "info_types_id"
+	// FeaturesValuesTypesTable is the table that holds the features_values_types relation/edge.
+	FeaturesValuesTypesTable = "product_infos"
+	// FeaturesValuesTypesInverseTable is the table name for the FeaturesValuesTypes entity.
+	// It exists in this package in order to avoid circular dependency with the "featuresvaluestypes" package.
+	FeaturesValuesTypesInverseTable = "features_values_types"
+	// FeaturesValuesTypesColumn is the table column denoting the features_values_types relation/edge.
+	FeaturesValuesTypesColumn = "features_values_types_id"
 	// ProductHasInfoTable is the table that holds the product_has_info relation/edge.
 	ProductHasInfoTable = "product_has_infos"
 	// ProductHasInfoInverseTable is the table name for the ProductHasInfo entity.
@@ -50,24 +61,14 @@ var Columns = []string{
 	FieldCreatedAt,
 	FieldDeletedAt,
 	FieldInfoTypesID,
+	FieldFeaturesValuesTypesID,
 	FieldValue,
-}
-
-// ForeignKeys holds the SQL foreign-keys that are owned by the "product_infos"
-// table and are not defined as standalone fields in the schema.
-var ForeignKeys = []string{
-	"features_values_types_product_info",
 }
 
 // ValidColumn reports if the column name is valid (part of the table columns).
 func ValidColumn(column string) bool {
 	for i := range Columns {
 		if column == Columns[i] {
-			return true
-		}
-	}
-	for i := range ForeignKeys {
-		if column == ForeignKeys[i] {
 			return true
 		}
 	}
@@ -102,6 +103,11 @@ func ByInfoTypesID(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldInfoTypesID, opts...).ToFunc()
 }
 
+// ByFeaturesValuesTypesID orders the results by the features_values_types_id field.
+func ByFeaturesValuesTypesID(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldFeaturesValuesTypesID, opts...).ToFunc()
+}
+
 // ByValue orders the results by the value field.
 func ByValue(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldValue, opts...).ToFunc()
@@ -111,6 +117,13 @@ func ByValue(opts ...sql.OrderTermOption) OrderOption {
 func ByInfoTypeField(field string, opts ...sql.OrderTermOption) OrderOption {
 	return func(s *sql.Selector) {
 		sqlgraph.OrderByNeighborTerms(s, newInfoTypeStep(), sql.OrderByField(field, opts...))
+	}
+}
+
+// ByFeaturesValuesTypesField orders the results by features_values_types field.
+func ByFeaturesValuesTypesField(field string, opts ...sql.OrderTermOption) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborTerms(s, newFeaturesValuesTypesStep(), sql.OrderByField(field, opts...))
 	}
 }
 
@@ -132,6 +145,13 @@ func newInfoTypeStep() *sqlgraph.Step {
 		sqlgraph.From(Table, FieldID),
 		sqlgraph.To(InfoTypeInverseTable, FieldID),
 		sqlgraph.Edge(sqlgraph.M2O, true, InfoTypeTable, InfoTypeColumn),
+	)
+}
+func newFeaturesValuesTypesStep() *sqlgraph.Step {
+	return sqlgraph.NewStep(
+		sqlgraph.From(Table, FieldID),
+		sqlgraph.To(FeaturesValuesTypesInverseTable, FieldID),
+		sqlgraph.Edge(sqlgraph.M2O, true, FeaturesValuesTypesTable, FeaturesValuesTypesColumn),
 	)
 }
 func newProductHasInfoStep() *sqlgraph.Step {

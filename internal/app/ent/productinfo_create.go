@@ -6,6 +6,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"products-service/internal/app/ent/featuresvaluestypes"
 	"products-service/internal/app/ent/infotypes"
 	"products-service/internal/app/ent/producthasinfo"
 	"products-service/internal/app/ent/productinfo"
@@ -64,6 +65,20 @@ func (pic *ProductInfoCreate) SetNillableInfoTypesID(i *int) *ProductInfoCreate 
 	return pic
 }
 
+// SetFeaturesValuesTypesID sets the "features_values_types_id" field.
+func (pic *ProductInfoCreate) SetFeaturesValuesTypesID(i int) *ProductInfoCreate {
+	pic.mutation.SetFeaturesValuesTypesID(i)
+	return pic
+}
+
+// SetNillableFeaturesValuesTypesID sets the "features_values_types_id" field if the given value is not nil.
+func (pic *ProductInfoCreate) SetNillableFeaturesValuesTypesID(i *int) *ProductInfoCreate {
+	if i != nil {
+		pic.SetFeaturesValuesTypesID(*i)
+	}
+	return pic
+}
+
 // SetValue sets the "value" field.
 func (pic *ProductInfoCreate) SetValue(s string) *ProductInfoCreate {
 	pic.mutation.SetValue(s)
@@ -87,6 +102,11 @@ func (pic *ProductInfoCreate) SetNillableInfoTypeID(id *int) *ProductInfoCreate 
 // SetInfoType sets the "info_type" edge to the InfoTypes entity.
 func (pic *ProductInfoCreate) SetInfoType(i *InfoTypes) *ProductInfoCreate {
 	return pic.SetInfoTypeID(i.ID)
+}
+
+// SetFeaturesValuesTypes sets the "features_values_types" edge to the FeaturesValuesTypes entity.
+func (pic *ProductInfoCreate) SetFeaturesValuesTypes(f *FeaturesValuesTypes) *ProductInfoCreate {
+	return pic.SetFeaturesValuesTypesID(f.ID)
 }
 
 // AddProductHasInfoIDs adds the "product_has_info" edge to the ProductHasInfo entity by IDs.
@@ -206,6 +226,23 @@ func (pic *ProductInfoCreate) createSpec() (*ProductInfo, *sqlgraph.CreateSpec) 
 			edge.Target.Nodes = append(edge.Target.Nodes, k)
 		}
 		_node.InfoTypesID = &nodes[0]
+		_spec.Edges = append(_spec.Edges, edge)
+	}
+	if nodes := pic.mutation.FeaturesValuesTypesIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   productinfo.FeaturesValuesTypesTable,
+			Columns: []string{productinfo.FeaturesValuesTypesColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(featuresvaluestypes.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_node.FeaturesValuesTypesID = &nodes[0]
 		_spec.Edges = append(_spec.Edges, edge)
 	}
 	if nodes := pic.mutation.ProductHasInfoIDs(); len(nodes) > 0 {

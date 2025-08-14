@@ -10028,21 +10028,23 @@ func (m *ProductHasProductReferenceMutation) ResetEdge(name string) error {
 // ProductInfoMutation represents an operation that mutates the ProductInfo nodes in the graph.
 type ProductInfoMutation struct {
 	config
-	op                      Op
-	typ                     string
-	id                      *int
-	created_at              *time.Time
-	deleted_at              *time.Time
-	value                   *string
-	clearedFields           map[string]struct{}
-	info_type               *int
-	clearedinfo_type        bool
-	product_has_info        map[int]struct{}
-	removedproduct_has_info map[int]struct{}
-	clearedproduct_has_info bool
-	done                    bool
-	oldValue                func(context.Context) (*ProductInfo, error)
-	predicates              []predicate.ProductInfo
+	op                           Op
+	typ                          string
+	id                           *int
+	created_at                   *time.Time
+	deleted_at                   *time.Time
+	value                        *string
+	clearedFields                map[string]struct{}
+	info_type                    *int
+	clearedinfo_type             bool
+	features_values_types        *int
+	clearedfeatures_values_types bool
+	product_has_info             map[int]struct{}
+	removedproduct_has_info      map[int]struct{}
+	clearedproduct_has_info      bool
+	done                         bool
+	oldValue                     func(context.Context) (*ProductInfo, error)
+	predicates                   []predicate.ProductInfo
 }
 
 var _ ent.Mutation = (*ProductInfoMutation)(nil)
@@ -10277,6 +10279,55 @@ func (m *ProductInfoMutation) ResetInfoTypesID() {
 	delete(m.clearedFields, productinfo.FieldInfoTypesID)
 }
 
+// SetFeaturesValuesTypesID sets the "features_values_types_id" field.
+func (m *ProductInfoMutation) SetFeaturesValuesTypesID(i int) {
+	m.features_values_types = &i
+}
+
+// FeaturesValuesTypesID returns the value of the "features_values_types_id" field in the mutation.
+func (m *ProductInfoMutation) FeaturesValuesTypesID() (r int, exists bool) {
+	v := m.features_values_types
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldFeaturesValuesTypesID returns the old "features_values_types_id" field's value of the ProductInfo entity.
+// If the ProductInfo object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ProductInfoMutation) OldFeaturesValuesTypesID(ctx context.Context) (v *int, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldFeaturesValuesTypesID is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldFeaturesValuesTypesID requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldFeaturesValuesTypesID: %w", err)
+	}
+	return oldValue.FeaturesValuesTypesID, nil
+}
+
+// ClearFeaturesValuesTypesID clears the value of the "features_values_types_id" field.
+func (m *ProductInfoMutation) ClearFeaturesValuesTypesID() {
+	m.features_values_types = nil
+	m.clearedFields[productinfo.FieldFeaturesValuesTypesID] = struct{}{}
+}
+
+// FeaturesValuesTypesIDCleared returns if the "features_values_types_id" field was cleared in this mutation.
+func (m *ProductInfoMutation) FeaturesValuesTypesIDCleared() bool {
+	_, ok := m.clearedFields[productinfo.FieldFeaturesValuesTypesID]
+	return ok
+}
+
+// ResetFeaturesValuesTypesID resets all changes to the "features_values_types_id" field.
+func (m *ProductInfoMutation) ResetFeaturesValuesTypesID() {
+	m.features_values_types = nil
+	delete(m.clearedFields, productinfo.FieldFeaturesValuesTypesID)
+}
+
 // SetValue sets the "value" field.
 func (m *ProductInfoMutation) SetValue(s string) {
 	m.value = &s
@@ -10351,6 +10402,33 @@ func (m *ProductInfoMutation) InfoTypeIDs() (ids []int) {
 func (m *ProductInfoMutation) ResetInfoType() {
 	m.info_type = nil
 	m.clearedinfo_type = false
+}
+
+// ClearFeaturesValuesTypes clears the "features_values_types" edge to the FeaturesValuesTypes entity.
+func (m *ProductInfoMutation) ClearFeaturesValuesTypes() {
+	m.clearedfeatures_values_types = true
+	m.clearedFields[productinfo.FieldFeaturesValuesTypesID] = struct{}{}
+}
+
+// FeaturesValuesTypesCleared reports if the "features_values_types" edge to the FeaturesValuesTypes entity was cleared.
+func (m *ProductInfoMutation) FeaturesValuesTypesCleared() bool {
+	return m.FeaturesValuesTypesIDCleared() || m.clearedfeatures_values_types
+}
+
+// FeaturesValuesTypesIDs returns the "features_values_types" edge IDs in the mutation.
+// Note that IDs always returns len(IDs) <= 1 for unique edges, and you should use
+// FeaturesValuesTypesID instead. It exists only for internal usage by the builders.
+func (m *ProductInfoMutation) FeaturesValuesTypesIDs() (ids []int) {
+	if id := m.features_values_types; id != nil {
+		ids = append(ids, *id)
+	}
+	return
+}
+
+// ResetFeaturesValuesTypes resets all changes to the "features_values_types" edge.
+func (m *ProductInfoMutation) ResetFeaturesValuesTypes() {
+	m.features_values_types = nil
+	m.clearedfeatures_values_types = false
 }
 
 // AddProductHasInfoIDs adds the "product_has_info" edge to the ProductHasInfo entity by ids.
@@ -10441,7 +10519,7 @@ func (m *ProductInfoMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *ProductInfoMutation) Fields() []string {
-	fields := make([]string, 0, 4)
+	fields := make([]string, 0, 5)
 	if m.created_at != nil {
 		fields = append(fields, productinfo.FieldCreatedAt)
 	}
@@ -10450,6 +10528,9 @@ func (m *ProductInfoMutation) Fields() []string {
 	}
 	if m.info_type != nil {
 		fields = append(fields, productinfo.FieldInfoTypesID)
+	}
+	if m.features_values_types != nil {
+		fields = append(fields, productinfo.FieldFeaturesValuesTypesID)
 	}
 	if m.value != nil {
 		fields = append(fields, productinfo.FieldValue)
@@ -10468,6 +10549,8 @@ func (m *ProductInfoMutation) Field(name string) (ent.Value, bool) {
 		return m.DeletedAt()
 	case productinfo.FieldInfoTypesID:
 		return m.InfoTypesID()
+	case productinfo.FieldFeaturesValuesTypesID:
+		return m.FeaturesValuesTypesID()
 	case productinfo.FieldValue:
 		return m.Value()
 	}
@@ -10485,6 +10568,8 @@ func (m *ProductInfoMutation) OldField(ctx context.Context, name string) (ent.Va
 		return m.OldDeletedAt(ctx)
 	case productinfo.FieldInfoTypesID:
 		return m.OldInfoTypesID(ctx)
+	case productinfo.FieldFeaturesValuesTypesID:
+		return m.OldFeaturesValuesTypesID(ctx)
 	case productinfo.FieldValue:
 		return m.OldValue(ctx)
 	}
@@ -10516,6 +10601,13 @@ func (m *ProductInfoMutation) SetField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetInfoTypesID(v)
+		return nil
+	case productinfo.FieldFeaturesValuesTypesID:
+		v, ok := value.(int)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetFeaturesValuesTypesID(v)
 		return nil
 	case productinfo.FieldValue:
 		v, ok := value.(string)
@@ -10563,6 +10655,9 @@ func (m *ProductInfoMutation) ClearedFields() []string {
 	if m.FieldCleared(productinfo.FieldInfoTypesID) {
 		fields = append(fields, productinfo.FieldInfoTypesID)
 	}
+	if m.FieldCleared(productinfo.FieldFeaturesValuesTypesID) {
+		fields = append(fields, productinfo.FieldFeaturesValuesTypesID)
+	}
 	return fields
 }
 
@@ -10583,6 +10678,9 @@ func (m *ProductInfoMutation) ClearField(name string) error {
 	case productinfo.FieldInfoTypesID:
 		m.ClearInfoTypesID()
 		return nil
+	case productinfo.FieldFeaturesValuesTypesID:
+		m.ClearFeaturesValuesTypesID()
+		return nil
 	}
 	return fmt.Errorf("unknown ProductInfo nullable field %s", name)
 }
@@ -10600,6 +10698,9 @@ func (m *ProductInfoMutation) ResetField(name string) error {
 	case productinfo.FieldInfoTypesID:
 		m.ResetInfoTypesID()
 		return nil
+	case productinfo.FieldFeaturesValuesTypesID:
+		m.ResetFeaturesValuesTypesID()
+		return nil
 	case productinfo.FieldValue:
 		m.ResetValue()
 		return nil
@@ -10609,9 +10710,12 @@ func (m *ProductInfoMutation) ResetField(name string) error {
 
 // AddedEdges returns all edge names that were set/added in this mutation.
 func (m *ProductInfoMutation) AddedEdges() []string {
-	edges := make([]string, 0, 2)
+	edges := make([]string, 0, 3)
 	if m.info_type != nil {
 		edges = append(edges, productinfo.EdgeInfoType)
+	}
+	if m.features_values_types != nil {
+		edges = append(edges, productinfo.EdgeFeaturesValuesTypes)
 	}
 	if m.product_has_info != nil {
 		edges = append(edges, productinfo.EdgeProductHasInfo)
@@ -10627,6 +10731,10 @@ func (m *ProductInfoMutation) AddedIDs(name string) []ent.Value {
 		if id := m.info_type; id != nil {
 			return []ent.Value{*id}
 		}
+	case productinfo.EdgeFeaturesValuesTypes:
+		if id := m.features_values_types; id != nil {
+			return []ent.Value{*id}
+		}
 	case productinfo.EdgeProductHasInfo:
 		ids := make([]ent.Value, 0, len(m.product_has_info))
 		for id := range m.product_has_info {
@@ -10639,7 +10747,7 @@ func (m *ProductInfoMutation) AddedIDs(name string) []ent.Value {
 
 // RemovedEdges returns all edge names that were removed in this mutation.
 func (m *ProductInfoMutation) RemovedEdges() []string {
-	edges := make([]string, 0, 2)
+	edges := make([]string, 0, 3)
 	if m.removedproduct_has_info != nil {
 		edges = append(edges, productinfo.EdgeProductHasInfo)
 	}
@@ -10662,9 +10770,12 @@ func (m *ProductInfoMutation) RemovedIDs(name string) []ent.Value {
 
 // ClearedEdges returns all edge names that were cleared in this mutation.
 func (m *ProductInfoMutation) ClearedEdges() []string {
-	edges := make([]string, 0, 2)
+	edges := make([]string, 0, 3)
 	if m.clearedinfo_type {
 		edges = append(edges, productinfo.EdgeInfoType)
+	}
+	if m.clearedfeatures_values_types {
+		edges = append(edges, productinfo.EdgeFeaturesValuesTypes)
 	}
 	if m.clearedproduct_has_info {
 		edges = append(edges, productinfo.EdgeProductHasInfo)
@@ -10678,6 +10789,8 @@ func (m *ProductInfoMutation) EdgeCleared(name string) bool {
 	switch name {
 	case productinfo.EdgeInfoType:
 		return m.clearedinfo_type
+	case productinfo.EdgeFeaturesValuesTypes:
+		return m.clearedfeatures_values_types
 	case productinfo.EdgeProductHasInfo:
 		return m.clearedproduct_has_info
 	}
@@ -10691,6 +10804,9 @@ func (m *ProductInfoMutation) ClearEdge(name string) error {
 	case productinfo.EdgeInfoType:
 		m.ClearInfoType()
 		return nil
+	case productinfo.EdgeFeaturesValuesTypes:
+		m.ClearFeaturesValuesTypes()
+		return nil
 	}
 	return fmt.Errorf("unknown ProductInfo unique edge %s", name)
 }
@@ -10701,6 +10817,9 @@ func (m *ProductInfoMutation) ResetEdge(name string) error {
 	switch name {
 	case productinfo.EdgeInfoType:
 		m.ResetInfoType()
+		return nil
+	case productinfo.EdgeFeaturesValuesTypes:
+		m.ResetFeaturesValuesTypes()
 		return nil
 	case productinfo.EdgeProductHasInfo:
 		m.ResetProductHasInfo()
